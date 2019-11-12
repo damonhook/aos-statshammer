@@ -1,37 +1,35 @@
 import React from 'react';
-import Unit from './components/Unit';
-import Stats from './components/Stats';
+import Unit from 'containers/Unit';
+import Stats from 'containers/Stats';
 import { connect } from "react-redux";
-import { fetchStatsTable, fetchModifiers } from "./api";
+import { fetchStatsTable, fetchModifiers } from "api";
 import { bindActionCreators } from "redux";
 import { Button } from "semantic-ui-react";
 
-const App = ({unit, fetchStatsTable, fetchModifiers, stats}) => {
+const App = ({ unit, fetchStatsTable, fetchModifiers }) => {
   return (
-    <div className="App" style={{margin: "2em"}}>
-      <Unit unit={unit}/>
-      <Button 
+    <div className="App" style={{ margin: "2em" }}>
+      <Unit />
+      <Button
         content="Update Modifiers"
         icon="cogs"
         labelPosition="left"
         fluid
         onClick={() => fetchModifiers()}
       />
-      <Button 
+      <Button
         content="Generate Data"
         icon="chart bar"
         labelPosition="left"
         fluid
         onClick={() => fetchStatsTable(unit)}
       />
-      <Stats stats={stats} />
+      <Stats />
     </div>
   );
 }
 
-const mapStateToProps = state => {
-  return state;
-}
+const mapStateToProps = state => (state)
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   fetchStatsTable,

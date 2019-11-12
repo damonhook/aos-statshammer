@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsiveBar } from "@nivo/bar";
-import "./Graph.scss"
+import "./index.scss"
 
 
 const Graph = ({ results }) => {

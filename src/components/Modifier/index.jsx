@@ -1,7 +1,7 @@
 import React from 'react';
-import Card from './../Card';
+import Card from 'components/Card';
 
-const Modifier = ({id, name, characteristic, description, options}) => (
+const Modifier = ({ id, name, characteristic, description, options }) => (
   <Card className="modifier">
     <div className="modifier-title">
       {name}

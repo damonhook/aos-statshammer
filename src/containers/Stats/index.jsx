@@ -1,8 +1,9 @@
 import React from "react";
-import "./Stats.scss"
+import "./index.scss"
 import { Table } from "semantic-ui-react";
-import Graph from "./Graph";
-import Card from "./Card";
+import { connect } from "react-redux";
+import Graph from "components/Graph";
+import Card from "components/Card";
 
 const Stats = ({ stats }) => {
   if (!stats || !stats.payload || !stats.payload.length) {
@@ -31,4 +32,8 @@ const Stats = ({ stats }) => {
   )
 }
 
-export default Stats
+const mapStateToProps = state => ({
+  stats: state.stats
+})
+
+export default connect(mapStateToProps)(Stats)

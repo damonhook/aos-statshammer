@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { toggleWeaponProfile, deleteWeaponProfile } from "./../actions/unit.action";
-import ProfileModal from "./ProfileModal";
+import { toggleWeaponProfile, deleteWeaponProfile } from "actions/unit.action";
+import ProfileModal from "components/ProfileModal";
 import { Button } from "semantic-ui-react";
 
 const WeaponProfile = ({ id, profile, toggleWeaponProfile, deleteWeaponProfile }) => (

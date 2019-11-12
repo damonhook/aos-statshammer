@@ -1,8 +1,8 @@
 import React from "react";
-import WeaponProfile from "./WeaponProfile"
+import WeaponProfile from "components/WeaponProfile"
 import { connect } from "react-redux"
-import "./Unit.scss";
-import { addWeaponProfile } from "./../actions/unit.action";
+import "./index.scss";
+import { addWeaponProfile } from "actions/unit.action";
 import { Button } from "semantic-ui-react";
 
 const Unit = ({ unit, addWeaponProfile }) => (
@@ -17,8 +17,6 @@ const Unit = ({ unit, addWeaponProfile }) => (
   </div>
 )
 
-const mapStateToProps = state => {
-  return state;
-}
+const mapStateToProps = state => (state)
 
 export default connect(mapStateToProps, { addWeaponProfile })(Unit);

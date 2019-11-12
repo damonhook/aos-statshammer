@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, Form, Button, Dropdown } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { editWeaponProfile } from "./../actions/unit.action";
-import Modifier from "./Modifier";
+import { editWeaponProfile } from "actions/unit.action";
+import Modifier from "components/Modifier";
 
 class ProfileModal extends React.PureComponent {
   constructor(props) {
@@ -56,9 +56,9 @@ class ProfileModal extends React.PureComponent {
               <Form.Input label="Damage" name="damage" value={this.state.damage} onChange={this.handleChange} />
               {profile.modifiers && profile.modifiers.length ?
                 <div className="modifier-list">
-                  {profile.modifiers.map((modifier) => {
+                  {profile.modifiers.map((modifier) => (
                     <Modifier {...modifier} />
-                  })}
+                  ))}
                 </div>
                 : null
               }
