@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Accordion, Button } from "semantic-ui-react";
-import Option from "./Option";
+import ModifierOption from "./ModifierOption";
 import "./index.scss";
 
 class ModifierSelector extends React.PureComponent {
@@ -10,6 +10,11 @@ class ModifierSelector extends React.PureComponent {
     this.state = {
       open: false
     }
+  }
+
+  addModifier = (modifier) => {
+    this.props.onClick(modifier)
+    this.setState({ open: false })
   }
 
   render() {
@@ -26,14 +31,18 @@ class ModifierSelector extends React.PureComponent {
     }
     return (
       <div className="modifier-selector">
-        <Button content="Add Modifier" fluid onClick={() => this.setState({ open: !this.state.open })} />
         {this.state.open ?
-          <div className="modifier-options">
-            {modifiers.map((modifier) => (
-              <Option modifier={modifier} onClick={onClick} />
-            ))}
+          <div>
+            <Button icon="cancel" content="Cancel" fluid negative onClick={() => this.setState({ open: false })} />
+            <div className="modifier-options">
+              {modifiers.map((modifier) => (
+                <ModifierOption modifier={modifier} onClick={this.addModifier} />
+              ))}
+            </div>
           </div>
-          : null}
+          :
+          <Button icon="add" content="Add Modifier" fluid positive onClick={() => this.setState({ open: true })} />
+        }
       </div>
     )
   }

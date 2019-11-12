@@ -1,0 +1,52 @@
+@import "mixins.scss";
+
+.profile {
+  @include card;
+  vertical-align: middle;
+  &.inactive {
+    color: grey;
+  }
+
+  input[type="checkbox"] {
+    margin: auto 1em auto 0;
+    -ms-transform: scale(1.25); /* IE */
+    -moz-transform: scale(1.25); /* FF */
+    -webkit-transform: scale(1.25); /* Safari and Chrome */
+    -o-transform: scale(1.25); /* Opera */
+    transform: scale(1.25);
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    .characteristics {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      margin: auto 0;
+
+      .characteristic {
+        flex: 0 1 auto;
+        padding-right: 1em;
+
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+    }
+
+    .modifiers {
+      padding-top: 1em;
+
+      .list {
+        margin-top: 0.25em;
+      }
+    }
+  }
+
+  .actions {
+    height: 100%;
+    margin: auto 0 auto auto;
+  }
+}

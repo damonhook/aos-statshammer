@@ -2,7 +2,7 @@ import React from "react";
 import Card from "components/Card";
 
 
-const Option = ({ modifier, onClick }) => (
+const ModifierOption = ({ modifier, onClick }) => (
   <Card className="modifier-option" onClick={() => onClick(modifier)}>
     <div className="modifier-title">
       <b>{modifier.name}</b>
@@ -13,4 +13,4 @@ const Option = ({ modifier, onClick }) => (
   </Card>
 )
 
-export default Option;
+export default ModifierOption;

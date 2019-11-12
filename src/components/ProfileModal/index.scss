@@ -1,0 +1,15 @@
+.profile-modal {
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    .field {
+      padding-right: 1em;
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}

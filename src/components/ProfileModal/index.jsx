@@ -2,10 +2,10 @@ import React from "react";
 import { Modal, Form, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { editWeaponProfile } from "actions/unit.action";
-import Modifier from "components/Modifier";
-import ModifierSelector from "components/ModifierSelector";
+import ModifierList from "components/ModifierList";
 import { fetchModifiers } from "api";
 import { bindActionCreators } from "redux";
+import "./index.scss"
 
 class ProfileModal extends React.PureComponent {
   constructor(props) {
@@ -37,20 +37,10 @@ class ProfileModal extends React.PureComponent {
     editWeaponProfile(id, this.state)
   }
 
-  addModifier = (modifier) => {
+  setModifiers = (newModifiers) => {
     this.setState({
       ...this.state,
-      modifiers: [
-        ...this.state.modifiers,
-        modifier
-      ]
-    })
-  }
-
-  removeModifier = (index) => {
-    this.setState({
-      ...this.state,
-      modifiers: this.state.modifiers.filter((_, i) => i !== index)
+      modifiers: newModifiers
     })
   }
 
@@ -58,7 +48,7 @@ class ProfileModal extends React.PureComponent {
     const { trigger, header, profile } = this.props;
     if (profile) {
       return (
-        <Modal trigger={trigger} onOpen={this.handleOpen}>
+        <Modal trigger={trigger} onOpen={this.handleOpen} className="profile-modal">
           <Modal.Header>{header}</Modal.Header>
           <Modal.Content>
             <Form onSubmit={this.handleSubmit}>
@@ -68,15 +58,7 @@ class ProfileModal extends React.PureComponent {
               <Form.Input type="number" label="To Wound" name="to_wound" value={this.state.to_wound} onChange={this.handleChange} />
               <Form.Input type="number" label="Rend" name="rend" value={this.state.rend} onChange={this.handleChange} />
               <Form.Input label="Damage" name="damage" value={this.state.damage} onChange={this.handleChange} />
-              {this.state.modifiers && this.state.modifiers.length ?
-                <div className="modifier-list">
-                  {this.state.modifiers.map((modifier, index) => (
-                    <Modifier {...modifier} removeModifier={this.removeModifier} index={index} />
-                  ))}
-                </div>
-                : null
-              }
-              <ModifierSelector onClick={this.addModifier} />
+              <ModifierList modifiers={this.state.modifiers} setModifiers={this.setModifiers} />
               <input type="submit" style={{ display: 'none' }} />
             </Form>
           </Modal.Content>

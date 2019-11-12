@@ -1,6 +1,6 @@
 @import "mixins.scss";
 
 .stats-container {
-  @include card;
   flex-direction: column;
+  margin: 1em 0;
 }
