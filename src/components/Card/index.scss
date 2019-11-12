@@ -2,4 +2,5 @@
 
 .card {
   @include card;
+  flex-direction: column;
 }

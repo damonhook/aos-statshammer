@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import stats from "./stats.reducer"
-import unit from "./unit.reducer";
+import unitsReducer from "./units.reducer";
 import modifiers from "./modifiers.reducer";
 
 const appReducer = combineReducers({
-  unit,
+  units: unitsReducer,
   stats,
   modifiers
 })

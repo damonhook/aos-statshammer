@@ -11,9 +11,8 @@ const ModifierList = ({ modifiers, setModifiers }) => {
       options: {},
     }
     modifier.options.forEach(o => {
-      newModifier.options[o] = null
+      newModifier.options[o] = ""
     })
-    console.log(newModifier)
     setModifiers([
       ...modifiers,
       newModifier

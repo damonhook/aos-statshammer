@@ -3,18 +3,13 @@ import { ResponsiveBar } from "@nivo/bar";
 import "./index.scss"
 
 
-const Graph = ({ results }) => {
+const Graph = ({ results, unitNames }) => {
   return (
     <div className="graph-container">
       <ResponsiveBar
-        data={results.map((result) => (
-          {
-            save: result.target.save ? result.target.save.toString() : '-',
-            averageDamage: result.average_damage
-          }
-        ))}
+        data={results}
         indexBy="save"
-        keys={["averageDamage"]}
+        keys={unitNames}
         groupMode="grouped"
         axisBottom={{
           tickSize: 7,

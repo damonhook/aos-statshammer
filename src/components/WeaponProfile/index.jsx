@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { toggleWeaponProfile, deleteWeaponProfile } from "actions/unit.action";
+import { toggleWeaponProfile, deleteWeaponProfile } from "actions/units.action";
 import ProfileModal from "components/ProfileModal";
 import { Button, List } from "semantic-ui-react";
 import "./index.scss";
 
-const WeaponProfile = ({ id, profile, toggleWeaponProfile, deleteWeaponProfile }) => (
+const WeaponProfile = ({ unit_id, id, profile, toggleWeaponProfile, deleteWeaponProfile }) => (
   <div className={`profile ${profile.active ? 'active' : 'inactive'}`}>
-    <input type="checkbox" onChange={() => toggleWeaponProfile(id)} checked={profile.active} />
+    <input type="checkbox" onChange={() => toggleWeaponProfile(id, unit_id)} checked={profile.active} />
     <div className="content">
       <div className="characteristics">
         <span className="characteristic"><b>Models:</b> {profile.num_models}</span>
@@ -27,8 +27,13 @@ const WeaponProfile = ({ id, profile, toggleWeaponProfile, deleteWeaponProfile }
       }
     </div>
     <div className="actions">
-      <ProfileModal id={id} trigger={<Button size="tiny" icon="edit" className="edit" />} header={"Edit Profile"} profile={profile} />
-      <Button icon="delete" size="tiny" negative onClick={() => deleteWeaponProfile(id)} />
+      <ProfileModal
+        unit_id={unit_id}
+        id={id}
+        header={"Edit Profile"}
+        profile={profile}
+      />
+      <Button icon="delete" size="tiny" negative onClick={() => deleteWeaponProfile(id, unit_id)} />
     </div>
   </div >
 )

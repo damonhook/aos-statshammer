@@ -1,24 +1,24 @@
 import React from 'react';
-import Unit from 'containers/Unit';
+import Units from 'containers/Units';
 import Stats from 'containers/Stats';
 import { connect } from "react-redux";
-import { fetchStatsTable, fetchModifiers } from "api";
+import { fetchStatsTable, fetchStatsCompare } from "api";
 import { bindActionCreators } from "redux";
 import { Button } from "semantic-ui-react";
 import "./index.scss"
 
-const App = ({ unit, fetchStatsTable, fetchModifiers }) => {
+const App = ({ units, fetchStatsTable, fetchStatsCompare }) => {
   return (
     <div className="app">
       <div className="container">
-        <Unit />
+        <Units />
         <Button
           className="stats-button"
           content="Generate Data"
           icon="chart bar"
           labelPosition="left"
           fluid
-          onClick={() => fetchStatsTable(unit)}
+          onClick={() => {fetchStatsTable(units[0]); fetchStatsCompare(units);}}
         />
         <Stats />
       </div>
@@ -30,7 +30,7 @@ const mapStateToProps = state => (state)
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   fetchStatsTable,
-  fetchModifiers
+  fetchStatsCompare
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
