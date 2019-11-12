@@ -1,8 +1,11 @@
 import React from "react";
-import { Modal, Form, Button, Dropdown } from "semantic-ui-react";
+import { Modal, Form, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { editWeaponProfile } from "actions/unit.action";
 import Modifier from "components/Modifier";
+import ModifierSelector from "components/ModifierSelector";
+import { fetchModifiers } from "api";
+import { bindActionCreators } from "redux";
 
 class ProfileModal extends React.PureComponent {
   constructor(props) {
@@ -13,14 +16,17 @@ class ProfileModal extends React.PureComponent {
       to_hit: 4,
       to_wound: 4,
       rend: 0,
-      damage: 0
+      damage: 0,
+      modifiers: [],
     }
   }
 
   handleOpen = () => {
-    const { profile } = this.props;
+    const { profile, fetchModifiers } = this.props;
     this.setState({
       ...profile
+    }, () => {
+      fetchModifiers()
     })
   }
 
@@ -31,13 +37,21 @@ class ProfileModal extends React.PureComponent {
     editWeaponProfile(id, this.state)
   }
 
-  getModifierOptions = () => {
-    const { modifiers } = this.props;
-    return modifiers.modifiers.map((modifier) => ({
-      key: modifier.id,
-      value: modifier.id,
-      text: modifier.name
-    }))
+  addModifier = (modifier) => {
+    this.setState({
+      ...this.state,
+      modifiers: [
+        ...this.state.modifiers,
+        modifier
+      ]
+    })
+  }
+
+  removeModifier = (index) => {
+    this.setState({
+      ...this.state,
+      modifiers: this.state.modifiers.filter((_, i) => i !== index)
+    })
   }
 
   render() {
@@ -54,21 +68,15 @@ class ProfileModal extends React.PureComponent {
               <Form.Input type="number" label="To Wound" name="to_wound" value={this.state.to_wound} onChange={this.handleChange} />
               <Form.Input type="number" label="Rend" name="rend" value={this.state.rend} onChange={this.handleChange} />
               <Form.Input label="Damage" name="damage" value={this.state.damage} onChange={this.handleChange} />
-              {profile.modifiers && profile.modifiers.length ?
+              {this.state.modifiers && this.state.modifiers.length ?
                 <div className="modifier-list">
-                  {profile.modifiers.map((modifier) => (
-                    <Modifier {...modifier} />
+                  {this.state.modifiers.map((modifier, index) => (
+                    <Modifier {...modifier} removeModifier={this.removeModifier} index={index} />
                   ))}
                 </div>
                 : null
               }
-              <Dropdown
-                clearable
-                fluid
-                search
-                select
-                options={this.getModifierOptions()}
-              />
+              <ModifierSelector onClick={this.addModifier} />
               <input type="submit" style={{ display: 'none' }} />
             </Form>
           </Modal.Content>
@@ -82,8 +90,9 @@ class ProfileModal extends React.PureComponent {
   }
 }
 
-const mapStateToProps = state => ({
-  modifiers: state.modifiers
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+  fetchModifiers, editWeaponProfile
+}, dispatch)
 
-export default connect(mapStateToProps, { editWeaponProfile })(ProfileModal)
+
+export default connect(null, mapDispatchToProps)(ProfileModal)

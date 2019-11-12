@@ -2,8 +2,8 @@ import React from "react";
 import "./index.scss";
 
 
-const Card = ({children, className}) => (
-  <div className={`card ${className}`}>
+const Card = ({ children, className, ...other }) => (
+  <div className={`card ${className}`} {...other}>
     {children}
   </div>
 )

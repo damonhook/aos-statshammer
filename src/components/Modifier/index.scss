@@ -1,0 +1,26 @@
+.modifier {
+  .modifier-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .modifier-options {
+      padding-top: 1em;
+      justify-content: space-between;
+      display: flex;
+      padding-right: 1em;
+
+      .input {
+        flex: 1;
+        padding-right: 1em;
+
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+    }
+
+    .modifier-description {
+      color: darkgray;
+    }
+  }
+}
