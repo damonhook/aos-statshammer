@@ -10,7 +10,7 @@ const Units = ({ units, addUnit }) => (
     {units.map((unit, index) => (
       <Unit unit={unit} id={index} />
     ))}
-    <Button fluid content="Add Unit" onClick={() => addUnit(`Unit ${units.length + 1}`)} />
+    <Button fluid positive icon="add" content="Add Unit" onClick={() => addUnit(`Unit ${units.length + 1}`)} />
   </div>
 )
 

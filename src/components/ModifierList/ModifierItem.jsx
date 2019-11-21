@@ -1,7 +1,8 @@
 import React from 'react';
 import Card from 'components/Card';
-import { Input, Button } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import "./index.scss";
+import ModifierInput from "./ModifierInput";
 
 const ModifierItem = ({ index, name, description, options, removeModifier, onOptionChange }) => (
   <Card className="modifier">
@@ -14,13 +15,12 @@ const ModifierItem = ({ index, name, description, options, removeModifier, onOpt
       </div>
       {options && Object.keys(options).length ?
         <div className="modifier-options">
-          {Object.keys(options).map((key) => (
-            <Input
-              label={key}
-              name={key}
-              value={options[key]}
-              fluid
-              onChange={(_, { value }) => onOptionChange(index, key, value)}
+          {Object.keys(options).map((option) => (
+            <ModifierInput
+              index={index}
+              option={option}
+              val={options[option].value}
+              onOptionChange={onOptionChange}
             />
           ))}
         </div>

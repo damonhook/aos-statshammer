@@ -8,10 +8,9 @@ const ModifierList = ({ modifiers, setModifiers }) => {
   const addModifier = (modifier) => {
     const newModifier = {
       ...modifier,
-      options: {},
     }
-    modifier.options.forEach(o => {
-      newModifier.options[o] = ""
+    Object.keys(newModifier.options).forEach(k => {
+      newModifier.options[k].value = ""
     })
     setModifiers([
       ...modifiers,
@@ -31,7 +30,10 @@ const ModifierList = ({ modifiers, setModifiers }) => {
           ...modifier,
           options: {
             ...modifier.options,
-            [name]: value
+            [name]: {
+              ...modifier.options[name],
+              value
+            }
           }
         }
       }

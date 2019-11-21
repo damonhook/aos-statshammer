@@ -18,7 +18,6 @@ const Unit = ({ id, unit, addWeaponProfile }) => (
     <Button
       content="Add Profile"
       icon="add"
-      labelPosition="left"
       onClick={() => addWeaponProfile(id)}
       fluid
       positive />

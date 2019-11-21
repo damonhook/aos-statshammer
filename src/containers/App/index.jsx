@@ -16,7 +16,6 @@ const App = ({ units, fetchStatsTable, fetchStatsCompare }) => {
           className="stats-button"
           content="Generate Data"
           icon="chart bar"
-          labelPosition="left"
           fluid
           onClick={() => {fetchStatsTable(units[0]); fetchStatsCompare(units);}}
         />
