@@ -1,11 +1,15 @@
 @import "mixins.scss";
 
+.profile.inactive {
+  // color: grey;
+  .characteristics {
+    color: grey !important;
+  }
+}
+
 .profile .body {
   display: flex;
   vertical-align: middle;
-  &.inactive {
-    color: grey;
-  }
 
   input[type="checkbox"] {
     margin: auto 1em auto 0;
@@ -14,6 +18,10 @@
     -webkit-transform: scale(1.25); /* Safari and Chrome */
     -o-transform: scale(1.25); /* Opera */
     transform: scale(1.25);
+  }
+
+  .checkbox {
+    margin: auto 1em auto 0;
   }
 
   .content {
@@ -44,9 +52,4 @@
       }
     }
   }
-
-  // .actions {
-  //   height: 100%;
-  //   margin: auto 0 auto auto;
-  // }
 }

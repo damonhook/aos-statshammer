@@ -49,12 +49,13 @@ const ProfileModal = ({
         open={open}
         className="profile-modal"
         onClose={() => close()}
+        centered={false}
       >
         <Modal.Header>{header}</Modal.Header>
-        <Modal.Content>
+        <Modal.Content scrolling>
           <Form onSubmit={() => submit()}>
             <input type="submit" style={{ display: 'none' }} />
-            <Form.Input type="number" label="Number of models" value={num_models} onChange={(_, { value }) => setNumModels(value)} />
+            <Form.Input focus type="number" label="Number of models" value={num_models} onChange={(_, { value }) => setNumModels(value)} />
             <Form.Input type="number" label="Attacks" value={attacks} onChange={(_, { value }) => setAttacks(value)} />
             <Form.Input type="number" label="To Hit" value={to_hit} onChange={(_, { value }) => setToHit(value)} />
             <Form.Input type="number" label="To Wound" value={to_wound} onChange={(_, { value }) => setToWound(value)} />

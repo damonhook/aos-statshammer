@@ -10,6 +10,7 @@ const ModifierItem = ({
     className="modifier"
     onDelete={() => removeModifier(index)}
     header={name}
+    collapsible
   >
     <div className="modifier-content">
       <div className="modifier-description">

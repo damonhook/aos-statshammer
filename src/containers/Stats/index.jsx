@@ -3,7 +3,7 @@ import './index.scss';
 import { Table } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import Graph from 'components/Graph';
-import Card from 'components/Card';
+import ListItem from 'components/ListItem';
 
 const Stats = ({ stats, units }) => {
   if (!stats || !stats.payload || !stats.payload.length) {
@@ -11,7 +11,7 @@ const Stats = ({ stats, units }) => {
   }
   const unitNames = units.map(({ name }) => name);
   return (
-    <Card className="stats-container">
+    <ListItem className="stats-container" header="Generated Stats" collapsible>
       <Table celled>
         <Table.Header>
           <Table.Row>
@@ -36,7 +36,7 @@ const Stats = ({ stats, units }) => {
         </Table.Body>
       </Table>
       <Graph results={stats.payload} unitNames={unitNames} />
-    </Card>
+    </ListItem>
   );
 };
 

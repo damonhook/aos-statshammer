@@ -1,12 +1,27 @@
 .list-item {
   margin-bottom: 1em;
 
+  &.collapsible {
+    & > .header > .header-text:before {
+      content: "-";
+      width: 1em;
+      display: inline-block;
+      margin-right: 0.25em;
+      margin-left: -0.5em;
+    }
+
+    &.collapsed > .header > .header-text:before {
+      content: "+"; 
+    }
+  }
+
   .header {
     justify-content: space-between;
     padding: 0;
 
     .header-text {
       padding: 0.5em 1.5em;
+      flex: 1;
     }
   }
 }

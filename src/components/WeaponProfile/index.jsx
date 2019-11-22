@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toggleWeaponProfile, deleteWeaponProfile } from 'actions/units.action';
 import ProfileModal from 'components/ProfileModal';
-import { List } from 'semantic-ui-react';
+import { List, Checkbox } from 'semantic-ui-react';
 import ListItem from 'components/ListItem';
 import './index.scss';
 
@@ -17,8 +17,9 @@ const WeaponProfile = ({
       header="Weapon Profile"
       onEdit={() => setOpen(true)}
       onDelete={() => deleteWeaponProfile(id, unitId)}
+      collapsible
     >
-      <input type="checkbox" onChange={() => toggleWeaponProfile(id, unitId)} checked={profile.active} />
+      <Checkbox toggle size="small" onChange={() => toggleWeaponProfile(id, unitId)} checked={profile.active} />
       <div className="content">
         <div className="characteristics">
           <span className="characteristic">
