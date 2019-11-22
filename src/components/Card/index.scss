@@ -3,4 +3,15 @@
 .card {
   @include card;
   flex-direction: column;
+
+  .header {
+    background-color: #fafafa;
+    padding: 0.5em 1.5em;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .body {
+    padding: 1.5em;
+  }
 }

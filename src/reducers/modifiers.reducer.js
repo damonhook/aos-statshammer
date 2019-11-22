@@ -1,33 +1,33 @@
-import { FETCH_MODIFIERS_PENDING, FETCH_MODIFIERS_SUCCESS, FETCH_MODIFIERS_ERROR } from "./../actions/modifiers.action";
+import { fetchModifiersPending, FETCH_MODIFIERS_SUCCESS, FETCH_MODIFIERS_ERROR } from '../actions/modifiers.action';
 
 const INITIAL_STATE = {
   pending: false,
   error: null,
   modifiers: [],
-}
+};
 
 const modifiers = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FETCH_MODIFIERS_PENDING:
+    case fetchModifiersPending:
       return {
         ...state,
-        pending: true
-      }
+        pending: true,
+      };
     case FETCH_MODIFIERS_SUCCESS:
       return {
         ...state,
         pending: false,
-        modifiers: action.payload.modifiers
-      }
+        modifiers: action.payload.modifiers,
+      };
     case FETCH_MODIFIERS_ERROR:
       return {
         ...state,
         pending: false,
-        error: action.payload.error
-      }
+        error: action.payload.error,
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default modifiers
+export default modifiers;

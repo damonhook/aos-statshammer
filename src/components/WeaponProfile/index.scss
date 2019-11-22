@@ -1,7 +1,7 @@
 @import "mixins.scss";
 
-.profile {
-  @include card;
+.profile .body {
+  display: flex;
   vertical-align: middle;
   &.inactive {
     color: grey;
@@ -45,8 +45,8 @@
     }
   }
 
-  .actions {
-    height: 100%;
-    margin: auto 0 auto auto;
-  }
+  // .actions {
+  //   height: 100%;
+  //   margin: auto 0 auto auto;
+  // }
 }

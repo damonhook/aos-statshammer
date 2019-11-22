@@ -4,25 +4,16 @@
 }
 
 .modifier {
-  flex-direction: row;
   .modifier-content {
     display: flex;
     flex: 1;
     flex-direction: column;
-    .modifier-options {
-      padding-top: 1em;
+
+    .modifier-settings {
       justify-content: space-between;
       display: flex;
-      padding-right: 1em;
-
-      .input {
-        flex: 1;
-        padding-right: 1em;
-
-        &:last-child {
-          padding-right: 0;
-        }
-      }
+      flex-wrap: wrap;
+      flex-direction: row;
     }
 
     .modifier-description {
@@ -48,4 +39,10 @@
       background-color: #f4f4f4;
     }
   }
+}
+
+.modifier-input {
+  padding-right: 1em;
+  margin: 1em 0;
+  width: 100%;
 }

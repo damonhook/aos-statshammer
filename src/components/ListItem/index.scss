@@ -1,0 +1,12 @@
+.list-item {
+  margin-bottom: 1em;
+
+  .header {
+    justify-content: space-between;
+    padding: 0;
+
+    .header-text {
+      padding: 0.5em 1.5em;
+    }
+  }
+}

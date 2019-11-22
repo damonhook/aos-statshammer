@@ -1,26 +1,26 @@
-import React from "react";
-import ModifierItem from "./ModifierItem";
-import ModifierSelector from "./ModifierSelector";
-import "./index.scss";
+import React from 'react';
+import ModifierItem from './ModifierItem';
+import ModifierSelector from './ModifierSelector';
+import './index.scss';
 
 
 const ModifierList = ({ modifiers, setModifiers }) => {
   const addModifier = (modifier) => {
     const newModifier = {
       ...modifier,
-    }
-    Object.keys(newModifier.options).forEach(k => {
-      newModifier.options[k].value = ""
-    })
+    };
+    Object.keys(newModifier.options).forEach((k) => {
+      newModifier.options[k].value = '';
+    });
     setModifiers([
       ...modifiers,
-      newModifier
-    ])
-  }
+      newModifier,
+    ]);
+  };
 
   const removeModifier = (index) => {
-    setModifiers(modifiers.filter((_, i) => i !== index))
-  }
+    setModifiers(modifiers.filter((_, i) => i !== index));
+  };
 
   const onOptionChange = (index, name, value) => {
     if (!modifiers) return;
@@ -32,29 +32,35 @@ const ModifierList = ({ modifiers, setModifiers }) => {
             ...modifier.options,
             [name]: {
               ...modifier.options[name],
-              value
-            }
-          }
-        }
+              value,
+            },
+          },
+        };
       }
-      return modifier
-    }))
-  }
+      return modifier;
+    }));
+  };
 
   return (
     <div className="modifier-list field">
       <label>Modifiers:</label>
-      {modifiers && modifiers.length ?
-        <div className="active-modifiers">
-          {modifiers.map((modifier, index) => (
-            <ModifierItem {...modifier} removeModifier={removeModifier} index={index} onOptionChange={onOptionChange} />
-          ))}
-        </div>
-        : null
-      }
+      {modifiers && modifiers.length
+        ? (
+          <div className="active-modifiers">
+            {modifiers.map((modifier, index) => (
+              <ModifierItem
+                {...modifier}
+                removeModifier={removeModifier}
+                index={index}
+                onOptionChange={onOptionChange}
+              />
+            ))}
+          </div>
+        )
+        : null}
       <ModifierSelector onClick={addModifier} />
     </div>
-  )
-}
+  );
+};
 
 export default ModifierList;
