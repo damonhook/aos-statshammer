@@ -1,22 +1,38 @@
 import React from 'react';
-import { Input, Dropdown, Checkbox } from 'semantic-ui-react';
-import './index.scss';
+import { TextField, Checkbox, MenuItem } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  modifierInput: {
+    marginRight: '1em',
+    margin: '.5em 0',
+    width: '100%',
+  },
+});
 
 const ModifierInput = ({
   index, name, option, val, onOptionChange,
 }) => {
-  const cName = `modifier-input ${option.type}`;
+  const classes = useStyles();
   switch (option.type) {
     case 'choice':
       return (
-        <Dropdown
+        <TextField
+          select
           label={name}
           name={name}
-          className={cName}
-          placeholder="Select a characteristic"
-          selection
-          options={option.items.map((item) => ({ key: item, value: item, text: item }))}
-        />
+          className={classes.modifierInput}
+          fullWidth
+          variant="outlined"
+          value={val}
+          onChange={(event) => onOptionChange(index, name, event.target.value)}
+        >
+          {option.items.map((item) => (
+            <MenuItem key={item} value={item}>
+              { item }
+            </MenuItem>
+          ))}
+        </TextField>
       );
     case 'boolean':
       return (
@@ -24,17 +40,19 @@ const ModifierInput = ({
           toggle
           label={name}
           name={name}
-          className={cName}
+          className={classes.modifierInput}
           value={val}
           onChange={(_, { value }) => onOptionChange(index, name, value)}
         />
       );
     default:
       return (
-        <Input
+        <TextField
           label={name}
           name={name}
-          className={cName}
+          className={classes.modifierInput}
+          fullWidth
+          variant="outlined"
           value={val}
           onChange={(_, { value }) => onOptionChange(index, name, value)}
         />

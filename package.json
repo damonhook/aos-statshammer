@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.7.0",
+    "@material-ui/icons": "^4.5.1",
     "@nivo/bar": "^0.59.2",
     "cross-fetch": "^3.0.4",
     "eslint": "^6.6.0",
@@ -17,7 +19,6 @@
     "react-scripts": "3.2.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
-    "semantic-ui-react": "^0.88.1",
     "storybook": "^5.1.11"
   },
   "scripts": {

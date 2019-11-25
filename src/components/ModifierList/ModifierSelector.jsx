@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'semantic-ui-react';
+import { Button, Collapse } from '@material-ui/core';
+import { Add, Cancel } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
 import ModifierOption from './ModifierOption';
-import './index.scss';
+
+const useStyles = makeStyles({
+  selector: { marginTop: '1em', marginBottom: '1em' },
+});
+
 
 const ModifierSelector = ({
   modifiers, pending, error, onClick,
 }) => {
   const [open, setOpen] = useState(false);
+  const classes = useStyles();
+
   const addModifier = (modifier) => {
     onClick(modifier);
-    setOpen(false);
   };
 
   if (pending) {
     return (
-      <div className="modifier-selector">
-        <Button content="Add Modifier" fluid disabled loading />
+      <div className={classes.selector}>
+        <Button content="Add Modifier" disabled fullwidth />
       </div>
     );
   }
@@ -24,19 +31,17 @@ const ModifierSelector = ({
     return null;
   }
   return (
-    <div className="modifier-selector">
+    <div className={classes.selector}>
       {open
-        ? (
-          <div>
-            <Button icon="cancel" content="Cancel" fluid negative onClick={() => setOpen(false)} />
-            <div className="modifier-options">
-              {modifiers.map((modifier) => (
-                <ModifierOption modifier={modifier} onClick={addModifier} />
-              ))}
-            </div>
-          </div>
-        )
-        : <Button icon="add" content="Add Modifier" fluid onClick={() => setOpen(true)} />}
+        ? <Button fullWidth variant="contained" onClick={() => setOpen(false)} startIcon={<Cancel />}>Cancel</Button>
+        : <Button fullWidth variant="contained" onClick={() => setOpen(true)} startIcon={<Add />}>Add Modifier</Button>}
+      <Collapse in={open}>
+        <div>
+          {modifiers.map((modifier) => (
+            <ModifierOption modifier={modifier} onClick={addModifier} />
+          ))}
+        </div>
+      </Collapse>
     </div>
   );
 };
