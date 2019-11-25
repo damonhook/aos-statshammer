@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 });
 
 const ListItem = ({
-  children, header, onEdit, onDelete, className, collapsible, ...other
+  children, header, onEdit, onDelete, onCopy, className, collapsible, ...other
 }) => {
   const classes = useStyles();
   const [collapsed, setColapsed] = useState(false);
@@ -49,7 +49,7 @@ const ListItem = ({
         <span className={`${classes.headerText}`} onClick={handleClick} role="button">
           {header}
         </span>
-        <ListControls onEdit={onEdit} onDelete={onDelete} className={classes.listControls} />
+        <ListControls onEdit={onEdit} onDelete={onDelete} onCopy={onCopy} className={classes.listControls} />
       </Card.Header>
       <Collapse in={!collapsed}>
         <Card.Body>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { toggleWeaponProfile, deleteWeaponProfile } from 'actions/units.action';
+import { toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile } from 'actions/units.action';
 import ProfileModal from 'components/ProfileModal';
 import { List, ListItem as Item, Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 
 
 const WeaponProfile = ({
-  unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile,
+  unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
 }) => {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
@@ -48,6 +48,7 @@ const WeaponProfile = ({
       header="Weapon Profile"
       onEdit={() => setOpen(true)}
       onDelete={() => deleteWeaponProfile(id, unitId)}
+      onCopy={() => addWeaponProfile(unitId, { ...profile })}
       collapsible
     >
       <div className={classes.content}>
@@ -109,4 +110,6 @@ const WeaponProfile = ({
   );
 };
 
-export default connect(null, { toggleWeaponProfile, deleteWeaponProfile })(WeaponProfile);
+export default connect(
+  null, { toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile },
+)(WeaponProfile);

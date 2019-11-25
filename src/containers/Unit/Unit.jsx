@@ -5,6 +5,7 @@ import {
   addWeaponProfile,
   deleteUnit,
   editUnitName,
+  addUnit,
 } from 'actions/units.action';
 import ListItem from 'components/ListItem';
 import { TextField, Button } from '@material-ui/core';
@@ -22,11 +23,17 @@ const useStyles = makeStyles({
 });
 
 const Unit = ({
-  id, unit, addWeaponProfile, deleteUnit, editUnitName,
+  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit,
 }) => {
   const classes = useStyles();
   return (
-    <ListItem className={classes.unit} header={`Unit (${unit.name})`} onDelete={() => deleteUnit(id)} collapsible>
+    <ListItem
+      className={classes.unit}
+      header={`Unit (${unit.name})`}
+      onDelete={() => deleteUnit(id)}
+      onCopy={() => addUnit(`${unit.name} copy`, [...unit.weapon_profiles])}
+      collapsible
+    >
       <TextField
         label="Unit Name"
         value={unit.name}
@@ -54,6 +61,8 @@ const Unit = ({
   );
 };
 
-export default connect(null, { addWeaponProfile, deleteUnit, editUnitName })(
+export default connect(null, {
+  addWeaponProfile, deleteUnit, editUnitName, addUnit,
+})(
   Unit,
 );

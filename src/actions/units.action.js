@@ -43,11 +43,11 @@ export const ADD_UNIT = 'ADD_UNIT';
 export const DELETE_UNIT = 'DELETE_UNIT';
 export const EDIT_UNIT_NAME = 'EDIT_UNIT_NAME';
 
-export const addUnit = (name) => ({
+export const addUnit = (name, weapon_profiles = [DEFAULT_WEAPON_PROFILE]) => ({
   type: ADD_UNIT,
   unit: {
     name,
-    weapon_profiles: [DEFAULT_WEAPON_PROFILE],
+    weapon_profiles,
   },
 });
 

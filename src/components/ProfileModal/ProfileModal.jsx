@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, TextField, Button } from '@material-ui/core';
+import {
+  Modal, TextField, Button, InputAdornment,
+} from '@material-ui/core';
 import { connect } from 'react-redux';
 import { editWeaponProfile } from 'actions/units.action';
 import ModifierList from 'components/ModifierList';
@@ -23,6 +25,7 @@ const useStyles = makeStyles({
   },
   field: {
     paddingRight: '1em',
+    margin: '1em 1em 0 0',
     '&:last-child': {
       paddingRight: 0,
     },
@@ -87,12 +90,57 @@ const ProfileModal = ({
         <div>
           <form className={classes.form} onSubmit={() => submit()}>
             <input type="submit" style={{ display: 'none' }} />
-            <TextField className={classes.field} label="Number of models" value={num_models} onChange={(_, { value }) => setNumModels(value)} />
-            <TextField className={classes.field} label="Attacks" value={attacks} onChange={(_, { value }) => setAttacks(value)} />
-            <TextField className={classes.field} label="To Hit" value={to_hit} onChange={(_, { value }) => setToHit(value)} />
-            <TextField className={classes.field} label="To Wound" value={to_wound} onChange={(_, { value }) => setToWound(value)} />
-            <TextField className={classes.field} label="Rend" value={rend} onChange={(_, { value }) => setRend(value)} />
-            <TextField className={classes.field} label="Damage" value={damage} onChange={(_, { value }) => setDamage(value)} />
+            <TextField
+              className={classes.field}
+              variant="outlined"
+              label="Number of models"
+              value={num_models}
+              onChange={(event) => setNumModels(event.target.value)}
+            />
+            <TextField
+              className={classes.field}
+              variant="outlined"
+              label="Attacks"
+              value={attacks}
+              onChange={(event) => setAttacks(event.target.value)}
+            />
+            <TextField
+              className={classes.field}
+              variant="outlined"
+              InputProps={{
+                endAdornment: <InputAdornment position="end">+</InputAdornment>,
+              }}
+              label="To Hit"
+              value={to_hit}
+              onChange={(event) => setToHit(event.target.value)}
+            />
+            <TextField
+              className={classes.field}
+              variant="outlined"
+              InputProps={{
+                endAdornment: <InputAdornment position="end">+</InputAdornment>,
+              }}
+              label="To Wound"
+              value={to_wound}
+              onChange={(event) => setToWound(event.target.value)}
+            />
+            <TextField
+              className={classes.field}
+              variant="outlined"
+              InputProps={{
+                startAdornment: <InputAdornment position="start">-</InputAdornment>,
+              }}
+              label="Rend"
+              value={rend}
+              onChange={(event) => setRend(event.target.value)}
+            />
+            <TextField
+              className={classes.field}
+              variant="outlined"
+              label="Damage"
+              value={damage}
+              onChange={(event) => setDamage(event.target.value)}
+            />
             <ModifierList modifiers={modifiers} setModifiers={setModifiers} tabIndex={-1} />
           </form>
         </div>
