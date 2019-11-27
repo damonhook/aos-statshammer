@@ -46,7 +46,7 @@ const useStyles = makeStyles({
 
 
 const ProfileModal = ({
-  id, editWeaponProfile, unitId, profile, fetchModifiers, header, open, close,
+  id, editWeaponProfile, unitId, profile, fetchModifiers, fetchedModifiers, header, open, close,
 }) => {
   const classes = useStyles();
 
@@ -59,8 +59,10 @@ const ProfileModal = ({
   const [modifiers, setModifiers] = useState([]);
 
   useEffect(() => {
-    if (open) {
+    if (!fetchedModifiers || fetchModifiers === []) {
       fetchModifiers();
+    }
+    if (open) {
       setNumModels(profile.num_models);
       setAttacks(profile.attacks);
       setToHit(profile.to_hit);
@@ -156,9 +158,11 @@ const ProfileModal = ({
   );
 };
 
+const mapStateToProps = (state) => ({ fetchedModifiers: state.modifiers.modifiers });
+
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchModifiers, editWeaponProfile,
 }, dispatch);
 
 
-export default connect(null, mapDispatchToProps)(ProfileModal);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileModal);

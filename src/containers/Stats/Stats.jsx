@@ -13,9 +13,10 @@ const useStyles = makeStyles({
     flexGrow: 1,
     flexBasis: 0,
   },
-  results: {
-    marginTop: '1em',
+  button: {
+    marginBottom: '1em',
   },
+  results: {},
 });
 
 const Stats = ({ units, fetchStatsCompare }) => {
@@ -28,15 +29,15 @@ const Stats = ({ units, fetchStatsCompare }) => {
 
   return (
     <div className={classes.statsContainer}>
-      <Button
-        className="stats-button"
+      {/* <Button
+        className={classes.button}
         fullWidth
         onClick={() => fetchStatsCompare(units)}
         startIcon={<BarChart />}
         variant="contained"
       >
         Generate Data
-      </Button>
+      </Button> */}
       <Results className={classes.results} />
     </div>
   );
