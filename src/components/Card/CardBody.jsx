@@ -1,9 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 
 const useStyles = makeStyles({
   body: {
-    padding: '1.5em',
+    padding: '1em',
     flexWrap: 'wrap',
   },
 });
@@ -11,7 +12,7 @@ const useStyles = makeStyles({
 const CardBody = ({ children, className, ...other }) => {
   const classes = useStyles();
   return (
-    <div className={`${classes.body} ${className}`} {...other}>
+    <div className={clsx(classes.body, className)} {...other}>
       {children}
     </div>
   );

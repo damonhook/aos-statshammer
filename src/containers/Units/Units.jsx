@@ -9,6 +9,8 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   units: {
     marginBottom: '1em',
+    flexGrow: 1,
+    flexBasis: 0,
   },
 });
 

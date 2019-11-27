@@ -1,5 +1,7 @@
 import React from 'react';
-import { TextField, Checkbox, MenuItem } from '@material-ui/core';
+import {
+  TextField, Checkbox, MenuItem, FormControlLabel,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -36,13 +38,17 @@ const ModifierInput = ({
       );
     case 'boolean':
       return (
-        <Checkbox
-          toggle
+        <FormControlLabel
           label={name}
-          name={name}
-          className={classes.modifierInput}
-          value={val}
-          onChange={(_, { value }) => onOptionChange(index, name, value)}
+          control={(
+            <Checkbox
+              toggle
+              name={name}
+              className={classes.modifierInput}
+              value={val}
+              onChange={(event) => onOptionChange(index, name, event.target.value)}
+            />
+        )}
         />
       );
     default:
@@ -54,7 +60,7 @@ const ModifierInput = ({
           fullWidth
           variant="outlined"
           value={val}
-          onChange={(_, { value }) => onOptionChange(index, name, value)}
+          onChange={(event) => onOptionChange(index, name, event.target.value)}
         />
       );
   }

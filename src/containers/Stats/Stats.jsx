@@ -1,63 +1,45 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Graph from 'components/Graph';
-import ListItem from 'components/ListItem';
-import {
-  Table, TableHead, TableBody, TableRow, TableCell,
-} from '@material-ui/core';
-import Card from 'components/Card';
+import { fetchStatsCompare } from 'api';
+import { bindActionCreators } from 'redux';
+import { Button } from '@material-ui/core';
+import { BarChart } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-
+import Results from './Results';
 
 const useStyles = makeStyles({
   statsContainer: {
     flexDirection: 'column',
-    margin: '1em 0',
+    flexGrow: 1,
+    flexBasis: 0,
+  },
+  results: {
+    marginTop: '1em',
   },
 });
 
-const Stats = ({ stats, units }) => {
+const App = ({ units, fetchStatsCompare }) => {
   const classes = useStyles();
-
-  if (!stats || !stats.payload || !stats.payload.length) {
-    return null;
-  }
-  const unitNames = units.map(({ name }) => name);
   return (
-    <ListItem className={classes.statsContainer} header="Generated Stats" collapsible>
-      <Card>
-        <Table size="small" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>Save</TableCell>
-              {unitNames.map((name) => (
-                <TableCell>{name}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {stats.payload.map((result) => {
-              const { save, ...unitResults } = result;
-              return (
-                <TableRow>
-                  <TableCell>{save && save !== 'None' ? `${save}+` : '-'}</TableCell>
-                  {unitNames.map((name) => (
-                    <TableCell>{unitResults[name]}</TableCell>
-                  ))}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </Card>
-      <Graph results={stats.payload} unitNames={unitNames} />
-    </ListItem>
+    <div className={classes.statsContainer}>
+      <Button
+        className="stats-button"
+        fullWidth
+        onClick={() => fetchStatsCompare(units)}
+        startIcon={<BarChart />}
+        variant="contained"
+      >
+        Generate Data
+      </Button>
+      <Results className={classes.results} />
+    </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  stats: state.stats,
-  units: state.units,
-});
+const mapStateToProps = (state) => (state);
 
-export default connect(mapStateToProps)(Stats);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  fetchStatsCompare,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

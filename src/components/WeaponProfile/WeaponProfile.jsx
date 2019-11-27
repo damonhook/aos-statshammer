@@ -5,6 +5,8 @@ import ProfileModal from 'components/ProfileModal';
 import { List, ListItem as Item, Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { ChevronRight } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   profile: {
@@ -16,6 +18,7 @@ const useStyles = makeStyles({
   content: {
     display: 'flex',
     verticalAlign: 'middle',
+    marginLeft: '-0.5em',
   },
   switch: {
     margin: 'auto 0',
@@ -33,6 +36,13 @@ const useStyles = makeStyles({
       marginRight: 0,
     },
   },
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  modifiers: {
+    marginTop: '1em',
+  },
 });
 
 
@@ -44,7 +54,7 @@ const WeaponProfile = ({
 
   return (
     <ListItem
-      className={`${classes.profile} ${profile.active ? '' : classes.inactive}`}
+      className={clsx(classes.profile, profile.active ? '' : classes.inactive)}
       header="Weapon Profile"
       onEdit={() => setOpen(true)}
       onDelete={() => deleteWeaponProfile(id, unitId)}
@@ -57,46 +67,51 @@ const WeaponProfile = ({
           onChange={() => toggleWeaponProfile(id, unitId)}
           checked={profile.active}
         />
-        <div className={classes.characteristics}>
-          <span className={classes.characteristic}>
-            <b>Models: </b>
-            {profile.num_models}
-          </span>
-          <span className={classes.characteristic}>
-            <b>Attacks: </b>
-            {profile.attacks}
-          </span>
-          <span className={classes.characteristic}>
-            <b>To Hit: </b>
-            {profile.to_hit}
+        <div className={classes.details}>
+          <div className={classes.characteristics}>
+            <span className={classes.characteristic}>
+              <b>Models: </b>
+              {profile.num_models}
+            </span>
+            <span className={classes.characteristic}>
+              <b>Attacks: </b>
+              {profile.attacks}
+            </span>
+            <span className={classes.characteristic}>
+              <b>To Hit: </b>
+              {profile.to_hit}
             +
-          </span>
-          <span className={classes.characteristic}>
-            <b>To Wound: </b>
-            {profile.to_wound}
+            </span>
+            <span className={classes.characteristic}>
+              <b>To Wound: </b>
+              {profile.to_wound}
             +
-          </span>
-          <span className={classes.characteristic}>
-            <b>Rend: </b>
-            {profile.rend}
-          </span>
-          <span className={classes.characteristic}>
-            <b>Damage: </b>
-            {profile.damage}
-          </span>
+            </span>
+            <span className={classes.characteristic}>
+              <b>Rend: </b>
+              {profile.rend}
+            </span>
+            <span className={classes.characteristic}>
+              <b>Damage: </b>
+              {profile.damage}
+            </span>
+          </div>
+          {profile.modifiers && profile.modifiers.length
+            ? (
+              <div className={classes.modifiers}>
+                <b>Modifiers: </b>
+                <List dense disablePadding>
+                  {profile.modifiers.map((modifier) => (
+                    <Item dense>
+                      <ChevronRight />
+                      {modifier.name}
+                    </Item>
+                  ))}
+                </List>
+              </div>
+            )
+            : null}
         </div>
-        {profile.modifiers && profile.modifiers.length
-          ? (
-            <div>
-              <b>Modifiers: </b>
-              <List>
-                {profile.modifiers.map((modifier) => (
-                  <Item>{modifier.name}</Item>
-                ))}
-              </List>
-            </div>
-          )
-          : null}
       </div>
       <ProfileModal
         open={open}
