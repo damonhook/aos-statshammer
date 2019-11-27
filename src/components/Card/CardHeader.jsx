@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
   header: {
@@ -13,9 +14,9 @@ const useStyles = makeStyles({
 const CardHeader = ({ children, className, ...other }) => {
   const classes = useStyles();
   return (
-    <div className={`${classes.header} ${className}`} {...other}>
+    <Typography component="div" className={`${classes.header} ${className}`} {...other}>
       {children}
-    </div>
+    </Typography>
   );
 };
 

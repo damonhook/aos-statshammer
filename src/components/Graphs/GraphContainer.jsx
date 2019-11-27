@@ -5,10 +5,11 @@ import { ResponsiveContainer } from 'recharts';
 
 
 const useSyles = makeStyles({
-  container: {},
-  responsive: {
-    margin: 'auto',
+  container: {
+    width: '100%',
+    height: '100%',
   },
+  responsive: {},
 });
 
 

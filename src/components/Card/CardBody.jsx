@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import clsx from 'clsx';
 
 const useStyles = makeStyles({
@@ -12,9 +13,9 @@ const useStyles = makeStyles({
 const CardBody = ({ children, className, ...other }) => {
   const classes = useStyles();
   return (
-    <div className={clsx(classes.body, className)} {...other}>
+    <Typography component="div" className={clsx(classes.body, className)} {...other}>
       {children}
-    </div>
+    </Typography>
   );
 };
 

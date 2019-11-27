@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   app: {
     margin: '2em 0',
+    fontFamily: '"Roboto", sans-serif',
   },
   container: {
     width: '90%',
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
 
     '@media only screen  and (min-width : 1366px)': {
       flexDirection: 'row',
+      maxWidth: '2166px',
       width: '95%',
     },
   },

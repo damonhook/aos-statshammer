@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     marginRight: '-1em',
   },
   collapseIcon: {
-    marginLeft: '-1em',
+    margin: 'auto 0 auto -1em',
   },
   collapsible: {
     cursor: 'pointer',
@@ -49,7 +49,12 @@ const ListItem = ({
         <span className={`${classes.headerText}`} onClick={handleClick} role="button">
           {header}
         </span>
-        <ListControls onEdit={onEdit} onDelete={onDelete} onCopy={onCopy} className={classes.listControls} />
+        <ListControls
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onCopy={onCopy}
+          className={classes.listControls}
+        />
       </Card.Header>
       <Collapse in={!collapsed}>
         <Card.Body>

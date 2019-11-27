@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchStatsCompare } from 'api';
 import { bindActionCreators } from 'redux';
@@ -18,8 +18,14 @@ const useStyles = makeStyles({
   },
 });
 
-const App = ({ units, fetchStatsCompare }) => {
+const Stats = ({ units, fetchStatsCompare }) => {
   const classes = useStyles();
+  useEffect(() => {
+    if (units) {
+      fetchStatsCompare(units);
+    }
+  }, [units]);
+
   return (
     <div className={classes.statsContainer}>
       <Button
@@ -42,4 +48,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchStatsCompare,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Stats);

@@ -18,6 +18,7 @@ const useStyles = makeStyles({
   },
   modifierDescription: {
     color: 'darkgray',
+    marginBottom: '1em',
   },
 });
 

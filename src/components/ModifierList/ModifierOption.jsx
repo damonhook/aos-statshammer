@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 const ModifierOption = ({ modifier, onClick }) => {
   const classes = useStyles();
   return (
-    <Card className={classes.modifierOption} onClick={() => onClick(modifier)}>
+    <Card square className={classes.modifierOption} onClick={() => onClick(modifier)}>
       <Card.Body>
         <div className={classes.modifierTitle}>
           <b>{modifier.name}</b>

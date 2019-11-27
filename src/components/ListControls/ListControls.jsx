@@ -7,6 +7,9 @@ const ListControls = ({
   onEdit, onDelete, onCopy, className,
 }) => {
   const matches = useMediaQuery('(max-width:712px)');
+  if (!onEdit && !onCopy && !onDelete) {
+    return null;
+  }
   if (matches) {
     return <ControlMenu onEdit={onEdit} onDelete={onDelete} onCopy={onCopy} />;
   }

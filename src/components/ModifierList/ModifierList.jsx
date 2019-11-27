@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import ModifierItem from './ModifierItem';
 import ModifierSelector from './ModifierSelector';
 
@@ -54,7 +55,7 @@ const ModifierList = ({ modifiers, setModifiers }) => {
   };
 
   return (
-    <div className={classes.modifierList}>
+    <Typography component="div" className={classes.modifierList}>
       <label>Modifiers:</label>
       {modifiers && modifiers.length
         ? (
@@ -71,7 +72,7 @@ const ModifierList = ({ modifiers, setModifiers }) => {
         )
         : null}
       <ModifierSelector onClick={addModifier} />
-    </div>
+    </Typography>
   );
 };
 

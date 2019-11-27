@@ -13,7 +13,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   profileModal: {
-    margin: '30px',
+    margin: '30px auto',
+    width: 'calc(100% - 30px)',
+    maxWidth: '1500px',
+    overflowY: 'scroll',
   },
   modalContent: {
     padding: '2em',

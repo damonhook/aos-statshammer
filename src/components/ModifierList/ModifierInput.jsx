@@ -10,6 +10,9 @@ const useStyles = makeStyles({
     margin: '.5em 0',
     width: '100%',
   },
+  choice: {
+
+  },
 });
 
 const ModifierInput = ({
@@ -39,16 +42,17 @@ const ModifierInput = ({
     case 'boolean':
       return (
         <FormControlLabel
-          label={name}
           control={(
             <Checkbox
               toggle
               name={name}
-              className={classes.modifierInput}
+              className={classes.choice}
               value={val}
               onChange={(event) => onOptionChange(index, name, event.target.value)}
             />
-        )}
+          )}
+          label={name}
+          labelPlacement="start"
         />
       );
     default:
