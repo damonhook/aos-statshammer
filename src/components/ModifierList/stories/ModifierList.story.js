@@ -6,7 +6,7 @@ import { withProvider } from './store';
 const initialState = {
   modifiers: [
     {
-      description: 'Reroll rolls to {characteristic}',
+      description: 'Reroll rolls for {characteristic}',
       id: 'reroll',
       name: 'Reroll',
       options: {

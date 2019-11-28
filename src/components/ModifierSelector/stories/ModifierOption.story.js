@@ -1,13 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import ModifierOption from 'components/ModifierList/ModifierOption';
+import ModifierOption from 'components/ModifierSelector/ModifierOption';
 
-storiesOf('Components/ModifierList/ModifierOption', module)
+storiesOf('Components/ModifierSelector/ModifierOption', module)
   .add('basic', () => {
     const modifier = {
       id: 'reroll',
       name: 'Reroll',
-      description: 'Reroll rolls to {characteristic}',
+      description: 'Reroll rolls for {characteristic}',
       options: {
         characteristic: {
           items: [

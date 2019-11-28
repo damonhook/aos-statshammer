@@ -39,7 +39,7 @@ storiesOf('Components/WeaponProfile', module)
       damage: 2,
       modifiers: [
         {
-          description: 'Reroll Ones to {characteristic}',
+          description: 'Reroll Ones for {characteristic}',
           id: 'reroll_ones',
           name: 'Reroll Ones',
           options: {
@@ -49,7 +49,7 @@ storiesOf('Components/WeaponProfile', module)
           },
         },
         {
-          description: 'Add {bonus} to {characteristic}',
+          description: 'Add {bonus} for {characteristic}',
           id: 'bonus',
           name: 'Bonus',
           options: {

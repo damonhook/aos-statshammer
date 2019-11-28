@@ -47,8 +47,8 @@ const ModifierInput = ({
               toggle
               name={name}
               className={classes.choice}
-              value={val}
-              onChange={(event) => onOptionChange(index, name, event.target.value)}
+              checked={val}
+              onChange={(event) => onOptionChange(index, name, event.target.checked)}
             />
           )}
           label={name}

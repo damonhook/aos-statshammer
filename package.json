@@ -19,6 +19,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.16.0",
+    "format-unicorn": "^1.1.1",
     "lorem-ipsum": "^2.0.3",
     "node-sass": "^4.13.0",
     "react": "^16.11.0",

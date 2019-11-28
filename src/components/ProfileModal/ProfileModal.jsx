@@ -59,7 +59,7 @@ const ProfileModal = ({
   const [modifiers, setModifiers] = useState([]);
 
   useEffect(() => {
-    if (!fetchedModifiers || fetchModifiers === []) {
+    if (!fetchedModifiers || !fetchModifiers.length) {
       fetchModifiers();
     }
     if (open) {

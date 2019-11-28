@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import ModifierItem from './ModifierItem';
-import ModifierSelector from './ModifierSelector';
+import ModifierSelector from 'components/ModifierSelector';
+import ModifierItem from 'components/ModifierItem';
 
 const useStyles = makeStyles({
   modifierList: {

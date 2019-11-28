@@ -32,7 +32,7 @@ const initialStore = {
           damage: 1,
           modifiers: [
             {
-              description: '{unmodified} rolls of {on} to {characteristic} result in {mortal_wounds} extra {in_addition}',
+              description: '{unmodified} rolls of {on} for {characteristic} result in {mortal_wounds} extra {in_addition}',
               id: 'mortal_wounds',
               name: 'Mortal Wounds',
               options: {
@@ -112,7 +112,7 @@ const initialStore = {
     error: null,
     modifiers: [
       {
-        description: 'Add {bonus} to {characteristic}',
+        description: 'Add {bonus} for {characteristic}',
         id: 'bonus',
         name: 'Bonus',
         options: {
@@ -132,7 +132,7 @@ const initialStore = {
         },
       },
       {
-        description: '{unmodified} rolls of {on} to {characteristic} result in {mortal_wounds} extra {in_addition}',
+        description: '{unmodified} rolls of {on} for {characteristic} result in {mortal_wounds} extra {in_addition}',
         id: 'mortal_wounds',
         name: 'Mortal Wounds',
         options: {
@@ -157,7 +157,7 @@ const initialStore = {
         },
       },
       {
-        description: '{unmodified} rolls of {on} to {characteristic} result in {extra_hits} extra',
+        description: '{unmodified} rolls of {on} for {characteristic} result in {extra_hits} extra',
         id: 'exploding',
         name: 'Exploding',
         options: {
@@ -179,7 +179,7 @@ const initialStore = {
         },
       },
       {
-        description: 'Reroll rolls to {characteristic}',
+        description: 'Reroll rolls for {characteristic}',
         id: 'reroll',
         name: 'Reroll',
         options: {
@@ -193,7 +193,7 @@ const initialStore = {
         },
       },
       {
-        description: 'Reroll Failed rolls to {characteristic}',
+        description: 'Reroll Failed rolls for {characteristic}',
         id: 'reroll_failed',
         name: 'Reroll Failed',
         options: {
@@ -207,7 +207,7 @@ const initialStore = {
         },
       },
       {
-        description: 'Reroll Ones to {characteristic}',
+        description: 'Reroll Ones for {characteristic}',
         id: 'reroll_ones',
         name: 'Reroll Ones',
         options: {

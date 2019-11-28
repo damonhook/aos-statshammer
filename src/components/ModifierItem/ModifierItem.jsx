@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import ModifierInput from './ModifierInput';
+import ModifierDescription from './ModifierDescription';
 
 const useStyles = makeStyles({
   modifier: {},
@@ -26,6 +27,7 @@ const ModifierItem = ({
   index, name, description, options, removeModifier, onOptionChange,
 }) => {
   const classes = useStyles();
+
   return (
     <ListItem
       className={classes.modifier}
@@ -34,9 +36,7 @@ const ModifierItem = ({
       collapsible
     >
       <div className={classes.modifierContent}>
-        <div className={classes.modifierDescription}>
-          {description}
-        </div>
+        <ModifierDescription description={description} options={options} />
         {options && Object.keys(options).length
           ? (
             <div className={classes.modifierSettings}>

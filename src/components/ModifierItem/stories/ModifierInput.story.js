@@ -1,8 +1,8 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import ModifierInput from 'components/ModifierList/ModifierInput';
+import ModifierInput from 'components/ModifierItem/ModifierInput';
 
-storiesOf('Components/ModifierList/ModiferInput', module)
+storiesOf('Components/ModifierItem/ModiferInput', module)
   .add('Number', (state, setState) => {
     const onChange = (index, name, newVal) => { setState({ val: newVal }); };
     return (
