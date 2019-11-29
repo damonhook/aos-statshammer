@@ -4,29 +4,25 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
-  rootFab: {
-    display: 'flex',
-    flexDirection: 'column',
-    boxSizing: 'border-box', // Prevent padding issue with the Modal and fixed positioned AppBar.
-    zIndex: theme.zIndex.appBar,
-    flexShrink: 0,
-  },
   fab: {
     position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2),
+    zIndex: theme.zIndex.appBar,
   },
 }));
 
-const FloatingButton = ({ onClick, disabled, icon }) => {
+const FloatingButton = ({
+  onClick, disabled, icon, className,
+}) => {
   const classes = useStyles();
   return (
     <Fab
-      className={clsx(classes.rootFab, classes.fab)}
+      className={clsx(classes.fab, className)}
       onClick={onClick}
-      variant="contained"
       color="primary"
       disabled={disabled}
+      size="large"
     >
       {icon}
     </Fab>

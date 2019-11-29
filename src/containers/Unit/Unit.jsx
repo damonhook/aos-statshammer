@@ -13,14 +13,17 @@ import { Add } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   unit: {
     marginBottom: '1em',
   },
   profiles: {
     marginTop: '1em',
   },
-});
+  button: {
+    backgroundColor: theme.palette.primary.light,
+  },
+}));
 
 const Unit = ({
   id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit,
@@ -49,6 +52,7 @@ const Unit = ({
       </div>
       <Button
         onClick={() => addWeaponProfile(id)}
+        className={classes.button}
         startIcon={<Add />}
         variant="contained"
         color="primary"

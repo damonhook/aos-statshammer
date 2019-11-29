@@ -5,7 +5,6 @@ import { addUnit } from 'actions/units.action';
 import { Button, useMediaQuery } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-// import { addUnitEnabled } from 'helpers';
 
 const useStyles = makeStyles((theme) => ({
   units: {

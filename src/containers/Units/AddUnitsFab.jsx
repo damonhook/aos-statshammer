@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addUnit } from 'actions/units.action';
 import FloatingButton from 'components/FloatingButton';
-import { Add } from '@material-ui/icons';
+import AddIcon from '@material-ui/icons/Add';
 
 const AddUnitsFab = ({ units, addUnit }) => (
   <FloatingButton
     onClick={() => addUnit(`Unit ${units.length + 1}`)}
-    icon={<Add />}
+    icon={<AddIcon />}
     disabled={units.length >= 4}
   />
 );
