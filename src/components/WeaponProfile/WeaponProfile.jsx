@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile } from 'actions/units.action';
-import ProfileModal from 'containers/ProfileModal';
+import ProfileDialog from 'containers/ProfileDialog';
 import { List, ListItem as Item, Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
@@ -87,7 +87,7 @@ const WeaponProfile = ({
             : null}
         </div>
       </div>
-      <ProfileModal
+      <ProfileDialog
         open={open}
         close={() => setOpen(false)}
         unitId={unitId}

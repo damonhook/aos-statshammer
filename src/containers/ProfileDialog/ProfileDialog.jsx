@@ -1,37 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Modal, Button, Paper, Typography,
+  Button, Typography, Dialog, DialogContent, useMediaQuery, DialogActions,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { editWeaponProfile } from 'actions/units.action';
 import ModifierList from 'components/ModifierList';
 import { fetchModifiers } from 'api';
 import { bindActionCreators } from 'redux';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import FormField from './FormField';
+import ProfileTitle from './ProfileTitle';
 
 
 const useStyles = makeStyles((theme) => ({
-  profileModal: {
-    margin: '30px auto',
-    width: 'calc(100% - 30px)',
-    maxWidth: '1024px',
-    overflowY: 'scroll',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      margin: 0,
-    },
-    [theme.breakpoints.up('md')]: {
-      maxWidth: '1366px',
-    },
-  },
-  modalContent: {
-    padding: '2em',
-  },
-  modalHeader: {
-    paddingBottom: '1em',
-  },
+  dialog: {},
   form: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -45,18 +28,6 @@ const useStyles = makeStyles((theme) => ({
     margin: '1em 1em 0 0',
     '&:last-child': {
       paddingRight: 0,
-    },
-  },
-  actions: {
-    margin: '0 0 0 auto',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  actionButton: {
-    marginRight: '1em',
-    '&:last-child': {
-      marginRight: 0,
     },
   },
   formSection: {
@@ -78,11 +49,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-const ProfileModal = ({
+const ProfileDialog = ({
   id, editWeaponProfile, unitId, profile, fetchModifiers, fetchedModifiers, header, open, close,
 }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [num_models, setNumModels] = useState(1);
   const [attacks, setAttacks] = useState(1);
@@ -119,13 +91,17 @@ const ProfileModal = ({
 
   if (!profile) return null;
   return (
-    <Modal
+    <Dialog
       open={open}
-      className={classes.profileModal}
+      className={classes.dialog}
       onClose={() => close()}
+      fullWidth
+      maxWidth="lg"
+      fullScreen={fullScreen}
+      scroll="paper"
     >
-      <Paper square className={classes.modalContent}>
-        <Typography component="h2" variant="h6" className={classes.modalHeader}>{header}</Typography>
+      <ProfileTitle header={header} fullScreen={fullScreen} onClose={() => close()} />
+      <DialogContent dividers>
         <Typography component="div">
           <form className={classes.form} onSubmit={() => submit()}>
             <input type="submit" style={{ display: 'none' }} />
@@ -178,12 +154,16 @@ const ProfileModal = ({
             </div>
           </form>
         </Typography>
-        <div className={classes.actions}>
-          <Button className={classes.actionButton} onClick={() => close()} color="secondary" variant="contained">Cancel</Button>
-          <Button className={classes.actionButton} onClick={() => submit()} color="primary" variant="contained">Confirm</Button>
-        </div>
-      </Paper>
-    </Modal>
+      </DialogContent>
+      <DialogActions>
+        <Button className={classes.actionButton} onClick={() => close()} color="secondary" variant="contained">
+          Cancel
+        </Button>
+        <Button className={classes.actionButton} onClick={() => submit()} color="primary" variant="contained">
+          Confirm
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
@@ -194,4 +174,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch);
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileModal);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileDialog);

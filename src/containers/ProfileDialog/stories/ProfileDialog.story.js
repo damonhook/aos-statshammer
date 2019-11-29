@@ -1,9 +1,9 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import ProfileModal from 'containers/ProfileModal';
+import ProfileDialog from 'containers/ProfileDialog';
 import { withProvider } from './store';
 
-storiesOf('Containers/ProfileModal', module)
+storiesOf('Containers/ProfileDialog', module)
   .addDecorator(withProvider)
   .add('Basic', () => {
     const profile = {
@@ -15,7 +15,7 @@ storiesOf('Containers/ProfileModal', module)
       damage: 2,
     };
     return (
-      <ProfileModal
+      <ProfileDialog
         open
         header="Edit Profile"
         profile={profile}
@@ -58,7 +58,7 @@ storiesOf('Containers/ProfileModal', module)
       ],
     };
     return (
-      <ProfileModal
+      <ProfileDialog
         open
         header="Edit Profile"
         profile={profile}
