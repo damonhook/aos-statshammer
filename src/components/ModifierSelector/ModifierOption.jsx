@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   modifierOption: {
     cursor: 'pointer',
     '&:hover': {
@@ -16,7 +16,6 @@ const useStyles = makeStyles({
     flexDirection: 'row',
   },
   content: {
-    fontSize: '14px',
     flexDirection: 'column',
     flex: 1,
   },
@@ -27,7 +26,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     margin: 'auto',
   },
-});
+}));
 
 
 const ModifierOption = ({ modifier, onClick }) => {

@@ -13,7 +13,6 @@ const useStyles = makeStyles({
   characteristic: {
     marginRight: '1em',
     padding: '0.25em 0',
-    fontSize: '14px',
 
     '&:last-child': {
       marginRight: 0,
