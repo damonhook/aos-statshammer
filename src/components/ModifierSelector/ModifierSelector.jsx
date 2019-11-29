@@ -59,7 +59,7 @@ const ModifierSelector = ({
             Add Modifier
           </Button>
         )}
-      <Collapse in={open}>
+      <Collapse in={open} timeout={{ enter: 200, exit: 0 }}>
         <div>
           {modifiers.map((modifier) => (
             <ModifierOption modifier={modifier} onClick={addModifier} />

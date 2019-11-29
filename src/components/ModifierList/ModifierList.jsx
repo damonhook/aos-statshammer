@@ -27,10 +27,16 @@ const ModifierList = ({ modifiers, setModifiers }) => {
         newModifier.options[k].value = newModifier.options[k].default;
       }
     });
-    setModifiers([
-      ...modifiers,
-      newModifier,
-    ]);
+    if (!modifiers || !modifiers.length) {
+      setModifiers([
+        newModifier,
+      ]);
+    } else {
+      setModifiers([
+        ...modifiers,
+        newModifier,
+      ]);
+    }
   };
 
   const removeModifier = (index) => {
