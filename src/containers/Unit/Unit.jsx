@@ -53,6 +53,7 @@ const Unit = ({
         fluid
         startIcon={<Add />}
         variant="contained"
+        color="primary"
         fullWidth
       >
       Add Profile

@@ -1,6 +1,5 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import Graphs from 'components/Graphs';
 import BarGraph from 'components/Graphs/BarGraph';
 import LineGraph from 'components/Graphs/LineGraph';
 import RadarGraph from 'components/Graphs/RadarGraph';
@@ -52,9 +51,6 @@ const graphColors = [
 ];
 
 storiesOf('Components/Graphs', module)
-  .add('Full', () => (
-    <Graphs results={data} unitNames={unitNames} />
-  ))
   .add('Line Graph', () => (
     <div style={{ height: '300px' }}><LineGraph results={data} unitNames={unitNames} colors={graphColors} /></div>
   ))

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Modal, TextField, Button, InputAdornment,
+  Modal, Button, Paper, Typography,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { editWeaponProfile } from 'actions/units.action';
 import ModifierList from 'components/ModifierList';
 import { fetchModifiers } from 'api';
 import { bindActionCreators } from 'redux';
-import Card from 'components/Card';
 import { makeStyles } from '@material-ui/core/styles';
+import FormField from './FormField';
 
 
 const useStyles = makeStyles({
   profileModal: {
     margin: '30px auto',
     width: 'calc(100% - 30px)',
-    maxWidth: '1500px',
+    maxWidth: '1024px',
     overflowY: 'scroll',
   },
   modalContent: {
@@ -90,70 +90,58 @@ const ProfileModal = ({
       className={classes.profileModal}
       onClose={() => close()}
     >
-      <Card className={classes.modalContent}>
-        <h2>{header}</h2>
-        <div>
+      <Paper className={classes.modalContent}>
+        <Typography component="h2" variant="h6">{header}</Typography>
+        <Typography component="div">
           <form className={classes.form} onSubmit={() => submit()}>
             <input type="submit" style={{ display: 'none' }} />
-            <TextField
+            <FormField
               className={classes.field}
-              variant="outlined"
               label="Number of models"
               value={num_models}
-              onChange={(event) => setNumModels(event.target.value)}
+              onChange={setNumModels}
             />
-            <TextField
+            <FormField
               className={classes.field}
-              variant="outlined"
               label="Attacks"
               value={attacks}
-              onChange={(event) => setAttacks(event.target.value)}
+              onChange={setAttacks}
             />
-            <TextField
+            <FormField
               className={classes.field}
-              variant="outlined"
-              InputProps={{
-                endAdornment: <InputAdornment position="end">+</InputAdornment>,
-              }}
+              endAdornment="+"
               label="To Hit"
               value={to_hit}
-              onChange={(event) => setToHit(event.target.value)}
+              onChange={setToHit}
             />
-            <TextField
+            <FormField
               className={classes.field}
-              variant="outlined"
-              InputProps={{
-                endAdornment: <InputAdornment position="end">+</InputAdornment>,
-              }}
+              endAdornment="+"
               label="To Wound"
               value={to_wound}
-              onChange={(event) => setToWound(event.target.value)}
+              onChange={setToWound}
             />
-            <TextField
+            <FormField
               className={classes.field}
-              variant="outlined"
-              InputProps={{
-                startAdornment: <InputAdornment position="start">-</InputAdornment>,
-              }}
+              startAdornment="-"
               label="Rend"
               value={rend}
-              onChange={(event) => setRend(event.target.value)}
+              onChange={setRend}
             />
-            <TextField
+            <FormField
               className={classes.field}
-              variant="outlined"
               label="Damage"
               value={damage}
-              onChange={(event) => setDamage(event.target.value)}
+              onChange={setDamage}
             />
             <ModifierList modifiers={modifiers} setModifiers={setModifiers} tabIndex={-1} />
           </form>
-        </div>
+        </Typography>
         <div className={classes.actions}>
           <Button className={classes.actionButton} onClick={() => close()} color="secondary" variant="contained">Cancel</Button>
           <Button className={classes.actionButton} onClick={() => submit()} color="primary" variant="contained">Confirm</Button>
         </div>
-      </Card>
+      </Paper>
     </Modal>
   );
 };

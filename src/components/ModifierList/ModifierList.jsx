@@ -24,6 +24,9 @@ const ModifierList = ({ modifiers, setModifiers }) => {
     };
     Object.keys(newModifier.options).forEach((k) => {
       newModifier.options[k].value = '';
+      if (newModifier.options[k].default != null) {
+        newModifier.options[k].value = newModifier.options[k].default;
+      }
     });
     setModifiers([
       ...modifiers,

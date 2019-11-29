@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile } from 'actions/units.action';
-import ProfileModal from 'components/ProfileModal';
+import ProfileModal from 'containers/ProfileModal';
 import { List, ListItem as Item, Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { ChevronRight } from '@material-ui/icons';
+import Characteristics from './Characteristics';
 
 const useStyles = makeStyles({
   profile: {
@@ -68,34 +69,7 @@ const WeaponProfile = ({
           checked={profile.active}
         />
         <div className={classes.details}>
-          <div className={classes.characteristics}>
-            <span className={classes.characteristic}>
-              <b>Models: </b>
-              {profile.num_models}
-            </span>
-            <span className={classes.characteristic}>
-              <b>Attacks: </b>
-              {profile.attacks}
-            </span>
-            <span className={classes.characteristic}>
-              <b>To Hit: </b>
-              {profile.to_hit}
-            +
-            </span>
-            <span className={classes.characteristic}>
-              <b>To Wound: </b>
-              {profile.to_wound}
-            +
-            </span>
-            <span className={classes.characteristic}>
-              <b>Rend: </b>
-              {profile.rend}
-            </span>
-            <span className={classes.characteristic}>
-              <b>Damage: </b>
-              {profile.damage}
-            </span>
-          </div>
+          <Characteristics profile={profile} onClick={() => setOpen(true)} />
           {profile.modifiers && profile.modifiers.length
             ? (
               <div className={classes.modifiers}>

@@ -25,7 +25,7 @@ const initialState = {
 
 storiesOf('Components/ModifierList', module)
   .addDecorator((story) => withProvider(story))
-  .add('basic', () => {
+  .add('Basic', () => {
     const [modifiers, setModifiers] = useState(initialState.modifiers);
     return (
       <ModifierList

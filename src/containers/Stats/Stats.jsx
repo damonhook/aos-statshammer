@@ -2,44 +2,18 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchStatsCompare } from 'api';
 import { bindActionCreators } from 'redux';
-import { Button } from '@material-ui/core';
-import { BarChart } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
-import Results from './Results';
+import StatsContainer from './StatsContainer';
 
-const useStyles = makeStyles({
-  statsContainer: {
-    flexDirection: 'column',
-    flexGrow: 1,
-    flexBasis: 0,
-  },
-  button: {
-    marginBottom: '1em',
-  },
-  results: {},
-});
-
-const Stats = ({ units, fetchStatsCompare }) => {
-  const classes = useStyles();
+const Stats = ({ units, stats, fetchStatsCompare }) => {
   useEffect(() => {
     if (units) {
       fetchStatsCompare(units);
     }
   }, [units]);
+  const unitNames = units.map(({ name }) => name);
 
   return (
-    <div className={classes.statsContainer}>
-      {/* <Button
-        className={classes.button}
-        fullWidth
-        onClick={() => fetchStatsCompare(units)}
-        startIcon={<BarChart />}
-        variant="contained"
-      >
-        Generate Data
-      </Button> */}
-      <Results className={classes.results} />
-    </div>
+    <StatsContainer stats={stats} unitNames={unitNames} />
   );
 };
 

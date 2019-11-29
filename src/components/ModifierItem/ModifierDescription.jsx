@@ -14,11 +14,16 @@ const useStyles = makeStyles({
 const ModifierDescription = ({ description, options }) => {
   const classes = useStyles();
 
+  const getHtmlForValue = (key, value) => `<b style="cursor:help;" title=${key}>${value}</b>`;
+
   const getFormattedDescription = () => {
     const params = Object.keys(options).reduce((acc, key) => {
       if (options[key]) {
-        if (options[key].type === 'boolean') acc[key] = options[key].value ? key : '';
-        else if (options[key].value != null && options[key].value !== '') acc[key] = options[key].value;
+        if (options[key].type === 'boolean') {
+          acc[key] = options[key].value ? getHtmlForValue(key, key) : '';
+        } else if (options[key].value != null && options[key].value !== '') {
+          acc[key] = getHtmlForValue(key, options[key].value);
+        }
       }
       return acc;
     }, {});
@@ -28,7 +33,8 @@ const ModifierDescription = ({ description, options }) => {
 
   return (
     <Typography component="div" className={classes.description}>
-      {getFormattedDescription()}
+      {/* eslint-disable-next-line react/no-danger */}
+      <span dangerouslySetInnerHTML={{ __html: getFormattedDescription() }} />
     </Typography>
   );
 };

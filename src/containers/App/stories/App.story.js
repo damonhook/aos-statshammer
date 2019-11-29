@@ -5,6 +5,6 @@ import { withProvider } from './store';
 
 storiesOf('Containers/App', module)
   .addDecorator(withProvider)
-  .add('main', () => (
+  .add('Basic', () => (
     <App />
   ));

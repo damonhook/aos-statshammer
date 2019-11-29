@@ -5,7 +5,7 @@ import { withProvider } from './store';
 
 storiesOf('Components/ModifierSelector', module)
   .addDecorator((story) => withProvider(story))
-  .add('basic', () => (
+  .add('Selector', () => (
     <ModifierSelector
       onClick={() => {}}
     />

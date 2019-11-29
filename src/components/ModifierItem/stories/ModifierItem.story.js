@@ -13,7 +13,7 @@ const onOptionChangeFactory = (options, setOptions) => (index, name, newVal) => 
 };
 
 storiesOf('Components/ModifierItem', module)
-  .add('basic', () => {
+  .add('Basic', () => {
     const [options, setOptions] = useState({
       characteristic: {
         items: [
@@ -37,7 +37,7 @@ storiesOf('Components/ModifierItem', module)
     );
   })
 
-  .add('advanced', () => {
+  .add('Advanced', () => {
     const [options, setOptions] = useState({
       characteristic: {
         items: [
@@ -74,7 +74,7 @@ storiesOf('Components/ModifierItem', module)
     );
   })
 
-  .add('filled', () => {
+  .add('Filled', () => {
     const [options, setOptions] = useState({
       characteristic: {
         items: [

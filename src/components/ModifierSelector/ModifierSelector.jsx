@@ -18,6 +18,7 @@ const ModifierSelector = ({
   const classes = useStyles();
 
   const addModifier = (modifier) => {
+    setOpen(false);
     onClick(modifier);
   };
 
@@ -41,6 +42,7 @@ const ModifierSelector = ({
             variant="contained"
             onClick={() => setOpen(false)}
             startIcon={<Remove />}
+            color="secondary"
           >
             Cancel
           </Button>
@@ -52,6 +54,7 @@ const ModifierSelector = ({
             variant="contained"
             onClick={() => setOpen(true)}
             startIcon={<Add />}
+            color="primary"
           >
             Add Modifier
           </Button>

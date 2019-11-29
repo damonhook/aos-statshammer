@@ -2,8 +2,8 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import ModifierOption from 'components/ModifierSelector/ModifierOption';
 
-storiesOf('Components/ModifierSelector/ModifierOption', module)
-  .add('basic', () => {
+storiesOf('Components/ModifierSelector', module)
+  .add('Option', () => {
     const modifier = {
       id: 'reroll',
       name: 'Reroll',

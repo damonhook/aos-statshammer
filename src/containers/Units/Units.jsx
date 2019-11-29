@@ -26,6 +26,8 @@ const Units = ({ units, addUnit }) => {
         onClick={() => addUnit(`Unit ${units.length + 1}`)}
         variant="contained"
         startIcon={<Add />}
+        color="primary"
+        disabled={units.length >= 4}
       >
       Add Unit
       </Button>

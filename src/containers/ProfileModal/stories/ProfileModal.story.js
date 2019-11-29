@@ -1,38 +1,30 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import WeaponProfile from 'components/WeaponProfile';
-import { boolean } from '@storybook/addon-knobs';
-import { Provider } from 'react-redux';
-import store from 'store';
+import ProfileModal from 'containers/ProfileModal';
+import { withProvider } from './store';
 
-const withProvider = (story) => (
-  <Provider store={store}>
-    {story()}
-  </Provider>
-);
-
-storiesOf('Components/WeaponProfile', module)
+storiesOf('Containers/ProfileModal', module)
   .addDecorator(withProvider)
   .add('Basic', () => {
-    const active = boolean('Active', true);
     const profile = {
-      active,
       num_models: 20,
       attacks: 2,
       to_hit: 3,
       to_wound: 3,
       rend: 1,
       damage: 2,
-      modifiers: [],
     };
     return (
-      <WeaponProfile unit_id={0} id={0} profile={profile} />
+      <ProfileModal
+        open
+        header="Edit Profile"
+        profile={profile}
+      />
     );
   })
+
   .add('With Modifiers', () => {
-    const active = boolean('Active', true);
     const profile = {
-      active,
       num_models: 20,
       attacks: 2,
       to_hit: 3,
@@ -66,6 +58,10 @@ storiesOf('Components/WeaponProfile', module)
       ],
     };
     return (
-      <WeaponProfile unit_id={0} id={0} profile={profile} />
+      <ProfileModal
+        open
+        header="Edit Profile"
+        profile={profile}
+      />
     );
   });

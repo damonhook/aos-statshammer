@@ -19,6 +19,8 @@ const ModifierInput = ({
   index, name, option, val, onOptionChange,
 }) => {
   const classes = useStyles();
+  const errorProps = !val ? { error: true, helperText: 'Required' } : {};
+
   switch (option.type) {
     case 'choice':
       return (
@@ -30,6 +32,7 @@ const ModifierInput = ({
           fullWidth
           variant="outlined"
           value={val}
+          {...errorProps}
           onChange={(event) => onOptionChange(index, name, event.target.value)}
         >
           {option.items.map((item) => (
@@ -48,6 +51,7 @@ const ModifierInput = ({
               name={name}
               className={classes.choice}
               checked={val}
+              {...errorProps}
               onChange={(event) => onOptionChange(index, name, event.target.checked)}
             />
           )}
@@ -64,6 +68,7 @@ const ModifierInput = ({
           fullWidth
           variant="outlined"
           value={val}
+          {...errorProps}
           onChange={(event) => onOptionChange(index, name, event.target.value)}
         />
       );

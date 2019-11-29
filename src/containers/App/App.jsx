@@ -2,10 +2,10 @@ import React from 'react';
 import Units from 'containers/Units';
 import Stats from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
+import { AppBar, Toolbar, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   app: {
-    margin: '2em 0',
     fontFamily: '"Roboto", sans-serif',
   },
   container: {
@@ -13,14 +13,16 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '1366px',
-    margin: '0 auto',
-
-    '@media only screen  and (max-width : 712px)': {
+    margin: '2em auto',
+    [theme.breakpoints.down('md')]: {
+      width: '95%',
+      marginTop: '1em',
+    },
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
       maxWidth: '100%',
     },
-
-    '@media only screen  and (min-width : 1366px)': {
+    [theme.breakpoints.up('lg')]: {
       flexDirection: 'row',
       maxWidth: '2166px',
       width: '95%',
@@ -30,12 +32,19 @@ const useStyles = makeStyles({
     height: '1em',
     width: '1em',
   },
-});
+}));
 
 const App = () => {
   const classes = useStyles();
   return (
     <div className={classes.app}>
+      <AppBar position="static">
+        <Toolbar variant="dense">
+          <Typography variant="h6">
+            Statshammer
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <div className={classes.container}>
         <Units />
         <div className={classes.separator} />
