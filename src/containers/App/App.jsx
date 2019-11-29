@@ -1,11 +1,9 @@
 import React from 'react';
-import Units from 'containers/Units';
-import Stats from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import AppContent from './AppContent';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   app: {
     fontFamily: '"Roboto", sans-serif',
   },

@@ -1,9 +1,10 @@
-import React from 'react';
-import Units from 'containers/Units';
+import React, { useState } from 'react';
+import Units, { AddUnitsFab } from 'containers/Units';
 import Stats from 'containers/Stats';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import Tabbed from 'components/Tabbed';
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -49,13 +50,19 @@ const DesktopAppContent = () => {
 
 const MobileAppContent = () => {
   const classes = useStyles();
+  const [activeTab, setActiveTab] = useState(0);
+  const onTabChange = (newIndex) => setActiveTab(newIndex);
 
   return (
-    <Tabbed
-      className={classes.mobileContainer}
-      tabNames={['Units', 'Stats']}
-      tabContent={[<Units />, <Stats />]}
-    />
+    <div>
+      {activeTab === 0 && <AddUnitsFab />}
+      <Tabbed
+        className={classes.mobileContainer}
+        tabNames={['Units', 'Stats']}
+        tabContent={[<Units />, <Stats />]}
+        onTabChange={onTabChange}
+      />
+    </div>
   );
 };
 

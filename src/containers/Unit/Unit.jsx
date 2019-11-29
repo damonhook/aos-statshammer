@@ -48,15 +48,13 @@ const Unit = ({
           ))}
       </div>
       <Button
-        icon="add"
         onClick={() => addWeaponProfile(id)}
-        fluid
         startIcon={<Add />}
         variant="contained"
         color="primary"
         fullWidth
       >
-      Add Profile
+        Add Profile
       </Button>
     </ListItem>
   );

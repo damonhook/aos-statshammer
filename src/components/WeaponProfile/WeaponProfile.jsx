@@ -40,6 +40,7 @@ const useStyles = makeStyles({
   details: {
     display: 'flex',
     flexDirection: 'column',
+    cursor: 'pointer',
   },
   modifiers: {
     marginTop: '1em',
@@ -68,8 +69,8 @@ const WeaponProfile = ({
           onChange={() => toggleWeaponProfile(id, unitId)}
           checked={profile.active}
         />
-        <div className={classes.details}>
-          <Characteristics profile={profile} onClick={() => setOpen(true)} />
+        <div className={classes.details} onClick={() => setOpen(true)} role="button">
+          <Characteristics profile={profile} />
           {profile.modifiers && profile.modifiers.length
             ? (
               <div className={classes.modifiers}>

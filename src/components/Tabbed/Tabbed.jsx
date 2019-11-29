@@ -23,16 +23,20 @@ function a11yProps(index) {
   };
 }
 
-const Tabbed = ({ tabNames, tabContent, className }) => {
+const Tabbed = ({
+  tabNames, tabContent, className, onTabChange,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    if (onTabChange) onTabChange(newValue);
   };
   const handleSwipe = (index) => {
     setValue(index);
+    if (onTabChange) onTabChange(index);
   };
 
   return (
