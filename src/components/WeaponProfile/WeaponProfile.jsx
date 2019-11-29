@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile } from 'actions/units.action';
 import ProfileDialog from 'containers/ProfileDialog';
@@ -51,52 +51,59 @@ const useStyles = makeStyles({
 const WeaponProfile = ({
   unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
 }) => {
-  const [open, setOpen] = useState(false);
   const classes = useStyles();
+  const profileRef = useRef(null);
+
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [id]);
 
   return (
-    <ListItem
-      className={clsx(classes.profile, profile.active ? '' : classes.inactive)}
-      header="Weapon Profile"
-      onEdit={() => setOpen(true)}
-      onDelete={() => deleteWeaponProfile(id, unitId)}
-      onCopy={() => addWeaponProfile(unitId, { ...profile })}
-      collapsible
-    >
-      <div className={classes.content}>
-        <Switch
-          className={classes.switch}
-          onChange={() => toggleWeaponProfile(id, unitId)}
-          checked={profile.active}
-        />
-        <div className={classes.details} onClick={() => setOpen(true)} role="button">
-          <Characteristics profile={profile} />
-          {profile.modifiers && profile.modifiers.length
-            ? (
-              <div className={classes.modifiers}>
-                <b>Modifiers: </b>
-                <List dense disablePadding>
-                  {profile.modifiers.map((modifier) => (
-                    <Item dense>
-                      <ChevronRight />
-                      {modifier.name}
-                    </Item>
-                  ))}
-                </List>
-              </div>
-            )
-            : null}
+    <div ref={profileRef}>
+      <ListItem
+        className={clsx(classes.profile, profile.active ? '' : classes.inactive)}
+        header="Weapon Profile"
+        onEdit={() => setOpen(true)}
+        onDelete={() => deleteWeaponProfile(id, unitId)}
+        onCopy={() => addWeaponProfile(unitId, { ...profile })}
+        collapsible
+      >
+        <div className={classes.content}>
+          <Switch
+            className={classes.switch}
+            onChange={() => toggleWeaponProfile(id, unitId)}
+            checked={profile.active}
+          />
+          <div className={classes.details} onClick={() => setOpen(true)} role="button">
+            <Characteristics profile={profile} />
+            {profile.modifiers && profile.modifiers.length
+              ? (
+                <div className={classes.modifiers}>
+                  <b>Modifiers: </b>
+                  <List dense disablePadding>
+                    {profile.modifiers.map((modifier) => (
+                      <Item dense>
+                        <ChevronRight />
+                        {modifier.name}
+                      </Item>
+                    ))}
+                  </List>
+                </div>
+              )
+              : null}
+          </div>
         </div>
-      </div>
-      <ProfileDialog
-        open={open}
-        close={() => setOpen(false)}
-        unitId={unitId}
-        id={id}
-        header="Edit Profile"
-        profile={profile}
-      />
-    </ListItem>
+        <ProfileDialog
+          open={open}
+          close={() => setOpen(false)}
+          unitId={unitId}
+          id={id}
+          header="Edit Profile"
+          profile={profile}
+        />
+      </ListItem>
+    </div>
   );
 };
 

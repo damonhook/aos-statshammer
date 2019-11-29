@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import WeaponProfile from 'components/WeaponProfile';
 import { connect } from 'react-redux';
 import {
@@ -28,39 +28,47 @@ const useStyles = makeStyles((theme) => ({
 const Unit = ({
   id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit,
 }) => {
+  const unitRef = useRef(null);
   const classes = useStyles();
+
+  useEffect(() => {
+    if (unitRef.current) unitRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [id]);
+
   return (
-    <ListItem
-      className={classes.unit}
-      header={`Unit (${unit.name})`}
-      onDelete={() => deleteUnit(id)}
-      onCopy={() => addUnit(`${unit.name} copy`, [...unit.weapon_profiles])}
-      collapsible
-    >
-      <TextField
-        label="Unit Name"
-        value={unit.name}
-        onChange={(event) => editUnitName(id, event.target.value)}
-        fullWidth
-      />
-      <div className={classes.profiles}>
-        {unit
+    <div ref={unitRef}>
+      <ListItem
+        className={classes.unit}
+        header={`Unit (${unit.name})`}
+        onDelete={() => deleteUnit(id)}
+        onCopy={() => addUnit(`${unit.name} copy`, [...unit.weapon_profiles])}
+        collapsible
+      >
+        <TextField
+          label="Unit Name"
+          value={unit.name}
+          onChange={(event) => editUnitName(id, event.target.value)}
+          fullWidth
+        />
+        <div className={classes.profiles}>
+          {unit
           && unit.weapon_profiles
           && unit.weapon_profiles.map((profile, index) => (
             <WeaponProfile unitId={id} id={index} profile={profile} />
           ))}
-      </div>
-      <Button
-        onClick={() => addWeaponProfile(id)}
-        className={classes.button}
-        startIcon={<Add />}
-        variant="contained"
-        color="primary"
-        fullWidth
-      >
+        </div>
+        <Button
+          onClick={() => addWeaponProfile(id)}
+          className={classes.button}
+          startIcon={<Add />}
+          variant="contained"
+          color="primary"
+          fullWidth
+        >
         Add Profile
-      </Button>
-    </ListItem>
+        </Button>
+      </ListItem>
+    </div>
   );
 };
 
