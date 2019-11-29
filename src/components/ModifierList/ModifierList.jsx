@@ -6,7 +6,6 @@ import ModifierItem from 'components/ModifierItem';
 
 const useStyles = makeStyles({
   modifierList: {
-    marginTop: '1em',
     flex: '1 1 auto',
     width: '100%',
   },

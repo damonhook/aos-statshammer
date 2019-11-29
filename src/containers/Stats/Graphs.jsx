@@ -53,7 +53,7 @@ const Graphs = ({ stats, unitNames }) => {
       className={`${classes.graphContainer}`}
       tabNames={['Line Graph', 'Bar Graph', 'Radar Graph']}
       tabContent={graphList.map((Graph) => (
-        <LoadableWrapper loading={stats.pending} numUnits={unitNames.length}>
+        <LoadableWrapper loading={(!stats.payload || !stats.payload.length) && stats.pending} numUnits={unitNames.length}>
           <Graph
             className={classes.content}
             results={stats.payload}

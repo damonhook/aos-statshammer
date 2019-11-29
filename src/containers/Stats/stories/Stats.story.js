@@ -49,10 +49,10 @@ const stats = {
 
 const unitNames = ['Unit 1', 'Unit 2'];
 
-const getStats = (pending) => ({
-  ...stats,
-  pending,
-});
+const getStats = (pending) => {
+  if (pending) return { pending: true, payload: [], error: null };
+  return stats;
+};
 
 storiesOf('Containers/Stats', module)
   .add('Basic', () => (

@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   field: {
     width: '8em',
     paddingRight: '1em',
@@ -12,8 +12,12 @@ const useStyles = makeStyles({
     '&:last-child': {
       paddingRight: 0,
     },
+
+    [theme.breakpoints.up('lg')]: {
+      width: '12em',
+    },
   },
-});
+}));
 
 
 const FormField = ({

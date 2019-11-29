@@ -43,7 +43,7 @@ const TableSkeleton = ({
 
   const cName = clsx(classes.skeleton, dense ? classes.dense : '');
   return (
-    <Card className={clsx(className)}>
+    <Card className={clsx(className)} square>
       <CardContent className={classes.content}>
         <Skeleton variant="rect" className={clsx(cName, classes.header)} />
         {[...Array(rows)].map(() => (

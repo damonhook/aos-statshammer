@@ -1,11 +1,10 @@
 import React from 'react';
 import {
-  Table, TableHead, TableBody, TableRow, TableCell,
+  Table, TableHead, TableBody, TableRow, TableCell, Card,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import TableSkeleton from 'components/Skeletons/TableSkeleton';
-import Card from 'components/Card';
 
 
 const useStyles = makeStyles({
@@ -16,7 +15,7 @@ const useStyles = makeStyles({
 const ResultsTable = ({ stats, unitNames, className }) => {
   const classes = useStyles();
 
-  if (stats.pending) {
+  if ((!stats.payload || !stats.payload.length) && stats.pending) {
     return (
       <TableSkeleton
         dense
@@ -30,7 +29,7 @@ const ResultsTable = ({ stats, unitNames, className }) => {
     return null;
   }
   return (
-    <Card>
+    <Card square>
       <Table size="small" stickyHeader className={clsx(classes.table, className)}>
         <TableHead>
           <TableRow>
