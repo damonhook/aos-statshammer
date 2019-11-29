@@ -17,6 +17,9 @@ const useStyles = makeStyles({
   mobileContent: {
     paddingTop: '1em',
   },
+  mobileWrapper: {
+    paddingTop: '2em',
+  },
   loader: {
     paddingTop: '2em',
   },
@@ -73,7 +76,7 @@ const GraphList = ({ stats, unitNames, graphList }) => {
   return (
     <Typography component="div">
       {graphList.map((Graph, index) => (
-        <Typography component="div" className={classes.content}>
+        <Typography component="div" className={classes.mobileWrapper}>
           <Typography variant="subtitle1">{names[index]}</Typography>
           <LoadableWrapper
             loading={(!stats.payload || !stats.payload.length) && stats.pending}
