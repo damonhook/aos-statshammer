@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tab, Paper, Tabs } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import SwipeableViews from 'react-swipeable-views';
+import clsx from 'clsx';
 import TabPanel from './TabPanel';
 
 
@@ -22,7 +23,7 @@ function a11yProps(index) {
   };
 }
 
-const Tabbed = ({ tabNames, tabContent }) => {
+const Tabbed = ({ tabNames, tabContent, className }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
@@ -35,7 +36,7 @@ const Tabbed = ({ tabNames, tabContent }) => {
   };
 
   return (
-    <div className={classes.tabs}>
+    <div className={clsx(classes.tabs, className)}>
       <Paper square>
         <Tabs
           value={value}
