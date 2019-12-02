@@ -74,5 +74,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 * [ ] Target Modifiers
 * [ ] Unit Point Values (and per point stats)
 * [ ] Export results to PDF
-* [ ] Import / Export Units
+* [x] Import / Export Units
 * [ ] Write Unit State to URL

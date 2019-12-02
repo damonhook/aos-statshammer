@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import clsx from 'clsx';
 
 const formatUnicorn = require('format-unicorn/safe');
 
@@ -11,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ModifierDescription = ({ description, options }) => {
+const ModifierDescription = ({ description, options, className }) => {
   const classes = useStyles();
 
   const getHtmlForValue = (key, value) => `<b style="cursor:help;" title=${key}>${value}</b>`;
@@ -32,7 +33,7 @@ const ModifierDescription = ({ description, options }) => {
   };
 
   return (
-    <Typography component="div" className={classes.description}>
+    <Typography component="div" className={clsx(classes.description, className)}>
       {/* eslint-disable-next-line react/no-danger */}
       <span dangerouslySetInnerHTML={{ __html: getFormattedDescription() }} />
     </Typography>

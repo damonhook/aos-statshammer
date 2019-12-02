@@ -35,7 +35,7 @@ const UploadButton = ({ onUpload, disabled }) => {
   };
 
   return (
-    <form>
+    <div>
       <input
         accept="application/JSON"
         className={classes.input}
@@ -56,7 +56,7 @@ const UploadButton = ({ onUpload, disabled }) => {
         Import
         </Button>
       </label>
-    </form>
+    </div>
   );
 };
 

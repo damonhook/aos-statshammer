@@ -2,11 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile } from 'actions/units.action';
 import ProfileDialog from 'containers/ProfileDialog';
-import { List, ListItem as Item, Switch } from '@material-ui/core';
+import {
+  List, ListItem as Item, Switch, Tooltip,
+} from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { ChevronRight } from '@material-ui/icons';
+import ModifierDescription from 'components/ModifierItem/ModifierDescription';
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles({
@@ -45,8 +48,12 @@ const useStyles = makeStyles({
   modifiers: {
     marginTop: '1em',
   },
+  modifierTooltip: {
+    color: '#fff',
+    fontSize: '12px',
+    marginBottom: 0,
+  },
 });
-
 
 const WeaponProfile = ({
   unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
@@ -85,7 +92,19 @@ const WeaponProfile = ({
                     {profile.modifiers.map((modifier) => (
                       <Item dense>
                         <ChevronRight />
-                        {modifier.name}
+                        <Tooltip
+                          enterDelay={300}
+                          arrow
+                          title={(
+                            <ModifierDescription
+                              description={modifier.description}
+                              options={modifier.options}
+                              className={classes.modifierTooltip}
+                            />
+                          )}
+                        >
+                          <span>{modifier.name}</span>
+                        </Tooltip>
                       </Item>
                     ))}
                   </List>
