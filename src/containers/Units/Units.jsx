@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Unit from 'containers/Unit';
 import { addUnit } from 'actions/units.action';
-import { Button, useMediaQuery } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import AddUnitButton from './AddUnitButton';
 
 const useStyles = makeStyles((theme) => ({
   units: {
@@ -27,18 +27,7 @@ const Units = ({ units, addUnit }) => {
       {units.map((unit, index) => (
         <Unit unit={unit} id={index} />
       ))}
-      {!mobile && (
-      <Button
-        fullWidth
-        onClick={() => addUnit(`Unit ${units.length + 1}`)}
-        variant="contained"
-        startIcon={<Add />}
-        color="primary"
-        disabled={units.length >= 5}
-      >
-        Add Unit
-      </Button>
-      )}
+      {!mobile && <AddUnitButton units={units} addUnit={addUnit} />}
     </div>
   );
 };

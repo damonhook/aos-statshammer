@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 });
 
 const ListItem = ({
-  children, header, onEdit, onDelete, onCopy, className, collapsible, ...other
+  children, header, onEdit, onDelete, onCopy, extraItems, className, collapsible, ...other
 }) => {
   const classes = useStyles();
   const [collapsed, setColapsed] = useState(false);
@@ -53,6 +53,7 @@ const ListItem = ({
           onEdit={onEdit}
           onDelete={onDelete}
           onCopy={onCopy}
+          extraItems={extraItems}
           className={classes.listControls}
         />
       </Card.Header>

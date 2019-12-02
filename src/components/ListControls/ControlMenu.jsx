@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Menu, MenuItem, IconButton } from '@material-ui/core';
+import {
+  Menu, MenuItem, IconButton, Divider,
+} from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 
 
@@ -8,7 +10,9 @@ const useStyles = makeStyles({
   menu: {},
 });
 
-const ControlMenu = ({ onEdit, onDelete, onCopy }) => {
+const ControlMenu = ({
+  onEdit, onDelete, onCopy, extraItems, size = 'medium',
+}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -25,9 +29,11 @@ const ControlMenu = ({ onEdit, onDelete, onCopy }) => {
     handleClose();
   };
 
+  const hasDivider = (onEdit || onCopy || onDelete) && (extraItems && extraItems.length);
+
   return (
     <div className={classes.menu}>
-      <IconButton onClick={handleClick}>
+      <IconButton onClick={handleClick} size={size}>
         <MoreVert />
       </IconButton>
       <Menu
@@ -40,6 +46,10 @@ const ControlMenu = ({ onEdit, onDelete, onCopy }) => {
         {onEdit && <MenuItem onClick={() => menuItemClick(onEdit)}>Edit</MenuItem>}
         {onCopy && <MenuItem onClick={() => menuItemClick(onCopy)}>Copy</MenuItem>}
         {onDelete && <MenuItem onClick={() => menuItemClick(onDelete)}>Delete</MenuItem>}
+        {hasDivider && <Divider />}
+        {extraItems && extraItems.map(({ name, onClick }) => (
+          <MenuItem onClick={() => menuItemClick(onClick)}>{name}</MenuItem>
+        ))}
       </Menu>
     </div>
   );

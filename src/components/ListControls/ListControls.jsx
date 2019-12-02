@@ -1,35 +1,27 @@
 import React from 'react';
-import {
-  IconButton, ButtonGroup, useMediaQuery, Tooltip,
-} from '@material-ui/core';
+import { useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import { Edit, Delete, FileCopy } from '@material-ui/icons';
 import ControlMenu from './ControlMenu';
-
-const ListControl = ({ onClick, icon, tooltip }) => (
-  <Tooltip title={tooltip}>
-    <IconButton size="small" onClick={onClick}>{icon}</IconButton>
-  </Tooltip>
-);
+import ControlHeader from './ControlHeader';
 
 const ListControls = ({
-  onEdit, onDelete, onCopy, className,
+  onEdit, onDelete, onCopy, extraItems, className,
 }) => {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('sm'));
-  if (!onEdit && !onCopy && !onDelete) {
-    return null;
-  }
-  if (matches) {
-    return <ControlMenu onEdit={onEdit} onDelete={onDelete} onCopy={onCopy} />;
-  }
-  return (
-    <ButtonGroup className={`list-controls ${className}`}>
-      {onEdit && <ListControl onClick={onEdit} icon={<Edit />} tooltip="Edit" />}
-      {onCopy && <ListControl onClick={onCopy} icon={<FileCopy />} tooltip="Copy" />}
-      {onDelete && <ListControl onClick={onDelete} icon={<Delete />} tooltip="Delete" />}
-    </ButtonGroup>
-  );
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  if (!onEdit && !onCopy && !onDelete && !extraItems) return null;
+  return mobile
+    ? <ControlMenu onEdit={onEdit} onDelete={onDelete} onCopy={onCopy} extraItems={extraItems} />
+    : (
+      <ControlHeader
+        className={className}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        onCopy={onCopy}
+        extraItems={extraItems}
+      />
+    );
 };
 
 export default ListControls;

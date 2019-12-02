@@ -10,4 +10,16 @@ storiesOf('Components/ListControls', module)
       onCopy={boolean('Copy Enabled', true) ? () => {} : null}
       onDelete={boolean('Delete Enabled', true) ? () => {} : null}
     />
+  ))
+
+  .add('Extra Items', () => (
+    <ListControls
+      onEdit={boolean('Edit Enabled', true) ? () => {} : null}
+      onCopy={boolean('Copy Enabled', true) ? () => {} : null}
+      onDelete={boolean('Delete Enabled', true) ? () => {} : null}
+      extraItems={[
+        { name: 'Import', onClick: () => {} },
+        { name: 'Export', onClick: () => {} },
+      ]}
+    />
   ));

@@ -35,6 +35,15 @@ const Unit = ({
     if (unitRef.current) unitRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [id]);
 
+  const exportUnit = () => {
+    const data = encodeURIComponent(JSON.stringify(unit));
+    // eslint-disable-next-line no-undef
+    const a = document.createElement('a');
+    a.href = `data:text/json;charset=utf-8,${data}`;
+    a.download = `${unit.name}.json`;
+    a.click();
+  };
+
   return (
     <div ref={unitRef}>
       <ListItem
@@ -42,6 +51,7 @@ const Unit = ({
         header={`Unit (${unit.name})`}
         onDelete={() => deleteUnit(id)}
         onCopy={() => addUnit(`${unit.name} copy`, [...unit.weapon_profiles])}
+        extraItems={[{ name: 'Export', onClick: exportUnit }]}
         collapsible
       >
         <TextField
