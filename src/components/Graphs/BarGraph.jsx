@@ -20,7 +20,7 @@ const BarGraph = ({
     <GraphContainer className={clsx(classes.graph, className)}>
       <BarChart
         data={results}
-        margin={{ left: -20 }}
+        // margin={{ left: -20 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="save" />

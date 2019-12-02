@@ -8,7 +8,7 @@ const AddUnitsFab = ({ units, addUnit }) => (
   <FloatingButton
     onClick={() => addUnit(`Unit ${units.length + 1}`)}
     icon={<AddIcon />}
-    disabled={units.length >= 4}
+    disabled={units.length >= 5}
   />
 );
 

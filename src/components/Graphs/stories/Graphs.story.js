@@ -48,6 +48,7 @@ const graphColors = [
   '#82ca9d',
   '#ff7300',
   '#413ea0',
+  '#f50057',
 ];
 
 storiesOf('Components/Graphs', module)

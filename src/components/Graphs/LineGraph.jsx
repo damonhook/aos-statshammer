@@ -20,7 +20,7 @@ const LineGraph = ({
     <GraphContainer className={clsx(classes.graph, className)}>
       <LineChart
         data={results}
-        margin={{ left: -20 }}
+        // margin={{ left: -20 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="save" />

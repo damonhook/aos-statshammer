@@ -66,3 +66,13 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## Feature Checklist
+
+* [x] Mobile interface
+* [ ] Unit Modifiers
+* [ ] Target Modifiers
+* [ ] Unit Point Values (and per point stats)
+* [ ] Export results to PDF
+* [ ] Import / Export Units
+* [ ] Write Unit State to URL

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
       maxWidth: '100%',
     },
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
       maxWidth: '2166px',
       width: '95%',

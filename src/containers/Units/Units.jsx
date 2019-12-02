@@ -34,7 +34,7 @@ const Units = ({ units, addUnit }) => {
         variant="contained"
         startIcon={<Add />}
         color="primary"
-        disabled={units.length >= 4}
+        disabled={units.length >= 5}
       >
         Add Unit
       </Button>
