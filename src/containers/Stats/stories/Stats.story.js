@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import StatsContainer from 'containers/Stats/StatsContainer';
+import Results from 'containers/Stats/Results';
 import Graphs from 'containers/Stats/Graphs';
 import ResultsTable from 'containers/Stats/ResultsTable';
 import { boolean } from '@storybook/addon-knobs';
@@ -56,7 +56,7 @@ const getStats = (pending) => {
 
 storiesOf('Containers/Stats', module)
   .add('Basic', () => (
-    <StatsContainer stats={getStats(boolean('Pending', false))} unitNames={unitNames} />
+    <Results stats={getStats(boolean('Pending', false))} unitNames={unitNames} />
   ))
 
   .add('Graphs', () => (

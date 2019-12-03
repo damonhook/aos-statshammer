@@ -1,28 +1,21 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import WeaponProfile from 'components/WeaponProfile';
-import { boolean } from '@storybook/addon-knobs';
-import { Provider } from 'react-redux';
-import store from 'store';
+import { boolean, number } from '@storybook/addon-knobs';
+import { withProvider } from 'utils/exampleStore';
 
-const withProvider = (story) => (
-  <Provider store={store}>
-    {story()}
-  </Provider>
-);
 
 storiesOf('Components/WeaponProfile', module)
   .addDecorator(withProvider)
   .add('Basic', () => {
-    const active = boolean('Active', true);
     const profile = {
-      active,
-      num_models: 20,
-      attacks: 2,
-      to_hit: 3,
-      to_wound: 3,
-      rend: 1,
-      damage: 2,
+      active: boolean('Active', true),
+      num_models: number('Number of models', 20),
+      attacks: number('Attacks', 2),
+      to_hit: number('To Hit', 3),
+      to_wound: number('To Wound', 3),
+      rend: number('Rend', 1),
+      damage: number('Damage', 2),
       modifiers: [],
     };
     return (
@@ -30,15 +23,14 @@ storiesOf('Components/WeaponProfile', module)
     );
   })
   .add('With Modifiers', () => {
-    const active = boolean('Active', true);
     const profile = {
-      active,
-      num_models: 20,
-      attacks: 2,
-      to_hit: 3,
-      to_wound: 3,
-      rend: 1,
-      damage: 2,
+      active: boolean('Active', true),
+      num_models: number('Number of models', 20),
+      attacks: number('Attacks', 2),
+      to_hit: number('To Hit', 3),
+      to_wound: number('To Wound', 3),
+      rend: number('Rend', 1),
+      damage: number('Damage', 2),
       modifiers: [
         {
           description: 'Reroll Ones for {characteristic}',

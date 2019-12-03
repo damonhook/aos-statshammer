@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import ProfileDialog from 'containers/ProfileDialog';
-import { withProvider } from './store';
+import { withProvider } from 'utils/exampleStore';
 
 storiesOf('Containers/ProfileDialog', module)
   .addDecorator(withProvider)

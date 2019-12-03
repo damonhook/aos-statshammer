@@ -52,6 +52,7 @@ const ModifierItem = ({
                     option={options[n]}
                     val={options[n].value}
                     onOptionChange={onOptionChange}
+                    key={n}
                   />
                 ))}
               </div>

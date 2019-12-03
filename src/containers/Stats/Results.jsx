@@ -8,7 +8,11 @@ import ResultsTable from './ResultsTable';
 
 
 const useStyles = makeStyles({
-  results: {},
+  results: {
+    flexDirection: 'column',
+    flexGrow: 1,
+    flexBasis: 0,
+  },
 });
 
 const Results = ({ stats, unitNames, className }) => {

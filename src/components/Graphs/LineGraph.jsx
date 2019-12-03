@@ -20,7 +20,6 @@ const LineGraph = ({
     <GraphContainer className={clsx(classes.graph, className)}>
       <LineChart
         data={results}
-        // margin={{ left: -20 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="save" />
@@ -28,7 +27,7 @@ const LineGraph = ({
         <Tooltip />
         <Legend />
         {unitNames.map((name, index) => (
-          <Line type="monotone" dataKey={name} stroke={colors[index]} />
+          <Line type="monotone" dataKey={name} stroke={colors[index]} key={name} />
         ))}
       </LineChart>
     </GraphContainer>

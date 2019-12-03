@@ -46,7 +46,7 @@ const ResultsTable = ({ stats, unitNames, className }) => {
               <TableRow>
                 <TableCell>{save && save !== 'None' ? `${save}+` : '-'}</TableCell>
                 {unitNames.map((name) => (
-                  <TableCell>{unitResults[name]}</TableCell>
+                  <TableCell key={name}>{unitResults[name]}</TableCell>
                 ))}
               </TableRow>
             );

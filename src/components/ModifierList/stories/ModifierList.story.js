@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { storiesOf } from '@storybook/react';
 import ModifierList from 'components/ModifierList';
-import { withProvider } from './store';
+import { withProvider } from 'utils/exampleStore';
 
 const initialState = {
   modifiers: [

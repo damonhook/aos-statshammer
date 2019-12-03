@@ -48,7 +48,7 @@ const ControlMenu = ({
         {onDelete && <MenuItem onClick={() => menuItemClick(onDelete)}>Delete</MenuItem>}
         {hasDivider && <Divider />}
         {extraItems && extraItems.map(({ name, onClick }) => (
-          <MenuItem onClick={() => menuItemClick(onClick)}>{name}</MenuItem>
+          <MenuItem onClick={() => menuItemClick(onClick)} key={name}>{name}</MenuItem>
         ))}
       </Menu>
     </div>

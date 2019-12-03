@@ -20,7 +20,6 @@ const BarGraph = ({
     <GraphContainer className={clsx(classes.graph, className)}>
       <BarChart
         data={results}
-        // margin={{ left: -20 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="save" />
@@ -28,7 +27,7 @@ const BarGraph = ({
         <Tooltip />
         <Legend />
         {unitNames.map((name, index) => (
-          <Bar type="monotone" dataKey={name} fill={colors[index]} />
+          <Bar type="monotone" dataKey={name} fill={colors[index]} key={name} />
         ))}
       </BarChart>
     </GraphContainer>

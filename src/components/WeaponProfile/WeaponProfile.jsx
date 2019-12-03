@@ -2,14 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile } from 'actions/units.action';
 import ProfileDialog from 'containers/ProfileDialog';
-import {
-  List, ListItem as Item, Switch, Tooltip,
-} from '@material-ui/core';
+import { Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { ChevronRight } from '@material-ui/icons';
-import ModifierDescription from 'components/ModifierItem/ModifierDescription';
+import ModifierSummary from 'components/ModifierSummary';
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles({
@@ -27,31 +24,10 @@ const useStyles = makeStyles({
   switch: {
     margin: 'auto 0',
   },
-  characteristics: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: 'auto 0',
-  },
-  characteristic: {
-    marginRight: '1em',
-    padding: '0.25em 0',
-
-    '&:last-child': {
-      marginRight: 0,
-    },
-  },
   details: {
     display: 'flex',
     flexDirection: 'column',
     cursor: 'pointer',
-  },
-  modifiers: {
-    marginTop: '1em',
-  },
-  modifierTooltip: {
-    color: '#fff',
-    fontSize: '12px',
-    marginBottom: 0,
   },
 });
 
@@ -84,33 +60,7 @@ const WeaponProfile = ({
           />
           <div className={classes.details} onClick={() => setOpen(true)} role="button">
             <Characteristics profile={profile} />
-            {profile.modifiers && profile.modifiers.length
-              ? (
-                <div className={classes.modifiers}>
-                  <b>Modifiers: </b>
-                  <List dense disablePadding>
-                    {profile.modifiers.map((modifier) => (
-                      <Item dense>
-                        <ChevronRight />
-                        <Tooltip
-                          enterDelay={300}
-                          arrow
-                          title={(
-                            <ModifierDescription
-                              description={modifier.description}
-                              options={modifier.options}
-                              className={classes.modifierTooltip}
-                            />
-                          )}
-                        >
-                          <span>{modifier.name}</span>
-                        </Tooltip>
-                      </Item>
-                    ))}
-                  </List>
-                </div>
-              )
-              : null}
+            <ModifierSummary modifiers={profile.modifiers} />
           </div>
         </div>
         <ProfileDialog

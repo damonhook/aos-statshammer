@@ -50,7 +50,7 @@ const Tabbed = ({
           variant="fullWidth"
         >
           {tabNames.map((name, index) => (
-            <Tab label={name} {...a11yProps(index)} />
+            <Tab label={name} {...a11yProps(index)} key={name} />
           ))}
         </Tabs>
       </Paper>

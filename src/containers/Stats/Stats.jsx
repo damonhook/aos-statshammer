@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchStatsCompare } from 'api';
 import { bindActionCreators } from 'redux';
-import StatsContainer from './StatsContainer';
+import Results from './Results';
 
 const Stats = ({ units, stats, fetchStatsCompare }) => {
   useEffect(() => {
@@ -13,7 +13,7 @@ const Stats = ({ units, stats, fetchStatsCompare }) => {
   const unitNames = units.map(({ name }) => name);
 
   return (
-    <StatsContainer stats={stats} unitNames={unitNames} />
+    <Results stats={stats} unitNames={unitNames} />
   );
 };
 

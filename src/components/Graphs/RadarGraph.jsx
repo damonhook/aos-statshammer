@@ -26,7 +26,6 @@ const RadarGraph = ({
     <GraphContainer className={clsx(classes.graph, className)}>
       <RadarChart
         data={results}
-        // margin={{ left: -20 }}
       >
         <PolarGrid strokeDasharray="3 3" />
         <PolarAngleAxis dataKey="save" />
@@ -34,7 +33,14 @@ const RadarGraph = ({
         <Tooltip />
         <Legend />
         {unitNames.map((name, index) => (
-          <Radar type="monotone" dataKey={name} stroke={colors[index]} fill={colors[index]} fillOpacity={0.1} />
+          <Radar
+            type="monotone"
+            dataKey={name}
+            stroke={colors[index]}
+            fill={colors[index]}
+            fillOpacity={0.1}
+            key={name}
+          />
         ))}
       </RadarChart>
 

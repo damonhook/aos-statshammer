@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from 'containers/App';
 import { Provider } from 'react-redux';
+import configureStore from 'configureStore';
 import * as serviceWorker from './serviceWorker';
-import store from './store';
 
+const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
+  // eslint-disable-next-line no-undef
   document.getElementById('root'),
 );
 

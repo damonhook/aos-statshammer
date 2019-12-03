@@ -1,14 +1,10 @@
 import React from 'react';
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
-import AppContent from './AppContent';
-
-
-const theme = createMuiTheme({
-  typography: {
-    htmlFontSize: 18,
-  },
-});
+import { makeStyles, ThemeProvider, useTheme } from '@material-ui/core/styles';
+import AppBar from 'components/AppBar';
+import { basicTheme } from 'themes';
+import { useMediaQuery } from '@material-ui/core';
+import DesktopAppContent from './DesktopAppContent';
+import MobileAppContent from './MobileAppContent';
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -18,17 +14,14 @@ const useStyles = makeStyles(() => ({
 
 const App = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={basicTheme}>
       <div className={classes.app}>
-        <AppBar position="static">
-          <Toolbar variant="dense">
-            <Typography variant="h6">
-            Statshammer
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <AppContent />
+        <AppBar title="Statshammer" />
+        {mobile ? <MobileAppContent /> : <DesktopAppContent />}
       </div>
     </ThemeProvider>
   );

@@ -57,7 +57,7 @@ const Characteristics = ({ profile, className, ...other }) => {
       <Characteristic name="Attacks" text={`${profile.attacks}`} />
       <Characteristic name="To Hit" text={`${profile.to_hit}+`} />
       <Characteristic name="To Wound" text={`${profile.to_wound}+`} />
-      <Characteristic name="Rend" text={`-${profile.rend}`} />
+      <Characteristic name="Rend" text={profile.rend ? `-${profile.rend}` : '0'} />
       <Characteristic name="Damage" text={`${profile.damage}`} />
     </Typography>
   );
