@@ -1,16 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchStatsCompare } from 'api';
 import { bindActionCreators } from 'redux';
+import { useDebouncedCallback } from 'use-debounce';
 import Results from './Results';
 
 const Stats = ({ units, stats, fetchStatsCompare }) => {
+  const [unitNames, setUnitNames] = useState(units.map(({ name }) => name));
+  const [debouncedCallback] = useDebouncedCallback(
+    (units) => { fetchStatsCompare(units); },
+    200,
+  );
+
+  const getUnitNamesFromStats = () => Object.keys(stats.payload[0]).filter((n) => n != null && n !== 'save');
+
+  useEffect(() => debouncedCallback(units), [units]);
   useEffect(() => {
-    if (units) {
-      fetchStatsCompare(units);
-    }
-  }, [units]);
-  const unitNames = units.map(({ name }) => name);
+    if (stats.payload && stats.payload.length) setUnitNames(getUnitNamesFromStats());
+  }, [stats]);
 
   return (
     <Results stats={stats} unitNames={unitNames} />

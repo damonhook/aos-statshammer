@@ -103,7 +103,7 @@ const ProfileDialog = ({
       <ProfileTitle header={header} fullScreen={fullScreen} onClose={() => close()} />
       <DialogContent dividers>
         <Typography component="div">
-          <form className={classes.form} onSubmit={() => submit()}>
+          <form className={classes.form} onSubmit={(e) => { submit(); e.preventDefault(); }}>
             <input type="submit" style={{ display: 'none' }} />
             <div className={classes.formSection}>
               <label>Characteristics:</label>

@@ -45,10 +45,10 @@ const GraphSkeleton = ({
 
   return (
     <div className={clsx(className, classes.root)}>
-      {[...Array(series)].map(() => (
-        <div className={classes.series}>
-          {[...Array(groups)].map(() => (
-            <div className={classes.group}>
+      {[...Array(series)].map((seriesKey) => (
+        <div className={classes.series} key={seriesKey}>
+          {[...Array(groups)].map((groupKey) => (
+            <div className={classes.group} key={groupKey}>
               <Skeleton
                 variant="rect"
                 className={classes.bar}

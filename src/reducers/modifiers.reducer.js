@@ -1,4 +1,4 @@
-import { fetchModifiersPending, FETCH_MODIFIERS_SUCCESS, FETCH_MODIFIERS_ERROR } from '../actions/modifiers.action';
+import { FETCH_MODIFIERS_PENDING, FETCH_MODIFIERS_SUCCESS, FETCH_MODIFIERS_ERROR } from '../actions/modifiers.action';
 
 const INITIAL_STATE = {
   pending: false,
@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 
 const modifiers = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case fetchModifiersPending:
+    case FETCH_MODIFIERS_PENDING:
       return {
         ...state,
         pending: true,

@@ -46,10 +46,10 @@ const TableSkeleton = ({
     <Card className={clsx(className)} square>
       <CardContent className={classes.content}>
         <Skeleton variant="rect" className={clsx(cName, classes.header)} />
-        {[...Array(rows)].map(() => (
-          <Typography className={classes.row}>
-            {[...Array(cols)].map(() => (
-              <Skeleton variant="text" className={clsx(cName, classes.col)} />
+        {[...Array(rows)].map((rowKey) => (
+          <Typography className={classes.row} hey={rowKey}>
+            {[...Array(cols)].map((colKey) => (
+              <Skeleton variant="text" className={clsx(cName, classes.col)} key={colKey} />
             ))}
           </Typography>
         ))}
