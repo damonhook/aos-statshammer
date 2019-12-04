@@ -2,7 +2,7 @@ import { FETCH_STATS_PENDING, FETCH_STATS_SUCCESS, FETCH_STATS_ERROR } from '../
 
 const INITIAL_STATS = {
   pending: false,
-  payload: {},
+  payload: null,
   error: null,
 };
 

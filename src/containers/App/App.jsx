@@ -3,6 +3,7 @@ import { makeStyles, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import AppBar from 'components/AppBar';
 import { basicTheme } from 'themes';
 import { useMediaQuery } from '@material-ui/core';
+import StoreSubscriber from 'components/StoreSubscriber';
 import DesktopAppContent from './DesktopAppContent';
 import MobileAppContent from './MobileAppContent';
 
@@ -21,6 +22,7 @@ const App = () => {
     <ThemeProvider theme={basicTheme}>
       <div className={classes.app}>
         <AppBar title="Statshammer" />
+        <StoreSubscriber />
         {mobile ? <MobileAppContent /> : <DesktopAppContent />}
       </div>
     </ThemeProvider>

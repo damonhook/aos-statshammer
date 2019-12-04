@@ -9,7 +9,7 @@ export const fetchStatsCompare = (units) => (dispatch) => {
   dispatch(fetchStatsPending());
   const data = {
     units: units.map((unit) => ({
-      ...unit,
+      name: unit.uuid,
       weapon_profiles: unit.weapon_profiles.filter((profile) => profile.active),
     })),
   };

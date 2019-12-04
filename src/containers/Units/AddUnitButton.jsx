@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { ImportExport, Add } from '@material-ui/icons';
+import { MAX_UNITS } from 'appConstants';
 
 const useStyles = makeStyles({
   group: {
@@ -77,12 +78,12 @@ const AddUnitButton = ({ units, addUnit }) => {
         variant="contained"
         startIcon={<Add />}
         color="primary"
-        disabled={units.length >= 5}
+        disabled={units.length >= MAX_UNITS}
         className={classes.button}
       >
         Add Unit
       </Button>
-      <UploadButton onUpload={onUpload} disabled={units.length >= 5} />
+      <UploadButton onUpload={onUpload} disabled={units.length >= MAX_UNITS} />
     </div>
   );
 };

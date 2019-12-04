@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4';
 import {
   TOGGLE_WEAPON_PROFILE, EDIT_WEAPON_PROFILE, ADD_WEAPON_PROFILE, DELETE_WEAPON_PROFILE,
   ADD_UNIT, DELETE_UNIT, EDIT_UNIT_NAME,
@@ -68,12 +69,17 @@ const unitReducer = (state = DEFAULT_UNIT, action) => {
   }
 };
 
-const unitsReducer = (state = [DEFAULT_UNIT], action) => {
+const INITIAL_STATE = [{ ...DEFAULT_UNIT, uuid: uuid() }];
+
+const unitsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_UNIT:
       return [
         ...state,
-        action.unit,
+        {
+          ...action.unit,
+          uuid: uuid(),
+        },
       ];
     case DELETE_UNIT:
       return state.filter((_, index) => index !== action.unitId);

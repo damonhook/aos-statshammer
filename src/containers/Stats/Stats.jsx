@@ -1,33 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { fetchStatsCompare } from 'api';
-import { bindActionCreators } from 'redux';
 import { useDebouncedCallback } from 'use-debounce';
+import { DEBOUNCE_TIMEOUT } from 'appConstants';
 import Results from './Results';
 
-const Stats = ({ units, stats, fetchStatsCompare }) => {
+const applyMapping = (mapping, results) => (
+  results.map((result) => Object.keys(result).reduce((acc, key) => {
+    if (key == null || key === 'save') return acc;
+    const name = mapping[key];
+    if (name) acc[name] = result[key];
+    return acc;
+  }, { save: result.save }))
+);
+
+const Stats = ({ units, stats }) => {
   const [unitNames, setUnitNames] = useState(units.map(({ name }) => name));
-  const [debouncedCallback] = useDebouncedCallback(
-    (units) => { fetchStatsCompare(units); },
-    200,
+  const [unitMapping, setUnitMapping] = useState({});
+  const [results, setResults] = useState(null);
+
+  const [setUnitMappingDebounced] = useDebouncedCallback(
+    (newValue) => { setUnitMapping(newValue); },
+    DEBOUNCE_TIMEOUT,
   );
 
-  const getUnitNamesFromStats = () => Object.keys(stats.payload[0]).filter((n) => n != null && n !== 'save');
-
-  useEffect(() => debouncedCallback(units), [units]);
   useEffect(() => {
-    if (stats.payload && stats.payload.length) setUnitNames(getUnitNamesFromStats());
-  }, [stats]);
+    const newMapping = units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {});
+    setUnitMappingDebounced(newMapping);
+  }, [units]);
+
+  useEffect(() => {
+    if (stats && stats.payload) {
+      const newResults = applyMapping(unitMapping, stats.payload);
+      const newUnitNames = Object.keys(newResults[0]).filter((n) => n != null && n !== 'save');
+      setResults(newResults);
+      setUnitNames(newUnitNames);
+    }
+  }, [unitMapping, stats]);
 
   return (
-    <Results stats={stats} unitNames={unitNames} />
+    <Results stats={{ ...stats, payload: results }} unitNames={unitNames} />
   );
 };
 
-const mapStateToProps = (state) => (state);
+const mapStateToProps = (state) => ({
+  units: state.units,
+  stats: state.stats,
+});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchStatsCompare,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Stats);
+export default connect(mapStateToProps)(Stats);

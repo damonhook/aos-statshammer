@@ -32,6 +32,6 @@ const Units = ({ units, addUnit }) => {
   );
 };
 
-const mapStateToProps = (state) => state;
+const mapStateToProps = (state) => ({ units: state.units });
 
 export default connect(mapStateToProps, { addUnit })(Units);
