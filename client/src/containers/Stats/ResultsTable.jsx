@@ -10,6 +10,17 @@ import TableSkeleton from 'components/Skeletons/TableSkeleton';
 const useStyles = makeStyles({
   table: {},
   skeleton: {},
+  container: {
+    overflowX: 'scroll',
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    zIndex: 11,
+  },
+  cell: {
+    background: 'white',
+  },
 });
 
 const ResultsTable = ({ stats, unitNames, className }) => {
@@ -29,11 +40,11 @@ const ResultsTable = ({ stats, unitNames, className }) => {
     return null;
   }
   return (
-    <Card square>
+    <Card square className={classes.container}>
       <Table size="small" stickyHeader className={clsx(classes.table, className)}>
         <TableHead>
           <TableRow>
-            <TableCell>Save</TableCell>
+            <TableCell className={classes.sticky}>Save</TableCell>
             {unitNames.map((name) => (
               <TableCell align="right" key={name}>{name}</TableCell>
             ))}
@@ -45,7 +56,9 @@ const ResultsTable = ({ stats, unitNames, className }) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
               <TableRow key={save}>
-                <TableCell>{save && save !== 'None' ? `${save}+` : '-'}</TableCell>
+                <TableCell className={clsx(classes.sticky, classes.cell)}>
+                  {save && save !== 'None' ? `${save}+` : '-'}
+                </TableCell>
                 {unitNames.map((name) => (
                   <TableCell key={name} align="right">{unitResults[name]}</TableCell>
                 ))}

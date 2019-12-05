@@ -13,6 +13,7 @@ const useStyles = makeStyles({
     flexGrow: 1,
     flexBasis: 0,
     height: '100%',
+    maxWidth: '100vw',
   },
 });
 

@@ -24,9 +24,7 @@ const RadarGraph = ({
 
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
-      <RadarChart
-        data={results}
-      >
+      <RadarChart data={results} outerRadius={120} cy="35%">
         <PolarGrid strokeDasharray="3 3" />
         <PolarAngleAxis dataKey="save" />
         <PolarRadiusAxis />

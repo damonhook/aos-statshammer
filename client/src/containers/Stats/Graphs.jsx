@@ -9,7 +9,7 @@ import clsx from 'clsx';
 const useStyles = makeStyles({
   graphContainer: {},
   content: {
-    height: '300px',
+    height: '350px',
     paddingTop: '2em',
     overflow: 'hidden',
     flexBasis: '50%',

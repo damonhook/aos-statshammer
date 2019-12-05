@@ -13,6 +13,7 @@ const useStyles = makeStyles({
   },
   content: {
     flexGrow: 1,
+    maxWidth: '100vw',
   },
   swiper: {
     height: '100%',
