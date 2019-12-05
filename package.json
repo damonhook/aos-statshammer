@@ -1,12 +1,16 @@
 {
     "name": "statshammer-express",
     "version": "0.1.0",
+    "engines": {
+        "node": "8.11.3",
+        "yarn": "1.13.0"
+    },
     "scripts": {
         "client": "cd client && yarn start",
         "server": "nodemon --exec babel-node server.js",
         "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
         "start": "babel-node server.js",
-        "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+        "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build"
     },
     "dependencies": {
         "@babel/cli": "^7.7.4",
