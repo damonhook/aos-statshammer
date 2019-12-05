@@ -5,8 +5,10 @@ import configureStore from 'configureStore';
 const units = [
   {
     name: 'Unit 1',
+    uuid: 'Unit 1',
     weapon_profiles: [
       {
+        uuid: 'unit-1-1',
         active: true,
         num_models: 20,
         attacks: 2,
@@ -20,8 +22,10 @@ const units = [
   },
   {
     name: 'Unit 2',
+    uuid: 'Unit 2',
     weapon_profiles: [
       {
+        uuid: 'unit-2-1',
         active: true,
         num_models: 20,
         attacks: 2,

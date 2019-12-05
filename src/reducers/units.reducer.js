@@ -9,7 +9,7 @@ const DEFAULT_UNIT = {
   weapon_profiles: [
     {
       active: true,
-      num_models: 20,
+      num_models: 10,
       attacks: 2,
       to_hit: 3,
       to_wound: 4,
@@ -29,7 +29,7 @@ const updateItemInArray = (array, index, callback) => array.map((item, i) => {
 
 const addWeaponProfile = (state, action) => [
   ...state,
-  { ...action.profile },
+  { ...action.profile, uuid: uuid() },
 ];
 
 const toggleWeaponProfile = (state, action) => updateItemInArray(state, action.id, (profile) => ({
@@ -59,7 +59,7 @@ const weaponProfilesReducer = (state, action) => {
   }
 };
 
-const unitReducer = (state = DEFAULT_UNIT, action) => {
+const unitReducer = (state, action) => {
   switch (action.type) {
     default:
       return {

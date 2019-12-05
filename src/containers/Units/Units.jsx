@@ -25,7 +25,7 @@ const Units = ({ units, addUnit }) => {
   return (
     <div className={classes.units}>
       {units.map((unit, index) => (
-        <Unit unit={unit} id={index} />
+        <Unit unit={unit} id={index} key={unit.uuid} />
       ))}
       {!mobile && <AddUnitButton units={units} addUnit={addUnit} />}
     </div>

@@ -47,7 +47,7 @@ const TableSkeleton = ({
       <CardContent className={classes.content}>
         <Skeleton variant="rect" className={clsx(cName, classes.header)} />
         {[...Array(rows)].map((rowKey) => (
-          <Typography className={classes.row} hey={rowKey}>
+          <Typography className={classes.row} key={rowKey}>
             {[...Array(cols)].map((colKey) => (
               <Skeleton variant="text" className={clsx(cName, classes.col)} key={colKey} />
             ))}

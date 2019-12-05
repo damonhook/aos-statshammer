@@ -11,6 +11,7 @@ import ListItem from 'components/ListItem';
 import { TextField, Button } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import { MAX_PROFILES } from 'appConstants';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,13 +45,15 @@ const Unit = ({
     a.click();
   };
 
+  const addProfileDisabled = unit.weapon_profiles.length >= MAX_PROFILES;
+
   return (
     <div ref={unitRef}>
       <ListItem
         className={classes.unit}
         header={`Unit (${unit.name})`}
         onDelete={() => deleteUnit(id)}
-        onCopy={() => addUnit(`${unit.name} copy`, [...unit.weapon_profiles])}
+        onCopy={addProfileDisabled ? 'disabled' : () => addUnit(`${unit.name} copy`, [...unit.weapon_profiles])}
         extraItems={[{ name: 'Export', onClick: exportUnit }]}
         collapsible
       >
@@ -62,10 +65,10 @@ const Unit = ({
         />
         <div className={classes.profiles}>
           {unit
-          && unit.weapon_profiles
-          && unit.weapon_profiles.map((profile, index) => (
-            <WeaponProfile unitId={id} id={index} profile={profile} />
-          ))}
+            && unit.weapon_profiles
+            && unit.weapon_profiles.map((profile, index) => (
+              <WeaponProfile unitId={id} id={index} profile={profile} key={profile.uuid} />
+            ))}
         </div>
         <Button
           onClick={() => addWeaponProfile(id)}
@@ -73,9 +76,10 @@ const Unit = ({
           startIcon={<Add />}
           variant="contained"
           color="primary"
+          disabled={addProfileDisabled}
           fullWidth
         >
-        Add Profile
+          Add Profile
         </Button>
       </ListItem>
     </div>
