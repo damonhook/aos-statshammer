@@ -1,6 +1,6 @@
 class Target {
   constructor(save) {
-    this.save = save;
+    this.save = parseInt(save);
   }
 
   getSaveAfterRend(rend = null) {

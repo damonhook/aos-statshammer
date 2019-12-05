@@ -34,6 +34,10 @@ export class ModifierManager {
   }
 
   getRerollModifier(characteristic) {
-    return this.getModifier(MODIFIERS.REROLL_ONES, characteristic);
+    return (
+      this.getModifier(MODIFIERS.REROLL, characteristic) ||
+      this.getModifier(MODIFIERS.REROLL_FAILED, characteristic) ||
+      this.getModifier(MODIFIERS.REROLL_ONES, characteristic)
+    );
   }
 }

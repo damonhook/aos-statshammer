@@ -7,10 +7,10 @@ export default class MortalWounds extends BaseModifier {
     on = 6, mortalWounds = 1, unmodified = true, inAddition = false,
   }) {
     super({ characteristic: C.TO_HIT });
-    this.on = on;
-    this.mortalWounds = mortalWounds;
-    this.unmodified = unmodified;
-    this.inAddition = inAddition;
+    this.on = parseInt(on);
+    this.mortalWounds = parseInt(mortalWounds);
+    this.unmodified = Boolean(unmodified);
+    this.inAddition = Boolean(inAddition);
   }
 
   static get name() {
@@ -34,7 +34,7 @@ export default class MortalWounds extends BaseModifier {
       },
       mortalWounds: {
         type: 'number',
-        default: 6,
+        default: 1,
       },
       unmodified: {
         type: 'boolean',

@@ -5,9 +5,9 @@ import BaseModifier from './BaseModifier';
 export default class Exploding extends BaseModifier {
   constructor({ on = 6, extraHits = 1, unmodified = true }) {
     super({ characteristic: C.TO_HIT });
-    this.on = on;
-    this.extraHits = extraHits;
-    this.unmodified = unmodified;
+    this.on = parseInt(on);
+    this.extraHits = parseInt(extraHits);
+    this.unmodified = Boolean(unmodified);
   }
 
   static get name() {
@@ -31,7 +31,7 @@ export default class Exploding extends BaseModifier {
       },
       extraHits: {
         type: 'number',
-        default: '1',
+        default: 1,
       },
       unmodified: {
         type: 'boolean',

@@ -19,6 +19,10 @@ export class Dice {
   }
 }
 
+export const parseDice = (val) => {
+  return (val instanceof Dice) ? val : parseInt(val)
+}
+
 export const D3 = new Dice(3);
 export const D6 = new Dice(6);
 

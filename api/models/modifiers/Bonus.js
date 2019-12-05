@@ -4,7 +4,7 @@ import BaseModifier from './BaseModifier';
 export default class Bonus extends BaseModifier {
   constructor({ characteristic, bonus }) {
     super({ characteristic });
-    this.bonus = bonus;
+    this.bonus = parseInt(bonus);
   }
 
   static get name() {

@@ -1,17 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 import { ModifierManager, MODIFIERS as m } from './modifiers';
 import { Characteristics as C } from './../constants';
-import { D6, Dice } from './dice';
+import { D6, Dice, parseDice } from './dice';
 
 
 class WeaponProfile {
   constructor(numModels, attacks, toHit, toWound, rend, damage, modifiers = []) {
-    this.numModels = numModels;
-    this.attacks = attacks;
-    this.toHit = toHit;
-    this.toWound = toWound;
-    this.rend = rend;
-    this.damage = damage;
+    this.numModels = parseInt(numModels);
+    this.attacks = parseInt(attacks);
+    this.toHit = parseInt(toHit);
+    this.toWound = parseInt(toWound);
+    this.rend = parseInt(rend);
+    this.damage = parseDice(damage);
     this.modifiers = new ModifierManager(modifiers);
   }
 
@@ -42,6 +42,8 @@ class WeaponProfile {
   getDamage(unmodified = false) {
     let { damage } = this;
     if (damage instanceof Dice) damage = damage.average
+    else damage = parseInt(damage)
+
     if (!unmodified) damage += this.resolveModifier(m.BONUS, C.DAMAGE);
     return Math.max(damage, 0);
   }
@@ -64,7 +66,8 @@ class WeaponProfile {
   }
 
   averageDamage(target) {
-    const totalAttacks = this.numModels * this.getAttacks();
+    let totalAttacks = this.numModels * this.getAttacks();
+    totalAttacks += this.resolveModifier(m.LEADER_EXTRA_ATTACKS, C.ATTACKS)
     const avgDamage = this.resolveHits(target, 0);
     return avgDamage * totalAttacks;
   }
@@ -98,10 +101,7 @@ class WeaponProfile {
   }
 
   resolveDamage(target, successful, damage = 0) {
-    let damagePerSuccessful = this.getDamage();
-    if (damagePerSuccessful instanceof Dice) {
-      damagePerSuccessful = damagePerSuccessful.average;
-    }
+    const damagePerSuccessful = this.getDamage();
     return damage + (successful * damagePerSuccessful);
   }
 
