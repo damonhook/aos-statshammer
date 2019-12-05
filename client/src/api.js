@@ -2,9 +2,6 @@ import fetch from 'cross-fetch';
 import { fetchStatsPending, fetchStatsSuccess, fetchStatsError } from './actions/stats.action';
 import { fetchModifiersPending, fetchModifiersSuccess, fetchModifiersError } from './actions/modifiers.action';
 
-
-const API_INGRESS = 'http://localhost:5000';
-
 export const fetchStatsCompare = (units) => (dispatch) => {
   dispatch(fetchStatsPending());
   const data = {
@@ -13,7 +10,7 @@ export const fetchStatsCompare = (units) => (dispatch) => {
       weapon_profiles: unit.weapon_profiles.filter((profile) => profile.active),
     })),
   };
-  fetch(`${API_INGRESS}/stats/compare`, {
+  fetch('/api/compare', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -36,7 +33,7 @@ export const fetchStatsCompare = (units) => (dispatch) => {
 
 export const fetchModifiers = () => (dispatch) => {
   dispatch(fetchModifiersPending());
-  fetch(`${API_INGRESS}/modifiers`, {
+  fetch('/api/modifiers', {
     headers: {
       'Content-Type': 'application/json',
     },
