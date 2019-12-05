@@ -16,9 +16,14 @@ export default class Reroll extends BaseModifier {
   }
 
   resolve(owner) {
-    const numRerolls = D6.getInverseProbability(
+    return (this.numRerolls(owner) * D6.getProbability(
+      owner.getCharacteristic(this.characteristic),
+    ));
+  }
+
+  numRerolls(owner) {
+    return D6.getInverseProbability(
       owner.getCharacteristic(this.characteristic, false),
     );
-    return numRerolls * D6.getProbability(owner.getCharacteristic(this.characteristic));
   }
 }

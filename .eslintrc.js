@@ -5,7 +5,6 @@ module.exports = {
     'react/jsx-filename-extension': [1, {
       extensions: ['.js', '.jsx']
     }],
-    'react/prop-types': ['off'],
     'jsx-a11y/label-has-associated-control': ['off'],
     'camelcase': ['off'],
     'no-shadow': ['off'],

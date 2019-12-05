@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { IconButton, ButtonGroup, Tooltip } from '@material-ui/core';
 import { Edit, Delete, FileCopy } from '@material-ui/icons';
 import ControlMenu from './ControlMenu';
@@ -10,6 +11,17 @@ const HeaderButton = ({
     <IconButton size="small" onClick={onClick} disabled={disabled}>{icon}</IconButton>
   </Tooltip>
 );
+
+HeaderButton.defaultProps = {
+  disabled: false,
+};
+
+HeaderButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  icon: PropTypes.node.isRequired,
+  tooltip: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+};
 
 const ControlHeader = ({
   onEdit, onDelete, onCopy, extraItems, className,
@@ -23,5 +35,22 @@ const ControlHeader = ({
     </ButtonGroup>
   </div>
 );
+
+ControlHeader.defaultProps = {
+  onEdit: null,
+  onDelete: null,
+  onCopy: null,
+  extraItems: null,
+  className: null,
+};
+
+ControlHeader.propTypes = {
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+  onCopy: PropTypes.func,
+  extraItems: PropTypes.arrayOf(PropTypes.object),
+  /** CSS classname to give the component */
+  className: PropTypes.string,
+};
 
 export default ControlHeader;

@@ -89,7 +89,7 @@ class WeaponProfile {
 
   resolveWounds(target, hits, damage = 0) {
     let wounds = hits * D6.getProbability(this.getToWound());
-    wounds += this.resolveRerolls(C.TO_WOUND);
+    wounds += (hits * this.resolveRerolls(C.TO_WOUND));
     return this.resolveSaves(target, wounds, damage);
   }
 

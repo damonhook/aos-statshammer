@@ -10,7 +10,8 @@
         "server": "nodemon --exec babel-node server.js",
         "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
         "start": "babel-node server.js",
-        "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build"
+        "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
+        "test": "mocha -r esm api/tests"
     },
     "dependencies": {
         "@babel/cli": "^7.7.4",
@@ -24,7 +25,9 @@
         "eslint-plugin-import": "^2.18.2",
         "eslint-plugin-jsx-a11y": "^6.2.3",
         "eslint-plugin-react": "^7.17.0",
-        "express": "^4.16.4"
+        "esm": "^3.2.25",
+        "express": "^4.16.4",
+        "mocha": "^6.2.2"
     },
     "devDependencies": {
         "concurrently": "^4.0.1"

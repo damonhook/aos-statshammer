@@ -16,8 +16,13 @@ export default class RerollOnes extends BaseModifier {
   }
 
   resolve(owner) {
-    return (1 / D6.sides) * (
+    return this.numRerolls(owner) * (
       D6.getProbability(owner.getCharacteristic(this.characteristic))
     );
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  numRerolls(owner) {
+    return 1 / D6.sides;
   }
 }

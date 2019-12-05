@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
@@ -19,5 +20,17 @@ const CardHeader = ({ children, className, ...other }) => {
     </Typography>
   );
 };
+
+CardHeader.defaultProps = {
+  className: null,
+};
+
+CardHeader.propTypes = {
+  /** Child components to render inside the CardHeader */
+  children: PropTypes.node.isRequired,
+  /** CSS classname to give the component */
+  className: PropTypes.string,
+};
+
 
 export default CardHeader;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { ResponsiveContainer } from 'recharts';
@@ -23,6 +24,17 @@ const GraphContainer = ({ className, children }) => {
       </ResponsiveContainer>
     </div>
   );
+};
+
+GraphContainer.defaultProps = {
+  className: null,
+};
+
+GraphContainer.propTypes = {
+  /** Child components to render inside the Container */
+  children: PropTypes.node.isRequired,
+  /** CSS classname to give the component */
+  className: PropTypes.string,
 };
 
 

@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   modifiers: {
     flex: 1,
   },
+  actionButton: {},
 }));
 
 const ProfileDialog = ({
@@ -54,7 +55,7 @@ const ProfileDialog = ({
 }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [num_models, setNumModels] = useState(1);
   const [attacks, setAttacks] = useState(1);
@@ -100,10 +101,10 @@ const ProfileDialog = ({
       onClose={() => close()}
       fullWidth
       maxWidth="lg"
-      fullScreen={fullScreen}
+      fullScreen={mobile}
       scroll="paper"
     >
-      <ProfileTitle header={header} fullScreen={fullScreen} onClose={() => close()} />
+      <ProfileTitle header={header} fullScreen={mobile} onClose={() => close()} />
       <DialogContent dividers>
         <Typography component="div">
           <form className={classes.form} onSubmit={(e) => { submit(); e.preventDefault(); }}>
@@ -159,10 +160,22 @@ const ProfileDialog = ({
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button className={classes.actionButton} onClick={() => close()} color="secondary" variant="contained">
+        <Button
+          className={classes.actionButton}
+          size={mobile ? 'large' : 'medium'}
+          onClick={() => close()}
+          color="secondary"
+          variant="contained"
+        >
           Cancel
         </Button>
-        <Button className={classes.actionButton} onClick={() => submit()} color="primary" variant="contained">
+        <Button
+          className={classes.actionButton}
+          size={mobile ? 'large' : 'medium'}
+          onClick={() => submit()}
+          color="primary"
+          variant="contained"
+        >
           Confirm
         </Button>
       </DialogActions>

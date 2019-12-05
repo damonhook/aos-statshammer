@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
@@ -32,6 +33,21 @@ const BarGraph = ({
       </BarChart>
     </GraphContainer>
   );
+};
+
+BarGraph.defaultProps = {
+  className: null,
+};
+
+BarGraph.propTypes = {
+  /** The array of results to display in the graph */
+  results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /** An array containing the Unit names, used for the data key */
+  unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  /** CSS classname to give the component */
+  className: PropTypes.string,
+  /** An array of hex colors to use when generating the graph bars */
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default BarGraph;

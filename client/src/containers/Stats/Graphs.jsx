@@ -100,6 +100,7 @@ const GraphList = ({ stats, unitNames, graphList }) => {
 const Graphs = ({ stats, unitNames }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const large = useMediaQuery(theme.breakpoints.up('lg'));
 
   if (!stats.payload || !unitNames) {
     return null;
@@ -109,7 +110,7 @@ const Graphs = ({ stats, unitNames }) => {
     LineGraph, BarGraph, RadarGraph,
   ];
 
-  return mobile
+  return mobile || large
     ? (
       <GraphList
         stats={stats}

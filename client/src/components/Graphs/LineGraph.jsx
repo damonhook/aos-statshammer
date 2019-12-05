@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
@@ -33,5 +34,21 @@ const LineGraph = ({
     </GraphContainer>
   );
 };
+
+LineGraph.defaultProps = {
+  className: null,
+};
+
+LineGraph.propTypes = {
+  /** The array of results to display in the graph */
+  results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /** An array containing the Unit names, used for the data key */
+  unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  /** CSS classname to give the component */
+  className: PropTypes.string,
+  /** An array of hex colors to use when generating the graph lines */
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
 
 export default LineGraph;

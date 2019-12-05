@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   RadarChart,
   Radar,
@@ -45,5 +46,21 @@ const RadarGraph = ({
     </GraphContainer>
   );
 };
+
+RadarGraph.defaultProps = {
+  className: null,
+};
+
+RadarGraph.propTypes = {
+  /** The array of results to display in the graph */
+  results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /** An array containing the Unit names, used for the data key */
+  unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  /** CSS classname to give the component */
+  className: PropTypes.string,
+  /** An array of hex colors to use when generating the graph radars */
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
 
 export default RadarGraph;
