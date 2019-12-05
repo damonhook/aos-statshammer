@@ -48,15 +48,17 @@ const LoadableWrapper = ({ loading, children, numUnits }) => {
 
 const GraphTabbed = ({ stats, unitNames, graphList }) => {
   const classes = useStyles();
+  const tabNames = ['Line Graph', 'Bar Graph', 'Radar Graph'];
 
   return (
     <Tabbed
       className={`${classes.graphContainer}`}
-      tabNames={['Line Graph', 'Bar Graph', 'Radar Graph']}
-      tabContent={graphList.map((Graph) => (
+      tabNames={tabNames}
+      tabContent={graphList.map((Graph, index) => (
         <LoadableWrapper
           loading={(!stats.payload || !stats.payload.length) && stats.pending}
           numUnits={unitNames.length}
+          key={tabNames[index]}
         >
           <Graph
             className={classes.content}

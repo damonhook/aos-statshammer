@@ -31,13 +31,17 @@ const FormField = ({
   if (endAdornment) {
     inputProps.endAdornment = <InputAdornment position="end">{endAdornment}</InputAdornment>;
   }
+  const error = (!value || value === '');
 
   return (
     <TextField
       className={clsx(classes.field, className)}
       variant="outlined"
+      type="number"
       label={label}
       value={value}
+      error={error}
+      helperText={error ? 'required' : null}
       InputProps={inputProps}
       onChange={(event) => onChange(event.target.value)}
     />

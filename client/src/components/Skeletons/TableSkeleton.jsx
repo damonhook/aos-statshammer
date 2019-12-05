@@ -46,9 +46,11 @@ const TableSkeleton = ({
     <Card className={clsx(className)} square>
       <CardContent className={classes.content}>
         <Skeleton variant="rect" className={clsx(cName, classes.header)} />
-        {[...Array(rows)].map((rowKey) => (
-          <Typography className={classes.row} key={rowKey}>
-            {[...Array(cols)].map((colKey) => (
+        {[...Array(rows)].map((_, rowKey) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Typography className={classes.row} key={rowKey} component="div">
+            {[...Array(cols)].map((_, colKey) => (
+              // eslint-disable-next-line react/no-array-index-key
               <Skeleton variant="text" className={clsx(cName, classes.col)} key={colKey} />
             ))}
           </Typography>

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile } from 'actions/units.action';
+import {
+  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
+} from 'actions/weaponProfiles.action';
 import ProfileDialog from 'containers/ProfileDialog';
 import { Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';

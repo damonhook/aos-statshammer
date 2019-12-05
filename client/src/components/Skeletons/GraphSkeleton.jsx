@@ -45,9 +45,11 @@ const GraphSkeleton = ({
 
   return (
     <div className={clsx(className, classes.root)}>
-      {[...Array(series)].map((seriesKey) => (
+      {[...Array(series)].map((_, seriesKey) => (
+        // eslint-disable-next-line react/no-array-index-key
         <div className={classes.series} key={seriesKey}>
-          {[...Array(groups)].map((groupKey) => (
+          {[...Array(groups)].map((_, groupKey) => (
+            // eslint-disable-next-line react/no-array-index-key
             <div className={classes.group} key={groupKey}>
               <Skeleton
                 variant="rect"

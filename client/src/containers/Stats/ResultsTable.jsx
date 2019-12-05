@@ -35,7 +35,7 @@ const ResultsTable = ({ stats, unitNames, className }) => {
           <TableRow>
             <TableCell>Save</TableCell>
             {unitNames.map((name) => (
-              <TableCell align="right">{name}</TableCell>
+              <TableCell align="right" key={name}>{name}</TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -43,7 +43,8 @@ const ResultsTable = ({ stats, unitNames, className }) => {
           {stats.payload.map((result) => {
             const { save, ...unitResults } = result;
             return (
-              <TableRow>
+              // eslint-disable-next-line react/no-array-index-key
+              <TableRow key={save}>
                 <TableCell>{save && save !== 'None' ? `${save}+` : '-'}</TableCell>
                 {unitNames.map((name) => (
                   <TableCell key={name} align="right">{unitResults[name]}</TableCell>

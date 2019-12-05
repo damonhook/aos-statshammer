@@ -64,7 +64,14 @@ const Tabbed = ({
         className={classes.swiper}
       >
         {tabContent.map((content, index) => (
-          <TabPanel value={value} index={index} className={content} dir={theme.direction}>
+          <TabPanel
+            value={value}
+            index={index}
+            className={content}
+            dir={theme.direction}
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+          >
             {content}
           </TabPanel>
         ))}

@@ -3,7 +3,7 @@ import {
   Button, Typography, Dialog, DialogContent, useMediaQuery, DialogActions,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { editWeaponProfile } from 'actions/units.action';
+import { editWeaponProfile } from 'actions/weaponProfiles.action';
 import ModifierList from 'components/ModifierList';
 import { fetchModifiers } from 'api';
 import { bindActionCreators } from 'redux';
@@ -110,7 +110,7 @@ const ProfileDialog = ({
               <div className={clsx(classes.formSection, classes.characteristics)}>
                 <FormField
                   className={classes.field}
-                  label="Number of models"
+                  label="# Models"
                   value={num_models}
                   onChange={setNumModels}
                 />

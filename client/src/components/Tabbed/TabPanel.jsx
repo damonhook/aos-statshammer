@@ -1,6 +1,7 @@
 import React from 'react';
 import { Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 
 const useStyles = makeStyles({
   panel: {},
@@ -8,13 +9,13 @@ const useStyles = makeStyles({
 });
 
 const TabPanel = ({
-  children, value, index, ...other
+  children, value, index, className, ...other
 }) => {
   const classes = useStyles();
   return (
     <Typography
       component="div"
-      className={classes.panel}
+      className={clsx(classes.panel, className)}
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}

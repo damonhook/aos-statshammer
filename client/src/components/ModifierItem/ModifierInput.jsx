@@ -56,7 +56,7 @@ const ModifierInput = ({
             />
           )}
           label={name}
-          labelPlacement="start"
+          labelPlacement="end"
         />
       );
     default:
@@ -66,6 +66,7 @@ const ModifierInput = ({
           name={name}
           className={classes.modifierInput}
           fullWidth
+          type="number"
           variant="outlined"
           value={val}
           {...errorProps}

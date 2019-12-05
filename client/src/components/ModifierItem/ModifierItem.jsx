@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     display: 'flex',
     flexWrap: 'wrap',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   modifierDescription: {
     color: 'darkgray',

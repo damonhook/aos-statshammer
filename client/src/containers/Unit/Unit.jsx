@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import WeaponProfile from 'components/WeaponProfile';
 import { connect } from 'react-redux';
 import {
-  addWeaponProfile,
   deleteUnit,
   editUnitName,
   addUnit,
 } from 'actions/units.action';
+import { addWeaponProfile } from 'actions/weaponProfiles.action';
 import ListItem from 'components/ListItem';
 import { TextField, Button } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
@@ -47,6 +47,7 @@ const Unit = ({
   };
 
   const addProfileEnabled = unit.weapon_profiles.length < MAX_PROFILES;
+  const unitNameError = (!unit.name || unit.name === '');
 
   return (
     <div ref={unitRef}>
@@ -62,6 +63,8 @@ const Unit = ({
           label="Unit Name"
           value={unit.name}
           onChange={(event) => editUnitName(id, event.target.value)}
+          error={unitNameError}
+          helperText={unitNameError ? 'required' : null}
           fullWidth
         />
         <div className={classes.profiles}>

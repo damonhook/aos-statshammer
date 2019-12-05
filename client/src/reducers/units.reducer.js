@@ -1,63 +1,37 @@
 import uuid from 'uuid/v4';
-import {
-  TOGGLE_WEAPON_PROFILE, EDIT_WEAPON_PROFILE, ADD_WEAPON_PROFILE, DELETE_WEAPON_PROFILE,
-  ADD_UNIT, DELETE_UNIT, EDIT_UNIT_NAME,
-} from '../actions/units.action';
+import { ADD_UNIT, DELETE_UNIT, EDIT_UNIT_NAME } from '../actions/units.action';
+import { DEFAULT_WEAPON_PROFILE } from '../actions/weaponProfiles.action';
+import weaponProfilesReducer from './weaponProfiles.reducer';
+import { updateItemInArray } from './helpers';
 
 const DEFAULT_UNIT = {
   name: 'Unit 1',
-  weapon_profiles: [
-    {
-      active: true,
-      num_models: 10,
-      attacks: 2,
-      to_hit: 3,
-      to_wound: 4,
-      rend: 1,
-      damage: 1,
-      modifiers: [],
-    },
-  ],
+  weapon_profiles: [{
+    ...DEFAULT_WEAPON_PROFILE,
+    uuid: uuid(),
+  }],
 };
 
-const updateItemInArray = (array, index, callback) => array.map((item, i) => {
-  if (i === index) {
-    return callback(item);
-  }
-  return item;
-});
+const INITIAL_STATE = [{ ...DEFAULT_UNIT, uuid: uuid() }];
 
-const addWeaponProfile = (state, action) => [
+const addUnit = (state, action) => [
   ...state,
-  { ...action.profile, uuid: uuid() },
+  {
+    ...action.unit,
+    uuid: uuid(),
+    weapon_profiles: action.unit.weapon_profiles.map((profile) => ({
+      ...profile,
+      uuid: uuid(),
+    })),
+  },
 ];
 
-const toggleWeaponProfile = (state, action) => updateItemInArray(state, action.id, (profile) => ({
-  ...profile,
-  active: !profile.active,
+const deleteUnit = (state, action) => state.filter((_, index) => index !== action.unitId);
+
+const editUnitName = (state, action) => updateItemInArray(state, action.unitId, (unit) => ({
+  ...unit,
+  name: action.name,
 }));
-
-const editWeaponProfile = (state, action) => updateItemInArray(state, action.id, (profile) => ({
-  ...profile,
-  ...action.profile,
-}));
-
-const deleteWeaponProfile = (state, action) => state.filter((_, index) => index !== action.id);
-
-const weaponProfilesReducer = (state, action) => {
-  switch (action.type) {
-    case TOGGLE_WEAPON_PROFILE:
-      return toggleWeaponProfile(state, action);
-    case EDIT_WEAPON_PROFILE:
-      return editWeaponProfile(state, action);
-    case ADD_WEAPON_PROFILE:
-      return addWeaponProfile(state, action);
-    case DELETE_WEAPON_PROFILE:
-      return deleteWeaponProfile(state, action);
-    default:
-      return state;
-  }
-};
 
 const unitReducer = (state, action) => {
   switch (action.type) {
@@ -69,25 +43,14 @@ const unitReducer = (state, action) => {
   }
 };
 
-const INITIAL_STATE = [{ ...DEFAULT_UNIT, uuid: uuid() }];
-
 const unitsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_UNIT:
-      return [
-        ...state,
-        {
-          ...action.unit,
-          uuid: uuid(),
-        },
-      ];
+      return addUnit(state, action);
     case DELETE_UNIT:
-      return state.filter((_, index) => index !== action.unitId);
+      return deleteUnit(state, action);
     case EDIT_UNIT_NAME:
-      return updateItemInArray(state, action.unitId, (unit) => ({
-        ...unit,
-        name: action.name,
-      }));
+      return editUnitName(state, action);
     default:
       if (action && typeof action.unitId === 'number') {
         return state.map((unit, index) => {

@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     padding: '1em',
   },
   mobile: {
-    paddingBottom: '4em',
+    paddingBottom: '76px',
   },
 });
 
