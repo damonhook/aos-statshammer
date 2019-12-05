@@ -1,21 +1,23 @@
 {
-  "name": "statshammer-express",
-  "version": "0.1.0",
-  "scripts": {
-    "client": "cd client && yarn start",
-    "server": "nodemon --exec babel-node server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
-  },
-  "dependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/node": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "@babel/register": "^7.7.4",
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4"
-  },
-  "devDependencies": {
-    "concurrently": "^4.0.1"
-  }
+    "name": "statshammer-express",
+    "version": "0.1.0",
+    "scripts": {
+        "client": "cd client && yarn start",
+        "server": "nodemon --exec babel-node server.js",
+        "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+        "start": "babel-node server.js",
+        "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    },
+    "dependencies": {
+        "@babel/cli": "^7.7.4",
+        "@babel/core": "^7.7.4",
+        "@babel/node": "^7.7.4",
+        "@babel/preset-env": "^7.7.4",
+        "@babel/register": "^7.7.4",
+        "body-parser": "^1.18.3",
+        "express": "^4.16.4"
+    },
+    "devDependencies": {
+        "concurrently": "^4.0.1"
+    }
 }
