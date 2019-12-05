@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import path from 'path';
 
 import { getModifiers } from './api/controllers/modifiersController';
 import { compareUnits } from "./api/controllers/statsController";
