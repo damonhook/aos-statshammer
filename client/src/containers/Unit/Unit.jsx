@@ -12,6 +12,7 @@ import { TextField, Button } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { MAX_PROFILES } from 'appConstants';
+import clsx from 'clsx';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Unit = ({
-  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit,
+  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit, addUnitEnabled, className,
 }) => {
   const unitRef = useRef(null);
   const classes = useStyles();
@@ -45,15 +46,15 @@ const Unit = ({
     a.click();
   };
 
-  const addProfileDisabled = unit.weapon_profiles.length >= MAX_PROFILES;
+  const addProfileEnabled = unit.weapon_profiles.length < MAX_PROFILES;
 
   return (
     <div ref={unitRef}>
       <ListItem
-        className={classes.unit}
+        className={clsx(classes.unit, className)}
         header={`Unit (${unit.name})`}
         onDelete={() => deleteUnit(id)}
-        onCopy={addProfileDisabled ? 'disabled' : () => addUnit(`${unit.name} copy`, [...unit.weapon_profiles])}
+        onCopy={addUnitEnabled ? () => addUnit(`${unit.name} copy`, [...unit.weapon_profiles]) : 'disabled'}
         extraItems={[{ name: 'Export', onClick: exportUnit }]}
         collapsible
       >
@@ -67,7 +68,13 @@ const Unit = ({
           {unit
             && unit.weapon_profiles
             && unit.weapon_profiles.map((profile, index) => (
-              <WeaponProfile unitId={id} id={index} profile={profile} key={profile.uuid} />
+              <WeaponProfile
+                unitId={id}
+                id={index}
+                profile={profile}
+                key={profile.uuid}
+                addProfileEnabled={addProfileEnabled}
+              />
             ))}
         </div>
         <Button
@@ -76,7 +83,7 @@ const Unit = ({
           startIcon={<Add />}
           variant="contained"
           color="primary"
-          disabled={addProfileDisabled}
+          disabled={!addProfileEnabled}
           fullWidth
         >
           Add Profile

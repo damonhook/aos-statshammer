@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
+import { MAX_MODIFIERS } from 'appConstants';
 
 const useStyles = makeStyles({
   modifierList: {
@@ -79,7 +80,10 @@ const ModifierList = ({ modifiers, setModifiers }) => {
           </div>
         )
         : null}
-      <ModifierSelector onClick={addModifier} />
+      <ModifierSelector
+        onClick={addModifier}
+        disabled={modifiers && modifiers.length >= MAX_MODIFIERS}
+      />
     </Typography>
   );
 };

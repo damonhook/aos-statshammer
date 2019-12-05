@@ -4,6 +4,7 @@ import Unit from 'containers/Unit';
 import { addUnit } from 'actions/units.action';
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { MAX_UNITS } from 'appConstants';
 import AddUnitButton from './AddUnitButton';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,11 +22,12 @@ const Units = ({ units, addUnit }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const addUnitEnabled = units.length < MAX_UNITS;
 
   return (
     <div className={classes.units}>
       {units.map((unit, index) => (
-        <Unit unit={unit} id={index} key={unit.uuid} />
+        <Unit unit={unit} id={index} key={unit.uuid} addUnitEnabled={addUnitEnabled} />
       ))}
       {!mobile && <AddUnitButton units={units} addUnit={addUnit} />}
     </div>

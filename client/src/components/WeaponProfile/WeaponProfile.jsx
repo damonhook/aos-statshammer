@@ -32,7 +32,8 @@ const useStyles = makeStyles({
 });
 
 const WeaponProfile = ({
-  unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
+  unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile,
+  addWeaponProfile, addProfileEnabled,
 }) => {
   const classes = useStyles();
   const profileRef = useRef(null);
@@ -49,7 +50,7 @@ const WeaponProfile = ({
         header="Weapon Profile"
         onEdit={() => setOpen(true)}
         onDelete={() => deleteWeaponProfile(id, unitId)}
-        onCopy={() => addWeaponProfile(unitId, { ...profile })}
+        onCopy={addProfileEnabled ? () => addWeaponProfile(unitId, { ...profile }) : 'disabled'}
         collapsible
       >
         <div className={classes.content}>

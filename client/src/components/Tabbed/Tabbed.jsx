@@ -14,6 +14,9 @@ const useStyles = makeStyles({
   content: {
     flexGrow: 1,
   },
+  swiper: {
+    height: '100%',
+  },
 });
 
 function a11yProps(index) {
@@ -58,6 +61,7 @@ const Tabbed = ({
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleSwipe}
+        className={classes.swiper}
       >
         {tabContent.map((content, index) => (
           <TabPanel value={value} index={index} className={content} dir={theme.direction}>

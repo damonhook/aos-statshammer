@@ -13,7 +13,7 @@ const applyMapping = (mapping, results) => (
   }, { save: result.save }))
 );
 
-const Stats = ({ units, stats }) => {
+const Stats = ({ units, stats, className }) => {
   const [unitNames, setUnitNames] = useState(units.map(({ name }) => name));
   const [unitMapping, setUnitMapping] = useState({});
   const [results, setResults] = useState(null);
@@ -38,7 +38,7 @@ const Stats = ({ units, stats }) => {
   }, [unitMapping, stats]);
 
   return (
-    <Results stats={{ ...stats, payload: results }} unitNames={unitNames} />
+    <Results stats={{ ...stats, payload: results }} unitNames={unitNames} className={className} />
   );
 };
 

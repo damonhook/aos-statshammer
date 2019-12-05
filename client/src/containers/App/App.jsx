@@ -4,12 +4,19 @@ import AppBar from 'components/AppBar';
 import { basicTheme } from 'themes';
 import { useMediaQuery } from '@material-ui/core';
 import StoreSubscriber from 'components/StoreSubscriber';
+import Footer from 'components/Footer';
 import DesktopAppContent from './DesktopAppContent';
 import MobileAppContent from './MobileAppContent';
 
 const useStyles = makeStyles(() => ({
   app: {
     fontFamily: '"Roboto", sans-serif',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  container: {
+    flex: 1,
   },
 }));
 
@@ -21,9 +28,12 @@ const App = () => {
   return (
     <ThemeProvider theme={basicTheme}>
       <div className={classes.app}>
-        <AppBar title="Statshammer" />
+        <AppBar title="AoS Statshammer" />
         <StoreSubscriber />
-        {mobile ? <MobileAppContent /> : <DesktopAppContent />}
+        {mobile
+          ? <MobileAppContent className={classes.container} />
+          : <DesktopAppContent className={classes.container} />}
+        <Footer />
       </div>
     </ThemeProvider>
   );

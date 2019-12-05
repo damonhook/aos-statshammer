@@ -2,6 +2,7 @@ import React from 'react';
 import Units from 'containers/Units';
 import Stats from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,11 +32,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DesktopAppContent = () => {
+const DesktopAppContent = ({ className }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.container}>
+    <div className={clsx(classes.container, className)}>
       <Units />
       <div className={classes.separator} />
       <Stats />

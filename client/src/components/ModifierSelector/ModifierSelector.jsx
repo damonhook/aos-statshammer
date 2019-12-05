@@ -12,7 +12,7 @@ const useStyles = makeStyles({
 
 
 const ModifierSelector = ({
-  modifiers, pending, error, onClick,
+  modifiers, pending, error, onClick, disabled,
 }) => {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
@@ -55,6 +55,7 @@ const ModifierSelector = ({
             onClick={() => setOpen(true)}
             startIcon={<Add />}
             color="primary"
+            disabled={disabled}
           >
             Add Modifier
           </Button>

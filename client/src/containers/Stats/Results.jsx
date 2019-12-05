@@ -12,6 +12,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     flexGrow: 1,
     flexBasis: 0,
+    height: '100%',
   },
 });
 

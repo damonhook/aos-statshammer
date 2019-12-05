@@ -44,7 +44,7 @@ const ControlMenu = ({
         onClose={handleClose}
       >
         {onEdit && <MenuItem onClick={() => menuItemClick(onEdit)}>Edit</MenuItem>}
-        {onCopy && <MenuItem onClick={() => menuItemClick(onCopy)}>Copy</MenuItem>}
+        {onCopy && <MenuItem onClick={() => menuItemClick(onCopy)} disabled={onCopy === 'disabled'}>Copy</MenuItem>}
         {onDelete && <MenuItem onClick={() => menuItemClick(onDelete)}>Delete</MenuItem>}
         {hasDivider && <Divider />}
         {extraItems && extraItems.map(({ name, onClick }) => (
