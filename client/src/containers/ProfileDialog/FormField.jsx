@@ -31,7 +31,7 @@ const FormField = ({
   if (endAdornment) {
     inputProps.endAdornment = <InputAdornment position="end">{endAdornment}</InputAdornment>;
   }
-  const error = (!value || value === '');
+  const error = (value == null || value === '');
 
   return (
     <TextField
