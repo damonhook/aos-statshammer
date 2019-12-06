@@ -47,7 +47,7 @@ const WeaponProfile = ({
   }, [id]);
 
   const handleDelete = (id, unitId) => {
-    addNotification({ message: 'Delete Profile' });
+    addNotification({ message: 'Deleted Profile' });
     deleteWeaponProfile(id, unitId);
   };
 
