@@ -228,7 +228,11 @@ const modifiers = {
   ],
 };
 
-export const initialState = { units, stats, modifiers };
+const notifications = [];
+
+export const initialState = {
+  units, stats, modifiers, notifications,
+};
 
 export const store = configureStore(initialState);
 

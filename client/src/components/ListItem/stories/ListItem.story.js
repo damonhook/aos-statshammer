@@ -24,6 +24,7 @@ storiesOf('Components/ListItem', module)
     const editEnabled = boolean('Edit Enabled', true);
     const deleteEnabled = boolean('Delete Enabled', true);
     const copyEnabled = boolean('Copy Enabled', true);
+    const swipeEnabled = boolean('Swipe Enabled', true);
 
     return (
       <ListItem
@@ -32,6 +33,7 @@ storiesOf('Components/ListItem', module)
         onEdit={editEnabled ? () => {} : null}
         onDelete={deleteEnabled ? () => {} : null}
         onCopy={copyEnabled ? () => {} : null}
+        onSwipe={swipeEnabled ? () => {}: null}
       >
         <div>{lorem}</div>
       </ListItem>

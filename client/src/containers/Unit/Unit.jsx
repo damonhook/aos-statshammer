@@ -10,6 +10,7 @@ import { Add } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { MAX_PROFILES } from 'appConstants';
 import clsx from 'clsx';
+import NoItemsCard from 'components/NoItemsCard';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,9 +73,8 @@ const Unit = ({
           fullWidth
         />
         <div className={classes.profiles}>
-          {unit
-            && unit.weapon_profiles
-            && unit.weapon_profiles.map((profile, index) => (
+          {(unit && unit.weapon_profiles && unit.weapon_profiles.length)
+            ? unit.weapon_profiles.map((profile, index) => (
               <WeaponProfile
                 unitId={id}
                 id={index}
@@ -82,7 +82,14 @@ const Unit = ({
                 key={profile.uuid}
                 addProfileEnabled={addProfileEnabled}
               />
-            ))}
+            ))
+            : (
+              <NoItemsCard
+                header="No Profiles"
+                body="No profiles have been added for this unit"
+                dense
+              />
+            )}
         </div>
         <Button
           onClick={() => addWeaponProfile(id)}

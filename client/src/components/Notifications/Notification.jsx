@@ -7,6 +7,8 @@ import {
 import { connect } from 'react-redux';
 import { dismissNotification } from 'actions/notifications.action';
 import clsx from 'clsx';
+import { amber, green } from '@material-ui/core/colors';
+import { SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
 
 const variantIcon = {
   success: CheckCircle,
@@ -25,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'nowrap',
   },
   success: {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.getContrastText(theme.palette.primary.light),
+    backgroundColor: green[600],
+    color: theme.palette.getContrastText(green[600]),
 
     '& $icon': {
-      color: theme.palette.getContrastText(theme.palette.primary.light),
+      color: theme.palette.getContrastText(green[600]),
     },
   },
   error: {
@@ -49,11 +51,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   warning: {
-    backgroundColor: theme.palette.secondary.light,
-    color: theme.palette.getContrastText(theme.palette.secondary.light),
+    backgroundColor: amber[500],
+    color: theme.palette.getContrastText(amber[500]),
 
     '& $icon': {
-      color: theme.palette.getContrastText(theme.palette.secondary.light),
+      color: theme.palette.getContrastText(amber[500]),
     },
   },
   icon: {
@@ -69,39 +71,57 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Notification = ({ notification, dismissNotification, variant = 'info' }) => {
+const Notification = ({
+  message, notificationId, dismissNotification, variant = 'info', timeout = 4000,
+}) => {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const Icon = variantIcon[variant];
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') return;
+    if (reason === 'swipeaway') {
+      dismissNotification(notificationId);
+      return;
+    }
     setOpen(false);
-    setTimeout(() => dismissNotification(notification.key), 500);
+    setTimeout(() => dismissNotification(notificationId), 500);
   };
 
   return (
-    <Snackbar
-      className={classes.notification}
-      open={open}
-      onClose={handleClose}
-      autoHideDuration={4000}
+    <SwipeableListItem
+      swipeRight={{
+        content: <span />,
+        action: (event) => handleClose(event, 'swipeaway'),
+      }}
+      swipeLeft={{
+        content: <span />,
+        action: (event) => handleClose(event, 'swipeaway'),
+      }}
+      threshold={0.3}
     >
-      <SnackbarContent
-        className={clsx(classes.content, classes[variant])}
-        message={(
-          <span className={classes.message}>
-            <Icon className={clsx(classes.icon, classes.iconVariant)} />
-            {notification.message}
-          </span>
-        )}
-        action={[
-          <IconButton key="close" onClick={handleClose}>
-            <Close className={classes.icon} />
-          </IconButton>,
-        ]}
-      />
-    </Snackbar>
+      <Snackbar
+        className={classes.notification}
+        open={open}
+        onClose={handleClose}
+        autoHideDuration={timeout}
+      >
+        <SnackbarContent
+          className={clsx(classes.content, classes[variant])}
+          message={(
+            <span className={classes.message}>
+              <Icon className={clsx(classes.icon, classes.iconVariant)} />
+              {message}
+            </span>
+          )}
+          action={[
+            <IconButton key="close" onClick={handleClose}>
+              <Close className={classes.icon} />
+            </IconButton>,
+          ]}
+        />
+      </Snackbar>
+    </SwipeableListItem>
   );
 };
 

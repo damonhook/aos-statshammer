@@ -40,11 +40,27 @@ const WeaponProfile = ({
 }) => {
   const classes = useStyles();
   const profileRef = useRef(null);
+  const hash = `#edit-${profile.uuid || id}`;
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(window.location.hash === hash);
+
   useEffect(() => {
     if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [id]);
+
+  useEffect(() => {
+    const onHashChange = () => setOpen(window.location.hash === hash);
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  });
+
+  const handleOpen = () => {
+    window.location.hash = hash;
+  };
+
+  const handleClose = () => {
+    window.history.back();
+  };
 
   const handleDelete = (id, unitId) => {
     addNotification({ message: 'Deleted Profile' });
@@ -56,7 +72,7 @@ const WeaponProfile = ({
       <ListItem
         className={clsx(classes.profile, profile.active ? '' : classes.inactive)}
         header="Weapon Profile"
-        onEdit={() => setOpen(true)}
+        onEdit={handleOpen}
         onDelete={() => handleDelete(id, unitId)}
         onCopy={addProfileEnabled ? () => addWeaponProfile(unitId, { ...profile }) : 'disabled'}
         collapsible
@@ -67,14 +83,14 @@ const WeaponProfile = ({
             onChange={() => toggleWeaponProfile(id, unitId)}
             checked={profile.active}
           />
-          <div className={classes.details} onClick={() => setOpen(true)} role="button">
+          <div className={classes.details} onClick={handleOpen} role="button">
             <Characteristics profile={profile} />
             <ModifierSummary modifiers={profile.modifiers} />
           </div>
         </div>
         <ProfileDialog
           open={open}
-          close={() => setOpen(false)}
+          close={handleClose}
           unitId={unitId}
           id={id}
           header="Edit Profile"

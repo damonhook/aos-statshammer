@@ -6,6 +6,7 @@ import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { MAX_UNITS } from 'appConstants';
 import clsx from 'clsx';
+import NoItemsCard from 'components/NoItemsCard';
 import AddUnitButton from './AddUnitButton';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       marginBottom: '4em',
     },
+    overflowX: 'hidden',
   },
 }));
 
@@ -27,6 +29,8 @@ const Units = ({ units, addUnit, className }) => {
 
   return (
     <div className={clsx(classes.units, className)}>
+      {(!units || !units.length)
+        && <NoItemsCard header="It's lonely here" body="There are no units here, try adding some" />}
       {units.map((unit, index) => (
         <Unit unit={unit} id={index} key={unit.uuid} addUnitEnabled={addUnitEnabled} />
       ))}

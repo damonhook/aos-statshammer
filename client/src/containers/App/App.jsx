@@ -6,6 +6,11 @@ import { useMediaQuery } from '@material-ui/core';
 import StoreSubscriber from 'components/StoreSubscriber';
 import Footer from 'components/Footer';
 import Notifications from 'components/Notifications';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
 import DesktopAppContent from './DesktopAppContent';
 import MobileAppContent from './MobileAppContent';
 
@@ -28,17 +33,23 @@ const App = () => {
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <ThemeProvider theme={basicTheme}>
-      <div className={classes.app}>
-        <AppBar title="AoS Statshammer" />
-        <StoreSubscriber />
-        {mobile
-          ? <MobileAppContent className={classes.container} />
-          : <DesktopAppContent className={classes.container} />}
-        <Notifications />
-        <Footer />
-      </div>
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider theme={basicTheme}>
+        <Switch>
+          <Route path="/">
+            <div className={classes.app}>
+              <AppBar title="AoS Statshammer" />
+              <StoreSubscriber />
+              {mobile
+                ? <MobileAppContent className={classes.container} />
+                : <DesktopAppContent className={classes.container} />}
+              <Notifications />
+              <Footer />
+            </div>
+          </Route>
+        </Switch>
+      </ThemeProvider>
+    </Router>
   );
 };
 

@@ -54,3 +54,4 @@
 * [x] Deploy to Heroku
 * [x] Footer with disclaimer
 * [ ] Write Unit State to URL
+* [ ] Use Router to close Dialogs with back button

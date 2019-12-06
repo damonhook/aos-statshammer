@@ -29,7 +29,8 @@ const Notifications = ({ notifications }) => {
     <div className={clsx(classes.notifications, mobile ? classes.mobile : '')}>
       {notifications.map((notification) => (
         <Notification
-          notification={notification}
+          message={notification.message}
+          notificationId={notification.key}
           key={notification.key}
           variant={notification.variant}
         />

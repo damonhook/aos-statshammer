@@ -19,5 +19,9 @@ module.exports = {
         "moduleDirectory": ["node_modules", "src/"]
       }
     }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
   }
 }
