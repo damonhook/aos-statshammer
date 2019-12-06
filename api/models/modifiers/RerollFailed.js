@@ -16,7 +16,7 @@ export default class RerollFailed extends BaseModifier {
   }
 
   resolve(owner) {
-    return this.numRerolls() * D6.getProbability(
+    return this.numRerolls(owner) * D6.getProbability(
       owner.getCharacteristic(this.characteristic),
     );
   }
