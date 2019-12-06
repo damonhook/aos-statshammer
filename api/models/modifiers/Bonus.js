@@ -1,10 +1,10 @@
-import { Characteristics as C } from './../../constants';
+import { Characteristics as C } from '../../constants';
 import BaseModifier from './BaseModifier';
 
 export default class Bonus extends BaseModifier {
   constructor({ characteristic, bonus }) {
     super({ characteristic });
-    this.bonus = parseInt(bonus);
+    this.bonus = Number(bonus);
   }
 
   static get name() {

@@ -65,9 +65,6 @@ const ProfileDialog = ({
   const [modifiers, setModifiers] = useState([]);
 
   useEffect(() => {
-    if (!fetchedModifiers || !fetchModifiers.length) {
-      fetchModifiers();
-    }
     if (open) {
       setNumModels(profile.num_models);
       setAttacks(profile.attacks);
@@ -77,7 +74,13 @@ const ProfileDialog = ({
       setDamage(profile.damage);
       setModifiers(profile.modifiers);
     }
-  }, [open]);
+  }, [open, profile]);
+
+  useEffect(() => {
+    if (!fetchedModifiers || !fetchedModifiers.length) {
+      fetchModifiers();
+    }
+  }, [fetchedModifiers, fetchModifiers]);
 
   const getProfile = () => ({
     num_models, attacks, to_hit, to_wound, rend, damage, modifiers,

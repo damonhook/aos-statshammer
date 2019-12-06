@@ -1,11 +1,11 @@
-import { Characteristics as C } from './../../constants';
+import { Characteristics as C } from '../../constants';
 import BaseModifier from './BaseModifier';
 
 export default class LeaderExtraAttacks extends BaseModifier {
   constructor({ numLeaders = 1, bonus = 1 }) {
-    super({characteristic: C.ATTACKS});
-    this.numLeaders = parseInt(numLeaders);
-    this.bonus = parseInt(bonus);
+    super({ characteristic: C.ATTACKS });
+    this.numLeaders = Number(numLeaders);
+    this.bonus = Number(bonus);
   }
 
   static get name() {

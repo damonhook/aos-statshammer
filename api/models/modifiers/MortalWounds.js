@@ -1,5 +1,5 @@
-import { Characteristics as C } from './../../constants';
-import { D6, Dice } from './../../models/dice';
+import { Characteristics as C } from '../../constants';
+import { D6, Dice } from '../dice';
 import BaseModifier from './BaseModifier';
 
 export default class MortalWounds extends BaseModifier {
@@ -7,8 +7,8 @@ export default class MortalWounds extends BaseModifier {
     on = 6, mortalWounds = 1, unmodified = true, inAddition = false,
   }) {
     super({ characteristic: C.TO_HIT });
-    this.on = parseInt(on);
-    this.mortalWounds = parseInt(mortalWounds);
+    this.on = Number(on);
+    this.mortalWounds = Number(mortalWounds);
     this.unmodified = Boolean(unmodified);
     this.inAddition = Boolean(inAddition);
   }

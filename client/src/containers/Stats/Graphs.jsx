@@ -3,8 +3,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Tabbed from 'components/Tabbed';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
 import GraphSkeleton from 'components/Skeletons/GraphSkeleton';
-import { useMediaQuery, Typography } from '@material-ui/core';
-import clsx from 'clsx';
+import { useMediaQuery, Typography, Paper } from '@material-ui/core';
+import ListItem from 'components/ListItem';
 
 const useStyles = makeStyles({
   graphContainer: {},
@@ -13,12 +13,6 @@ const useStyles = makeStyles({
     paddingTop: '2em',
     overflow: 'hidden',
     flexBasis: '50%',
-  },
-  mobileContent: {
-    paddingTop: '1em',
-  },
-  mobileWrapper: {
-    paddingTop: '2em',
   },
   loader: {
     paddingTop: '2em',
@@ -60,12 +54,14 @@ const GraphTabbed = ({ stats, unitNames, graphList }) => {
           numUnits={unitNames.length}
           key={tabNames[index]}
         >
-          <Graph
-            className={classes.content}
-            results={stats.payload}
-            unitNames={unitNames}
-            colors={graphColors}
-          />
+          <Paper square>
+            <Graph
+              className={classes.content}
+              results={stats.payload}
+              unitNames={unitNames}
+              colors={graphColors}
+            />
+          </Paper>
         </LoadableWrapper>
       ))}
     />
@@ -79,20 +75,23 @@ const GraphList = ({ stats, unitNames, graphList }) => {
   return (
     <Typography component="div">
       {graphList.map((Graph, index) => (
-        <Typography component="div" className={classes.mobileWrapper}>
-          <Typography variant="subtitle1">{names[index]}</Typography>
+        <ListItem
+          key={names[index]}
+          header={names[index]}
+          collapsible
+        >
           <LoadableWrapper
             loading={(!stats.payload || !stats.payload.length) && stats.pending}
             numUnits={unitNames.length}
           >
             <Graph
-              className={clsx(classes.content, classes.mobileContent)}
+              className={classes.content}
               results={stats.payload}
               unitNames={unitNames}
               colors={graphColors}
             />
           </LoadableWrapper>
-        </Typography>
+        </ListItem>
       ))}
     </Typography>
   );

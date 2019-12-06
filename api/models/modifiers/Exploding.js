@@ -1,12 +1,12 @@
-import { Characteristics as C } from './../../constants';
-import { D6 } from './../../models/dice';
+import { Characteristics as C } from '../../constants';
+import { D6 } from '../dice';
 import BaseModifier from './BaseModifier';
 
 export default class Exploding extends BaseModifier {
   constructor({ on = 6, extraHits = 1, unmodified = true }) {
     super({ characteristic: C.TO_HIT });
-    this.on = parseInt(on);
-    this.extraHits = parseInt(extraHits);
+    this.on = Number(on);
+    this.extraHits = Number(extraHits);
     this.unmodified = Boolean(unmodified);
   }
 

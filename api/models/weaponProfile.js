@@ -1,16 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 import { ModifierManager, MODIFIERS as m } from './modifiers';
-import { Characteristics as C } from './../constants';
+import { Characteristics as C } from '../constants';
 import { D6, Dice, parseDice } from './dice';
 
 
 class WeaponProfile {
   constructor(numModels, attacks, toHit, toWound, rend, damage, modifiers = []) {
-    this.numModels = parseInt(numModels);
-    this.attacks = parseInt(attacks);
-    this.toHit = parseInt(toHit);
-    this.toWound = parseInt(toWound);
-    this.rend = parseInt(rend);
+    this.numModels = Number(numModels);
+    this.attacks = Number(attacks);
+    this.toHit = Number(toHit);
+    this.toWound = Number(toWound);
+    this.rend = Number(rend);
     this.damage = parseDice(damage);
     this.modifiers = new ModifierManager(modifiers);
   }
@@ -23,13 +23,13 @@ class WeaponProfile {
 
   getToHit(unmodified = false) {
     let { toHit } = this;
-    if (!unmodified) toHit += this.resolveModifier(m.BONUS, C.TO_HIT);
+    if (!unmodified) toHit -= this.resolveModifier(m.BONUS, C.TO_HIT);
     return Math.min(Math.max(toHit, 2), 6);
   }
 
   getToWound(unmodified = false) {
     let { toWound } = this;
-    if (!unmodified) toWound += this.resolveModifier(m.BONUS, C.TO_WOUND);
+    if (!unmodified) toWound -= this.resolveModifier(m.BONUS, C.TO_WOUND);
     return Math.min(Math.max(toWound, 2), 6);
   }
 
@@ -41,8 +41,8 @@ class WeaponProfile {
 
   getDamage(unmodified = false) {
     let { damage } = this;
-    if (damage instanceof Dice) damage = damage.average
-    else damage = parseInt(damage)
+    if (damage instanceof Dice) damage = damage.average;
+    else damage = Number(damage);
 
     if (!unmodified) damage += this.resolveModifier(m.BONUS, C.DAMAGE);
     return Math.max(damage, 0);
@@ -67,7 +67,7 @@ class WeaponProfile {
 
   averageDamage(target) {
     let totalAttacks = this.numModels * this.getAttacks();
-    totalAttacks += this.resolveModifier(m.LEADER_EXTRA_ATTACKS, C.ATTACKS)
+    totalAttacks += this.resolveModifier(m.LEADER_EXTRA_ATTACKS, C.ATTACKS);
     const avgDamage = this.resolveHits(target, 0);
     return avgDamage * totalAttacks;
   }
@@ -77,7 +77,7 @@ class WeaponProfile {
     hits += this.resolveRerolls(C.TO_HIT);
     hits += this.resolveModifier(m.EXPLODING, C.TO_HIT);
 
-    const mwModifier = this.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_HIT)
+    const mwModifier = this.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_HIT);
     if (mwModifier) {
       const mortalHits = mwModifier.resolve(this);
       damage += mortalHits * mwModifier.getMortalWounds();

@@ -35,7 +35,7 @@ const StoreSubscriber = ({ units, fetchStatsCompare }) => {
     DEBOUNCE_TIMEOUT,
   );
 
-  useEffect(() => { debouncedUseEffect(); }, [units]);
+  useEffect(() => { debouncedUseEffect(); }, [units, debouncedUseEffect]);
 
   return <span style={{ display: 'none' }} />;
 };

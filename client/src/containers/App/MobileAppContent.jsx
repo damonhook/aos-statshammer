@@ -13,6 +13,10 @@ const useStyles = makeStyles(() => ({
   },
   tabs: {
     marginTop: 0,
+    maxWidth: '100vw',
+  },
+  tab: {
+    padding: '.5em',
   },
 }));
 
@@ -28,7 +32,7 @@ const MobileAppContent = ({ className }) => {
       <Tabbed
         className={classes.tabs}
         tabNames={['Units', 'Stats']}
-        tabContent={[<Units />, <Stats />]}
+        tabContent={[<Units className={classes.tab} />, <Stats className={classes.tab} />]}
         onTabChange={onTabChange}
       />
     </div>

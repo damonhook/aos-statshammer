@@ -1,13 +1,14 @@
 import React from 'react';
 import {
-  Table, TableHead, TableBody, TableRow, TableCell, Card,
+  Table, TableHead, TableBody, TableRow, TableCell, Paper,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import ListItem from 'components/ListItem';
 import TableSkeleton from 'components/Skeletons/TableSkeleton';
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   table: {},
   skeleton: {},
   container: {
@@ -18,10 +19,13 @@ const useStyles = makeStyles({
     left: 0,
     zIndex: 11,
   },
+  header: {
+    backgroundColor: theme.palette.grey[50],
+  },
   cell: {
     background: 'white',
   },
-});
+}));
 
 const ResultsTable = ({ stats, unitNames, className }) => {
   const classes = useStyles();
@@ -40,34 +44,36 @@ const ResultsTable = ({ stats, unitNames, className }) => {
     return null;
   }
   return (
-    <Card square className={classes.container}>
-      <Table size="small" stickyHeader className={clsx(classes.table, className)}>
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.sticky}>Save</TableCell>
-            {unitNames.map((name) => (
-              <TableCell align="right" key={name}>{name}</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {stats.payload.map((result) => {
-            const { save, ...unitResults } = result;
-            return (
+    <ListItem square header="Table" collapsible>
+      <Paper className={classes.container}>
+        <Table size="small" className={clsx(classes.table, className)}>
+          <TableHead>
+            <TableRow className={classes.header}>
+              <TableCell className={clsx(classes.sticky, classes.header)}>Save</TableCell>
+              {unitNames.map((name) => (
+                <TableCell align="right" key={name} className={classes.header}>{name}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {stats.payload.map((result) => {
+              const { save, ...unitResults } = result;
+              return (
               // eslint-disable-next-line react/no-array-index-key
-              <TableRow key={save}>
-                <TableCell className={clsx(classes.sticky, classes.cell)}>
-                  {save && save !== 'None' ? `${save}+` : '-'}
-                </TableCell>
-                {unitNames.map((name) => (
-                  <TableCell key={name} align="right">{unitResults[name]}</TableCell>
-                ))}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </Card>
+                <TableRow key={save}>
+                  <TableCell className={clsx(classes.sticky, classes.cell)}>
+                    {save && save !== 'None' ? `${save}+` : '-'}
+                  </TableCell>
+                  {unitNames.map((name) => (
+                    <TableCell key={name} align="right">{unitResults[name]}</TableCell>
+                  ))}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </Paper>
+    </ListItem>
   );
 };
 

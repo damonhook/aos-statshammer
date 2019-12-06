@@ -1,5 +1,5 @@
-import { Characteristics as C } from './../../constants';
-import { D6 } from './../../models/dice';
+import { Characteristics as C } from '../../constants';
+import { D6 } from '../dice';
 import BaseModifier from './BaseModifier';
 
 export default class RerollFailed extends BaseModifier {

@@ -5,8 +5,10 @@ import { basicTheme } from 'themes';
 import { useMediaQuery } from '@material-ui/core';
 import StoreSubscriber from 'components/StoreSubscriber';
 import Footer from 'components/Footer';
+import Notifications from 'components/Notifications';
 import DesktopAppContent from './DesktopAppContent';
 import MobileAppContent from './MobileAppContent';
+
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -33,6 +35,7 @@ const App = () => {
         {mobile
           ? <MobileAppContent className={classes.container} />
           : <DesktopAppContent className={classes.container} />}
+        <Notifications />
         <Footer />
       </div>
     </ThemeProvider>

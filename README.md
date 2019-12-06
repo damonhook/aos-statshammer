@@ -9,7 +9,7 @@
 * [ ] Swipe to delete
 * [ ] Long Press for context menu
 * Snackbars for deleting
-  * [ ] Basic
+  * [x] Basic
   * [ ] With undo
 * Error messages for API
   * [ ] Basic

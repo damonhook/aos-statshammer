@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Paper } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
@@ -22,7 +22,7 @@ const TabPanel = ({
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      <Paper square className={classes.content}>{children}</Paper>
+      <Typography component="div" className={classes.content}>{children}</Typography>
     </Typography>
   );
 };

@@ -26,7 +26,7 @@ const Stats = ({ units, stats, className }) => {
   useEffect(() => {
     const newMapping = units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {});
     setUnitMappingDebounced(newMapping);
-  }, [units]);
+  }, [units, setUnitMappingDebounced]);
 
   useEffect(() => {
     if (stats && stats.payload) {

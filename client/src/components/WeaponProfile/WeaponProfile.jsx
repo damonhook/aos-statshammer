@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
   toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
 } from 'actions/weaponProfiles.action';
+import { addNotification } from 'actions/notifications.action';
 import ProfileDialog from 'containers/ProfileDialog';
 import { Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
 
 const WeaponProfile = ({
   unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile,
-  addWeaponProfile, addProfileEnabled,
+  addWeaponProfile, addProfileEnabled, addNotification,
 }) => {
   const classes = useStyles();
   const profileRef = useRef(null);
@@ -45,13 +46,18 @@ const WeaponProfile = ({
     if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [id]);
 
+  const handleDelete = (id, unitId) => {
+    addNotification({ message: 'Delete Profile' });
+    deleteWeaponProfile(id, unitId);
+  };
+
   return (
     <div ref={profileRef}>
       <ListItem
         className={clsx(classes.profile, profile.active ? '' : classes.inactive)}
         header="Weapon Profile"
         onEdit={() => setOpen(true)}
-        onDelete={() => deleteWeaponProfile(id, unitId)}
+        onDelete={() => handleDelete(id, unitId)}
         onCopy={addProfileEnabled ? () => addWeaponProfile(unitId, { ...profile }) : 'disabled'}
         collapsible
       >
@@ -79,6 +85,6 @@ const WeaponProfile = ({
   );
 };
 
-export default connect(
-  null, { toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile },
-)(WeaponProfile);
+export default connect(null, {
+  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile, addNotification,
+})(WeaponProfile);
