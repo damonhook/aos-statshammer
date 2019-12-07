@@ -14,8 +14,7 @@ export class Dice {
   }
 
   getInverseProbability(target) {
-    const newTarget = this.sides - target + 2;
-    return this.getProbability(newTarget);
+    return 1 - this.getProbability(target);
   }
 }
 

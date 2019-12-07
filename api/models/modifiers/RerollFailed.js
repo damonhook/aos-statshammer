@@ -22,8 +22,10 @@ export default class RerollFailed extends BaseModifier {
   }
 
   numRerolls(owner) {
-    return D6.getInverseProbability(
+    const activeCharacteristic = Math.min(
       owner.getCharacteristic(this.characteristic, true),
+      owner.getCharacteristic(this.characteristic, false),
     );
+    return D6.getInverseProbability(activeCharacteristic);
   }
 }
