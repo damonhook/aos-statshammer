@@ -4,7 +4,6 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import ListItem from 'components/ListItem';
 import TableSkeleton from 'components/Skeletons/TableSkeleton';
 
 
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const ResultsTable = ({ stats, unitNames, className }) => {
   const classes = useStyles();
 
-  if ((!stats.payload || !stats.payload.length) && stats.pending) {
+  if ((!stats.payload || !stats.payload.length)) {
     return (
       <TableSkeleton
         dense
@@ -40,40 +39,35 @@ const ResultsTable = ({ stats, unitNames, className }) => {
       />
     );
   }
-  if (!stats || !stats.payload || !stats.payload.length) {
-    return null;
-  }
   return (
-    <ListItem square header="Table" collapsible>
-      <Paper className={classes.container}>
-        <Table size="small" className={clsx(classes.table, className)}>
-          <TableHead>
-            <TableRow className={classes.header}>
-              <TableCell className={clsx(classes.sticky, classes.header)}>Save</TableCell>
-              {unitNames.map((name) => (
-                <TableCell align="right" key={name} className={classes.header}>{name}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {stats.payload.map((result) => {
-              const { save, ...unitResults } = result;
-              return (
-              // eslint-disable-next-line react/no-array-index-key
-                <TableRow key={save}>
-                  <TableCell className={clsx(classes.sticky, classes.cell)}>
-                    {save && save !== 'None' ? `${save}+` : '-'}
-                  </TableCell>
-                  {unitNames.map((name) => (
-                    <TableCell key={name} align="right">{unitResults[name]}</TableCell>
-                  ))}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </Paper>
-    </ListItem>
+    <Paper className={classes.container}>
+      <Table size="small" className={clsx(classes.table, className)}>
+        <TableHead>
+          <TableRow className={classes.header}>
+            <TableCell className={clsx(classes.sticky, classes.header)}>Save</TableCell>
+            {unitNames.map((name) => (
+              <TableCell align="right" key={name} className={classes.header}>{name}</TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {stats.payload.map((result) => {
+            const { save, ...unitResults } = result;
+            return (
+            // eslint-disable-next-line react/no-array-index-key
+              <TableRow key={save}>
+                <TableCell className={clsx(classes.sticky, classes.cell)}>
+                  {save && save !== 'None' ? `${save}+` : '-'}
+                </TableCell>
+                {unitNames.map((name) => (
+                  <TableCell key={name} align="right">{unitResults[name]}</TableCell>
+                ))}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </Paper>
   );
 };
 

@@ -8,6 +8,12 @@ import ListItem from 'components/ListItem';
 
 const useStyles = makeStyles({
   graphContainer: {},
+  tabs: {
+    margin: '-1em -1em 0',
+  },
+  tab: {
+    padding: '1em 1em 0',
+  },
   content: {
     height: '350px',
     paddingTop: '2em',
@@ -15,7 +21,7 @@ const useStyles = makeStyles({
     flexBasis: '50%',
   },
   loader: {
-    paddingTop: '2em',
+    padding: '2em',
   },
 });
 
@@ -34,7 +40,7 @@ const LoadableWrapper = ({ loading, children, numUnits }) => {
   return (
     <div>
       {loading
-        ? <GraphSkeleton height={300} series={7} groups={groups} className={classes.loader} />
+        ? <GraphSkeleton height={340} series={7} groups={groups} className={classes.loader} />
         : children}
     </div>
   );
@@ -43,34 +49,44 @@ const LoadableWrapper = ({ loading, children, numUnits }) => {
 const GraphTabbed = ({ stats, unitNames, graphList }) => {
   const classes = useStyles();
   const tabNames = ['Line Graph', 'Bar Graph', 'Radar Graph'];
+  const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
 
   return (
-    <Tabbed
-      className={`${classes.graphContainer}`}
-      tabNames={tabNames}
-      tabContent={graphList.map((Graph, index) => (
-        <LoadableWrapper
-          loading={(!stats.payload || !stats.payload.length) && stats.pending}
-          numUnits={unitNames.length}
-          key={tabNames[index]}
-        >
-          <Paper square>
-            <Graph
-              className={classes.content}
-              results={stats.payload}
-              unitNames={unitNames}
-              colors={graphColors}
-            />
-          </Paper>
-        </LoadableWrapper>
-      ))}
-    />
+    <ListItem
+      header="Graphs"
+      collapsible
+      loading={stats.pending}
+      loaderDelay={firstLoad ? 0 : 350}
+      className={classes.graphContainer}
+    >
+      <Tabbed
+        className={classes.tabs}
+        tabNames={tabNames}
+        tabContent={graphList.map((Graph, index) => (
+          <LoadableWrapper
+            loading={firstLoad}
+            numUnits={unitNames.length}
+            key={tabNames[index]}
+          >
+            <Paper square className={classes.tab}>
+              <Graph
+                className={classes.content}
+                results={stats.payload}
+                unitNames={unitNames}
+                colors={graphColors}
+              />
+            </Paper>
+          </LoadableWrapper>
+        ))}
+      />
+    </ListItem>
   );
 };
 
 const GraphList = ({ stats, unitNames, graphList }) => {
   const classes = useStyles();
   const names = ['Line Graph', 'Bar Graph', 'Radar Graph'];
+  const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
 
   return (
     <Typography component="div">
@@ -79,6 +95,8 @@ const GraphList = ({ stats, unitNames, graphList }) => {
           key={names[index]}
           header={names[index]}
           collapsible
+          loading={stats.pending}
+          loaderDelay={firstLoad ? 0 : 350}
         >
           <LoadableWrapper
             loading={(!stats.payload || !stats.payload.length) && stats.pending}
@@ -100,17 +118,12 @@ const GraphList = ({ stats, unitNames, graphList }) => {
 const Graphs = ({ stats, unitNames }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const large = useMediaQuery(theme.breakpoints.up('lg'));
-
-  if (!stats.payload || !unitNames) {
-    return null;
-  }
 
   const graphList = [
     LineGraph, BarGraph, RadarGraph,
   ];
 
-  return mobile || large
+  return mobile
     ? (
       <GraphList
         stats={stats}
