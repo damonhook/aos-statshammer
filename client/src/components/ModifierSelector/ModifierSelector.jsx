@@ -26,8 +26,8 @@ const ModifierSelector = ({
     if (location.pathname.match(/^.*\/modifiers$/)) {
       setOpen(true);
     } else {
-      setOpen(false);
       setEditPath(`${location.pathname}/modifiers`);
+      setOpen(false);
     }
   }, [location]);
 
@@ -40,14 +40,15 @@ const ModifierSelector = ({
   };
 
   const addModifier = (modifier) => {
-    onClick(modifier);
+    setOpen(false); // Close early to avoid 'jumping'
     handleClose();
+    onClick(modifier);
   };
 
   if (pending) {
     return (
       <div className={classes.selector}>
-        <Button content="Add Modifier" disabled fullwidth />
+        <Button content="Add Modifier" disabled fullWidth />
       </div>
     );
   }

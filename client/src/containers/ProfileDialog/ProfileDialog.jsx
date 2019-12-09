@@ -11,7 +11,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import DiceInput from 'components/DiceInput';
 import RollInput from 'components/RollInput';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import FormField from './FormField';
 import ProfileTitle from './ProfileTitle';
 

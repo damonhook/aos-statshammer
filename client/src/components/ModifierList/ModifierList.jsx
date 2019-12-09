@@ -19,10 +19,14 @@ const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
   const classes = useStyles();
   const [errors, setErrors] = useState([]);
 
-  useEffect(() => {
+  const sendErrorCallback = () => {
     if (errorCallback) {
       errorCallback(errors.some((e) => e));
     }
+  };
+
+  useEffect(() => {
+    sendErrorCallback();
   }, [errors]);
 
   const addModifier = (modifier) => {

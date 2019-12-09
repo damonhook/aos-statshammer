@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
@@ -18,12 +18,6 @@ const DiceInput = ({
   const isDice = (val) => Boolean(String(val).match(/^[dD]\d+$/));
   const isValid = (val) => !Number.isNaN(Number(val)) || isDice(val);
 
-  useEffect(() => {
-    if (errorCallback) {
-      errorCallback(error);
-    }
-  }, [error]);
-
   const setErrorState = (errMessage) => {
     setError(true);
     setErrorMessage(errMessage);
@@ -42,11 +36,22 @@ const DiceInput = ({
 
   useEffect(() => {
     if (value !== undefined) validate(value);
-  }, []);
+  });
+
+  const sendErrorCallback = useCallback(() => {
+    if (errorCallback) {
+      errorCallback(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    sendErrorCallback();
+  }, [error, sendErrorCallback]);
+
 
   const handleChange = (event) => {
     const val = event.target.value;
-    validate(val);
+    if (value === undefined) validate(val); // If uncontrolled
     if (onChange) onChange(event);
   };
 

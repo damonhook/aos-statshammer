@@ -82,7 +82,7 @@ const WeaponProfile = ({
             ) : null}
           </div>
         </div>
-        <Route exact path={editPath}>
+        <Route path={editPath}>
           <ProfileDialog
             open
             unitId={unitId}

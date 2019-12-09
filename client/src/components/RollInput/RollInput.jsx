@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, InputAdornment } from '@material-ui/core';
@@ -18,12 +18,6 @@ const RollInput = ({
 
   const min = allowOnes ? 1 : 2;
   const max = 6;
-
-  useEffect(() => {
-    if (errorCallback) {
-      errorCallback(error);
-    }
-  }, [error]);
 
   const inputProps = {};
   if (startAdornment) {
@@ -53,11 +47,21 @@ const RollInput = ({
 
   useEffect(() => {
     if (value !== undefined) validate(value);
-  }, []);
+  });
+
+  const sendErrorCallback = useCallback(() => {
+    if (errorCallback) {
+      errorCallback(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    sendErrorCallback();
+  }, [error, sendErrorCallback]);
 
   const handleChange = (event) => {
     const val = event.target.value;
-    validate(val);
+    if (value === undefined) validate(val); // uncontrolled
     if (onChange) onChange(event);
   };
 

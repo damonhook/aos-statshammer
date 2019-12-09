@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   TextField, Checkbox, MenuItem, FormControlLabel,
 } from '@material-ui/core';
@@ -23,11 +23,15 @@ const ModifierInput = ({
   const classes = useStyles();
   const [error, setError] = useState(false);
 
-  useEffect(() => {
+  const sendErrorCallback = useCallback(() => {
     if (errorCallback) {
       errorCallback(error);
     }
   }, [error]);
+
+  useEffect(() => {
+    sendErrorCallback(error);
+  }, [error, sendErrorCallback]);
 
   useEffect(() => {
     if (val !== undefined && option.type !== 'boolean') setError(!val);
