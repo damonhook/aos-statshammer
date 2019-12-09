@@ -1,6 +1,6 @@
 export class Dice {
   constructor(sides) {
-    this.sides = sides;
+    this.sides = Number(sides);
   }
 
   get average() {
@@ -18,7 +18,18 @@ export class Dice {
   }
 }
 
-export const parseDice = (val) => ((val instanceof Dice) ? val : Number(val));
+export const parseDice = (val) => {
+  if (val instanceof Dice) {
+    return val;
+  }
+  if (typeof val === 'string') {
+    const match = val.match(/^[dD](\d+)$/);
+    if (match && match[1]) {
+      return new Dice(match[1]);
+    }
+  }
+  return Number(val);
+};
 
 export const D3 = new Dice(3);
 export const D6 = new Dice(6);

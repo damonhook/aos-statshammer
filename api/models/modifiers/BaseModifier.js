@@ -1,4 +1,5 @@
-import { getCharacteristic } from './../../constants';
+import { getCharacteristic } from '../../constants';
+import { choiceOption } from './ModifierOptions';
 
 export default class BaseModifier {
   constructor({ characteristic }) {
@@ -19,14 +20,9 @@ export default class BaseModifier {
   }
 
   static get options() {
-    const characteristic = {
-      type: 'choice',
-      items: this.availableCharacteristics,
+    return {
+      characteristic: choiceOption({ items: this.availableCharacteristics }),
     };
-    if (this.availableCharacteristics.length === 1) {
-      [characteristic.default] = this.availableCharacteristics;
-    }
-    return { characteristic };
   }
 
   static get metadata() {

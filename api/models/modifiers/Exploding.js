@@ -1,12 +1,13 @@
 import { Characteristics as C } from '../../constants';
-import { D6 } from '../dice';
+import { D6, Dice, parseDice } from '../dice';
+import { numberOption, booleanOption, rollOption } from './ModifierOptions';
 import BaseModifier from './BaseModifier';
 
 export default class Exploding extends BaseModifier {
   constructor({ on = 6, extraHits = 1, unmodified = true }) {
     super({ characteristic: C.TO_HIT });
     this.on = Number(on);
-    this.extraHits = Number(extraHits);
+    this.extraHits = parseDice(extraHits);
     this.unmodified = Boolean(unmodified);
   }
 
@@ -25,22 +26,21 @@ export default class Exploding extends BaseModifier {
   static get options() {
     return {
       ...super.options,
-      on: {
-        type: 'number',
-        default: 6,
-      },
-      extraHits: {
-        type: 'number',
-        default: 1,
-      },
-      unmodified: {
-        type: 'boolean',
-        default: true,
-      },
+      on: rollOption({ defaultVal: 6 }),
+      extraHits: numberOption({ defaultVal: 1, allowDice: true }),
+      unmodified: booleanOption({ defaultVal: true }),
     };
   }
 
+  // eslint-disable-next-line no-unused-vars
   resolve(owner) {
-    return D6.getProbability(this.on) * this.extraHits;
+    return D6.getProbability(this.on) * this.getExtraHits();
+  }
+
+  getExtraHits() {
+    if (this.extraHits instanceof Dice) {
+      return this.extraHits.average;
+    }
+    return this.extraHits;
   }
 }

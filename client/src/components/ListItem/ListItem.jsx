@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Card from 'components/Card';
-import { Collapse, LinearProgress } from '@material-ui/core';
+import { Collapse } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingBar from 'components/LoadingBar';
 import clsx from 'clsx';

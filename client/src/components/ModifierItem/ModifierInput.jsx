@@ -3,6 +3,8 @@ import {
   TextField, Checkbox, MenuItem, FormControlLabel,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import RollInput from 'components/RollInput';
+import DiceInput from 'components/DiceInput';
 
 const useStyles = makeStyles({
   modifierInput: {
@@ -37,7 +39,7 @@ const ModifierInput = ({
         >
           {option.items.map((item) => (
             <MenuItem key={item} value={item}>
-              { item }
+              {item}
             </MenuItem>
           ))}
         </TextField>
@@ -59,20 +61,44 @@ const ModifierInput = ({
           labelPlacement="end"
         />
       );
-    default:
+    case 'roll':
       return (
-        <TextField
+        <RollInput
           label={name}
           name={name}
           className={classes.modifierInput}
           fullWidth
-          type="number"
-          variant="outlined"
           value={val}
-          {...errorProps}
           onChange={(event) => onOptionChange(index, name, event.target.value)}
+          allowOnes={option.allowOnes}
         />
       );
+    case 'number':
+    default:
+      return option.allowDice
+        ? (
+          <DiceInput
+            label={name}
+            name={name}
+            className={classes.modifierInput}
+            fullWidth
+            value={val}
+            onChange={(event) => onOptionChange(index, name, event.target.value)}
+          />
+        )
+        : (
+          <TextField
+            label={name}
+            name={name}
+            className={classes.modifierInput}
+            fullWidth
+            type="number"
+            variant="outlined"
+            value={val}
+            {...errorProps}
+            onChange={(event) => onOptionChange(index, name, event.target.value)}
+          />
+        );
   }
 };
 

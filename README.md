@@ -7,7 +7,7 @@
 * [x] Basic Desktop interface
 * [x] Basic Mobile interface
 * [ ] Swipe to delete
-* [ ] Long Press for context menu
+* [x] Long Press for context menu
 * Snackbars for deleting
   * [x] Basic
   * [ ] With undo
@@ -54,4 +54,5 @@
 * [x] Deploy to Heroku
 * [x] Footer with disclaimer
 * [ ] Write Unit State to URL
-* [ ] Use Router to close Dialogs with back button
+* [x] Use Router to close Dialogs with back button
+* [x] Add Dice values as an option for relevant inputs

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import WeaponProfile from 'components/WeaponProfile';
+import WeaponProfile from 'containers/WeaponProfile';
 import { connect } from 'react-redux';
 import { deleteUnit, editUnitName, addUnit } from 'actions/units.action';
 import { addNotification } from 'actions/notifications.action';
