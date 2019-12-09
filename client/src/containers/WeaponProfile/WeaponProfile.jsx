@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ModifierSummary from 'components/ModifierSummary';
 import { Route, useHistory } from 'react-router-dom';
+import { getUnitByPosition } from 'utils/unitHelpers';
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles({
@@ -43,8 +44,10 @@ const WeaponProfile = ({
 }) => {
   const classes = useStyles();
   const profileRef = useRef(null);
-  const editPath = `/edit/${profile.uuid}`;
   const history = useHistory();
+
+  const unit = getUnitByPosition(unitId);
+  const editPath = `/units/${unit.uuid}/${id}`;
 
   useEffect(() => {
     if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -82,14 +85,8 @@ const WeaponProfile = ({
             ) : null}
           </div>
         </div>
-        <Route path={editPath}>
-          <ProfileDialog
-            open
-            unitId={unitId}
-            id={id}
-            header="Edit Profile"
-            profile={profile}
-          />
+        <Route path="/units/:unitUuid/:profileIndex">
+          <ProfileDialog open />
         </Route>
       </ListItem>
     </div>

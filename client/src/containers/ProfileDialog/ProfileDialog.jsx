@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import { editWeaponProfile } from 'actions/weaponProfiles.action';
 import { bindActionCreators } from 'redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { getUnitByUuid, getUnitIndexByUuid } from 'utils/unitHelpers';
 import DialogTitle from './DialogTitle';
 import DialogContent from './DialogContent';
 
@@ -16,13 +17,25 @@ const useStyles = makeStyles(() => ({
   actionButton: {},
 }));
 
-const ProfileDialog = ({
-  id, editWeaponProfile, unitId, profile, header, open,
-}) => {
+const ProfileDialog = ({ editWeaponProfile, open }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const history = useHistory();
+  const { unitUuid, profileIndex } = useParams();
+
+  const unit = getUnitByUuid(unitUuid);
+  const unitId = getUnitIndexByUuid(unitUuid);
+  const id = profileIndex;
+  let profile = null;
+  if (unit) {
+    profile = unit.weapon_profiles[profileIndex];
+  }
+
+  if (!unit || !profile || unitId == null || id == null) {
+    history.replace('/');
+  }
 
   const [state, setState] = useState({
     num_models: 1,
@@ -45,7 +58,7 @@ const ProfileDialog = ({
   });
 
   useEffect(() => {
-    if (open) {
+    if (profile) {
       setState({
         num_models: profile.num_models,
         attacks: profile.attacks,
@@ -56,7 +69,7 @@ const ProfileDialog = ({
         modifiers: profile.modifiers,
       });
     }
-  }, [open, profile]);
+  }, [profile]);
 
   const setStateByName = (name, newVal) => {
     setState({
@@ -72,8 +85,6 @@ const ProfileDialog = ({
     });
   };
 
-  const submitDisabled = Object.keys(errors).some((k) => errors[k]);
-
   const handleClose = () => {
     history.goBack();
   };
@@ -82,6 +93,8 @@ const ProfileDialog = ({
     editWeaponProfile(id, state, unitId);
     handleClose();
   };
+
+  const submitDisabled = Object.keys(errors).some((k) => errors[k]);
 
   if (!profile) return null;
   return (
@@ -94,7 +107,7 @@ const ProfileDialog = ({
       fullScreen={mobile}
       scroll="paper"
     >
-      <DialogTitle header={header} fullScreen={mobile} onClose={handleClose} />
+      <DialogTitle header="Edit Profile" fullScreen={mobile} onClose={handleClose} />
       <DialogContent
         profile={state}
         onChange={setStateByName}

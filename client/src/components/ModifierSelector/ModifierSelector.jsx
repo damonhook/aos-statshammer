@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button, Collapse } from '@material-ui/core';
-import { Add, Remove } from '@material-ui/icons';
+import { Add, Remove, Sync } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory, useLocation } from 'react-router-dom';
 import ModifierOption from './ModifierOption';
@@ -48,7 +48,15 @@ const ModifierSelector = ({
   if (pending) {
     return (
       <div className={classes.selector}>
-        <Button content="Add Modifier" disabled fullWidth />
+        <Button
+          startIcon={<Sync />}
+          variant="contained"
+          disabled
+          fullWidth
+          className={classes.button}
+        >
+          Loading Modifiers
+        </Button>
       </div>
     );
   }
@@ -78,7 +86,7 @@ const ModifierSelector = ({
             onClick={handleOpen}
             startIcon={<Add />}
             color="primary"
-            disabled={disabled}
+            disabled={pending || disabled}
           >
             Add Modifier
           </Button>
