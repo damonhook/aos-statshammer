@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button, Collapse } from '@material-ui/core';
 import { Add, Remove } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory, useLocation } from 'react-router-dom';
 import ModifierOption from './ModifierOption';
 
 const useStyles = makeStyles({
@@ -15,11 +16,32 @@ const ModifierSelector = ({
   modifiers, pending, error, onClick, disabled,
 }) => {
   const [open, setOpen] = useState(false);
+  const [editPath, setEditPath] = useState('');
   const classes = useStyles();
 
+  const history = useHistory();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.match(/^.*\/modifiers$/)) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+      setEditPath(`${location.pathname}/modifiers`);
+    }
+  }, [location]);
+
+  const handleOpen = () => {
+    history.push(editPath);
+  };
+
+  const handleClose = () => {
+    history.goBack();
+  };
+
   const addModifier = (modifier) => {
-    setOpen(false);
     onClick(modifier);
+    handleClose();
   };
 
   if (pending) {
@@ -40,7 +62,7 @@ const ModifierSelector = ({
             className={classes.button}
             fullWidth
             variant="contained"
-            onClick={() => setOpen(false)}
+            onClick={handleClose}
             startIcon={<Remove />}
             color="secondary"
           >
@@ -52,7 +74,7 @@ const ModifierSelector = ({
             className={classes.button}
             fullWidth
             variant="contained"
-            onClick={() => setOpen(true)}
+            onClick={handleOpen}
             startIcon={<Add />}
             color="primary"
             disabled={disabled}
