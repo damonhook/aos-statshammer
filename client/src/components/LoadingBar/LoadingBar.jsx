@@ -23,7 +23,7 @@ const LoadingBar = ({ wait }) => {
     setTimeout(() => {
       setLoading(true);
     }, wait);
-  }, []);
+  }, [wait]);
 
   const fadeInTime = Math.min(wait, 400);
 

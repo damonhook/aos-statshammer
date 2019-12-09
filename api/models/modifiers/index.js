@@ -40,4 +40,10 @@ export class ModifierManager {
       || this.getModifier(MODIFIERS.REROLL_ONES, characteristic)
     );
   }
+
+  getStackableModifier(modifier, characteristic) {
+    return this.modifiers.filter((m) => (
+      m instanceof modifier && m.characteristic === characteristic
+    ));
+  }
 }

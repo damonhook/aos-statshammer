@@ -1,11 +1,11 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import WeaponProfile from 'components/WeaponProfile';
+import WeaponProfile from 'containers/WeaponProfile';
 import { boolean, number } from '@storybook/addon-knobs';
 import { withProvider } from 'utils/exampleStore';
 
 
-storiesOf('Components/WeaponProfile', module)
+storiesOf('Containers/WeaponProfile', module)
   .addDecorator(withProvider)
   .add('Basic', () => {
     const profile = {

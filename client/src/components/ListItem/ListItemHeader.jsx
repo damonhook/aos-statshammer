@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from 'components/Card';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ListControls from 'components/ListControls';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { useMediaQuery } from '@material-ui/core';
 import clsx from 'clsx';
+import useLongPress from 'hooks/useLongPress';
+import ActionsDialog from 'components/ActionsDialog';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -14,6 +16,12 @@ const useStyles = makeStyles((theme) => ({
   headerText: {
     flex: 1,
     margin: 'auto',
+    userSelect: 'none',
+    WebkitUserSelect: 'none',
+    MozUserSelect: 'none',
+    WebkitTouchCallout: 'none',
+    msUserSelect: 'none',
+    KhtmlUserSelect: 'none',
   },
   listControls: {
     marginLeft: 'auto',
@@ -37,7 +45,20 @@ const ListItemHeader = ({
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const longPress = useLongPress(() => setDialogOpen(true), 800);
+
   const handleClick = () => setColapsed((!collapsible) ? false : !collapsed);
+
+  const dialogActions = [];
+  if (onDelete) dialogActions.push({ label: 'Delete', onClick: onDelete });
+  if (onCopy) {
+    dialogActions.push({
+      label: 'Copy',
+      onClick: onCopy,
+      disabled: (!onCopy || onCopy === 'disabled'),
+    });
+  }
 
   return (
     <Card.Header
@@ -52,9 +73,17 @@ const ListItemHeader = ({
           {collapsed ? <ExpandLess /> : <ExpandMore />}
         </span>
       )}
-      <span className={`${classes.headerText}`} onClick={handleClick} role="button">
+      <span className={`${classes.headerText}`} onClick={handleClick} role="button" {...longPress}>
         {header}
       </span>
+      {dialogActions && (
+        <ActionsDialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          target={header}
+          actions={dialogActions}
+        />
+      )}
       <ListControls
         onEdit={onEdit}
         onDelete={onDelete}

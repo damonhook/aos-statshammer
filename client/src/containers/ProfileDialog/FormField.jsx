@@ -1,27 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TextField, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import DiceInput from 'components/DiceInput';
 
 
 const useStyles = makeStyles((theme) => ({
   field: {
-    width: '8em',
-    paddingRight: '1em',
-    margin: '1em 1em 0 0',
-    '&:last-child': {
-      paddingRight: 0,
-    },
-
-    [theme.breakpoints.up('lg')]: {
-      width: '12em',
-    },
   },
 }));
 
 
 const FormField = ({
-  label, value, onChange, className, startAdornment, endAdornment,
+  label, value, onChange, className, startAdornment, endAdornment, type,
 }) => {
   const classes = useStyles();
   const inputProps = {};
@@ -33,20 +25,35 @@ const FormField = ({
   }
   const error = (value == null || value === '');
 
+  const FieldTypes = {
+    number: TextField,
+    roll: TextField,
+    dice: DiceInput,
+  };
+  const Field = FieldTypes[type];
+
   return (
-    <TextField
+    <Field
       className={clsx(classes.field, className)}
       variant="outlined"
       type="number"
       label={label}
       value={value}
       error={error}
-      helperText={error ? 'required' : null}
+      helperText={error ? 'Required' : null}
       InputProps={inputProps}
       onChange={(event) => onChange(event.target.value)}
     />
 
   );
+};
+
+FormField.defaultProps = {
+  type: 'number',
+};
+
+FormField.propTypes = {
+  type: PropTypes.oneOf(['number', 'dice', 'roll']),
 };
 
 

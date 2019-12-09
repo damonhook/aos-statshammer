@@ -1,6 +1,7 @@
 import { Characteristics as C } from '../../constants';
 import { D6, Dice, parseDice } from '../dice';
 import BaseModifier from './BaseModifier';
+import { numberOption, booleanOption, rollOption } from './ModifierOptions';
 
 export default class MortalWounds extends BaseModifier {
   constructor({
@@ -28,22 +29,10 @@ export default class MortalWounds extends BaseModifier {
   static get options() {
     return {
       ...super.options,
-      on: {
-        type: 'number',
-        default: 6,
-      },
-      mortalWounds: {
-        type: 'number',
-        default: 1,
-      },
-      unmodified: {
-        type: 'boolean',
-        default: true,
-      },
-      inAddition: {
-        type: 'boolean',
-        default: false,
-      },
+      on: rollOption({ defaultVal: 6 }),
+      mortalWounds: numberOption({ defaultVal: 1, allowDice: true }),
+      unmodified: booleanOption({ defaultVal: true }),
+      inAddition: booleanOption({ defaultVal: false }),
     };
   }
 

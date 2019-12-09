@@ -9,6 +9,8 @@ import { fetchModifiers } from 'api';
 import { bindActionCreators } from 'redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import DiceInput from 'components/DiceInput';
+import RollInput from 'components/RollInput';
 import FormField from './FormField';
 import ProfileTitle from './ProfileTitle';
 
@@ -24,10 +26,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   field: {
-    paddingRight: '1em',
+    width: '16em',
     margin: '1em 1em 0 0',
-    '&:last-child': {
-      paddingRight: 0,
+
+    [theme.breakpoints.down('md')]: {
+      flex: '1 1 calc(33% - 50px)',
+    },
+    [theme.breakpoints.down('sm')]: {
+      flex: '1 1 calc(50% - 50px)',
     },
   },
   formSection: {
@@ -117,26 +123,28 @@ const ProfileDialog = ({
                   label="# Models"
                   value={num_models}
                   onChange={setNumModels}
+                  type="number"
                 />
-                <FormField
+                <DiceInput
                   className={classes.field}
                   label="Attacks"
                   value={attacks}
-                  onChange={setAttacks}
+                  onChange={(e) => setAttacks(e.target.value)}
+                  required
                 />
-                <FormField
+                <RollInput
                   className={classes.field}
                   endAdornment="+"
                   label="To Hit"
                   value={to_hit}
-                  onChange={setToHit}
+                  onChange={(e) => setToHit(e.target.value)}
                 />
-                <FormField
+                <RollInput
                   className={classes.field}
                   endAdornment="+"
                   label="To Wound"
                   value={to_wound}
-                  onChange={setToWound}
+                  onChange={(e) => setToWound(e.target.value)}
                 />
                 <FormField
                   className={classes.field}
@@ -145,11 +153,12 @@ const ProfileDialog = ({
                   value={rend}
                   onChange={setRend}
                 />
-                <FormField
+                <DiceInput
                   className={classes.field}
                   label="Damage"
                   value={damage}
-                  onChange={setDamage}
+                  onChange={(e) => setDamage(e.target.value)}
+                  required
                 />
               </div>
             </div>

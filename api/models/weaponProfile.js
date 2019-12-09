@@ -7,7 +7,7 @@ import { D6, Dice, parseDice } from './dice';
 class WeaponProfile {
   constructor(numModels, attacks, toHit, toWound, rend, damage, modifiers = []) {
     this.numModels = Number(numModels);
-    this.attacks = Number(attacks);
+    this.attacks = parseDice(attacks);
     this.toHit = Number(toHit);
     this.toWound = Number(toWound);
     this.rend = Number(rend);
@@ -17,25 +17,25 @@ class WeaponProfile {
 
   getAttacks(unmodified = false) {
     let { attacks } = this;
-    if (!unmodified) attacks += this.resolveModifier(m.BONUS, C.ATTACKS);
+    if (!unmodified) attacks += this.resolveStackableModifier(m.BONUS, C.ATTACKS);
     return attacks;
   }
 
   getToHit(unmodified = false) {
     let { toHit } = this;
-    if (!unmodified) toHit -= this.resolveModifier(m.BONUS, C.TO_HIT);
+    if (!unmodified) toHit -= this.resolveStackableModifier(m.BONUS, C.TO_HIT);
     return Math.min(Math.max(toHit, 2), 6);
   }
 
   getToWound(unmodified = false) {
     let { toWound } = this;
-    if (!unmodified) toWound -= this.resolveModifier(m.BONUS, C.TO_WOUND);
+    if (!unmodified) toWound -= this.resolveStackableModifier(m.BONUS, C.TO_WOUND);
     return Math.min(Math.max(toWound, 2), 6);
   }
 
   getRend(unmodified = false) {
     let { rend } = this;
-    if (!unmodified) rend += this.resolveModifier(m.BONUS, C.REND);
+    if (!unmodified) rend += this.resolveStackableModifier(m.BONUS, C.REND);
     return Math.max(rend, 0);
   }
 
@@ -44,7 +44,7 @@ class WeaponProfile {
     if (damage instanceof Dice) damage = damage.average;
     else damage = Number(damage);
 
-    if (!unmodified) damage += this.resolveModifier(m.BONUS, C.DAMAGE);
+    if (!unmodified) damage += this.resolveStackableModifier(m.BONUS, C.DAMAGE);
     return Math.max(damage, 0);
   }
 
@@ -74,17 +74,18 @@ class WeaponProfile {
 
   resolveHits(target, damage = 0) {
     let hits = D6.getProbability(this.getToHit());
+    let extraDamage = 0;
     hits += this.resolveRerolls(C.TO_HIT);
     hits += this.resolveModifier(m.EXPLODING, C.TO_HIT);
 
     const mwModifier = this.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_HIT);
     if (mwModifier) {
       const mortalHits = mwModifier.resolve(this);
-      damage += mortalHits * mwModifier.getMortalWounds();
+      extraDamage += mortalHits * mwModifier.getMortalWounds();
       hits -= !mwModifier.inAddition ? mortalHits : 0;
     }
 
-    return this.resolveWounds(target, hits, damage);
+    return this.resolveWounds(target, hits, damage + extraDamage);
   }
 
   resolveWounds(target, hits, damage = 0) {
@@ -114,6 +115,12 @@ class WeaponProfile {
   resolveRerolls(characteristic) {
     const m = this.modifiers.getRerollModifier(characteristic);
     if (m) return m.resolve(this);
+    return 0;
+  }
+
+  resolveStackableModifier(modifier, characteristic) {
+    const mList = this.modifiers.getStackableModifier(modifier, characteristic);
+    if (mList && mList.length) return mList.reduce((acc, m) => acc + m.resolve(this), 0);
     return 0;
   }
 }
