@@ -17,6 +17,9 @@ class WeaponProfile {
 
   getAttacks(unmodified = false) {
     let { attacks } = this;
+    if (attacks instanceof Dice) {
+      attacks = attacks.average;
+    }
     if (!unmodified) attacks += this.resolveStackableModifier(m.BONUS, C.ATTACKS);
     return attacks;
   }
