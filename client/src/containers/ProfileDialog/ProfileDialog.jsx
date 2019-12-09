@@ -1,77 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Button, Typography, Dialog, DialogContent, useMediaQuery, DialogActions,
+  Button, Dialog, useMediaQuery, DialogActions,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { editWeaponProfile } from 'actions/weaponProfiles.action';
-import ModifierList from 'components/ModifierList';
-import { fetchModifiers } from 'api';
 import { bindActionCreators } from 'redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import DiceInput from 'components/DiceInput';
-import RollInput from 'components/RollInput';
 import { useHistory } from 'react-router-dom';
-import FormField from './FormField';
-import ProfileTitle from './ProfileTitle';
+import DialogTitle from './DialogTitle';
+import DialogContent from './DialogContent';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   dialog: {},
-  form: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
-    [theme.breakpoints.up('lg')]: {
-      flexDirection: 'row',
-    },
-  },
-  field: {
-    width: '16em',
-    margin: '1em 1em 0 0',
-
-    [theme.breakpoints.down('md')]: {
-      flex: '1 1 calc(33% - 50px)',
-    },
-    [theme.breakpoints.down('sm')]: {
-      flex: '1 1 calc(50% - 50px)',
-    },
-  },
-  formSection: {
-    marginBottom: '1em',
-    flexDirection: 'column',
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  characteristics: {
-    flex: 0,
-    display: 'flex',
-    flexDirection: 'row',
-    [theme.breakpoints.up('lg')]: {
-      flexDirection: 'column',
-    },
-  },
-  modifiers: {
-    flex: 1,
-  },
   actionButton: {},
 }));
 
 const ProfileDialog = ({
-  id, editWeaponProfile, unitId, profile, fetchModifiers, fetchedModifiers, header, open,
+  id, editWeaponProfile, unitId, profile, header, open,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const history = useHistory();
 
-  const [num_models, setNumModels] = useState(1);
-  const [attacks, setAttacks] = useState(1);
-  const [to_hit, setToHit] = useState(4);
-  const [to_wound, setToWound] = useState(4);
-  const [rend, setRend] = useState(0);
-  const [damage, setDamage] = useState(0);
-  const [modifiers, setModifiers] = useState([]);
+  const [state, setState] = useState({
+    num_models: 1,
+    attacks: 1,
+    to_hit: 4,
+    to_wound: 4,
+    rend: 0,
+    damage: 1,
+    modifiers: [],
+  });
 
   const [errors, setErrors] = useState({
     num_models: false,
@@ -85,27 +46,26 @@ const ProfileDialog = ({
 
   useEffect(() => {
     if (open) {
-      setNumModels(profile.num_models);
-      setAttacks(profile.attacks);
-      setToHit(profile.to_hit);
-      setToWound(profile.to_wound);
-      setRend(profile.rend);
-      setDamage(profile.damage);
-      setModifiers(profile.modifiers);
+      setState({
+        num_models: profile.num_models,
+        attacks: profile.attacks,
+        to_hit: profile.to_hit,
+        to_wound: profile.to_wound,
+        rend: profile.rend,
+        damage: profile.damage,
+        modifiers: profile.modifiers,
+      });
     }
   }, [open, profile]);
 
-  useEffect(() => {
-    if (!fetchedModifiers || !fetchedModifiers.length) {
-      fetchModifiers();
-    }
-  }, [fetchedModifiers, fetchModifiers]);
+  const setStateByName = (name, newVal) => {
+    setState({
+      ...state,
+      [name]: newVal,
+    });
+  };
 
-  const getProfile = () => ({
-    num_models, attacks, to_hit, to_wound, rend, damage, modifiers,
-  });
-
-  const onErrorCallback = (name, error) => {
+  const setErrorByName = (name, error) => {
     setErrors({
       ...errors,
       [name]: error,
@@ -119,8 +79,7 @@ const ProfileDialog = ({
   };
 
   const submit = () => {
-    const updatedProfile = { ...getProfile() };
-    editWeaponProfile(id, updatedProfile, unitId);
+    editWeaponProfile(id, state, unitId);
     handleClose();
   };
 
@@ -135,74 +94,14 @@ const ProfileDialog = ({
       fullScreen={mobile}
       scroll="paper"
     >
-      <ProfileTitle header={header} fullScreen={mobile} onClose={handleClose} />
-      <DialogContent dividers>
-        <Typography component="div">
-          <form className={classes.form} onSubmit={(e) => { submit(); e.preventDefault(); }}>
-            <input type="submit" style={{ display: 'none' }} disabled={submitDisabled} />
-            <div className={classes.formSection}>
-              <label>Characteristics:</label>
-              <div className={clsx(classes.formSection, classes.characteristics)}>
-                <FormField
-                  className={classes.field}
-                  label="# Models"
-                  value={num_models}
-                  onChange={setNumModels}
-                  errorCallback={(error) => onErrorCallback('num_models', error)}
-                  type="number"
-                />
-                <DiceInput
-                  className={classes.field}
-                  label="Attacks"
-                  value={attacks}
-                  onChange={(e) => setAttacks(e.target.value)}
-                  errorCallback={(error) => onErrorCallback('attacks', error)}
-                  required
-                />
-                <RollInput
-                  className={classes.field}
-                  endAdornment="+"
-                  label="To Hit"
-                  value={to_hit}
-                  onChange={(e) => setToHit(e.target.value)}
-                  errorCallback={(error) => onErrorCallback('to_hit', error)}
-                />
-                <RollInput
-                  className={classes.field}
-                  endAdornment="+"
-                  label="To Wound"
-                  value={to_wound}
-                  onChange={(e) => setToWound(e.target.value)}
-                  errorCallback={(error) => onErrorCallback('to_wound', error)}
-                />
-                <FormField
-                  className={classes.field}
-                  startAdornment="-"
-                  label="Rend"
-                  value={rend}
-                  onChange={setRend}
-                />
-                <DiceInput
-                  className={classes.field}
-                  label="Damage"
-                  value={damage}
-                  onChange={(e) => setDamage(e.target.value)}
-                  errorCallback={(error) => onErrorCallback('damage', error)}
-                  required
-                />
-              </div>
-            </div>
-            <div className={clsx(classes.formSection, classes.modifiers)}>
-              <ModifierList
-                modifiers={modifiers}
-                setModifiers={setModifiers}
-                tabIndex={-1}
-                errorCallback={(error) => onErrorCallback('modifiers', error)}
-              />
-            </div>
-          </form>
-        </Typography>
-      </DialogContent>
+      <DialogTitle header={header} fullScreen={mobile} onClose={handleClose} />
+      <DialogContent
+        profile={state}
+        onChange={setStateByName}
+        onSubmit={submit}
+        errorCallback={setErrorByName}
+        submitDisabled={submitDisabled}
+      />
       <DialogActions>
         <Button
           className={classes.actionButton}
@@ -228,11 +127,9 @@ const ProfileDialog = ({
   );
 };
 
-const mapStateToProps = (state) => ({ fetchedModifiers: state.modifiers.modifiers });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchModifiers, editWeaponProfile,
+  editWeaponProfile,
 }, dispatch);
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileDialog);
+export default connect(null, mapDispatchToProps)(ProfileDialog);

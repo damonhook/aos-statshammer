@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { TextField, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,11 +24,15 @@ const FormField = ({
     inputProps.endAdornment = <InputAdornment position="end">{endAdornment}</InputAdornment>;
   }
 
-  useEffect(() => {
+  const sendErrorCallback = useCallback(() => {
     if (errorCallback) {
       errorCallback(error);
     }
   }, [error]);
+
+  useEffect(() => {
+    sendErrorCallback();
+  }, [sendErrorCallback]);
 
   const handleChange = (event) => {
     const val = event.target.value;

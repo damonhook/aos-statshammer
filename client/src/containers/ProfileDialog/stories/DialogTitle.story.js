@@ -1,13 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import ProfileTitle from 'containers/ProfileDialog/ProfileTitle';
+import DialogTitle from 'containers/ProfileDialog/DialogTitle';
 import { boolean } from '@storybook/addon-knobs';
 
 storiesOf('Containers/ProfileDialog', module)
-  .add('ProfileTitle', () => {
+  .add('DialogTitle', () => {
     const fullScreen = boolean('Full Screen Dialog', false);
     return (
-      <ProfileTitle
+      <DialogTitle
         header="Edit Profile"
         fullScreen={fullScreen}
       />

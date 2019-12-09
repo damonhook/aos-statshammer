@@ -57,7 +57,7 @@ const RollInput = ({
 
   useEffect(() => {
     sendErrorCallback();
-  }, [error, sendErrorCallback]);
+  }, [sendErrorCallback]);
 
   const handleChange = (event) => {
     const val = event.target.value;

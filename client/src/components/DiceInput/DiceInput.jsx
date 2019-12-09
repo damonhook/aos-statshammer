@@ -46,7 +46,7 @@ const DiceInput = ({
 
   useEffect(() => {
     sendErrorCallback();
-  }, [error, sendErrorCallback]);
+  }, [sendErrorCallback]);
 
 
   const handleChange = (event) => {

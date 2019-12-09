@@ -31,7 +31,7 @@ const ModifierInput = ({
 
   useEffect(() => {
     sendErrorCallback(error);
-  }, [error, sendErrorCallback]);
+  }, [sendErrorCallback]);
 
   useEffect(() => {
     if (val !== undefined && option.type !== 'boolean') setError(!val);
