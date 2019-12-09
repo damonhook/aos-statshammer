@@ -9,29 +9,29 @@ const addDefault = (option, defaultVal = null) => {
 };
 
 export const numberOption = ({ defaultVal = null, allowDice = false }) => {
-  const option = { type: 'number', allowDice };
-  addDefault(option, defaultVal);
+  let option = { type: 'number', allowDice };
+  option = addDefault(option, defaultVal);
   return option;
 };
 
 export const choiceOption = ({ defaultVal = null, items }) => {
-  const option = { type: 'choice', items };
+  let option = { type: 'choice', items };
   let newDefaultVal = defaultVal;
   if (newDefaultVal == null && items && items.length === 1) {
     [newDefaultVal] = items;
   }
-  addDefault(option, newDefaultVal);
+  option = addDefault(option, newDefaultVal);
   return option;
 };
 
 export const booleanOption = ({ defaultVal = null }) => {
-  const option = { type: 'boolean' };
-  addDefault(option, defaultVal);
+  let option = { type: 'boolean' };
+  option = addDefault(option, defaultVal);
   return option;
 };
 
 export const rollOption = ({ defaultVal = null, allowOnes = false }) => {
-  const option = { type: 'roll', allowOnes };
-  addDefault(option, defaultVal);
+  let option = { type: 'roll', allowOnes };
+  option = addDefault(option, defaultVal);
   return option;
 };

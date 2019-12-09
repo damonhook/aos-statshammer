@@ -25,7 +25,6 @@ export const parseDice = (val) => {
   if (typeof val === 'string') {
     const match = val.match(/^[dD](\d+)$/);
     if (match && match[1]) {
-      console.log(match[1]);
       return new Dice(match[1]);
     }
   }
