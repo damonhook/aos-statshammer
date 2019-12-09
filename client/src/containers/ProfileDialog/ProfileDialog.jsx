@@ -11,6 +11,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import DiceInput from 'components/DiceInput';
 import RollInput from 'components/RollInput';
+import { withRouter, useHistory } from 'react-router-dom';
 import FormField from './FormField';
 import ProfileTitle from './ProfileTitle';
 
@@ -57,11 +58,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProfileDialog = ({
-  id, editWeaponProfile, unitId, profile, fetchModifiers, fetchedModifiers, header, open, close,
+  id, editWeaponProfile, unitId, profile, fetchModifiers, fetchedModifiers, header, open,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const history = useHistory();
 
   const [num_models, setNumModels] = useState(1);
   const [attacks, setAttacks] = useState(1);
@@ -112,10 +114,14 @@ const ProfileDialog = ({
 
   const submitDisabled = Object.keys(errors).some((k) => errors[k]);
 
+  const handleClose = () => {
+    history.goBack();
+  };
+
   const submit = () => {
     const updatedProfile = { ...getProfile() };
     editWeaponProfile(id, updatedProfile, unitId);
-    close();
+    handleClose();
   };
 
   if (!profile) return null;
@@ -123,13 +129,13 @@ const ProfileDialog = ({
     <Dialog
       open={open}
       className={classes.dialog}
-      onClose={() => close()}
+      onClose={handleClose}
       fullWidth
       maxWidth="lg"
       fullScreen={mobile}
       scroll="paper"
     >
-      <ProfileTitle header={header} fullScreen={mobile} onClose={() => close()} />
+      <ProfileTitle header={header} fullScreen={mobile} onClose={handleClose} />
       <DialogContent dividers>
         <Typography component="div">
           <form className={classes.form} onSubmit={(e) => { submit(); e.preventDefault(); }}>
@@ -201,7 +207,7 @@ const ProfileDialog = ({
         <Button
           className={classes.actionButton}
           size={mobile ? 'large' : 'medium'}
-          onClick={() => close()}
+          onClick={handleClose}
           color="secondary"
           variant="contained"
         >

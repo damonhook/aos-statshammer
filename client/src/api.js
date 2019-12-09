@@ -1,4 +1,5 @@
 import fetch from 'cross-fetch';
+import { addNotification } from 'actions/notifications.action';
 import { fetchStatsPending, fetchStatsSuccess, fetchStatsError } from './actions/stats.action';
 import { fetchModifiersPending, fetchModifiersSuccess, fetchModifiersError } from './actions/modifiers.action';
 
@@ -27,7 +28,7 @@ export const fetchStatsCompare = (units) => (dispatch) => {
     })
     .catch((error) => {
       dispatch(fetchStatsError(error));
-      console.error(error);
+      dispatch(addNotification({ message: 'Failed to fetch stats', variant: 'error' }));
     });
 };
 
@@ -49,5 +50,6 @@ export const fetchModifiers = () => (dispatch) => {
     })
     .catch((error) => {
       dispatch(fetchModifiersError(error));
+      dispatch(addNotification({ message: 'Failed to fetch modifiers', variant: 'error' }));
     });
 };

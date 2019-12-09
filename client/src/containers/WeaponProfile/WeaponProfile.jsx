@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
@@ -10,6 +11,7 @@ import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ModifierSummary from 'components/ModifierSummary';
+import { Route, useHistory } from 'react-router-dom';
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles({
@@ -41,26 +43,15 @@ const WeaponProfile = ({
 }) => {
   const classes = useStyles();
   const profileRef = useRef(null);
-  const hash = `#edit-${profile.uuid || id}`;
-
-  const [open, setOpen] = useState(window.location.hash === hash);
+  const editPath = `/edit/${profile.uuid}`;
+  const history = useHistory();
 
   useEffect(() => {
     if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [id]);
 
-  useEffect(() => {
-    const onHashChange = () => setOpen(window.location.hash === hash);
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
-  });
-
   const handleOpen = () => {
-    window.location.hash = hash;
-  };
-
-  const handleClose = () => {
-    window.history.back();
+    history.push(editPath);
   };
 
   const handleDelete = (id, unitId) => {
@@ -91,17 +82,31 @@ const WeaponProfile = ({
             ) : null}
           </div>
         </div>
-        <ProfileDialog
-          open={open}
-          close={handleClose}
-          unitId={unitId}
-          id={id}
-          header="Edit Profile"
-          profile={profile}
-        />
+        <Route exact path={editPath}>
+          <ProfileDialog
+            open
+            unitId={unitId}
+            id={id}
+            header="Edit Profile"
+            profile={profile}
+          />
+        </Route>
       </ListItem>
     </div>
   );
+};
+
+WeaponProfile.propTypes = {
+  unitId: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
+  profile: PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+  }).isRequired,
+  toggleWeaponProfile: PropTypes.func.isRequired,
+  deleteWeaponProfile: PropTypes.func.isRequired,
+  addWeaponProfile: PropTypes.func.isRequired,
+  addProfileEnabled: PropTypes.bool.isRequired,
+  addNotification: PropTypes.func.isRequired,
 };
 
 export default connect(null, {
