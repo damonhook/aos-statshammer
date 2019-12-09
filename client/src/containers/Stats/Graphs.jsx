@@ -5,8 +5,9 @@ import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
 import GraphSkeleton from 'components/Skeletons/GraphSkeleton';
 import { useMediaQuery, Typography, Paper } from '@material-ui/core';
 import ListItem from 'components/ListItem';
+import StatsErrorCard from 'components/StatsErrorCard';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   graphContainer: {},
   tabs: {
     margin: '-1em -1em 0',
@@ -23,7 +24,12 @@ const useStyles = makeStyles({
   loader: {
     padding: '2em',
   },
-});
+  error: {
+    height: '350px',
+    width: 'auto',
+    margin: theme.spacing(2, 2, 0),
+  },
+}));
 
 const graphColors = [
   '#8884d8',
@@ -33,17 +39,19 @@ const graphColors = [
   '#f50057',
 ];
 
-const LoadableWrapper = ({ loading, children, numUnits }) => {
+const GraphWrapper = ({
+  loading, error, children, numUnits,
+}) => {
   const classes = useStyles();
   const groups = numUnits || 1;
 
-  return (
-    <div>
-      {loading
-        ? <GraphSkeleton height={340} series={7} groups={groups} className={classes.loader} />
-        : children}
-    </div>
-  );
+  if (loading) {
+    return <GraphSkeleton height={340} series={7} groups={groups} className={classes.loader} />;
+  }
+  if (error) {
+    return <StatsErrorCard className={classes.error} />;
+  }
+  return <div>{children}</div>;
 };
 
 const GraphTabbed = ({ stats, unitNames, graphList }) => {
@@ -63,10 +71,11 @@ const GraphTabbed = ({ stats, unitNames, graphList }) => {
         className={classes.tabs}
         tabNames={tabNames}
         tabContent={graphList.map((Graph, index) => (
-          <LoadableWrapper
+          <GraphWrapper
             loading={firstLoad}
             numUnits={unitNames.length}
             key={tabNames[index]}
+            error={Boolean(stats.error)}
           >
             <Paper square className={classes.tab}>
               <Graph
@@ -76,7 +85,7 @@ const GraphTabbed = ({ stats, unitNames, graphList }) => {
                 colors={graphColors}
               />
             </Paper>
-          </LoadableWrapper>
+          </GraphWrapper>
         ))}
       />
     </ListItem>
@@ -98,9 +107,10 @@ const GraphList = ({ stats, unitNames, graphList }) => {
           loading={stats.pending}
           loaderDelay={firstLoad ? 0 : 350}
         >
-          <LoadableWrapper
+          <GraphWrapper
             loading={(!stats.payload || !stats.payload.length) && stats.pending}
             numUnits={unitNames.length}
+            error={Boolean(stats.error)}
           >
             <Graph
               className={classes.content}
@@ -108,7 +118,7 @@ const GraphList = ({ stats, unitNames, graphList }) => {
               unitNames={unitNames}
               colors={graphColors}
             />
-          </LoadableWrapper>
+          </GraphWrapper>
         </ListItem>
       ))}
     </Typography>

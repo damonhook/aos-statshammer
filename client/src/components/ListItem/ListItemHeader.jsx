@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   header: {
     justifyContent: 'space-between',
     verticalAlign: 'middle',
+    WebkitTapHighlightColor: 'rgba(0,0,0,0)',
   },
   headerText: {
     flex: 1,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, InputAdornment } from '@material-ui/core';
@@ -9,7 +9,8 @@ const useStyles = makeStyles({
 });
 
 const RollInput = ({
-  label, value, onChange, className, required, allowOnes, startAdornment, endAdornment, ...other
+  label, value, onChange, className, required, allowOnes,
+  startAdornment, endAdornment, errorCallback, ...other
 }) => {
   const classes = useStyles();
   const [error, setError] = useState(false);
@@ -17,6 +18,12 @@ const RollInput = ({
 
   const min = allowOnes ? 1 : 2;
   const max = 6;
+
+  useEffect(() => {
+    if (errorCallback) {
+      errorCallback(error);
+    }
+  }, [error]);
 
   const inputProps = {};
   if (startAdornment) {
@@ -32,17 +39,25 @@ const RollInput = ({
     setError(true);
     setErrorMessage(errMessage);
   };
+
   const clearErrorState = () => {
     setError(false);
     setErrorMessage(null);
   };
 
-  const handleChange = (event) => {
-    const val = event.target.value;
+  const validate = (val) => {
     if (required && (val == null || val === '')) setErrorState('Required');
     else if (!isValid(val)) setErrorState(`Must be between ${min} and ${max}`);
     else clearErrorState();
+  };
 
+  useEffect(() => {
+    if (value !== undefined) validate(value);
+  }, []);
+
+  const handleChange = (event) => {
+    const val = event.target.value;
+    validate(val);
     if (onChange) onChange(event);
   };
 
@@ -71,17 +86,19 @@ RollInput.defaultProps = {
   allowOnes: false,
   startAdornment: null,
   endAdornment: null,
+  errorCallback: null,
 };
 
 RollInput.propTypes = {
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
   className: PropTypes.string,
   required: PropTypes.bool,
   allowOnes: PropTypes.bool,
   startAdornment: PropTypes.node,
   endAdornment: PropTypes.node,
+  errorCallback: PropTypes.func,
 };
 
 export default RollInput;

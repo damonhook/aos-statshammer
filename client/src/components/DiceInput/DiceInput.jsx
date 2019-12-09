@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
@@ -9,7 +9,7 @@ const useStyles = makeStyles({
 });
 
 const DiceInput = ({
-  label, value, onChange, className, required, ...other
+  label, value, onChange, className, required, errorCallback, ...other
 }) => {
   const classes = useStyles();
   const [error, setError] = useState(false);
@@ -18,21 +18,35 @@ const DiceInput = ({
   const isDice = (val) => Boolean(String(val).match(/^[dD]\d+$/));
   const isValid = (val) => !Number.isNaN(Number(val)) || isDice(val);
 
+  useEffect(() => {
+    if (errorCallback) {
+      errorCallback(error);
+    }
+  }, [error]);
+
   const setErrorState = (errMessage) => {
     setError(true);
     setErrorMessage(errMessage);
   };
+
   const clearErrorState = () => {
     setError(false);
     setErrorMessage(null);
   };
 
-  const handleChange = (event) => {
-    const val = event.target.value;
+  const validate = (val) => {
     if (required && (val == null || val === '')) setErrorState('Required');
     else if (!isValid(val)) setErrorState('Invalid Value/Dice');
     else clearErrorState();
+  };
 
+  useEffect(() => {
+    if (value !== undefined) validate(value);
+  }, []);
+
+  const handleChange = (event) => {
+    const val = event.target.value;
+    validate(val);
     if (onChange) onChange(event);
   };
 
@@ -57,14 +71,16 @@ DiceInput.defaultProps = {
   onChange: null,
   className: null,
   required: false,
+  errorCallback: null,
 };
 
 DiceInput.propTypes = {
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
   className: PropTypes.string,
   required: PropTypes.bool,
+  errorCallback: PropTypes.func,
 };
 
 export default DiceInput;

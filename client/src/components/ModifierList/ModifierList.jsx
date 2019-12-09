@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ModifierSelector from 'components/ModifierSelector';
@@ -15,8 +15,15 @@ const useStyles = makeStyles({
 });
 
 
-const ModifierList = ({ modifiers, setModifiers }) => {
+const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
   const classes = useStyles();
+  const [errors, setErrors] = useState([]);
+
+  useEffect(() => {
+    if (errorCallback) {
+      errorCallback(errors.some((e) => e));
+    }
+  }, [errors]);
 
   const addModifier = (modifier) => {
     const newModifier = {
@@ -29,19 +36,17 @@ const ModifierList = ({ modifiers, setModifiers }) => {
       }
     });
     if (!modifiers || !modifiers.length) {
-      setModifiers([
-        newModifier,
-      ]);
+      setModifiers([newModifier]);
+      setErrors([false]);
     } else {
-      setModifiers([
-        ...modifiers,
-        newModifier,
-      ]);
+      setModifiers([...modifiers, newModifier]);
+      setErrors([...errors, false]);
     }
   };
 
   const removeModifier = (index) => {
     setModifiers(modifiers.filter((_, i) => i !== index));
+    setErrors(errors.filter((_, i) => i !== index));
   };
 
   const onOptionChange = (index, name, value) => {
@@ -63,6 +68,15 @@ const ModifierList = ({ modifiers, setModifiers }) => {
     }));
   };
 
+  const handleErrorCallback = (index, error) => {
+    setErrors(errors.map((e, i) => {
+      if (i === index) {
+        return error;
+      }
+      return e;
+    }));
+  };
+
   return (
     <Typography component="div" className={classes.modifierList}>
       <label>Modifiers:</label>
@@ -74,7 +88,10 @@ const ModifierList = ({ modifiers, setModifiers }) => {
                 {...modifier}
                 removeModifier={removeModifier}
                 index={index}
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
                 onOptionChange={onOptionChange}
+                errorCallback={(error) => handleErrorCallback(index, error)}
               />
             ))}
           </div>

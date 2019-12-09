@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TextField, Checkbox, MenuItem, FormControlLabel,
 } from '@material-ui/core';
@@ -18,10 +18,36 @@ const useStyles = makeStyles({
 });
 
 const ModifierInput = ({
-  index, name, option, val, onOptionChange,
+  index, name, option, val, onOptionChange, errorCallback,
 }) => {
   const classes = useStyles();
-  const errorProps = !val ? { error: true, helperText: 'Required' } : {};
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (errorCallback) {
+      errorCallback(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (val !== undefined && option.type !== 'boolean') setError(!val);
+  }, []);
+
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setError(!value);
+    onOptionChange(index, name, value);
+  };
+
+  const handleChecked = (event) => {
+    onOptionChange(index, name, event.target.checked);
+  };
+
+  const onErrorCallback = (error) => {
+    setError(error);
+  };
+
+  const errorProps = error ? { error: true, helperText: 'Required' } : {};
 
   switch (option.type) {
     case 'choice':
@@ -35,7 +61,7 @@ const ModifierInput = ({
           variant="outlined"
           value={val}
           {...errorProps}
-          onChange={(event) => onOptionChange(index, name, event.target.value)}
+          onChange={handleChange}
         >
           {option.items.map((item) => (
             <MenuItem key={item} value={item}>
@@ -54,7 +80,7 @@ const ModifierInput = ({
               className={classes.choice}
               checked={val}
               {...errorProps}
-              onChange={(event) => onOptionChange(index, name, event.target.checked)}
+              onChange={handleChecked}
             />
           )}
           label={name}
@@ -71,6 +97,8 @@ const ModifierInput = ({
           value={val}
           onChange={(event) => onOptionChange(index, name, event.target.value)}
           allowOnes={option.allowOnes}
+          errorCallback={onErrorCallback}
+          required
         />
       );
     case 'number':
@@ -84,6 +112,8 @@ const ModifierInput = ({
             fullWidth
             value={val}
             onChange={(event) => onOptionChange(index, name, event.target.value)}
+            errorCallback={onErrorCallback}
+            required
           />
         )
         : (
@@ -96,7 +126,7 @@ const ModifierInput = ({
             variant="outlined"
             value={val}
             {...errorProps}
-            onChange={(event) => onOptionChange(index, name, event.target.value)}
+            onChange={handleChange}
           />
         );
   }

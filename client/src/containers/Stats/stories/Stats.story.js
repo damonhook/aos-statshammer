@@ -4,6 +4,7 @@ import Results from 'containers/Stats/Results';
 import Graphs from 'containers/Stats/Graphs';
 import ResultsTable from 'containers/Stats/ResultsTable';
 import { boolean } from '@storybook/addon-knobs';
+import { withProvider } from 'utils/exampleStore';
 
 const stats = {
   pending: false,
@@ -49,20 +50,22 @@ const stats = {
 
 const unitNames = ['Unit 1', 'Unit 2'];
 
-const getStats = (pending) => {
+const getStats = (pending, error) => {
   if (pending) return { pending: true, payload: [], error: null };
+  if (error) return { pending: false, payload: [], error: 'Error' };
   return stats;
 };
 
 storiesOf('Containers/Stats', module)
+  .addDecorator(withProvider)
   .add('Basic', () => (
-    <Results stats={getStats(boolean('Pending', false))} unitNames={unitNames} />
+    <Results stats={getStats(boolean('Pending', false), boolean('Error', false))} unitNames={unitNames} />
   ))
 
   .add('Graphs', () => (
-    <Graphs stats={getStats(boolean('Pending', false))} unitNames={unitNames} />
+    <Graphs stats={getStats(boolean('Pending', false), boolean('Error', false))} unitNames={unitNames} />
   ))
 
   .add('Table', () => (
-    <ResultsTable stats={getStats(boolean('Pending', false))} unitNames={unitNames} />
+    <ResultsTable stats={getStats(boolean('Pending', false), boolean('Error', false))} unitNames={unitNames} />
   ));

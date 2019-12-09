@@ -31,6 +31,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     cursor: 'pointer',
+    WebkitTapHighlightColor: 'rgba(0,0,0,0)',
   },
 });
 
@@ -85,7 +86,9 @@ const WeaponProfile = ({
           />
           <div className={classes.details} onClick={handleOpen} role="button">
             <Characteristics profile={profile} />
-            <ModifierSummary modifiers={profile.modifiers} />
+            {profile.modifiers && profile.modifiers.length ? (
+              <ModifierSummary modifiers={profile.modifiers} />
+            ) : null}
           </div>
         </div>
         <ProfileDialog

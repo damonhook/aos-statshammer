@@ -12,12 +12,14 @@ const stats = (state = INITIAL_STATS, action) => {
       return {
         ...state,
         pending: true,
+        error: null,
       };
     case FETCH_STATS_SUCCESS:
       return {
         ...state,
         pending: false,
         payload: action.payload,
+        error: null,
       };
     case FETCH_STATS_ERROR:
       return {

@@ -36,12 +36,13 @@ const BarGraph = ({
 };
 
 BarGraph.defaultProps = {
+  results: [],
   className: null,
 };
 
 BarGraph.propTypes = {
   /** The array of results to display in the graph */
-  results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  results: PropTypes.arrayOf(PropTypes.object),
   /** An array containing the Unit names, used for the data key */
   unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   /** CSS classname to give the component */

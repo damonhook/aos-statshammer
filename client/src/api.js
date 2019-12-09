@@ -27,6 +27,7 @@ export const fetchStatsCompare = (units) => (dispatch) => {
     })
     .catch((error) => {
       dispatch(fetchStatsError(error));
+      console.error(error);
     });
 };
 

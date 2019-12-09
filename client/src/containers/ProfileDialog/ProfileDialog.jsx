@@ -71,6 +71,16 @@ const ProfileDialog = ({
   const [damage, setDamage] = useState(0);
   const [modifiers, setModifiers] = useState([]);
 
+  const [errors, setErrors] = useState({
+    num_models: false,
+    attacks: false,
+    to_hit: false,
+    to_wound: false,
+    rend: false,
+    damage: false,
+    modifiers: false,
+  });
+
   useEffect(() => {
     if (open) {
       setNumModels(profile.num_models);
@@ -93,6 +103,15 @@ const ProfileDialog = ({
     num_models, attacks, to_hit, to_wound, rend, damage, modifiers,
   });
 
+  const onErrorCallback = (name, error) => {
+    setErrors({
+      ...errors,
+      [name]: error,
+    });
+  };
+
+  const submitDisabled = Object.keys(errors).some((k) => errors[k]);
+
   const submit = () => {
     const updatedProfile = { ...getProfile() };
     editWeaponProfile(id, updatedProfile, unitId);
@@ -114,7 +133,7 @@ const ProfileDialog = ({
       <DialogContent dividers>
         <Typography component="div">
           <form className={classes.form} onSubmit={(e) => { submit(); e.preventDefault(); }}>
-            <input type="submit" style={{ display: 'none' }} />
+            <input type="submit" style={{ display: 'none' }} disabled={submitDisabled} />
             <div className={classes.formSection}>
               <label>Characteristics:</label>
               <div className={clsx(classes.formSection, classes.characteristics)}>
@@ -123,6 +142,7 @@ const ProfileDialog = ({
                   label="# Models"
                   value={num_models}
                   onChange={setNumModels}
+                  errorCallback={(error) => onErrorCallback('num_models', error)}
                   type="number"
                 />
                 <DiceInput
@@ -130,6 +150,7 @@ const ProfileDialog = ({
                   label="Attacks"
                   value={attacks}
                   onChange={(e) => setAttacks(e.target.value)}
+                  errorCallback={(error) => onErrorCallback('attacks', error)}
                   required
                 />
                 <RollInput
@@ -138,6 +159,7 @@ const ProfileDialog = ({
                   label="To Hit"
                   value={to_hit}
                   onChange={(e) => setToHit(e.target.value)}
+                  errorCallback={(error) => onErrorCallback('to_hit', error)}
                 />
                 <RollInput
                   className={classes.field}
@@ -145,6 +167,7 @@ const ProfileDialog = ({
                   label="To Wound"
                   value={to_wound}
                   onChange={(e) => setToWound(e.target.value)}
+                  errorCallback={(error) => onErrorCallback('to_wound', error)}
                 />
                 <FormField
                   className={classes.field}
@@ -158,12 +181,18 @@ const ProfileDialog = ({
                   label="Damage"
                   value={damage}
                   onChange={(e) => setDamage(e.target.value)}
+                  errorCallback={(error) => onErrorCallback('damage', error)}
                   required
                 />
               </div>
             </div>
             <div className={clsx(classes.formSection, classes.modifiers)}>
-              <ModifierList modifiers={modifiers} setModifiers={setModifiers} tabIndex={-1} />
+              <ModifierList
+                modifiers={modifiers}
+                setModifiers={setModifiers}
+                tabIndex={-1}
+                errorCallback={(error) => onErrorCallback('modifiers', error)}
+              />
             </div>
           </form>
         </Typography>
@@ -184,6 +213,7 @@ const ProfileDialog = ({
           onClick={() => submit()}
           color="primary"
           variant="contained"
+          disabled={submitDisabled}
         >
           Confirm
         </Button>

@@ -5,6 +5,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import TableSkeleton from 'components/Skeletons/TableSkeleton';
+import StatsErrorCard from 'components/StatsErrorCard';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,11 +25,17 @@ const useStyles = makeStyles((theme) => ({
   cell: {
     background: 'white',
   },
+  error: {
+    width: 'auto',
+    height: theme.spacing(30),
+  },
 }));
 
 const ResultsTable = ({ stats, unitNames, className }) => {
   const classes = useStyles();
-
+  if (stats.error) {
+    return <StatsErrorCard className={classes.error} />;
+  }
   if ((!stats.payload || !stats.payload.length)) {
     return (
       <TableSkeleton
