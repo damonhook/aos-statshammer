@@ -28,7 +28,11 @@ export const parseDice = (val) => {
       return new Dice(match[1]);
     }
   }
-  return Number(val);
+  const num = Number(val);
+  if (Number.isNaN(num)) {
+    throw new Error('Invalid Value or Dice');
+  }
+  return num;
 };
 
 export const D3 = new Dice(3);

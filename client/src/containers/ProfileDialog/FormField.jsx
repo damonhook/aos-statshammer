@@ -1,21 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { TextField, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import DiceInput from 'components/DiceInput';
 
 
-const useStyles = makeStyles((theme) => ({
-  field: {
-  },
+const useStyles = makeStyles(() => ({
+  field: {},
 }));
 
 
 const FormField = ({
-  label, value, onChange, className, startAdornment, endAdornment, type,
+  label, value, onChange, className, startAdornment, endAdornment, type, errorCallback,
 }) => {
   const classes = useStyles();
+  const [error, setError] = useState(false);
+
   const inputProps = {};
   if (startAdornment) {
     inputProps.startAdornment = <InputAdornment position="start">{startAdornment}</InputAdornment>;
@@ -23,17 +23,21 @@ const FormField = ({
   if (endAdornment) {
     inputProps.endAdornment = <InputAdornment position="end">{endAdornment}</InputAdornment>;
   }
-  const error = (value == null || value === '');
 
-  const FieldTypes = {
-    number: TextField,
-    roll: TextField,
-    dice: DiceInput,
-  };
-  const Field = FieldTypes[type];
+  useEffect(() => {
+    if (errorCallback) {
+      errorCallback(error);
+    }
+  }, [error, errorCallback]);
+
+  const handleChange = useCallback((event) => {
+    const val = event.target.value;
+    setError(val == null || val === '');
+    onChange(val);
+  }, [onChange]);
 
   return (
-    <Field
+    <TextField
       className={clsx(classes.field, className)}
       variant="outlined"
       type="number"
@@ -42,7 +46,7 @@ const FormField = ({
       error={error}
       helperText={error ? 'Required' : null}
       InputProps={inputProps}
-      onChange={(event) => onChange(event.target.value)}
+      onChange={handleChange}
     />
 
   );

@@ -1,178 +1,130 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, useCallback, useMemo,
+} from 'react';
 import {
-  Button, Typography, Dialog, DialogContent, useMediaQuery, DialogActions,
+  Button, Dialog, useMediaQuery, DialogActions, Slide,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { editWeaponProfile } from 'actions/weaponProfiles.action';
-import ModifierList from 'components/ModifierList';
-import { fetchModifiers } from 'api';
 import { bindActionCreators } from 'redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import DiceInput from 'components/DiceInput';
-import RollInput from 'components/RollInput';
-import FormField from './FormField';
-import ProfileTitle from './ProfileTitle';
+import { useHistory, useParams } from 'react-router-dom';
+import { getUnitByUuid, getUnitIndexByUuid } from 'utils/unitHelpers';
+import DialogTitle from './DialogTitle';
+import DialogContent from './DialogContent';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   dialog: {},
-  form: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
-    [theme.breakpoints.up('lg')]: {
-      flexDirection: 'row',
-    },
-  },
-  field: {
-    width: '16em',
-    margin: '1em 1em 0 0',
-
-    [theme.breakpoints.down('md')]: {
-      flex: '1 1 calc(33% - 50px)',
-    },
-    [theme.breakpoints.down('sm')]: {
-      flex: '1 1 calc(50% - 50px)',
-    },
-  },
-  formSection: {
-    marginBottom: '1em',
-    flexDirection: 'column',
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  characteristics: {
-    flex: 0,
-    display: 'flex',
-    flexDirection: 'row',
-    [theme.breakpoints.up('lg')]: {
-      flexDirection: 'column',
-    },
-  },
-  modifiers: {
-    flex: 1,
-  },
   actionButton: {},
 }));
 
-const ProfileDialog = ({
-  id, editWeaponProfile, unitId, profile, fetchModifiers, fetchedModifiers, header, open, close,
-}) => {
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+
+const ProfileDialog = ({ editWeaponProfile, open }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [num_models, setNumModels] = useState(1);
-  const [attacks, setAttacks] = useState(1);
-  const [to_hit, setToHit] = useState(4);
-  const [to_wound, setToWound] = useState(4);
-  const [rend, setRend] = useState(0);
-  const [damage, setDamage] = useState(0);
-  const [modifiers, setModifiers] = useState([]);
+  const history = useHistory();
+  const { unitUuid, profileIndex } = useParams();
 
-  useEffect(() => {
-    if (open) {
-      setNumModels(profile.num_models);
-      setAttacks(profile.attacks);
-      setToHit(profile.to_hit);
-      setToWound(profile.to_wound);
-      setRend(profile.rend);
-      setDamage(profile.damage);
-      setModifiers(profile.modifiers);
-    }
-  }, [open, profile]);
+  const unit = getUnitByUuid(unitUuid);
+  const unitId = getUnitIndexByUuid(unitUuid);
+  const id = Number(profileIndex);
+  let profile = null;
+  if (unit) {
+    profile = unit.weapon_profiles[profileIndex];
+  }
 
-  useEffect(() => {
-    if (!fetchedModifiers || !fetchedModifiers.length) {
-      fetchModifiers();
-    }
-  }, [fetchedModifiers, fetchModifiers]);
+  if (!unit || !profile || unitId == null || id == null) {
+    history.replace('/');
+  }
 
-  const getProfile = () => ({
-    num_models, attacks, to_hit, to_wound, rend, damage, modifiers,
+  const [state, setState] = useState({
+    num_models: 1,
+    attacks: 1,
+    to_hit: 4,
+    to_wound: 4,
+    rend: 0,
+    damage: 1,
+    modifiers: [],
   });
 
-  const submit = () => {
-    const updatedProfile = { ...getProfile() };
-    editWeaponProfile(id, updatedProfile, unitId);
-    close();
-  };
+  const [errors, setErrors] = useState({
+    num_models: false,
+    attacks: false,
+    to_hit: false,
+    to_wound: false,
+    rend: false,
+    damage: false,
+    modifiers: false,
+  });
+
+  useEffect(() => {
+    if (profile) {
+      setState({
+        num_models: profile.num_models,
+        attacks: profile.attacks,
+        to_hit: profile.to_hit,
+        to_wound: profile.to_wound,
+        rend: profile.rend,
+        damage: profile.damage,
+        modifiers: profile.modifiers,
+      });
+    }
+  }, [profile]);
+
+  const setStateByName = useCallback((name, newVal) => {
+    setState({
+      ...state,
+      [name]: newVal,
+    });
+  }, [state]);
+
+  const setErrorByName = useCallback((name, error) => {
+    setErrors({
+      ...errors,
+      [name]: error,
+    });
+  }, [errors]);
+
+  const handleClose = useCallback(() => {
+    history.goBack();
+  }, [history]);
+
+  const submit = useCallback(() => {
+    editWeaponProfile(id, state, unitId);
+    handleClose();
+  }, [editWeaponProfile, handleClose, id, state, unitId]);
+
+  const submitDisabled = useMemo(() => Object.keys(errors).some((k) => errors[k]), [errors]);
 
   if (!profile) return null;
   return (
     <Dialog
       open={open}
       className={classes.dialog}
-      onClose={() => close()}
+      onClose={handleClose}
       fullWidth
       maxWidth="lg"
       fullScreen={mobile}
       scroll="paper"
+      TransitionComponent={Transition}
     >
-      <ProfileTitle header={header} fullScreen={mobile} onClose={() => close()} />
-      <DialogContent dividers>
-        <Typography component="div">
-          <form className={classes.form} onSubmit={(e) => { submit(); e.preventDefault(); }}>
-            <input type="submit" style={{ display: 'none' }} />
-            <div className={classes.formSection}>
-              <label>Characteristics:</label>
-              <div className={clsx(classes.formSection, classes.characteristics)}>
-                <FormField
-                  className={classes.field}
-                  label="# Models"
-                  value={num_models}
-                  onChange={setNumModels}
-                  type="number"
-                />
-                <DiceInput
-                  className={classes.field}
-                  label="Attacks"
-                  value={attacks}
-                  onChange={(e) => setAttacks(e.target.value)}
-                  required
-                />
-                <RollInput
-                  className={classes.field}
-                  endAdornment="+"
-                  label="To Hit"
-                  value={to_hit}
-                  onChange={(e) => setToHit(e.target.value)}
-                />
-                <RollInput
-                  className={classes.field}
-                  endAdornment="+"
-                  label="To Wound"
-                  value={to_wound}
-                  onChange={(e) => setToWound(e.target.value)}
-                />
-                <FormField
-                  className={classes.field}
-                  startAdornment="-"
-                  label="Rend"
-                  value={rend}
-                  onChange={setRend}
-                />
-                <DiceInput
-                  className={classes.field}
-                  label="Damage"
-                  value={damage}
-                  onChange={(e) => setDamage(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <div className={clsx(classes.formSection, classes.modifiers)}>
-              <ModifierList modifiers={modifiers} setModifiers={setModifiers} tabIndex={-1} />
-            </div>
-          </form>
-        </Typography>
-      </DialogContent>
+      <DialogTitle header="Edit Profile" fullScreen={mobile} onClose={handleClose} />
+      <DialogContent
+        profile={state}
+        onChange={setStateByName}
+        onSubmit={submit}
+        errorCallback={setErrorByName}
+        submitDisabled={submitDisabled}
+      />
       <DialogActions>
         <Button
           className={classes.actionButton}
           size={mobile ? 'large' : 'medium'}
-          onClick={() => close()}
+          onClick={handleClose}
           color="secondary"
           variant="contained"
         >
@@ -184,6 +136,7 @@ const ProfileDialog = ({
           onClick={() => submit()}
           color="primary"
           variant="contained"
+          disabled={submitDisabled}
         >
           Confirm
         </Button>
@@ -192,11 +145,9 @@ const ProfileDialog = ({
   );
 };
 
-const mapStateToProps = (state) => ({ fetchedModifiers: state.modifiers.modifiers });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchModifiers, editWeaponProfile,
+  editWeaponProfile,
 }, dispatch);
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileDialog);
+export default connect(null, mapDispatchToProps)(ProfileDialog);

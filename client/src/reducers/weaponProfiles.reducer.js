@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4';
+import nanoid from 'nanoid';
 import {
   TOGGLE_WEAPON_PROFILE, EDIT_WEAPON_PROFILE, ADD_WEAPON_PROFILE, DELETE_WEAPON_PROFILE,
 } from '../actions/weaponProfiles.action';
@@ -6,7 +6,7 @@ import { updateItemInArray } from './helpers';
 
 const addWeaponProfile = (state, action) => [
   ...state,
-  { ...action.profile, uuid: uuid() },
+  { ...action.profile, uuid: nanoid() },
 ];
 
 const toggleWeaponProfile = (state, action) => updateItemInArray(state, action.id, (profile) => ({

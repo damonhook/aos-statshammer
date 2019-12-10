@@ -1,5 +1,5 @@
 import { ADD_NOTIFICATION, DISMISS_NOTIFICATION, DISMISS_ALL_NOTIFICATIONS } from 'actions/notifications.action';
-import uuid from 'uuid/v4';
+import nanoid from 'nanoid';
 
 
 const DEFAULT_STATE = [];
@@ -10,7 +10,7 @@ const addNotification = (state, action) => {
     return [
       ...state.slice(1),
       {
-        key: uuid(),
+        key: nanoid(),
         ...action.notification,
       },
     ];
@@ -18,7 +18,7 @@ const addNotification = (state, action) => {
   return [
     ...state,
     {
-      key: uuid(),
+      key: nanoid(),
       ...action.notification,
     },
   ];

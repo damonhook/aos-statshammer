@@ -20,9 +20,11 @@ const LoadingBar = ({ wait }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timerId = setTimeout(() => {
       setLoading(true);
     }, wait);
+
+    return () => clearTimeout(timerId);
   }, [wait]);
 
   const fadeInTime = Math.min(wait, 400);

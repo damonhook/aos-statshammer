@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, InputAdornment } from '@material-ui/core';
@@ -9,7 +9,8 @@ const useStyles = makeStyles({
 });
 
 const RollInput = ({
-  label, value, onChange, className, required, allowOnes, startAdornment, endAdornment, ...other
+  label, value, onChange, className, required, allowOnes,
+  startAdornment, endAdornment, errorCallback, ...other
 }) => {
   const classes = useStyles();
   const [error, setError] = useState(false);
@@ -26,25 +27,39 @@ const RollInput = ({
     inputProps.endAdornment = <InputAdornment position="end">{endAdornment}</InputAdornment>;
   }
 
-  const isValid = (val) => Number(val) <= max && Number(val) >= min;
+  const isValid = useCallback((val) => Number(val) <= max && Number(val) >= min, [min, max]);
 
-  const setErrorState = (errMessage) => {
+  const setErrorState = useCallback((errMessage) => {
     setError(true);
     setErrorMessage(errMessage);
-  };
-  const clearErrorState = () => {
+  }, []);
+
+  const clearErrorState = useCallback(() => {
     setError(false);
     setErrorMessage(null);
-  };
+  }, []);
 
-  const handleChange = (event) => {
-    const val = event.target.value;
+  const validate = useCallback((val) => {
     if (required && (val == null || val === '')) setErrorState('Required');
     else if (!isValid(val)) setErrorState(`Must be between ${min} and ${max}`);
     else clearErrorState();
+  }, [clearErrorState, isValid, min, required, setErrorState]);
 
+  useEffect(() => {
+    if (value !== undefined) validate(value);
+  }, [validate, value]);
+
+  useEffect(() => {
+    if (errorCallback) {
+      errorCallback(error);
+    }
+  }, [error, errorCallback]);
+
+  const handleChange = useCallback((event) => {
+    const val = event.target.value;
+    if (value === undefined) validate(val); // uncontrolled
     if (onChange) onChange(event);
-  };
+  }, [onChange, validate, value]);
 
   return (
     <TextField
@@ -71,17 +86,19 @@ RollInput.defaultProps = {
   allowOnes: false,
   startAdornment: null,
   endAdornment: null,
+  errorCallback: null,
 };
 
 RollInput.propTypes = {
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
   className: PropTypes.string,
   required: PropTypes.bool,
   allowOnes: PropTypes.bool,
   startAdornment: PropTypes.node,
   endAdornment: PropTypes.node,
+  errorCallback: PropTypes.func,
 };
 
 export default RollInput;

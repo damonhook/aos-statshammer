@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import Unit from './../models/unit';
-import Target from './../models/target';
-import { SAVES } from './../constants';
+import Unit from '../models/unit';
+import Target from '../models/target';
+import { SAVES } from '../constants';
 
 
 export const compareUnits = ({ units }) => {

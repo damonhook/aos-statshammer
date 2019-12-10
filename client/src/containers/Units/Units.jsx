@@ -4,9 +4,10 @@ import Unit from 'containers/Unit';
 import { addUnit } from 'actions/units.action';
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { MAX_UNITS } from 'appConstants';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
+import { Route } from 'react-router-dom';
+import ProfileDialog from 'containers/ProfileDialog';
 import AddUnitButton from './AddUnitButton';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,16 +26,18 @@ const Units = ({ units, addUnit, className }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const addUnitEnabled = units.length < MAX_UNITS;
 
   return (
     <div className={clsx(classes.units, className)}>
       {(!units || !units.length)
         && <NoItemsCard header="It's lonely here" body="There are no units here, try adding some" />}
       {units.map((unit, index) => (
-        <Unit unit={unit} id={index} key={unit.uuid} addUnitEnabled={addUnitEnabled} />
+        <Unit unit={unit} id={index} key={unit.uuid} />
       ))}
       {!mobile && <AddUnitButton units={units} addUnit={addUnit} />}
+      <Route path="/units/:unitUuid/:profileIndex">
+        <ProfileDialog open />
+      </Route>
     </div>
   );
 };

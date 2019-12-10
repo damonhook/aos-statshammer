@@ -1,15 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useRef, useEffect, useCallback, useMemo,
+} from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
 } from 'actions/weaponProfiles.action';
 import { addNotification } from 'actions/notifications.action';
-import ProfileDialog from 'containers/ProfileDialog';
 import { Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ModifierSummary from 'components/ModifierSummary';
+import { useHistory } from 'react-router-dom';
+import { getUnitByPosition } from 'utils/unitHelpers';
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles({
@@ -31,6 +35,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     cursor: 'pointer',
+    WebkitTapHighlightColor: 'rgba(0,0,0,0)',
   },
 });
 
@@ -40,32 +45,23 @@ const WeaponProfile = ({
 }) => {
   const classes = useStyles();
   const profileRef = useRef(null);
-  const hash = `#edit-${profile.uuid || id}`;
+  const history = useHistory();
 
-  const [open, setOpen] = useState(window.location.hash === hash);
+  const unit = useMemo(() => getUnitByPosition(unitId), [unitId]);
+  const editPath = `/units/${unit.uuid}/${id}`;
 
   useEffect(() => {
     if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [id]);
 
-  useEffect(() => {
-    const onHashChange = () => setOpen(window.location.hash === hash);
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
-  });
+  const handleOpen = useCallback(() => {
+    history.push(editPath);
+  }, [editPath, history]);
 
-  const handleOpen = () => {
-    window.location.hash = hash;
-  };
-
-  const handleClose = () => {
-    window.history.back();
-  };
-
-  const handleDelete = (id, unitId) => {
+  const handleDelete = useCallback((id, unitId) => {
     addNotification({ message: 'Deleted Profile' });
     deleteWeaponProfile(id, unitId);
-  };
+  }, [addNotification, deleteWeaponProfile]);
 
   return (
     <div ref={profileRef}>
@@ -85,20 +81,28 @@ const WeaponProfile = ({
           />
           <div className={classes.details} onClick={handleOpen} role="button">
             <Characteristics profile={profile} />
-            <ModifierSummary modifiers={profile.modifiers} />
+            {profile.modifiers && profile.modifiers.length ? (
+              <ModifierSummary modifiers={profile.modifiers} />
+            ) : null}
           </div>
         </div>
-        <ProfileDialog
-          open={open}
-          close={handleClose}
-          unitId={unitId}
-          id={id}
-          header="Edit Profile"
-          profile={profile}
-        />
+
       </ListItem>
     </div>
   );
+};
+
+WeaponProfile.propTypes = {
+  unitId: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
+  profile: PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+  }).isRequired,
+  toggleWeaponProfile: PropTypes.func.isRequired,
+  deleteWeaponProfile: PropTypes.func.isRequired,
+  addWeaponProfile: PropTypes.func.isRequired,
+  addProfileEnabled: PropTypes.bool.isRequired,
+  addNotification: PropTypes.func.isRequired,
 };
 
 export default connect(null, {

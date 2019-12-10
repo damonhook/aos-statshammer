@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, {
+  useState, useEffect, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
@@ -9,32 +11,46 @@ const useStyles = makeStyles({
 });
 
 const DiceInput = ({
-  label, value, onChange, className, required, ...other
+  label, value, onChange, className, required, errorCallback, ...other
 }) => {
   const classes = useStyles();
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const isDice = (val) => Boolean(String(val).match(/^[dD]\d+$/));
-  const isValid = (val) => !Number.isNaN(Number(val)) || isDice(val);
+  const isDice = useCallback((val) => Boolean(String(val).match(/^[dD]\d+$/)), []);
+  const isValid = useCallback((val) => !Number.isNaN(Number(val)) || isDice(val), [isDice]);
 
-  const setErrorState = (errMessage) => {
+  const setErrorState = useCallback((errMessage) => {
     setError(true);
     setErrorMessage(errMessage);
-  };
-  const clearErrorState = () => {
+  }, []);
+
+  const clearErrorState = useCallback(() => {
     setError(false);
     setErrorMessage(null);
-  };
+  }, []);
 
-  const handleChange = (event) => {
-    const val = event.target.value;
+  const validate = useCallback((val) => {
     if (required && (val == null || val === '')) setErrorState('Required');
     else if (!isValid(val)) setErrorState('Invalid Value/Dice');
     else clearErrorState();
+  }, [clearErrorState, isValid, required, setErrorState]);
 
+  useEffect(() => {
+    if (value !== undefined) validate(value);
+  }, [value, validate]);
+
+  useEffect(() => {
+    if (errorCallback) {
+      errorCallback(error);
+    }
+  }, [error, errorCallback]);
+
+  const handleChange = useCallback((event) => {
+    const val = event.target.value;
+    if (value === undefined) validate(val); // If uncontrolled
     if (onChange) onChange(event);
-  };
+  }, [value, validate, onChange]);
 
   return (
     <TextField
@@ -57,14 +73,16 @@ DiceInput.defaultProps = {
   onChange: null,
   className: null,
   required: false,
+  errorCallback: null,
 };
 
 DiceInput.propTypes = {
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
   className: PropTypes.string,
   required: PropTypes.bool,
+  errorCallback: PropTypes.func,
 };
 
 export default DiceInput;

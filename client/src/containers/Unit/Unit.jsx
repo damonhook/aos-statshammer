@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import WeaponProfile from 'containers/WeaponProfile';
 import { connect } from 'react-redux';
 import { deleteUnit, editUnitName, addUnit } from 'actions/units.action';
@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { MAX_PROFILES } from 'appConstants';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
+import { addUnitEnabled } from 'utils/unitHelpers';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Unit = ({
-  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit,
-  addUnitEnabled, className, addNotification,
+  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit, className, addNotification,
 }) => {
   const unitRef = useRef(null);
   const classes = useStyles();
@@ -36,12 +36,12 @@ const Unit = ({
     if (unitRef.current) unitRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [id]);
 
-  const handleDeleteUnit = (id) => {
+  const handleDeleteUnit = useCallback((id) => {
     addNotification({ message: 'Deleted Unit' });
     deleteUnit(id);
-  };
+  }, [addNotification, deleteUnit]);
 
-  const exportUnit = () => {
+  const exportUnit = useCallback(() => {
     const data = encodeURIComponent(JSON.stringify(unit));
     // eslint-disable-next-line no-undef
     const a = document.createElement('a');
@@ -49,10 +49,14 @@ const Unit = ({
     a.download = `${unit.name}.json`;
     a.click();
     addNotification({ message: 'Exported Unit', variant: 'success' });
-  };
+  }, [unit, addNotification]);
 
   const addProfileEnabled = unit.weapon_profiles.length < MAX_PROFILES;
   const unitNameError = (!unit.name || unit.name === '');
+
+  const copyUnit = () => {
+    addUnit(`${unit.name} copy`, [...unit.weapon_profiles]);
+  };
 
   return (
     <div ref={unitRef}>
@@ -60,7 +64,7 @@ const Unit = ({
         className={clsx(classes.unit, className)}
         header={`Unit (${unit.name})`}
         onDelete={() => handleDeleteUnit(id)}
-        onCopy={addUnitEnabled ? () => addUnit(`${unit.name} copy`, [...unit.weapon_profiles]) : 'disabled'}
+        onCopy={addUnitEnabled() ? copyUnit : 'disabled'}
         extraItems={[{ name: 'Export', onClick: exportUnit }]}
         collapsible
       >

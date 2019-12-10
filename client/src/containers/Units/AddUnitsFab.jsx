@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { addUnit } from 'actions/units.action';
 import FloatingButton from 'components/FloatingButton';
 import AddIcon from '@material-ui/icons/Add';
-import { MAX_UNITS } from 'appConstants';
+import { addUnitEnabled } from 'utils/unitHelpers';
 
 const AddUnitsFab = ({ numUnits, addUnit }) => (
   <FloatingButton
     onClick={() => addUnit(`Unit ${numUnits + 1}`)}
     icon={<AddIcon />}
-    disabled={numUnits >= MAX_UNITS}
+    disabled={!addUnitEnabled()}
   />
 );
 

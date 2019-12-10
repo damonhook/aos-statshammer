@@ -35,6 +35,7 @@ const ActionsDialog = ({
             variant="text"
             onClick={() => { action.onClick(); onClose(); }}
             disabled={action.disabled}
+            key={action.label}
           >
             {action.label}
           </Button>
