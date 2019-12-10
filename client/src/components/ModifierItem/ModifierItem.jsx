@@ -7,7 +7,7 @@ import _ from 'lodash';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   modifier: {},
   modifierContent: {
     display: 'flex',
@@ -21,10 +21,10 @@ const useStyles = makeStyles({
     flexDirection: 'column',
   },
   modifierDescription: {
-    color: 'darkgray',
+    color: theme.palette.text.secondary,
     marginBottom: '1em',
   },
-});
+}));
 
 const ModifierItem = ({
   index, name, description, options, removeModifier, onOptionChange, errorCallback,

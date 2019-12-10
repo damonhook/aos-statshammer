@@ -28,8 +28,8 @@ const Characteristic = ({
 
   const item = (
     <Typography component="span" className={clsx(classes.characteristic, className)}>
-      <b>{`${name}: `}</b>
-      {text}
+      <Typography component="span">{`${name}: `}</Typography>
+      <Typography variant="h6" component="span">{text}</Typography>
     </Typography>
   );
   if (tooltip) {

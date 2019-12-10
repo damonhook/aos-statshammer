@@ -9,34 +9,38 @@ import {
   Legend,
   PolarGrid,
 } from 'recharts';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import GraphContainer from './GraphContainer';
+import GraphTooltip from './GraphTooltip';
 
 
 const useStyles = makeStyles({
-  graph: {},
+  graph: {
+    paddingTop: '0 !important',
+  },
 });
 
 const RadarGraph = ({
-  results, unitNames, className, colors,
+  results, unitNames, className,
 }) => {
   const classes = useStyles();
+  const theme = useTheme();
 
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
-      <RadarChart data={results} outerRadius={120} cy="35%">
-        <PolarGrid strokeDasharray="3 3" />
-        <PolarAngleAxis dataKey="save" />
-        <PolarRadiusAxis />
-        <Tooltip />
+      <RadarChart data={results} outerRadius={120} cy="40%">
+        <PolarGrid stroke={theme.palette.graphs.grid} />
+        <PolarAngleAxis dataKey="save" stroke={theme.palette.graphs.axis} />
+        <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={15} />
+        <Tooltip content={<GraphTooltip />} />
         <Legend />
         {unitNames.map((name, index) => (
           <Radar
             type="monotone"
             dataKey={name}
-            stroke={colors[index]}
-            fill={colors[index]}
+            stroke={theme.palette.graphs.series[index]}
+            fill={theme.palette.graphs.series[index]}
             fillOpacity={0.1}
             key={name}
           />
@@ -59,8 +63,6 @@ RadarGraph.propTypes = {
   unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   /** CSS classname to give the component */
   className: PropTypes.string,
-  /** An array of hex colors to use when generating the graph radars */
-  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 

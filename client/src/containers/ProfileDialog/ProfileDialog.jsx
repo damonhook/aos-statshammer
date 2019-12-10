@@ -14,9 +14,13 @@ import DialogTitle from './DialogTitle';
 import DialogContent from './DialogContent';
 
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {},
-  actionButton: {},
+  actions: {
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(0.5, 1.5, 2, 0),
+    },
+  },
 }));
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
@@ -120,9 +124,8 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
         errorCallback={setErrorByName}
         submitDisabled={submitDisabled}
       />
-      <DialogActions>
+      <DialogActions className={classes.actions}>
         <Button
-          className={classes.actionButton}
           size={mobile ? 'large' : 'medium'}
           onClick={handleClose}
           color="secondary"
@@ -131,7 +134,6 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
           Cancel
         </Button>
         <Button
-          className={classes.actionButton}
           size={mobile ? 'large' : 'medium'}
           onClick={() => submit()}
           color="primary"

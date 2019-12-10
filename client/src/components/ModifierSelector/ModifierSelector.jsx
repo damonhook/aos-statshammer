@@ -1,16 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { Button, Collapse, useMediaQuery } from '@material-ui/core';
+import {
+  Button, Collapse, useMediaQuery, Paper,
+} from '@material-ui/core';
 import { Add, Remove, Sync } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useHistory, useLocation, Route } from 'react-router-dom';
 import ModifierOption from './ModifierOption';
 import SelectorDialog from './SelectorDialog';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   selector: { marginTop: '1em', marginBottom: '1em' },
+  list: {
+    // backgroundColor: theme.palette.background.paper,
+  },
   button: { justifyContent: 'left' },
-});
+}));
 
 
 const ModifierSelector = ({
@@ -57,6 +62,7 @@ const ModifierSelector = ({
           disabled
           fullWidth
           className={classes.button}
+          size={mobile ? 'large' : 'medium'}
         >
           Loading Modifiers
         </Button>
@@ -104,11 +110,11 @@ const ModifierSelector = ({
         )
         : (
           <Collapse in={open} timeout={{ enter: 200, exit: 0 }}>
-            <div>
+            <Paper className={classes.list} square>
               {modifiers.map((modifier) => (
                 <ModifierOption modifier={modifier} onClick={addModifier} key={modifier.id} />
               ))}
-            </div>
+            </Paper>
           </Collapse>
         )}
     </div>

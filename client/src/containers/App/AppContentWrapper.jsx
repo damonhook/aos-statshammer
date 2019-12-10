@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from 'components/AppBar';
 import { useMediaQuery } from '@material-ui/core';
@@ -9,12 +9,13 @@ import DesktopAppContent from './DesktopAppContent';
 import MobileAppContent from './MobileAppContent';
 
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   app: {
     fontFamily: '"Roboto", sans-serif',
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
+    background: theme.palette.background.default,
   },
   container: {
     flex: 1,
@@ -25,9 +26,16 @@ const AppContentWrapper = () => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
 
   return (
-    <div className={classes.app}>
+    <div className={classes.app} ref={contentRef}>
       <AppBar title="AoS Statshammer" />
       <StoreSubscriber />
       {mobile

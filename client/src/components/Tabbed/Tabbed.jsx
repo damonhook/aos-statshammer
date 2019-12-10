@@ -49,7 +49,6 @@ const Tabbed = ({
         <Tabs
           value={value}
           indicatorColor="primary"
-          textColor="primary"
           onChange={handleChange}
           variant="fullWidth"
         >

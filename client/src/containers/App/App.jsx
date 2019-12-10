@@ -1,18 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { basicTheme } from 'themes';
+import getTheme from 'themes';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import AppContentWrapper from './AppContentWrapper';
 
 
-const App = () => (
+const App = ({ config }) => (
   <Router>
-    <ThemeProvider theme={basicTheme}>
+    <ThemeProvider theme={getTheme(config)}>
+      <CssBaseline />
       <Switch>
         <Route exact path="/" component={AppContentWrapper} />
         <Route path="/units" component={AppContentWrapper} />
@@ -22,5 +26,13 @@ const App = () => (
   </Router>
 );
 
+App.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  config: PropTypes.object.isRequired,
+};
 
-export default App;
+const mapStateToProps = (state) => ({
+  config: state.config,
+});
+
+export default connect(mapStateToProps)(App);
