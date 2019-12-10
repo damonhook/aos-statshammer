@@ -48,8 +48,10 @@ const ControlMenu = ({
         {onCopy && <MenuItem onClick={() => menuItemClick(onCopy)} disabled={onCopy === 'disabled'}>Copy</MenuItem>}
         {onDelete && <MenuItem onClick={() => menuItemClick(onDelete)}>Delete</MenuItem>}
         {hasDivider && <Divider />}
-        {extraItems && extraItems.map(({ name, onClick }) => (
-          <MenuItem onClick={() => menuItemClick(onClick)} key={name}>{name}</MenuItem>
+        {extraItems && extraItems.map(({ name, onClick, disabled }) => (
+          <MenuItem onClick={() => menuItemClick(onClick)} key={name} disabled={disabled}>
+            {name}
+          </MenuItem>
         ))}
       </Menu>
     </div>

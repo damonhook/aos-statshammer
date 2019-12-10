@@ -10,12 +10,18 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     display: 'flex',
   },
+  content: {
+    flex: '90%',
+  },
   dense: {
     padding: theme.spacing(2),
   },
   icon: {
     paddingRight: theme.spacing(2),
     margin: 'auto 0',
+    flex: '25%',
+    height: 'auto',
+    maxWidth: '3rem',
   },
 }));
 
@@ -25,7 +31,7 @@ const NoItemsCard = ({ header, body, dense = false }) => {
   return (
     <Paper className={clsx(classes.noItemsContainer, dense ? classes.dense : '')}>
       <InfoOutlined className={classes.icon} />
-      <div>
+      <div className={classes.content}>
         <Typography variant={dense ? 'h6' : 'h5'} component="h3">
           {header}
         </Typography>

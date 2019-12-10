@@ -44,6 +44,7 @@ const UploadButton = ({ onUpload, disabled }) => {
         type="file"
         // eslint-disable-next-line no-param-reassign
         onChange={(event) => { submitFiles(event.target.files); event.target.value = null; }}
+        disabled={disabled}
       />
       <label htmlFor="upload-button">
         <Button
@@ -83,7 +84,7 @@ const AddUnitButton = ({ units, addUnit }) => {
       >
         Add Unit
       </Button>
-      <UploadButton onUpload={onUpload} disabled={!addUnitEnabled()} />
+      <UploadButton onUpload={onUpload} disabled />
     </div>
   );
 };

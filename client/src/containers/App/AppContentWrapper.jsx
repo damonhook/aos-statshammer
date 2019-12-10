@@ -30,7 +30,9 @@ const AppContentWrapper = () => {
 
   useEffect(() => {
     if (contentRef.current) {
-      contentRef.current.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        contentRef.current.scrollIntoView({ behavior: 'smooth' });
+      }, 750);
     }
   }, []);
 
