@@ -1,6 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {
+  useRef, useEffect, useState, useCallback,
+} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
+import _ from 'lodash';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
 
@@ -38,14 +41,15 @@ const ModifierItem = ({
     if (errorCallback) {
       errorCallback(Object.keys(errors).some((k) => errors[k]));
     }
-  }, [errors]);
+  }, [errors, errorCallback]);
 
-  const onErrorCallback = (name, error) => {
+  const getErrorCallback = useCallback(_.memoize((name) => (error) => {
     setErrors({
       ...errors,
       [name]: error,
     });
-  };
+  }), []);
+
 
   return (
     <div ref={itemRef}>
@@ -68,7 +72,7 @@ const ModifierItem = ({
                     val={options[n].value}
                     onOptionChange={onOptionChange}
                     key={n}
-                    errorCallback={(error) => onErrorCallback(n, error)}
+                    errorCallback={getErrorCallback(n)}
                   />
                 ))}
               </div>

@@ -56,7 +56,7 @@ const WeaponProfile = ({
 
   const handleOpen = useCallback(() => {
     history.push(editPath);
-  }, [history]);
+  }, [editPath, history]);
 
   const handleDelete = useCallback((id, unitId) => {
     addNotification({ message: 'Deleted Profile' });

@@ -28,13 +28,13 @@ const FormField = ({
     if (errorCallback) {
       errorCallback(error);
     }
-  }, [error]);
+  }, [error, errorCallback]);
 
   const handleChange = useCallback((event) => {
     const val = event.target.value;
     setError(val == null || val === '');
     onChange(val);
-  }, []);
+  }, [onChange]);
 
   return (
     <TextField

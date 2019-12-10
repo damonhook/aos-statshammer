@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
   Typography, DialogContent as Content,
 } from '@material-ui/core';
@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import DiceInput from 'components/DiceInput';
 import RollInput from 'components/RollInput';
+import _ from 'lodash';
 import FormField from './FormField';
 
 
@@ -63,6 +64,10 @@ const DialogContent = ({
     }
   }, [modifierList, fetchModifiers]);
 
+  const getErrorCallback = useCallback(_.memoize((name) => (error) => {
+    errorCallback(name, error);
+  }), []);
+
   return (
     <Content dividers>
       <Typography component="div">
@@ -76,7 +81,7 @@ const DialogContent = ({
                 label="# Models"
                 value={profile.num_models}
                 onChange={(val) => onChange('num_models', val)}
-                errorCallback={(error) => errorCallback('num_models', error)}
+                errorCallback={getErrorCallback('num_models')}
                 type="number"
               />
               <DiceInput
@@ -84,7 +89,7 @@ const DialogContent = ({
                 label="Attacks"
                 value={profile.attacks}
                 onChange={(e) => onChange('attacks', e.target.value)}
-                errorCallback={(error) => errorCallback('attacks', error)}
+                errorCallback={getErrorCallback('attacks')}
                 required
               />
               <RollInput
@@ -93,7 +98,7 @@ const DialogContent = ({
                 label="To Hit"
                 value={profile.to_hit}
                 onChange={(e) => onChange('to_hit', e.target.value)}
-                errorCallback={(error) => errorCallback('to_hit', error)}
+                errorCallback={getErrorCallback('to_hit')}
               />
               <RollInput
                 className={classes.field}
@@ -101,7 +106,7 @@ const DialogContent = ({
                 label="To Wound"
                 value={profile.to_wound}
                 onChange={(e) => onChange('to_wound', e.target.value)}
-                errorCallback={(error) => errorCallback('to_wound', error)}
+                errorCallback={getErrorCallback('to_wound')}
               />
               <FormField
                 className={classes.field}
@@ -115,7 +120,7 @@ const DialogContent = ({
                 label="Damage"
                 value={profile.damage}
                 onChange={(e) => onChange('damage', e.target.value)}
-                errorCallback={(error) => errorCallback('damage', error)}
+                errorCallback={getErrorCallback('damage')}
                 required
               />
             </div>
@@ -125,7 +130,7 @@ const DialogContent = ({
               modifiers={profile.modifiers}
               setModifiers={(val) => onChange('modifiers', val)}
               tabIndex={-1}
-              errorCallback={(error) => errorCallback('modifiers', error)}
+              errorCallback={getErrorCallback('modifiers')}
             />
           </div>
         </form>

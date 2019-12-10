@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import clsx from 'clsx';
@@ -17,7 +17,7 @@ const ModifierDescription = ({ description, options, className }) => {
 
   const getHtmlForValue = (key, value) => `<b style="cursor:help;" title=${key}>${value}</b>`;
 
-  const getFormattedDescription = () => {
+  const getFormattedDescription = useCallback(() => {
     const params = Object.keys(options).reduce((acc, key) => {
       if (options[key]) {
         if (options[key].type === 'boolean') {
@@ -30,7 +30,7 @@ const ModifierDescription = ({ description, options, className }) => {
     }, {});
     const desc = formatUnicorn(description, params).trim().replace(/\s+/g, ' ').replace(/_/g, ' ');
     return desc[0].toUpperCase() + desc.slice(1);
-  };
+  }, [description, options]);
 
   return (
     <Typography component="div" className={clsx(classes.description, className)}>

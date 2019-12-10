@@ -39,7 +39,7 @@ const Unit = ({
   const handleDeleteUnit = useCallback((id) => {
     addNotification({ message: 'Deleted Unit' });
     deleteUnit(id);
-  }, [id]);
+  }, [addNotification, deleteUnit]);
 
   const exportUnit = useCallback(() => {
     const data = encodeURIComponent(JSON.stringify(unit));

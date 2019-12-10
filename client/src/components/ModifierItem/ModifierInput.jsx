@@ -23,33 +23,29 @@ const ModifierInput = ({
   const classes = useStyles();
   const [error, setError] = useState(false);
 
-  const sendErrorCallback = useCallback(() => {
+  useEffect(() => {
     if (errorCallback) {
       errorCallback(error);
     }
-  }, [error]);
-
-  useEffect(() => {
-    sendErrorCallback(error);
-  }, [sendErrorCallback]);
+  }, [error, errorCallback]);
 
   useEffect(() => {
     if (val !== undefined && option.type !== 'boolean') setError(!val);
-  }, []);
+  }, [val, option]);
 
-  const handleChange = (event) => {
+  const handleChange = useCallback((event) => {
     const { value } = event.target;
     setError(!value);
     onOptionChange(index, name, value);
-  };
+  }, [index, name, onOptionChange]);
 
-  const handleChecked = (event) => {
+  const handleChecked = useCallback((event) => {
     onOptionChange(index, name, event.target.checked);
-  };
+  }, [index, name, onOptionChange]);
 
-  const onErrorCallback = (error) => {
+  const childErrorCallback = useCallback((error) => {
     setError(error);
-  };
+  }, []);
 
   const errorProps = error ? { error: true, helperText: 'Required' } : {};
 
@@ -79,7 +75,6 @@ const ModifierInput = ({
         <FormControlLabel
           control={(
             <Checkbox
-              toggle
               name={name}
               className={classes.choice}
               checked={val}
@@ -101,7 +96,7 @@ const ModifierInput = ({
           value={val}
           onChange={(event) => onOptionChange(index, name, event.target.value)}
           allowOnes={option.allowOnes}
-          errorCallback={onErrorCallback}
+          errorCallback={childErrorCallback}
           required
         />
       );
@@ -116,7 +111,7 @@ const ModifierInput = ({
             fullWidth
             value={val}
             onChange={(event) => onOptionChange(index, name, event.target.value)}
-            errorCallback={onErrorCallback}
+            errorCallback={childErrorCallback}
             required
           />
         )

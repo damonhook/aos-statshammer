@@ -33,7 +33,7 @@ const UploadButton = ({ onUpload, disabled }) => {
       };
       reader.readAsText(file);
     });
-  });
+  }, [onUpload]);
 
   return (
     <div>

@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
@@ -15,45 +17,40 @@ const DiceInput = ({
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const isDice = (val) => Boolean(String(val).match(/^[dD]\d+$/));
-  const isValid = (val) => !Number.isNaN(Number(val)) || isDice(val);
+  const isDice = useCallback((val) => Boolean(String(val).match(/^[dD]\d+$/)), []);
+  const isValid = useCallback((val) => !Number.isNaN(Number(val)) || isDice(val), [isDice]);
 
-  const setErrorState = (errMessage) => {
+  const setErrorState = useCallback((errMessage) => {
     setError(true);
     setErrorMessage(errMessage);
-  };
+  }, []);
 
-  const clearErrorState = () => {
+  const clearErrorState = useCallback(() => {
     setError(false);
     setErrorMessage(null);
-  };
+  }, []);
 
-  const validate = (val) => {
+  const validate = useCallback((val) => {
     if (required && (val == null || val === '')) setErrorState('Required');
     else if (!isValid(val)) setErrorState('Invalid Value/Dice');
     else clearErrorState();
-  };
+  }, [clearErrorState, isValid, required, setErrorState]);
 
   useEffect(() => {
     if (value !== undefined) validate(value);
-  });
+  }, [value, validate]);
 
-  const sendErrorCallback = useCallback(() => {
+  useEffect(() => {
     if (errorCallback) {
       errorCallback(error);
     }
-  }, [error]);
+  }, [error, errorCallback]);
 
-  useEffect(() => {
-    sendErrorCallback();
-  }, [sendErrorCallback]);
-
-
-  const handleChange = (event) => {
+  const handleChange = useCallback((event) => {
     const val = event.target.value;
     if (value === undefined) validate(val); // If uncontrolled
     if (onChange) onChange(event);
-  };
+  }, [value, validate, onChange]);
 
   return (
     <TextField

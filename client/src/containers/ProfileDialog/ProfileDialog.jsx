@@ -78,14 +78,14 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
       ...state,
       [name]: newVal,
     });
-  });
+  }, [state]);
 
   const setErrorByName = useCallback((name, error) => {
     setErrors({
       ...errors,
       [name]: error,
     });
-  });
+  }, [errors]);
 
   const handleClose = useCallback(() => {
     history.goBack();
@@ -94,7 +94,7 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
   const submit = useCallback(() => {
     editWeaponProfile(id, state, unitId);
     handleClose();
-  }, [id, state, unitId]);
+  }, [editWeaponProfile, handleClose, id, state, unitId]);
 
   const submitDisabled = useMemo(() => Object.keys(errors).some((k) => errors[k]), [errors]);
 

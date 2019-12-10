@@ -27,6 +27,7 @@
         "eslint-plugin-jsx-a11y": "^6.2.3",
         "eslint-plugin-react": "^7.16.0",
         "format-unicorn": "^1.1.1",
+        "lodash": "^4.17.15",
         "lorem-ipsum": "^2.0.3",
         "node-sass": "^4.13.0",
         "prop-types": "^15.7.2",

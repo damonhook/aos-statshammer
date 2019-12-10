@@ -27,43 +27,39 @@ const RollInput = ({
     inputProps.endAdornment = <InputAdornment position="end">{endAdornment}</InputAdornment>;
   }
 
-  const isValid = (val) => Number(val) <= max && Number(val) >= min;
+  const isValid = useCallback((val) => Number(val) <= max && Number(val) >= min, [min, max]);
 
-  const setErrorState = (errMessage) => {
+  const setErrorState = useCallback((errMessage) => {
     setError(true);
     setErrorMessage(errMessage);
-  };
+  }, []);
 
-  const clearErrorState = () => {
+  const clearErrorState = useCallback(() => {
     setError(false);
     setErrorMessage(null);
-  };
+  }, []);
 
-  const validate = (val) => {
+  const validate = useCallback((val) => {
     if (required && (val == null || val === '')) setErrorState('Required');
     else if (!isValid(val)) setErrorState(`Must be between ${min} and ${max}`);
     else clearErrorState();
-  };
+  }, [clearErrorState, isValid, min, required, setErrorState]);
 
   useEffect(() => {
     if (value !== undefined) validate(value);
-  });
+  }, [validate, value]);
 
-  const sendErrorCallback = useCallback(() => {
+  useEffect(() => {
     if (errorCallback) {
       errorCallback(error);
     }
-  }, [error]);
+  }, [error, errorCallback]);
 
-  useEffect(() => {
-    sendErrorCallback();
-  }, [sendErrorCallback]);
-
-  const handleChange = (event) => {
+  const handleChange = useCallback((event) => {
     const val = event.target.value;
     if (value === undefined) validate(val); // uncontrolled
     if (onChange) onChange(event);
-  };
+  }, [onChange, validate, value]);
 
   return (
     <TextField

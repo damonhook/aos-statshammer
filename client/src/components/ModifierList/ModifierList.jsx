@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useEffect, useCallback, useReducer,
+} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
 import { MAX_MODIFIERS } from 'appConstants';
+import _ from 'lodash';
 
 const useStyles = makeStyles({
   modifierList: {
@@ -14,20 +17,31 @@ const useStyles = makeStyles({
   activeModifierCard: {},
 });
 
+const errorReducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_ERROR':
+      return [...state, action.err];
+    case 'SET_ERROR':
+      return state.map((err, index) => {
+        if (index === action.index) return action.error;
+        return err;
+      });
+    case 'REMOVE_ERROR':
+      return state.filter((_, index) => index !== action.index);
+    default:
+      return state;
+  }
+};
 
 const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
   const classes = useStyles();
-  const [errors, setErrors] = useState([]);
+  const [errors, dispatchErrors] = useReducer(errorReducer, []);
 
-  const sendErrorCallback = () => {
+  useEffect(() => {
     if (errorCallback) {
       errorCallback(errors.some((e) => e));
     }
-  };
-
-  useEffect(() => {
-    sendErrorCallback();
-  }, [errors]);
+  }, [errors, errorCallback]);
 
   const addModifier = (modifier) => {
     const newModifier = {
@@ -41,16 +55,15 @@ const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
     });
     if (!modifiers || !modifiers.length) {
       setModifiers([newModifier]);
-      setErrors([false]);
     } else {
       setModifiers([...modifiers, newModifier]);
-      setErrors([...errors, false]);
     }
+    dispatchErrors({ type: 'ADD_ERROR', error: false });
   };
 
   const removeModifier = (index) => {
     setModifiers(modifiers.filter((_, i) => i !== index));
-    setErrors(errors.filter((_, i) => i !== index));
+    dispatchErrors({ type: 'REMOVE_ERROR', index });
   };
 
   const onOptionChange = (index, name, value) => {
@@ -72,14 +85,9 @@ const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
     }));
   };
 
-  const handleErrorCallback = (index, error) => {
-    setErrors(errors.map((e, i) => {
-      if (i === index) {
-        return error;
-      }
-      return e;
-    }));
-  };
+  const getErrorCallback = useCallback(_.memoize((index) => (error) => {
+    dispatchErrors({ type: 'SET_ERROR', index, error });
+  }), []);
 
   return (
     <Typography component="div" className={classes.modifierList}>
@@ -95,7 +103,7 @@ const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
                 // eslint-disable-next-line react/no-array-index-key
                 key={index}
                 onOptionChange={onOptionChange}
-                errorCallback={(error) => handleErrorCallback(index, error)}
+                errorCallback={getErrorCallback(index)}
               />
             ))}
           </div>

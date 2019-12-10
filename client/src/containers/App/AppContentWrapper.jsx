@@ -9,7 +9,7 @@ import DesktopAppContent from './DesktopAppContent';
 import MobileAppContent from './MobileAppContent';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   app: {
     fontFamily: '"Roboto", sans-serif',
     minHeight: '100vh',
