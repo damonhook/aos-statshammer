@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Dialog, AppBar, Toolbar, Typography, IconButton, DialogContent, DialogActions, Button,
+  Dialog, AppBar, Toolbar, Typography, IconButton, DialogContent, DialogActions, Button, Slide,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+
 const SelectorDialog = ({ open, modifiers, addModifier }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -29,7 +31,7 @@ const SelectorDialog = ({ open, modifiers, addModifier }) => {
   }, [history]);
 
   return (
-    <Dialog open={open} fullScreen scroll="paper">
+    <Dialog open={open} fullScreen scroll="paper" TransitionComponent={Transition}>
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton onClick={handleClose}><Close className={classes.icon} /></IconButton>

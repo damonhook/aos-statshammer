@@ -7,6 +7,7 @@ import { useMediaQuery } from '@material-ui/core';
 import clsx from 'clsx';
 import useLongPress from 'hooks/useLongPress';
 import ActionsDialog from 'components/ActionsDialog';
+import { LONG_PRESS_DELAY } from 'appConstants';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -47,7 +48,7 @@ const ListItemHeader = ({
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const longPress = useLongPress(() => setDialogOpen(true), 800);
+  const longPress = useLongPress(() => setDialogOpen(true), LONG_PRESS_DELAY);
 
   const handleClick = () => setColapsed((!collapsible) ? false : !collapsed);
 

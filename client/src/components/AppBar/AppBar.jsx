@@ -4,8 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar as Bar, Toolbar, Typography } from '@material-ui/core';
 
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {},
+  title: {
+    padding: theme.spacing(2, 0),
+  },
 }));
 
 const AppBar = ({ title }) => {
@@ -14,7 +17,7 @@ const AppBar = ({ title }) => {
   return (
     <Bar position="static" className={classes.appBar}>
       <Toolbar variant="dense">
-        <Typography variant="h6">
+        <Typography variant="h5" component="h1" className={classes.title}>
           {title}
         </Typography>
       </Toolbar>

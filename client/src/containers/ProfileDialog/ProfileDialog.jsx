@@ -2,7 +2,7 @@ import React, {
   useState, useEffect, useCallback, useMemo,
 } from 'react';
 import {
-  Button, Dialog, useMediaQuery, DialogActions,
+  Button, Dialog, useMediaQuery, DialogActions, Slide,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { editWeaponProfile } from 'actions/weaponProfiles.action';
@@ -18,6 +18,8 @@ const useStyles = makeStyles(() => ({
   dialog: {},
   actionButton: {},
 }));
+
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const ProfileDialog = ({ editWeaponProfile, open }) => {
   const classes = useStyles();
@@ -108,6 +110,7 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
       maxWidth="lg"
       fullScreen={mobile}
       scroll="paper"
+      TransitionComponent={Transition}
     >
       <DialogTitle header="Edit Profile" fullScreen={mobile} onClose={handleClose} />
       <DialogContent
