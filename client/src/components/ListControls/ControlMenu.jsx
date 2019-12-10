@@ -4,6 +4,7 @@ import {
   Menu, MenuItem, IconButton, Divider,
 } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
+import clsx from 'clsx';
 
 
 const useStyles = makeStyles({
@@ -11,7 +12,7 @@ const useStyles = makeStyles({
 });
 
 const ControlMenu = ({
-  onEdit, onDelete, onCopy, extraItems, size = 'medium',
+  onEdit, onDelete, onCopy, extraItems, size = 'medium', className,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -32,7 +33,7 @@ const ControlMenu = ({
   const hasDivider = (onEdit || onCopy || onDelete) && (extraItems && extraItems.length);
 
   return (
-    <div className={classes.menu}>
+    <div className={clsx(classes.menu, className)}>
       <IconButton onClick={handleClick} size={size}>
         <MoreVert />
       </IconButton>
@@ -47,8 +48,10 @@ const ControlMenu = ({
         {onCopy && <MenuItem onClick={() => menuItemClick(onCopy)} disabled={onCopy === 'disabled'}>Copy</MenuItem>}
         {onDelete && <MenuItem onClick={() => menuItemClick(onDelete)}>Delete</MenuItem>}
         {hasDivider && <Divider />}
-        {extraItems && extraItems.map(({ name, onClick }) => (
-          <MenuItem onClick={() => menuItemClick(onClick)} key={name}>{name}</MenuItem>
+        {extraItems && extraItems.map(({ name, onClick, disabled }) => (
+          <MenuItem onClick={() => menuItemClick(onClick)} key={name} disabled={disabled}>
+            {name}
+          </MenuItem>
         ))}
       </Menu>
     </div>

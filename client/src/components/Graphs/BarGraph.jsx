@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import GraphContainer from './GraphContainer';
+import GraphTooltip from './GraphTooltip';
 
 
 const useStyles = makeStyles({
@@ -13,22 +14,28 @@ const useStyles = makeStyles({
 });
 
 const BarGraph = ({
-  results, unitNames, className, colors,
+  results, unitNames, className,
 }) => {
   const classes = useStyles();
+  const theme = useTheme();
 
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
       <BarChart
         data={results}
       >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="save" />
-        <YAxis />
-        <Tooltip />
+        <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
+        <XAxis dataKey="save" stroke={theme.palette.graphs.axis} />
+        <YAxis stroke={theme.palette.graphs.axis} />
+        <Tooltip content={<GraphTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
         <Legend />
         {unitNames.map((name, index) => (
-          <Bar type="monotone" dataKey={name} fill={colors[index]} key={name} />
+          <Bar
+            type="monotone"
+            dataKey={name}
+            fill={theme.palette.graphs.series[index]}
+            key={name}
+          />
         ))}
       </BarChart>
     </GraphContainer>
@@ -47,8 +54,6 @@ BarGraph.propTypes = {
   unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   /** CSS classname to give the component */
   className: PropTypes.string,
-  /** An array of hex colors to use when generating the graph bars */
-  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default BarGraph;

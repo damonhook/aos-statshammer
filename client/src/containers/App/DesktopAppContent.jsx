@@ -11,7 +11,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '1366px',
-    margin: '2em auto',
+    margin: theme.spacing(2),
+    marginLeft: 'auto',
+    marginRight: 'auto',
     [theme.breakpoints.down('md')]: {
       width: '95%',
       marginTop: '1em',
@@ -27,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   separator: {
-    height: '1em',
-    width: '1em',
+    height: theme.spacing(2),
+    width: theme.spacing(2),
   },
 }));
 

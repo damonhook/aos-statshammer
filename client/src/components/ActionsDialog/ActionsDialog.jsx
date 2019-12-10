@@ -29,13 +29,14 @@ const ActionsDialog = ({
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button variant="text" onClick={onClose}>Close</Button>
+        <Button variant="text" onClick={onClose} color="primary">Close</Button>
         {actions.map((action) => (
           <Button
             variant="text"
             onClick={() => { action.onClick(); onClose(); }}
             disabled={action.disabled}
             key={action.label}
+            color="primary"
           >
             {action.label}
           </Button>

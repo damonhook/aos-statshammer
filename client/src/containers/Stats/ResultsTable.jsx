@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 11,
   },
   header: {
-    backgroundColor: theme.palette.grey[50],
+    backgroundColor: theme.palette.background.default,
   },
   cell: {
-    background: 'white',
+    background: theme.palette.background.palette,
   },
   error: {
     width: 'auto',

@@ -3,7 +3,7 @@ import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: (props) => ({
     height: `${props.height}px`,
     display: 'flex',
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     marginTop: 'auto',
   },
   series: {
-    marginRight: '2em',
+    marginRight: theme.spacing(2),
     display: 'flex',
     flex: 1,
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     },
   },
   group: {
-    marginRight: '.5em',
+    marginRight: theme.spacing(1),
     flex: 1,
     display: 'flex',
     height: '100%',
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
       marginRight: 0,
     },
   },
-});
+}));
 
 const GraphSkeleton = ({
   series, groups, className, height,

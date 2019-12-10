@@ -24,7 +24,6 @@ const Results = ({ stats, unitNames, className }) => {
   return (
     <Typography className={clsx(classes.results, className)} component="div">
       <ListItem
-        square
         header="Table"
         collapsible
         loading={stats.pending}

@@ -3,7 +3,7 @@ import Card from 'components/Card';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ListControls from 'components/ListControls';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import useLongPress from 'hooks/useLongPress';
 import ActionsDialog from 'components/ActionsDialog';
@@ -26,17 +26,18 @@ const useStyles = makeStyles((theme) => ({
     KhtmlUserSelect: 'none',
   },
   listControls: {
-    marginLeft: 'auto',
-    marginRight: '-1em',
+    margin: 'auto',
+    marginRight: theme.spacing(-1),
+    display: 'flex',
+    alignItems: 'center',
+    height: '100%',
   },
   collapseIcon: {
-    margin: 'auto 0 auto -1em',
+    margin: 'auto 0 auto',
+    marginLeft: theme.spacing(-1),
   },
   collapsible: {
     cursor: 'pointer',
-  },
-  mobile: {
-    minHeight: theme.spacing(5.5),
   },
 }));
 
@@ -75,9 +76,16 @@ const ListItemHeader = ({
           {collapsed ? <ExpandLess /> : <ExpandMore />}
         </span>
       )}
-      <span className={`${classes.headerText}`} onClick={handleClick} role="button" {...longPress}>
+      <Typography
+        className={classes.headerText}
+        onClick={handleClick}
+        role="button"
+        component="span"
+        variant="h6"
+        {...longPress}
+      >
         {header}
-      </span>
+      </Typography>
       {dialogActions && (
         <ActionsDialog
           open={dialogOpen}

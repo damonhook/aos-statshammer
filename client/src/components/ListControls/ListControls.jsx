@@ -12,7 +12,15 @@ const ListControls = ({
 
   if (!onEdit && !onCopy && !onDelete && !extraItems) return null;
   return mobile
-    ? <ControlMenu onEdit={onEdit} onDelete={onDelete} onCopy={onCopy} extraItems={extraItems} />
+    ? (
+      <ControlMenu
+        onEdit={onEdit}
+        onDelete={onDelete}
+        onCopy={onCopy}
+        extraItems={extraItems}
+        className={className}
+      />
+    )
     : (
       <ControlHeader
         className={className}

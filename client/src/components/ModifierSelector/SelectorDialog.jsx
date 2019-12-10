@@ -18,6 +18,11 @@ const useStyles = makeStyles((theme) => ({
   content: {
     padding: 0,
   },
+  actions: {
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(0.5, 1.5, 2, 0),
+    },
+  },
 }));
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
@@ -43,7 +48,7 @@ const SelectorDialog = ({ open, modifiers, addModifier }) => {
           <ModifierOption modifier={modifier} onClick={addModifier} key={modifier.id} />
         ))}
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={classes.actions}>
         <Button size="large" onClick={handleClose} color="secondary" variant="contained">
           Cancel
         </Button>
