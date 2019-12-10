@@ -74,6 +74,7 @@ const AppMenu = ({ clearAllUnits, addNotification }) => {
 
 AppMenu.propTypes = {
   clearAllUnits: PropTypes.func.isRequired,
+  addNotification: PropTypes.func.isRequired,
 };
 
 export default connect(null, { clearAllUnits, addNotification })(AppMenu);

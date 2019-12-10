@@ -29,6 +29,7 @@
         "format-unicorn": "^1.1.1",
         "lodash": "^4.17.15",
         "lorem-ipsum": "^2.0.3",
+        "nanoid": "^2.1.7",
         "node-sass": "^4.13.0",
         "prop-types": "^15.7.2",
         "react": "^16.11.0",

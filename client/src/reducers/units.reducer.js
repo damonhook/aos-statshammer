@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4';
+import nanoid from 'nanoid';
 import {
   ADD_UNIT, DELETE_UNIT, EDIT_UNIT_NAME, CLEAR_ALL_UNITS,
 } from '../actions/units.action';
@@ -10,20 +10,20 @@ const DEFAULT_UNIT = {
   name: 'Unit 1',
   weapon_profiles: [{
     ...DEFAULT_WEAPON_PROFILE,
-    uuid: uuid(),
+    uuid: nanoid(),
   }],
 };
 
-const INITIAL_STATE = [{ ...DEFAULT_UNIT, uuid: uuid() }];
+const INITIAL_STATE = [{ ...DEFAULT_UNIT, uuid: nanoid() }];
 
 const addUnit = (state, action) => [
   ...state,
   {
     ...action.unit,
-    uuid: uuid(),
+    uuid: nanoid(),
     weapon_profiles: action.unit.weapon_profiles.map((profile) => ({
       ...profile,
-      uuid: uuid(),
+      uuid: nanoid(),
     })),
   },
 ];
