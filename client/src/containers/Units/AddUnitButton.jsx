@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { ImportExport, Add } from '@material-ui/icons';
-import { MAX_UNITS } from 'appConstants';
+import { addUnitEnabled } from 'utils/unitHelpers';
 
 const useStyles = makeStyles({
   group: {
@@ -78,12 +78,12 @@ const AddUnitButton = ({ units, addUnit }) => {
         variant="contained"
         startIcon={<Add />}
         color="primary"
-        disabled={units.length >= MAX_UNITS}
+        disabled={!addUnitEnabled()}
         className={classes.button}
       >
         Add Unit
       </Button>
-      <UploadButton onUpload={onUpload} disabled={units.length >= MAX_UNITS} />
+      <UploadButton onUpload={onUpload} disabled={!addUnitEnabled()} />
     </div>
   );
 };

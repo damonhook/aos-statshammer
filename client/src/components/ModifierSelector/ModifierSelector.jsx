@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { Button, Collapse } from '@material-ui/core';
+import { Button, Collapse, useMediaQuery } from '@material-ui/core';
 import { Add, Remove, Sync } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory, useLocation } from 'react-router-dom';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useHistory, useLocation, Route } from 'react-router-dom';
 import ModifierOption from './ModifierOption';
+import SelectorDialog from './SelectorDialog';
 
 const useStyles = makeStyles({
   selector: { marginTop: '1em', marginBottom: '1em' },
@@ -15,12 +16,14 @@ const useStyles = makeStyles({
 const ModifierSelector = ({
   modifiers, pending, error, onClick, disabled,
 }) => {
-  const [open, setOpen] = useState(false);
-  const [editPath, setEditPath] = useState('');
   const classes = useStyles();
-
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const history = useHistory();
   const location = useLocation();
+
+  const [open, setOpen] = useState(false);
+  const [editPath, setEditPath] = useState('');
 
   useEffect(() => {
     if (location.pathname.match(/^.*\/modifiers$/)) {
@@ -31,19 +34,19 @@ const ModifierSelector = ({
     }
   }, [location]);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     history.push(editPath);
-  };
+  }, [editPath, history]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     history.goBack();
-  };
+  }, [history]);
 
-  const addModifier = (modifier) => {
+  const addModifier = useCallback((modifier) => {
     setOpen(false); // Close early to avoid 'jumping'
     handleClose();
     onClick(modifier);
-  };
+  }, [handleClose, onClick]);
 
   if (pending) {
     return (
@@ -65,7 +68,7 @@ const ModifierSelector = ({
   }
   return (
     <div className={classes.selector}>
-      {open
+      {open && !mobile
         ? (
           <Button
             className={classes.button}
@@ -74,6 +77,7 @@ const ModifierSelector = ({
             onClick={handleClose}
             startIcon={<Remove />}
             color="secondary"
+            size={mobile ? 'large' : 'medium'}
           >
             Cancel
           </Button>
@@ -87,17 +91,26 @@ const ModifierSelector = ({
             startIcon={<Add />}
             color="primary"
             disabled={pending || disabled}
+            size={mobile ? 'large' : 'medium'}
           >
             Add Modifier
           </Button>
         )}
-      <Collapse in={open} timeout={{ enter: 200, exit: 0 }}>
-        <div>
-          {modifiers.map((modifier) => (
-            <ModifierOption modifier={modifier} onClick={addModifier} key={modifier.id} />
-          ))}
-        </div>
-      </Collapse>
+      {mobile
+        ? (
+          <Route path={editPath}>
+            <SelectorDialog open modifiers={modifiers} addModifier={addModifier} />
+          </Route>
+        )
+        : (
+          <Collapse in={open} timeout={{ enter: 200, exit: 0 }}>
+            <div>
+              {modifiers.map((modifier) => (
+                <ModifierOption modifier={modifier} onClick={addModifier} key={modifier.id} />
+              ))}
+            </div>
+          </Collapse>
+        )}
     </div>
   );
 };

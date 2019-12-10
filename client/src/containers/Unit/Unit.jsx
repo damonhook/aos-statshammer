@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { MAX_PROFILES } from 'appConstants';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
+import { addUnitEnabled } from 'utils/unitHelpers';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Unit = ({
-  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit,
-  addUnitEnabled, className, addNotification,
+  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit, className, addNotification,
 }) => {
   const unitRef = useRef(null);
   const classes = useStyles();
@@ -54,13 +54,17 @@ const Unit = ({
   const addProfileEnabled = unit.weapon_profiles.length < MAX_PROFILES;
   const unitNameError = (!unit.name || unit.name === '');
 
+  const copyUnit = () => {
+    addUnit(`${unit.name} copy`, [...unit.weapon_profiles]);
+  };
+
   return (
     <div ref={unitRef}>
       <ListItem
         className={clsx(classes.unit, className)}
         header={`Unit (${unit.name})`}
         onDelete={() => handleDeleteUnit(id)}
-        onCopy={addUnitEnabled ? () => addUnit(`${unit.name} copy`, [...unit.weapon_profiles]) : 'disabled'}
+        onCopy={addUnitEnabled() ? copyUnit : 'disabled'}
         extraItems={[{ name: 'Export', onClick: exportUnit }]}
         collapsible
       >
