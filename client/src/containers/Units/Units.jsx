@@ -7,6 +7,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { MAX_UNITS } from 'appConstants';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
+import { Route } from 'react-router-dom';
+import ProfileDialog from 'containers/ProfileDialog';
 import AddUnitButton from './AddUnitButton';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +37,9 @@ const Units = ({ units, addUnit, className }) => {
         <Unit unit={unit} id={index} key={unit.uuid} addUnitEnabled={addUnitEnabled} />
       ))}
       {!mobile && <AddUnitButton units={units} addUnit={addUnit} />}
+      <Route path="/units/:unitUuid/:profileIndex">
+        <ProfileDialog open />
+      </Route>
     </div>
   );
 };

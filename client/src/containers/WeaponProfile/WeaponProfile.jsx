@@ -1,17 +1,18 @@
-import React, { useRef, useEffect } from 'react';
+import React, {
+  useRef, useEffect, useCallback, useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
 } from 'actions/weaponProfiles.action';
 import { addNotification } from 'actions/notifications.action';
-import ProfileDialog from 'containers/ProfileDialog';
 import { Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ModifierSummary from 'components/ModifierSummary';
-import { Route, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getUnitByPosition } from 'utils/unitHelpers';
 import Characteristics from './Characteristics';
 
@@ -46,21 +47,21 @@ const WeaponProfile = ({
   const profileRef = useRef(null);
   const history = useHistory();
 
-  const unit = getUnitByPosition(unitId);
+  const unit = useMemo(() => getUnitByPosition(unitId), [unitId]);
   const editPath = `/units/${unit.uuid}/${id}`;
 
   useEffect(() => {
     if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [id]);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     history.push(editPath);
-  };
+  }, [history]);
 
-  const handleDelete = (id, unitId) => {
+  const handleDelete = useCallback((id, unitId) => {
     addNotification({ message: 'Deleted Profile' });
     deleteWeaponProfile(id, unitId);
-  };
+  }, [addNotification, deleteWeaponProfile]);
 
   return (
     <div ref={profileRef}>
@@ -85,9 +86,7 @@ const WeaponProfile = ({
             ) : null}
           </div>
         </div>
-        <Route path="/units/:unitUuid/:profileIndex">
-          <ProfileDialog open />
-        </Route>
+
       </ListItem>
     </div>
   );

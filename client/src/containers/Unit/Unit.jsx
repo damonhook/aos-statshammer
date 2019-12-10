@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import WeaponProfile from 'containers/WeaponProfile';
 import { connect } from 'react-redux';
 import { deleteUnit, editUnitName, addUnit } from 'actions/units.action';
@@ -36,12 +36,12 @@ const Unit = ({
     if (unitRef.current) unitRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [id]);
 
-  const handleDeleteUnit = (id) => {
+  const handleDeleteUnit = useCallback((id) => {
     addNotification({ message: 'Deleted Unit' });
     deleteUnit(id);
-  };
+  }, [id]);
 
-  const exportUnit = () => {
+  const exportUnit = useCallback(() => {
     const data = encodeURIComponent(JSON.stringify(unit));
     // eslint-disable-next-line no-undef
     const a = document.createElement('a');
@@ -49,7 +49,7 @@ const Unit = ({
     a.download = `${unit.name}.json`;
     a.click();
     addNotification({ message: 'Exported Unit', variant: 'success' });
-  };
+  }, [unit, addNotification]);
 
   const addProfileEnabled = unit.weapon_profiles.length < MAX_PROFILES;
   const unitNameError = (!unit.name || unit.name === '');

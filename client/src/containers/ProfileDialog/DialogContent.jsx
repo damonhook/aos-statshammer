@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import {
   Typography, DialogContent as Content,
 } from '@material-ui/core';
@@ -53,15 +53,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DialogContent = ({
-  profile, onChange, onSubmit, errorCallback, fetchedModifiers, fetchModifiers, submitDisabled,
+  profile, onChange, onSubmit, errorCallback, modifierList, fetchModifiers, submitDisabled,
 }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (!fetchedModifiers || !fetchedModifiers.length) {
+    if (!modifierList || !modifierList.length) {
       fetchModifiers();
     }
-  }, [fetchedModifiers, fetchModifiers]);
+  }, [modifierList, fetchModifiers]);
 
   return (
     <Content dividers>
@@ -134,7 +134,7 @@ const DialogContent = ({
   );
 };
 
-const mapStateToProps = (state) => ({ fetchedModifiers: state.modifiers.modifiers });
+const mapStateToProps = (state) => ({ modifierList: state.modifiers.modifiers });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchModifiers,

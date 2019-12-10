@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { ImportExport, Add } from '@material-ui/icons';
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 const UploadButton = ({ onUpload, disabled }) => {
   const classes = useStyles();
 
-  const submitFiles = (files) => {
+  const submitFiles = useCallback((files) => {
     if (!files) return;
     Array.from(files).forEach((file) => {
       const reader = new global.FileReader();
@@ -33,7 +33,7 @@ const UploadButton = ({ onUpload, disabled }) => {
       };
       reader.readAsText(file);
     });
-  };
+  });
 
   return (
     <div>

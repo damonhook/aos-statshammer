@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Units, { AddUnitsFab } from 'containers/Units';
 import Stats from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
 const MobileAppContent = ({ className }) => {
   const classes = useStyles();
   const [activeTab, setActiveTab] = useState(0);
-  const onTabChange = (newIndex) => setActiveTab(newIndex);
+  const onTabChange = useCallback((newIndex) => setActiveTab(newIndex), []);
 
   return (
     <div className={clsx(classes.mobileContent, className)}>

@@ -24,21 +24,17 @@ const FormField = ({
     inputProps.endAdornment = <InputAdornment position="end">{endAdornment}</InputAdornment>;
   }
 
-  const sendErrorCallback = useCallback(() => {
+  useEffect(() => {
     if (errorCallback) {
       errorCallback(error);
     }
   }, [error]);
 
-  useEffect(() => {
-    sendErrorCallback();
-  }, [sendErrorCallback]);
-
-  const handleChange = (event) => {
+  const handleChange = useCallback((event) => {
     const val = event.target.value;
     setError(val == null || val === '');
     onChange(val);
-  };
+  }, []);
 
   return (
     <TextField

@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, useCallback, useMemo,
+} from 'react';
 import {
   Button, Dialog, useMediaQuery, DialogActions,
 } from '@material-ui/core';
@@ -27,7 +29,7 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
 
   const unit = getUnitByUuid(unitUuid);
   const unitId = getUnitIndexByUuid(unitUuid);
-  const id = profileIndex;
+  const id = Number(profileIndex);
   let profile = null;
   if (unit) {
     profile = unit.weapon_profiles[profileIndex];
@@ -71,30 +73,30 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
     }
   }, [profile]);
 
-  const setStateByName = (name, newVal) => {
+  const setStateByName = useCallback((name, newVal) => {
     setState({
       ...state,
       [name]: newVal,
     });
-  };
+  });
 
-  const setErrorByName = (name, error) => {
+  const setErrorByName = useCallback((name, error) => {
     setErrors({
       ...errors,
       [name]: error,
     });
-  };
+  });
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     history.goBack();
-  };
+  }, [history]);
 
-  const submit = () => {
+  const submit = useCallback(() => {
     editWeaponProfile(id, state, unitId);
     handleClose();
-  };
+  }, [id, state, unitId]);
 
-  const submitDisabled = Object.keys(errors).some((k) => errors[k]);
+  const submitDisabled = useMemo(() => Object.keys(errors).some((k) => errors[k]), [errors]);
 
   if (!profile) return null;
   return (
