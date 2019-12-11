@@ -134,15 +134,15 @@ describe('Units', () => {
   describe('Plague Monks', () => {
     const unit = new Unit('Plague Monks', [
       new WeaponProfile(20, 2, 4, 4, 0, 1, [
-        // new m.REROLL({ characteristic: C.TO_HIT }),
-        // new m.CONDITIONAL_BONUS({
-        //   characteristic: C.TO_HIT, bonus: 1, unmodified: true, bonusToCharacteristic: C.REND,
-        // }),
+        new m.REROLL({ characteristic: C.TO_HIT }),
+        new m.CONDITIONAL_BONUS({
+          characteristic: C.TO_HIT, bonus: 1, unmodified: true, bonusToCharacteristic: C.REND,
+        }),
         new m.CONDITIONAL_BONUS({
           characteristic: C.TO_WOUND, bonus: 1, unmodified: true, bonusToCharacteristic: C.DAMAGE,
         }),
       ]),
     ]);
-    testUnit(unit, [13.333, 11.111, 8.889, 6.667, 4.444, 2.222]);
+    testUnit(unit, [20.000, 17.778, 14.444, 11.111, 7.778, 4.444]);
   });
 });

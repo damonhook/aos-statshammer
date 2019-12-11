@@ -74,65 +74,66 @@ class WeaponProfile {
     return this.resolveHits(target, totalAttacks, 0);
   }
 
-  resolveHits(target, attacks, damage = 0) {
+  resolveHits(target, attacks) {
     let hits = attacks * D6.getProbability(this.getToHit());
-    let extraDamage = 0;
     hits += attacks * this.resolveRerolls(C.TO_HIT);
     hits += attacks * this.resolveModifier(m.EXPLODING, C.TO_HIT);
 
     const mwModifier = this.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_HIT);
+    let mortalDamage = 0;
     if (mwModifier) {
       const mortalHits = attacks * mwModifier.resolve(this);
-      extraDamage += mortalHits * mwModifier.getMortalWounds();
+      mortalDamage += mortalHits * mwModifier.getMortalWounds();
       hits -= !mwModifier.inAddition ? mortalHits : 0;
     }
 
-    return this.resolveWounds(target, hits, damage + extraDamage);
+    const cbModifier = this.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_HIT);
+    let splitDamage = 0;
+    if (cbModifier) {
+      const newProfile = this.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()])
+      const cbModHits = attacks * cbModifier.resolve(this);
+      splitDamage = newProfile.resolveWounds(target, cbModHits);
+      hits -= cbModHits;
+    }
+
+    return this.resolveWounds(target, hits) + mortalDamage + splitDamage;
   }
 
-  resolveWounds(target, hits, damage = 0) {
+  resolveWounds(target, hits) {
     let wounds = hits * D6.getProbability(this.getToWound());
-    let extraDamage = 0;
     wounds += (hits * this.resolveRerolls(C.TO_WOUND));
     wounds += (hits * this.resolveModifier(m.EXPLODING, C.TO_WOUND));
 
     const mwModifier = this.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_WOUND);
+    let mortalDamage = 0;
     if (mwModifier) {
       const mortalToWounds = hits * mwModifier.resolve(this);
-      extraDamage += mortalToWounds * mwModifier.getMortalWounds();
+      mortalDamage += mortalToWounds * mwModifier.getMortalWounds();
       wounds -= !mwModifier.inAddition ? mortalToWounds : 0;
     }
 
     const cbModifier = this.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_WOUND);
+    let splitDamage = 0;
     if (cbModifier) {
-      const newProfile = new WeaponProfile(
-        this.numModels,
-        this.attacks,
-        this.toHit,
-        this.toWound,
-        this.rend,
-        this.damage,
-        this.modifiers.modifiers.filter((mod) => mod !== cbModifier),
-      );
-      newProfile.modifiers.addModifier(cbModifier.getAsBonusModifier());
+      const newProfile = this.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()])
       const cbModWounds = hits * cbModifier.resolve(this);
-      extraDamage += this.resolveSaves(target, cbModWounds, damage + extraDamage);
+      splitDamage = newProfile.resolveSaves(target, cbModWounds);
       wounds -= cbModWounds;
     }
 
-    return this.resolveSaves(target, wounds, damage + extraDamage);
+    return this.resolveSaves(target, wounds) + mortalDamage + splitDamage;
   }
 
-  resolveSaves(target, wounds, damage = 0) {
+  resolveSaves(target, wounds) {
     const save = target.getSaveAfterRend(this.getRend());
     const saves = save ? (wounds * D6.getProbability(save)) : 0;
     const successful = wounds - saves;
-    return this.resolveDamage(target, successful, damage);
+    return this.resolveDamage(target, successful);
   }
 
-  resolveDamage(target, successful, damage = 0) {
+  resolveDamage(target, successful) {
     const damagePerSuccessful = this.getDamage();
-    return damage + (successful * damagePerSuccessful);
+    return successful * damagePerSuccessful;
   }
 
   resolveModifier(modifier, characteristic) {
@@ -151,6 +152,23 @@ class WeaponProfile {
     const modList = this.modifiers.getStackableModifier(modifier, characteristic);
     if (modList && modList.length) return modList.reduce((acc, mod) => acc + mod.resolve(this), 0);
     return 0;
+  }
+
+  getSplitProfile(excludeModifiers, extraModifiers) {
+
+    const newProfile = new WeaponProfile(
+      this.numModels,
+      this.attacks,
+      this.toHit,
+      this.toWound,
+      this.rend,
+      this.damage,
+      this.modifiers.modifiers,
+    );
+    extraModifiers.forEach((mod) => {
+      newProfile.modifiers.addModifier(mod);
+    });
+    return newProfile;
   }
 }
 
