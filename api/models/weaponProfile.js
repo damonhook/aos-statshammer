@@ -93,8 +93,18 @@ class WeaponProfile {
 
   resolveWounds(target, hits, damage = 0) {
     let wounds = hits * D6.getProbability(this.getToWound());
+    let extraDamage = 0;
     wounds += (hits * this.resolveRerolls(C.TO_WOUND));
-    return this.resolveSaves(target, wounds, damage);
+    wounds += (hits * this.resolveModifier(m.EXPLODING, C.TO_WOUND));
+
+    const mwModifier = this.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_WOUND);
+    if (mwModifier) {
+      const mortalToWounds = (hits * mwModifier.resolve(this));
+      extraDamage += mortalToWounds * mwModifier.getMortalWounds();
+      wounds -= !mwModifier.inAddition ? mortalToWounds : 0;
+    }
+
+    return this.resolveSaves(target, wounds, damage + extraDamage);
   }
 
   resolveSaves(target, wounds, damage = 0) {

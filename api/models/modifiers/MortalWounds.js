@@ -5,9 +5,9 @@ import { numberOption, booleanOption, rollOption } from './ModifierOptions';
 
 export default class MortalWounds extends BaseModifier {
   constructor({
-    on = 6, mortalWounds = 1, unmodified = true, inAddition = false,
+    characteristic, on = 6, mortalWounds = 1, unmodified = true, inAddition = false,
   }) {
-    super({ characteristic: C.TO_HIT });
+    super({ characteristic });
     this.on = Number(on);
     this.mortalWounds = parseDice(mortalWounds);
     this.unmodified = Boolean(unmodified);
@@ -23,7 +23,7 @@ export default class MortalWounds extends BaseModifier {
   }
 
   static get availableCharacteristics() {
-    return [C.TO_HIT];
+    return [C.TO_HIT, C.TO_WOUND];
   }
 
   static get options() {
