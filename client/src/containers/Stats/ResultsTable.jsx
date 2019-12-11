@@ -40,7 +40,7 @@ const ResultsTable = ({ stats, unitNames, className }) => {
     return (
       <TableSkeleton
         dense
-        rows={7}
+        rows={6}
         cols={unitNames && unitNames.length ? unitNames.length + 1 : 2}
         className={classes.skeleton}
       />

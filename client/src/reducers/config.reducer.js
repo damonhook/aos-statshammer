@@ -2,7 +2,7 @@ import { TOGGLE_DARK_MODE } from 'actions/config.action';
 
 
 const DEFAULT_STATE = {
-  darkMode: true,
+  darkMode: false,
 };
 
 const toggleDarkMode = (state) => ({

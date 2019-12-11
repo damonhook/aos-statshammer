@@ -15,6 +15,6 @@ export const getCharacteristic = (val) => {
   return null;
 };
 
-export const SAVES = [1, 2, 3, 4, 5, 6, 0];
+export const SAVES = [2, 3, 4, 5, 6, 0];
 
 export const C = Characteristics;

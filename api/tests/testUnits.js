@@ -100,4 +100,15 @@ describe('Units', () => {
     ]);
     testUnit(unit, [18.889, 18.889, 18.889, 16.519, 14.148, 11.778]);
   });
+
+  describe('Spirit Hosts', () => {
+    const unit = new Unit('Spirit Hosts', [
+      new WeaponProfile(3, 6, 5, 4, 0, 1, [
+        new m.MORTAL_WOUNDS({
+          on: 6, mortalWounds: 1, inAddition: false, unmodified: true,
+        }),
+      ]),
+    ]);
+    testUnit(unit, [4.5, 4.25, 4, 3.75, 3.5, 3.25]);
+  });
 });

@@ -11,7 +11,7 @@ const configureSampleStore = (initialState = {}) => (
 );
 
 const persistConfig = {
-  key: 'aosStatshammer',
+  key: 'aos-statshammer-11-12-19',
   storage,
   whitelist: ['units', 'config'],
 };
