@@ -71,19 +71,18 @@ class WeaponProfile {
   averageDamage(target) {
     let totalAttacks = this.numModels * this.getAttacks();
     totalAttacks += this.resolveModifier(m.LEADER_EXTRA_ATTACKS, C.ATTACKS);
-    const avgDamage = this.resolveHits(target, 0);
-    return avgDamage * totalAttacks;
+    return this.resolveHits(target, totalAttacks, 0);
   }
 
-  resolveHits(target, damage = 0) {
-    let hits = D6.getProbability(this.getToHit());
+  resolveHits(target, attacks, damage = 0) {
+    let hits = attacks * D6.getProbability(this.getToHit());
     let extraDamage = 0;
-    hits += this.resolveRerolls(C.TO_HIT);
-    hits += this.resolveModifier(m.EXPLODING, C.TO_HIT);
+    hits += attacks * this.resolveRerolls(C.TO_HIT);
+    hits += attacks * this.resolveModifier(m.EXPLODING, C.TO_HIT);
 
     const mwModifier = this.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_HIT);
     if (mwModifier) {
-      const mortalHits = mwModifier.resolve(this);
+      const mortalHits = attacks * mwModifier.resolve(this);
       extraDamage += mortalHits * mwModifier.getMortalWounds();
       hits -= !mwModifier.inAddition ? mortalHits : 0;
     }
@@ -99,9 +98,26 @@ class WeaponProfile {
 
     const mwModifier = this.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_WOUND);
     if (mwModifier) {
-      const mortalToWounds = (hits * mwModifier.resolve(this));
+      const mortalToWounds = hits * mwModifier.resolve(this);
       extraDamage += mortalToWounds * mwModifier.getMortalWounds();
       wounds -= !mwModifier.inAddition ? mortalToWounds : 0;
+    }
+
+    const cbModifier = this.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_WOUND);
+    if (cbModifier) {
+      const newProfile = new WeaponProfile(
+        this.numModels,
+        this.attacks,
+        this.toHit,
+        this.toWound,
+        this.rend,
+        this.damage,
+        this.modifiers.modifiers.filter((mod) => mod !== cbModifier),
+      );
+      newProfile.modifiers.addModifier(cbModifier.getAsBonusModifier());
+      const cbModWounds = hits * cbModifier.resolve(this);
+      extraDamage += this.resolveSaves(target, cbModWounds, damage + extraDamage);
+      wounds -= cbModWounds;
     }
 
     return this.resolveSaves(target, wounds, damage + extraDamage);
@@ -120,20 +136,20 @@ class WeaponProfile {
   }
 
   resolveModifier(modifier, characteristic) {
-    const m = this.modifiers.getModifier(modifier, characteristic);
-    if (m) return m.resolve(this);
+    const mod = this.modifiers.getModifier(modifier, characteristic);
+    if (mod) return mod.resolve(this);
     return 0;
   }
 
   resolveRerolls(characteristic) {
-    const m = this.modifiers.getRerollModifier(characteristic);
-    if (m) return m.resolve(this);
+    const mod = this.modifiers.getRerollModifier(characteristic);
+    if (mod) return mod.resolve(this);
     return 0;
   }
 
   resolveStackableModifier(modifier, characteristic) {
-    const mList = this.modifiers.getStackableModifier(modifier, characteristic);
-    if (mList && mList.length) return mList.reduce((acc, m) => acc + m.resolve(this), 0);
+    const modList = this.modifiers.getStackableModifier(modifier, characteristic);
+    if (modList && modList.length) return modList.reduce((acc, mod) => acc + mod.resolve(this), 0);
     return 0;
   }
 }

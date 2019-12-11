@@ -6,6 +6,7 @@ import Bonus from './Bonus';
 import LeaderExtraAttacks from './LeaderExtraAttacks';
 import RerollOnes from './RerollOnes';
 import BaseModifier from './BaseModifier';
+import ConditionalBonus from './ConditionalBonus';
 
 export const MODIFIERS = {
   REROLL_ONES: RerollOnes,
@@ -15,6 +16,7 @@ export const MODIFIERS = {
   MORTAL_WOUNDS: MortalWounds,
   BONUS: Bonus,
   LEADER_EXTRA_ATTACKS: LeaderExtraAttacks,
+  CONDITIONAL_BONUS: ConditionalBonus,
 };
 
 export class ModifierManager {
@@ -29,8 +31,14 @@ export class ModifierManager {
     this.modifiers.filter((m) => m != null);
   }
 
+  addModifier(modifier) {
+    this.modifiers.push(modifier);
+  }
+
   getModifier(modifier, characteristic) {
-    return this.modifiers.find((m) => m instanceof modifier && m.characteristic === characteristic);
+    return this.modifiers.find(
+      (m) => m instanceof modifier && m.characteristic === characteristic,
+    );
   }
 
   getRerollModifier(characteristic) {
