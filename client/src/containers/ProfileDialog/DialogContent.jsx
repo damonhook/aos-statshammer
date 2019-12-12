@@ -1,11 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
   Typography, DialogContent as Content,
 } from '@material-ui/core';
-import { connect } from 'react-redux';
 import ModifierList from 'components/ModifierList';
-import { fetchModifiers } from 'api';
-import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import DiceInput from 'components/DiceInput';
@@ -54,15 +51,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DialogContent = ({
-  profile, onChange, onSubmit, errorCallback, modifierList, fetchModifiers, submitDisabled,
+  profile, onChange, onSubmit, errorCallback, submitDisabled,
 }) => {
   const classes = useStyles();
-
-  useEffect(() => {
-    if (!modifierList || !modifierList.length) {
-      fetchModifiers();
-    }
-  }, [modifierList, fetchModifiers]);
 
   const getErrorCallback = useCallback(_.memoize((name) => (error) => {
     errorCallback(name, error);
@@ -139,11 +130,5 @@ const DialogContent = ({
   );
 };
 
-const mapStateToProps = (state) => ({ modifierList: state.modifiers.modifiers });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchModifiers,
-}, dispatch);
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(DialogContent);
+export default DialogContent;

@@ -12,8 +12,10 @@ const useStyles = makeStyles({
   },
 });
 
-const ModifierDescription = ({ description, options, className }) => {
+const ModifierDescription = ({ definition, options, className }) => {
   const classes = useStyles();
+
+  const { description } = definition;
 
   const getHtmlForValue = (key, value) => `<b style="cursor:help;" title=${key}>${value}</b>`;
 

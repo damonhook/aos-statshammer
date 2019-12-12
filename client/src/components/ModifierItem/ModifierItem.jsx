@@ -1,9 +1,10 @@
 import React, {
-  useRef, useEffect, useState, useCallback,
+  useRef, useEffect, useState, useCallback, useMemo,
 } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
+import { getModifierById } from 'utils/modifierHelpers';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
 
@@ -27,11 +28,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ModifierItem = ({
-  index, name, description, options, removeModifier, onOptionChange, errorCallback,
+  index, id, options, removeModifier, onOptionChange, errorCallback,
 }) => {
   const classes = useStyles();
   const itemRef = useRef(null);
   const [errors, setErrors] = useState({});
+  const definition = getModifierById(id);
 
   useEffect(() => {
     if (itemRef.current) itemRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -50,25 +52,26 @@ const ModifierItem = ({
     });
   }), []);
 
+  if (!definition) return null;
 
   return (
     <div ref={itemRef}>
       <ListItem
         className={classes.modifier}
         onDelete={() => removeModifier(index)}
-        header={name}
+        header={definition.name}
         collapsible
       >
         <div className={classes.modifierContent}>
-          <ModifierDescription description={description} options={options} />
-          {options && Object.keys(options).length
+          <ModifierDescription definition={definition} options={options} />
+          {definition.options && Object.keys(definition.options).length
             ? (
               <div className={classes.modifierSettings}>
                 {Object.keys(options).map((n) => (
                   <ModifierInput
                     index={index}
                     name={n}
-                    option={options[n]}
+                    option={definition.options[n]}
                     val={options[n].value}
                     onOptionChange={onOptionChange}
                     key={n}

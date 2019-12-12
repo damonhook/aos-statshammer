@@ -32,4 +32,4 @@ const useLongPress = (callback = () => {}, ms = 300) => {
   };
 };
 
-export default useLongPress;
+export { useLongPress as default };
