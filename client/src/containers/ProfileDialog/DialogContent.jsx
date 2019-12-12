@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
   },
   characteristics: {
-    flex: 0,
     display: 'flex',
     flexDirection: 'row',
     [theme.breakpoints.up('lg')]: {
