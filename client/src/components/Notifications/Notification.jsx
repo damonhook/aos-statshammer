@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Snackbar, IconButton, SnackbarContent } from '@material-ui/core';
 import {
@@ -71,8 +72,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * A single notification snackbar
+ */
 const Notification = ({
-  message, notificationId, dismissNotification, variant = 'info', timeout = 4000,
+  message, notificationId, dismissNotification, variant, timeout,
 }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
@@ -123,6 +127,24 @@ const Notification = ({
       </Snackbar>
     </SwipeableListItem>
   );
+};
+
+Notification.defaultProps = {
+  variant: 'info',
+  timeout: 3000,
+};
+
+Notification.propTypes = {
+  /** The message content (text) */
+  message: PropTypes.string.isRequired,
+  /** The uuid of the notification */
+  notificationId: PropTypes.string.isRequired,
+  /** A function used to dismiss the notification */
+  dismissNotification: PropTypes.func.isRequired,
+  /** The notification vatiant */
+  variant: PropTypes.oneOf(['info', 'warning', 'error', 'success']),
+  /** How long the notification should display before auto-dismissing */
+  timeout: PropTypes.number,
 };
 
 export default connect(null, { dismissNotification })(Notification);

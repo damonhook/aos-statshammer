@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * A simple component to show that the modifier definitions are currently being loaded
+ */
 const PendingModifiers = () => {
   const classes = useStyles();
   return (

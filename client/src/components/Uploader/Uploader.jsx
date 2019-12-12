@@ -8,6 +8,9 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * A component used to open an upload dialog
+ */
 const Uploader = ({ onUpload, disabled, component }) => {
   const classes = useStyles();
 

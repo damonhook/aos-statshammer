@@ -1,6 +1,7 @@
 import React, {
-  useRef, useEffect, useState, useCallback, useMemo,
+  useRef, useEffect, useState, useCallback,
 } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
@@ -27,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+/**
+ * A component representing a single modifier in the Profile Dialog
+ */
 const ModifierItem = ({
   index, id, options, removeModifier, onOptionChange, errorCallback,
 }) => {
@@ -85,6 +90,25 @@ const ModifierItem = ({
       </ListItem>
     </div>
   );
+};
+
+ModifierItem.defaultProps = {
+  errorCallback: null,
+};
+
+ModifierItem.propTypes = {
+  /** The index of the modifier item in the list of modifiers */
+  index: PropTypes.number.isRequired,
+  /** The ID that corresponds with the modifier definition */
+  id: PropTypes.string.isRequired,
+  /** An object containing all of the option values */
+  options: PropTypes.shape({ value: PropTypes.any }).isRequired,
+  /** A callback function used to remove the modifier from the list */
+  removeModifier: PropTypes.func.isRequired,
+  /** A callback function to call when any of the option values are changed */
+  onOptionChange: PropTypes.func.isRequired,
+  /** An optional callback function used to pass back the error state of the modifier item */
+  errorCallback: PropTypes.func,
 };
 
 export default ModifierItem;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import {
   TextField, Checkbox, MenuItem, FormControlLabel,
 } from '@material-ui/core';
@@ -129,6 +130,31 @@ const ModifierInput = ({
           />
         );
   }
+};
+
+ModifierInput.defaultProps = {
+  errorCallback: null,
+};
+
+ModifierInput.propTypes = {
+  /** The index of the modifier item in the list of modifiers */
+  index: PropTypes.number.isRequired,
+  /** The name of the modifier option */
+  name: PropTypes.string.isRequired,
+  /** The option properties for the modifier definition */
+  option: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    items: PropTypes.arrayOf([PropTypes.string]),
+    default: PropTypes.string,
+    allowOnes: PropTypes.bool,
+    allowDice: PropTypes.bool,
+  }).isRequired,
+  /** The current value of the option */
+  val: PropTypes.string.isRequired,
+  /** A callback function to call when any of the option values are changed */
+  onOptionChange: PropTypes.func.isRequired,
+  /** An optional callback function used to pass back the error state of the modifier item */
+  errorCallback: PropTypes.func,
 };
 
 export default ModifierInput;

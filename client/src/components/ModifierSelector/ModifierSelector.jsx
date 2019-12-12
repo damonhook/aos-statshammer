@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Button, Collapse, useMediaQuery, Paper,
@@ -9,15 +10,15 @@ import { useHistory, useLocation, Route } from 'react-router-dom';
 import ModifierOption from './ModifierOption';
 import SelectorDialog from './SelectorDialog';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   selector: { marginTop: '1em', marginBottom: '1em' },
-  list: {
-    // backgroundColor: theme.palette.background.paper,
-  },
+  list: {},
   button: { justifyContent: 'left' },
 }));
 
-
+/**
+ * A component used to select new modifiers to apply
+ */
 const ModifierSelector = ({
   modifiers, pending, error, onClick, disabled,
 }) => {
@@ -119,6 +120,24 @@ const ModifierSelector = ({
         )}
     </div>
   );
+};
+
+ModifierSelector.defaultProps = {
+  error: null,
+  disabled: false,
+};
+
+ModifierSelector.propTypes = {
+  /** A list of modifier definitions to display in the selector */
+  modifiers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /** Whether the modifier definitions are currently loading */
+  pending: PropTypes.bool.isRequired,
+  /** Whether there was an error loading the modifier definitions */
+  error: PropTypes.string,
+  /** A callback function to call when an item in the list is clicked */
+  onClick: PropTypes.func.isRequired,
+  /** Whether the selector is disabled or not */
+  disabled: PropTypes.bool,
 };
 
 

@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
+
+/**
+ * The modifier selector in the form of a dialog (for mobile)
+ */
 const SelectorDialog = ({ open, modifiers, addModifier }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -62,8 +66,11 @@ SelectorDialog.defaultProps = {
 };
 
 SelectorDialog.propTypes = {
+  /** Whether the dialog is open. If it is controlled through a Route, then leave as `true` */
   open: PropTypes.bool,
+  /** The list of modifier definitions */
   modifiers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /** A callback function to all when a new modifier is added */
   addModifier: PropTypes.func.isRequired,
 };
 

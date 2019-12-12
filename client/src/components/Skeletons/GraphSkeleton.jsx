@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -36,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * A skeleton component used to indicate that there is graph loading in its place
+ */
 const GraphSkeleton = ({
   series, groups, className, height,
 }) => {
@@ -64,5 +68,19 @@ const GraphSkeleton = ({
   );
 };
 
+GraphSkeleton.defaultProps = {
+  className: null,
+};
+
+GraphSkeleton.propTypes = {
+  /** The number of placeholder series to display */
+  series: PropTypes.number.isRequired,
+  /** The number of placeholder groups to display */
+  groups: PropTypes.number.isRequired,
+  /** Any optional class names to apply to the component */
+  className: PropTypes.string,
+  /** How heigh (in `px`) to render the graph */
+  height: PropTypes.number.isRequired,
+};
 
 export default GraphSkeleton;

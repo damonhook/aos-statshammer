@@ -2,10 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ModifierDescription from 'components/ModifierItem/ModifierDescription';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  List, ListItem as Item, Tooltip, Typography, CircularProgress,
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { List, ListItem as Item, Tooltip } from '@material-ui/core';
 import { ChevronRight, HelpOutline } from '@material-ui/icons';
 import { getModifierById } from 'utils/modifierHelpers';
 import SummaryLoading from './SummaryLoading';
@@ -24,7 +22,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
+/**
+ * A brief summary of the applied modifiers, used for the main page
+ */
 const ModifierSummary = ({ modifiers, modifierState }) => {
   const classes = useStyles();
 
@@ -67,12 +67,22 @@ const ModifierSummary = ({ modifiers, modifierState }) => {
   );
 };
 
+ModifierSummary.defaultProps = {
+  modifiers: [],
+};
+
 ModifierSummary.propTypes = {
+  /** The list of currently applied modifiers */
   modifiers: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     options: PropTypes.object.isRequired,
-  })).isRequired,
+  })),
+  /** The current modifier definitions state in the store */
+  modifierState: PropTypes.shape({
+    modifiers: PropTypes.array,
+    pending: PropTypes.bool,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({

@@ -1,6 +1,7 @@
 import React, {
   useEffect, useCallback, useReducer,
 } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
@@ -9,6 +10,7 @@ import ModifierItem from 'components/ModifierItem';
 import { MAX_MODIFIERS } from 'appConstants';
 import _ from 'lodash';
 import PendingModifiers from './PendingModifiers';
+import errorReducer from './errorReducer';
 
 const useStyles = makeStyles(() => ({
   modifierList: {
@@ -19,22 +21,10 @@ const useStyles = makeStyles(() => ({
   activeModifierCard: {},
 }));
 
-const errorReducer = (state, action) => {
-  switch (action.type) {
-    case 'ADD_ERROR':
-      return [...state, action.err];
-    case 'SET_ERROR':
-      return state.map((err, index) => {
-        if (index === action.index) return action.error;
-        return err;
-      });
-    case 'REMOVE_ERROR':
-      return state.filter((_, index) => index !== action.index);
-    default:
-      return state;
-  }
-};
-
+/**
+ * A component in charge of displaying the list of currently applied modifiers, as well as,
+ * display the modifier selector
+ */
 const ModifierList = ({
   modifierState, modifiers, setModifiers, errorCallback,
 }) => {
@@ -111,6 +101,27 @@ const ModifierList = ({
       />
     </Typography>
   );
+};
+
+ModifierList.defaultProps = {
+  errorCallback: null,
+};
+
+ModifierList.propTypes = {
+  /** The current modifiers state as in the store */
+  modifierState: PropTypes.shape({
+    pending: PropTypes.bool.isRequired,
+    modifiers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  /** A list of the currently applied modifiers */
+  modifiers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.isRequired,
+    options: PropTypes.object.isRequired,
+  })).isRequired,
+  /** A callback function to call when the modifiers list is changed */
+  setModifiers: PropTypes.func.isRequired,
+  /** A callback function to pass back the error state of the list of modifiers */
+  errorCallback: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

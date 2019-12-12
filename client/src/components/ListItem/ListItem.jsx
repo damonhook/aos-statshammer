@@ -63,12 +63,14 @@ ListItem.defaultProps = {
   onCopy: null,
   extraItems: null,
   className: null,
-  collapible: false,
+  collapsible: false,
   loading: false,
   loaderDelay: 500,
 };
 
 ListItem.propTypes = {
+  /** The header test to display for the list item */
+  header: PropTypes.string.isRequired,
   /** The react components to render in the card body */
   children: PropTypes.node.isRequired,
   /** A function to call when edit button is clicked */
@@ -82,7 +84,7 @@ ListItem.propTypes = {
   /** CSS classname to give the component */
   className: PropTypes.string,
   /** Whether the list item is collapsible or not */
-  collapible: PropTypes.bool,
+  collapsible: PropTypes.bool,
   /** Whether the list item should indicate that its content is loading */
   loading: PropTypes.bool,
   /** Optionally change how long the loader will wait before rendering */

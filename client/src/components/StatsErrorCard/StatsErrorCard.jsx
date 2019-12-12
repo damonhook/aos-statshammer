@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * A card representing that there was an error getting the stats
+ */
 const StatsErrorCard = ({ units, fetchStatsCompare, className }) => {
   const classes = useStyles();
 
@@ -73,7 +76,9 @@ StatsErrorCard.defaultProps = {
 };
 
 StatsErrorCard.propTypes = {
+  /** The current units state from the store */
   units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /** A function used to fetch the stats */
   fetchStatsCompare: PropTypes.func.isRequired,
   /** CSS classname to give the component */
   className: PropTypes.string,

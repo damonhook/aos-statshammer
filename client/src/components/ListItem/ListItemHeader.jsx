@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Card from 'components/Card';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ListControls from 'components/ListControls';
@@ -104,5 +105,40 @@ const ListItemHeader = ({
     </Card.Header>
   );
 };
+
+ListItemHeader.defaultProps = {
+  onEdit: null,
+  onDelete: null,
+  onCopy: null,
+  extraItems: null,
+  className: null,
+  collapsible: false,
+  collapsed: false,
+  setColapsed: null,
+};
+
+ListItemHeader.propTypes = {
+  /** The header test to display for the list item */
+  header: PropTypes.string.isRequired,
+  /** The react components to render in the card body */
+  children: PropTypes.node.isRequired,
+  /** A function to call when edit button is clicked */
+  onEdit: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  /** A function to call when delete button is clicked */
+  onDelete: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  /** A function to call when copy button is clicked */
+  onCopy: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  /** An array of extra commands that will be placed in the control menu */
+  extraItems: PropTypes.arrayOf(PropTypes.object),
+  /** CSS classname to give the component */
+  className: PropTypes.string,
+  /** Whether the list item is collapsible or not */
+  collapsible: PropTypes.bool,
+  /** Whether the list item is collapsed or not */
+  collapsed: PropTypes.bool,
+  /** A callback function used to change the collapsed state */
+  setColapsed: PropTypes.func,
+};
+
 
 export default ListItemHeader;

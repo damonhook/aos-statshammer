@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
 import { ListItem, Typography } from '@material-ui/core';
@@ -26,7 +27,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
+/**
+ * A single modifier definition
+ */
 const ModifierOption = ({ modifier, onClick }) => {
   const classes = useStyles();
   return (
@@ -46,6 +49,16 @@ const ModifierOption = ({ modifier, onClick }) => {
       </div>
     </ListItem>
   );
+};
+
+ModifierOption.propTypes = {
+  /** The modifier definition object */
+  modifier: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
+  /** The callback function to call when the option is clicked */
+  onClick: PropTypes.func.isRequired,
 };
 
 export default ModifierOption;

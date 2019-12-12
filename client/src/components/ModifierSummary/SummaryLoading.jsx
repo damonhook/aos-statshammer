@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Used to indicate that the modifier definitions are currently loading
+ */
 const SummaryLoading = () => {
   const classes = useStyles();
   const theme = useTheme();
