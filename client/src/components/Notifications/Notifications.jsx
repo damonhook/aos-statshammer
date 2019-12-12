@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
@@ -20,6 +21,9 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * A component used to display the current notifications
+ */
 const Notifications = ({ notifications }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -27,16 +31,20 @@ const Notifications = ({ notifications }) => {
 
   return (
     <div className={clsx(classes.notifications, mobile ? classes.mobile : '')}>
-      {notifications.map((notification) => (
-        <Notification
-          message={notification.message}
-          notificationId={notification.key}
-          key={notification.key}
-          variant={notification.variant}
-        />
+      {notifications.map(({ message, key, variant }) => (
+        <Notification message={message} notificationId={key} key={key} variant={variant} />
       ))}
     </div>
   );
+};
+
+Notifications.propTypes = {
+  /** The currently active notifications */
+  notifications: PropTypes.arrayOf(PropTypes.shape({
+    message: PropTypes.string.isRequired,
+    key: PropTypes.string.isRequired,
+    variant: PropTypes.string,
+  })).isRequired,
 };
 
 const mapStateToProps = (state) => ({

@@ -15,6 +15,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+/**
+ * A simple component to render a indeterminite loading bar on top of the component
+ * */
 const LoadingBar = ({ wait }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);

@@ -27,8 +27,9 @@ const App = ({ config }) => (
 );
 
 App.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  config: PropTypes.object.isRequired,
+  config: PropTypes.shape({
+    darkMode: PropTypes.bool,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({

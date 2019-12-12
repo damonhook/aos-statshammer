@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Menu, MenuItem, IconButton, Divider,
@@ -11,8 +12,12 @@ const useStyles = makeStyles({
   menu: {},
 });
 
+
+/**
+ * A menu component with the various options
+ */
 const ControlMenu = ({
-  onEdit, onDelete, onCopy, extraItems, size = 'medium', className,
+  onEdit, onDelete, onCopy, extraItems, size, className,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -26,7 +31,9 @@ const ControlMenu = ({
   };
 
   const menuItemClick = (action) => {
-    action();
+    if (typeof action !== 'string') {
+      action();
+    }
     handleClose();
   };
 
@@ -56,6 +63,30 @@ const ControlMenu = ({
       </Menu>
     </div>
   );
+};
+
+ControlMenu.defaultProps = {
+  onEdit: null,
+  onDelete: null,
+  onCopy: null,
+  extraItems: null,
+  className: null,
+  size: 'medium',
+};
+
+ControlMenu.propTypes = {
+  /** A function to call when edit button is clicked */
+  onEdit: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  /** A function to call when delete button is clicked */
+  onDelete: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  /** A function to call when copy button is clicked */
+  onCopy: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  /** An array of extra commands that will be placed in the control menu */
+  extraItems: PropTypes.arrayOf(PropTypes.object),
+  /** CSS classname to give the component */
+  className: PropTypes.string,
+  /** The size of the menu component */
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
 };
 
 export default ControlMenu;

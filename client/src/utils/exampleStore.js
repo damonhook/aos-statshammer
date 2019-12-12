@@ -5,10 +5,10 @@ import { configureSampleStore } from 'configureStore';
 const units = [
   {
     name: 'Unit 1',
-    uuid: 'Unit 1',
+    uuid: 'unit-1',
     weapon_profiles: [
       {
-        uuid: 'unit-1-1',
+        uuid: 'profile-1',
         active: true,
         num_models: 20,
         attacks: 2,
@@ -22,10 +22,10 @@ const units = [
   },
   {
     name: 'Unit 2',
-    uuid: 'Unit 2',
+    uuid: 'unit-2',
     weapon_profiles: [
       {
-        uuid: 'unit-2-1',
+        uuid: 'profile-2',
         active: true,
         num_models: 20,
         attacks: 2,
@@ -35,33 +35,13 @@ const units = [
         damage: 1,
         modifiers: [
           {
-            description: '{unmodified} rolls of {on} for {characteristic} result in {mortal_wounds} extra {in_addition}',
             id: 'mortal_wounds',
-            name: 'Mortal Wounds',
             options: {
-              characteristic: {
-                items: [
-                  'to_hit',
-                ],
-                type: 'choice',
-                value: 'to_hit',
-              },
-              in_addition: {
-                type: 'boolean',
-                value: true,
-              },
-              mortal_wounds: {
-                type: 'number',
-                value: 2,
-              },
-              on: {
-                type: 'number',
-                value: 6,
-              },
-              unmodified: {
-                type: 'boolean',
-                value: true,
-              },
+              characteristic: 'to_hit',
+              on: 6,
+              mortal_wounds: 2,
+              unmodified: true,
+              in_addition: true,
             },
           },
         ],
@@ -230,8 +210,12 @@ const modifiers = {
 
 const notifications = [];
 
+const config = {
+  darkMode: false,
+};
+
 export const initialState = {
-  units, stats, modifiers, notifications,
+  units, stats, modifiers, notifications, config,
 };
 
 export const store = configureSampleStore(initialState);

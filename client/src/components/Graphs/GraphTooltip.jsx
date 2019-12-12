@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * A tooltip to display when you hover over a value in a graph
+ */
 const GraphTooltip = ({ active, payload, label }) => {
   const classes = useStyles();
   if (active) {
@@ -27,10 +30,19 @@ const GraphTooltip = ({ active, payload, label }) => {
   return null;
 };
 
+GraphTooltip.defaultProps = {
+  active: false,
+  payload: [],
+  label: '',
+};
+
 GraphTooltip.propTypes = {
-  active: PropTypes.bool.isRequired,
-  payload: PropTypes.arrayOf(PropTypes.object).isRequired,
-  label: PropTypes.string.isRequired,
+  /** Whether the tooltip is active (being hovered) */
+  active: PropTypes.bool,
+  /** The data payload */
+  payload: PropTypes.arrayOf(PropTypes.object),
+  /** The series label */
+  label: PropTypes.string,
 };
 
 export default GraphTooltip;

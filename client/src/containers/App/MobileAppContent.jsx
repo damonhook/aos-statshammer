@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import Units, { AddUnitsFab } from 'containers/Units';
 import Stats from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
@@ -38,5 +39,15 @@ const MobileAppContent = ({ className }) => {
     </div>
   );
 };
+
+MobileAppContent.defaultProps = {
+  className: null,
+};
+
+MobileAppContent.propTypes = {
+  /** Any additional class names to apply to the component */
+  className: PropTypes.string,
+};
+
 
 export default MobileAppContent;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Typography } from '@material-ui/core';
 import { InfoOutlined } from '@material-ui/icons';
@@ -25,7 +26,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NoItemsCard = ({ header, body, dense = false }) => {
+/**
+ * A card used to represent the lack of items in a list
+ */
+const NoItemsCard = ({ header, body, dense }) => {
   const classes = useStyles();
 
   return (
@@ -43,5 +47,17 @@ const NoItemsCard = ({ header, body, dense = false }) => {
   );
 };
 
+NoItemsCard.defaultProps = {
+  dense: false,
+};
+
+NoItemsCard.propTypes = {
+  /** The header to display in the card */
+  header: PropTypes.string.isRequired,
+  /** The content to display in the card body */
+  body: PropTypes.string.isRequired,
+  /** Whether the card should be densly packed */
+  dense: PropTypes.bool,
+};
 
 export default NoItemsCard;

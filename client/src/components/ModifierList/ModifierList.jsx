@@ -1,39 +1,33 @@
 import React, {
   useEffect, useCallback, useReducer,
 } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
 import { MAX_MODIFIERS } from 'appConstants';
 import _ from 'lodash';
+import PendingModifiers from './PendingModifiers';
+import errorReducer from './errorReducer';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   modifierList: {
     flex: '1 1 auto',
     width: '100%',
   },
   activeModifiers: { marginTop: '1em' },
   activeModifierCard: {},
-});
+}));
 
-const errorReducer = (state, action) => {
-  switch (action.type) {
-    case 'ADD_ERROR':
-      return [...state, action.err];
-    case 'SET_ERROR':
-      return state.map((err, index) => {
-        if (index === action.index) return action.error;
-        return err;
-      });
-    case 'REMOVE_ERROR':
-      return state.filter((_, index) => index !== action.index);
-    default:
-      return state;
-  }
-};
-
-const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
+/**
+ * A component in charge of displaying the list of currently applied modifiers, as well as,
+ * display the modifier selector
+ */
+const ModifierList = ({
+  modifierState, modifiers, setModifiers, errorCallback,
+}) => {
   const classes = useStyles();
   const [errors, dispatchErrors] = useReducer(errorReducer, []);
 
@@ -44,20 +38,15 @@ const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
   }, [errors, errorCallback]);
 
   const addModifier = (modifier) => {
-    const newModifier = {
-      ...modifier,
-    };
-    Object.keys(newModifier.options).forEach((k) => {
-      newModifier.options[k].value = '';
-      if (newModifier.options[k].default != null) {
-        newModifier.options[k].value = newModifier.options[k].default;
+    const newModifier = { id: modifier.id, options: {} };
+    Object.keys(modifier.options).forEach((k) => {
+      newModifier.options[k] = '';
+      if (modifier.options[k].default != null) {
+        newModifier.options[k] = modifier.options[k].default;
       }
     });
-    if (!modifiers || !modifiers.length) {
-      setModifiers([newModifier]);
-    } else {
-      setModifiers([...modifiers, newModifier]);
-    }
+    if (!modifiers || !modifiers.length) setModifiers([newModifier]);
+    else setModifiers([...modifiers, newModifier]);
     dispatchErrors({ type: 'ADD_ERROR', error: false });
   };
 
@@ -74,10 +63,7 @@ const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
           ...modifier,
           options: {
             ...modifier.options,
-            [name]: {
-              ...modifier.options[name],
-              value,
-            },
+            [name]: value,
           },
         };
       }
@@ -92,10 +78,11 @@ const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
   return (
     <Typography component="div" className={classes.modifierList}>
       <label>Modifiers:</label>
-      {modifiers && modifiers.length
-        ? (
+      {modifierState.pending
+        ? <PendingModifiers />
+        : (
           <div className={classes.activeModifiers}>
-            {modifiers.map((modifier, index) => (
+            {(modifiers || []).map((modifier, index) => (
               <ModifierItem
                 {...modifier}
                 removeModifier={removeModifier}
@@ -107,8 +94,7 @@ const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
               />
             ))}
           </div>
-        )
-        : null}
+        )}
       <ModifierSelector
         onClick={addModifier}
         disabled={modifiers && modifiers.length >= MAX_MODIFIERS}
@@ -117,4 +103,29 @@ const ModifierList = ({ modifiers, setModifiers, errorCallback }) => {
   );
 };
 
-export default ModifierList;
+ModifierList.defaultProps = {
+  errorCallback: null,
+};
+
+ModifierList.propTypes = {
+  /** The current modifiers state as in the store */
+  modifierState: PropTypes.shape({
+    pending: PropTypes.bool.isRequired,
+    modifiers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  /** A list of the currently applied modifiers */
+  modifiers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.isRequired,
+    options: PropTypes.object.isRequired,
+  })).isRequired,
+  /** A callback function to call when the modifiers list is changed */
+  setModifiers: PropTypes.func.isRequired,
+  /** A callback function to pass back the error state of the list of modifiers */
+  errorCallback: PropTypes.func,
+};
+
+const mapStateToProps = (state) => ({
+  modifierState: state.modifiers,
+});
+
+export default connect(mapStateToProps)(ModifierList);

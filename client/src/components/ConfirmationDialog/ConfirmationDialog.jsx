@@ -5,7 +5,9 @@ import {
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
-
+/**
+ * A simple dialog box with a confirm and cancel action
+ */
 const ConfirmationDialog = ({
   open, onConfirm, onClose, description,
 }) => {
@@ -50,9 +52,13 @@ ConfirmationDialog.defaultProps = {
 };
 
 ConfirmationDialog.propTypes = {
+  /** Whether the dialog box is open or not */
   open: PropTypes.bool.isRequired,
+  /** The function to call when the confirm button is pressed */
   onConfirm: PropTypes.func.isRequired,
+  /** The function to call when the cancel button is pressed, or the dialog is closed */
   onClose: PropTypes.func,
+  /** The description to add the to dialog box */
   description: PropTypes.string,
 };
 

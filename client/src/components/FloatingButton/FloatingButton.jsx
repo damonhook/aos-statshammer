@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/** A floating button component that is used for the mobile interface */
 const FloatingButton = ({
   onClick, disabled, icon, className,
 }) => {

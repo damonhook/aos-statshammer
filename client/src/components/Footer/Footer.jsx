@@ -16,6 +16,9 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * The footer that appears at the bottom of the page
+ */
 const Footer = () => {
   const classes = useStyles();
   const theme = useTheme();

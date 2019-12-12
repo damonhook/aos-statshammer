@@ -2,16 +2,17 @@ import { Characteristics as C } from '../../constants';
 import { numberOption } from './ModifierOptions';
 import { Dice, parseDice } from '../dice';
 import BaseModifier from './BaseModifier';
+import Bonus from './Bonus';
 
-export default class LeaderExtraAttacks extends BaseModifier {
-  constructor({ numLeaders = 1, bonus = 1 }) {
-    super({ characteristic: C.ATTACKS });
+export default class LeaderBonus extends BaseModifier {
+  constructor({ characteristic, numLeaders = 1, bonus = 1 }) {
+    super({ characteristic });
     this.numLeaders = Number(numLeaders);
     this.bonus = parseDice(bonus);
   }
 
   static get name() {
-    return 'Leader Extra Attacks';
+    return 'Leader Bonus';
   }
 
   static get description() {
@@ -19,11 +20,12 @@ export default class LeaderExtraAttacks extends BaseModifier {
   }
 
   static get availableCharacteristics() {
-    return [C.ATTACKS];
+    return [C.ATTACKS, C.TO_HIT, C.TO_WOUND, C.REND, C.DAMAGE];
   }
 
   static get options() {
     return {
+      ...super.options,
       bonus: numberOption({ defaultVal: 1, allowDice: true }),
       numLeaders: numberOption({ defaultVal: 1 }),
     };
@@ -39,5 +41,9 @@ export default class LeaderExtraAttacks extends BaseModifier {
       return this.bonus.average;
     }
     return this.bonus;
+  }
+
+  getAsBonusModifier() {
+    return new Bonus({ characteristic: this.characteristic, bonus: this.bonus });
   }
 }

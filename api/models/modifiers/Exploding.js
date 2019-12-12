@@ -4,8 +4,10 @@ import { numberOption, booleanOption, rollOption } from './ModifierOptions';
 import BaseModifier from './BaseModifier';
 
 export default class Exploding extends BaseModifier {
-  constructor({ on = 6, extraHits = 1, unmodified = true }) {
-    super({ characteristic: C.TO_HIT });
+  constructor({
+    characteristic, on = 6, extraHits = 1, unmodified = true,
+  }) {
+    super({ characteristic });
     this.on = Number(on);
     this.extraHits = parseDice(extraHits);
     this.unmodified = Boolean(unmodified);
@@ -16,11 +18,11 @@ export default class Exploding extends BaseModifier {
   }
 
   static get description() {
-    return '{unmodified} rolls of {on} for {characteristic} result in {extraHits} extra hits';
+    return '{unmodified} rolls of {on} for {characteristic} result in {extraHits} additional';
   }
 
   static get availableCharacteristics() {
-    return [C.TO_HIT];
+    return [C.TO_HIT, C.TO_WOUND];
   }
 
   static get options() {

@@ -10,6 +10,10 @@ const useStyles = makeStyles({
   diceInput: {},
 });
 
+/**
+ * An input component that can either controlled or uncontrolled.
+ * This input component contains validation for correct dice inputs (e.g: D3, or 3)
+ */
 const DiceInput = ({
   label, value, onChange, className, required, errorCallback, ...other
 }) => {
@@ -77,11 +81,17 @@ DiceInput.defaultProps = {
 };
 
 DiceInput.propTypes = {
+  /** The label to apply to the input */
   label: PropTypes.string,
+  /** The value of the input for controlled components */
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  /** An function callback to call when the value changes */
   onChange: PropTypes.func,
+  /** Any additional classnames to apply to the component */
   className: PropTypes.string,
+  /** Whether the field is required or not */
   required: PropTypes.bool,
+  /** A callback function to call with the updated error state */
   errorCallback: PropTypes.func,
 };
 

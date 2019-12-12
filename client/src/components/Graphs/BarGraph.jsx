@@ -13,6 +13,10 @@ const useStyles = makeStyles({
   graph: {},
 });
 
+
+/**
+ * A bar graph component for the average damage results
+ */
 const BarGraph = ({
   results, unitNames, className,
 }) => {

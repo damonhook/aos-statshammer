@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Units from 'containers/Units';
 import Stats from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
@@ -44,6 +45,15 @@ const DesktopAppContent = ({ className }) => {
       <Stats />
     </div>
   );
+};
+
+DesktopAppContent.defaultProps = {
+  className: null,
+};
+
+DesktopAppContent.propTypes = {
+  /** Any additional class names to apply to the component */
+  className: PropTypes.string,
 };
 
 export default DesktopAppContent;

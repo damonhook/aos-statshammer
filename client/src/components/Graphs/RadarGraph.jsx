@@ -21,6 +21,9 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * A radar graph component for the average damage results
+ */
 const RadarGraph = ({
   results, unitNames, className,
 }) => {

@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+/**
+ * The app bar that appears on top of the page
+ */
 const AppBar = ({ title }) => {
   const classes = useStyles();
 

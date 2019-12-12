@@ -9,19 +9,21 @@ import { testUnit } from './utils';
 
 describe('Units', () => {
   describe('Chainrasp Horde', () => {
-    const unit = new Unit('chainrasp horde', [
+    const unit = new Unit('Chainrasp Horde', [
       new WeaponProfile(10, 2, 4, 4, 0, 1, [
-        new m.LEADER_EXTRA_ATTACKS({ numLeaders: 1, bonus: 1 }),
+        new m.LEADER_BONUS({ characteristic: C.ATTACKS, numLeaders: 1, bonus: 1 }),
       ]),
     ]);
     testUnit(unit, [5.25, 4.375, 3.5, 2.625, 1.75, 0.875]);
   });
 
   describe('Mortek Guard Swords', () => {
-    const unit = new Unit('mortek guard', [
+    const unit = new Unit('Mortek Guard', [
       new WeaponProfile(9, 2, 3, 4, 1, 1, [
-        new m.LEADER_EXTRA_ATTACKS({ numLeaders: 1, bonus: 1 }),
-        new m.EXPLODING({ on: 6, extraHits: 1, unmodified: true }),
+        new m.LEADER_BONUS({ characteristic: C.ATTACKS, numLeaders: 1, bonus: 1 }),
+        new m.EXPLODING({
+          characteristic: C.TO_HIT, on: 6, extraHits: 1, unmodified: true,
+        }),
       ]),
       new WeaponProfile(1, 2, 3, 3, 1, 1, []),
     ]);
@@ -31,7 +33,7 @@ describe('Units', () => {
   describe('Hearthguard Berzerkers Broadaxes', () => {
     const unit = new Unit('Hearthguard Berzerkers', [
       new WeaponProfile(20, 2, 3, 3, 1, 2, [
-        new m.LEADER_EXTRA_ATTACKS({ numLeaders: 1, bonus: 1 }),
+        new m.LEADER_BONUS({ characteristic: C.ATTACKS, numLeaders: 1, bonus: 1 }),
       ]),
     ]);
     testUnit(unit, [36.444, 36.444, 30.37, 24.296, 18.222, 12.148]);
@@ -40,9 +42,9 @@ describe('Units', () => {
   describe('Hearthguard Berzerkers Poleaxes', () => {
     const unit = new Unit('Hearthguard Berzerkers', [
       new WeaponProfile(20, 2, 3, 3, 0, 1, [
-        new m.LEADER_EXTRA_ATTACKS({ numLeaders: 1, bonus: 1 }),
+        new m.LEADER_BONUS({ characteristic: C.ATTACKS, numLeaders: 1, bonus: 1 }),
         new m.MORTAL_WOUNDS({
-          on: 6, mortalWounds: 2, unmodified: true, inAddition: true,
+          characteristic: C.TO_HIT, on: 6, mortalWounds: 2, unmodified: true, inAddition: true,
         }),
       ]),
     ]);
@@ -94,7 +96,7 @@ describe('Units', () => {
         new m.REROLL({ characteristic: C.TO_HIT }),
         new m.REROLL({ characteristic: C.TO_WOUND }),
         new m.MORTAL_WOUNDS({
-          on: 6, mortalWounds: D6, unmodified: true, inAddition: true,
+          characteristic: C.TO_HIT, on: 6, mortalWounds: D6, unmodified: true, inAddition: true,
         }),
       ]),
     ]);
@@ -105,10 +107,37 @@ describe('Units', () => {
     const unit = new Unit('Spirit Hosts', [
       new WeaponProfile(3, 6, 5, 4, 0, 1, [
         new m.MORTAL_WOUNDS({
-          on: 6, mortalWounds: 1, inAddition: false, unmodified: true,
+          characteristic: C.TO_HIT, on: 6, mortalWounds: 1, inAddition: false, unmodified: true,
         }),
       ]),
     ]);
     testUnit(unit, [4.5, 4.25, 4, 3.75, 3.5, 3.25]);
+  });
+
+  describe('Kurnoth Hunters Swords', () => {
+    const unit = new Unit('Kurnoth Hunters', [
+      new WeaponProfile(3, 4, 3, 3, 1, 2, [
+        new m.MORTAL_WOUNDS({
+          characteristic: C.TO_WOUND, on: 6, mortalWounds: 1, inAddition: true, unmodified: true,
+        }),
+        new m.LEADER_BONUS({ characteristic: C.TO_HIT, numLeaders: 1, bonus: 1 }),
+      ]),
+    ]);
+    testUnit(unit, [13.000, 13.000, 11.074, 9.148, 7.222, 5.296]);
+  });
+
+  describe('Plague Monks', () => {
+    const unit = new Unit('Plague Monks', [
+      new WeaponProfile(20, 2, 4, 4, 0, 1, [
+        new m.REROLL({ characteristic: C.TO_HIT }),
+        new m.CONDITIONAL_BONUS({
+          characteristic: C.TO_HIT, bonus: 1, unmodified: true, bonusToCharacteristic: C.REND,
+        }),
+        new m.CONDITIONAL_BONUS({
+          characteristic: C.TO_WOUND, bonus: 1, unmodified: true, bonusToCharacteristic: C.DAMAGE,
+        }),
+      ]),
+    ]);
+    testUnit(unit, [20.000, 17.778, 14.444, 11.111, 7.778, 4.444]);
   });
 });

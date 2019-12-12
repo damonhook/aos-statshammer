@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Tab, Paper, Tabs } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import SwipeableViews from 'react-swipeable-views';
@@ -20,13 +21,14 @@ const useStyles = makeStyles({
   },
 });
 
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
-}
+const a11yProps = (index) => ({
+  id: `full-width-tab-${index}`,
+  'aria-controls': `full-width-tabpanel-${index}`,
+});
 
+/**
+ * A simple tabbed interface
+ */
 const Tabbed = ({
   tabNames, tabContent, className, onTabChange,
 }) => {
@@ -67,7 +69,7 @@ const Tabbed = ({
           <TabPanel
             value={value}
             index={index}
-            className={content}
+            className={classes.content}
             dir={theme.direction}
             // eslint-disable-next-line react/no-array-index-key
             key={index}
@@ -80,5 +82,20 @@ const Tabbed = ({
   );
 };
 
+Tabbed.defaultProps = {
+  className: null,
+  onTabChange: null,
+};
+
+Tabbed.propTypes = {
+  /** The list of tab names */
+  tabNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  /** The list of tab content to display in the relevant index */
+  tabContent: PropTypes.arrayOf(PropTypes.node).isRequired,
+  /** Any additional class names to add to the component */
+  className: PropTypes.string,
+  /** A callback function to call when the tab changes */
+  onTabChange: PropTypes.func,
+};
 
 export default Tabbed;

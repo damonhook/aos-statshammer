@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   modifiers: [],
 };
 
-const modifiers = (state = INITIAL_STATE, action) => {
+const modifiersReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_MODIFIERS_PENDING:
       return {
@@ -17,7 +17,7 @@ const modifiers = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         pending: false,
-        modifiers: action.payload.modifiers,
+        modifiers: action.payload.modifiers.sort((a, b) => (a.id > b.id ? 1 : -1)),
       };
     case FETCH_MODIFIERS_ERROR:
       return {
@@ -30,4 +30,4 @@ const modifiers = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default modifiers;
+export default modifiersReducer;

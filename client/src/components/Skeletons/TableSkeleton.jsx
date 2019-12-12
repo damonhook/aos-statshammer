@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Card, CardContent, Typography,
 } from '@material-ui/core';
@@ -36,6 +37,9 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * A skeleton component used to indicate that there is table loading in its place
+ */
 const TableSkeleton = ({
   rows, cols, dense, className,
 }) => {
@@ -60,5 +64,20 @@ const TableSkeleton = ({
   );
 };
 
+TableSkeleton.defaultProps = {
+  className: null,
+  dense: false,
+};
+
+TableSkeleton.propTypes = {
+  /** The number of placeholder rows to display */
+  rows: PropTypes.number.isRequired,
+  /** The number of placeholder columns to display */
+  cols: PropTypes.number.isRequired,
+  /** Whether the table is dense or not */
+  dense: PropTypes.bool,
+  /** Any optional class names to apply to the component */
+  className: PropTypes.string,
+};
 
 export default TableSkeleton;

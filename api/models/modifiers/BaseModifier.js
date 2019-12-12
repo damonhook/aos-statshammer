@@ -40,7 +40,7 @@ export default class BaseModifier {
     if (!this.options || this.options === {}) return new this();
     const options = (data || {}).options || {};
     const cleanData = Object.keys(options || {}).reduce((acc, key) => {
-      if (typeof options[key] === 'object' && options[key].value != null) acc[key] = options[key].value;
+      if (options[key] != null) acc[key] = options[key];
       return acc;
     }, {});
     return new this(cleanData);

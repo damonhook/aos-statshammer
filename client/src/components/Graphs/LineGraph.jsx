@@ -13,6 +13,9 @@ const useStyles = makeStyles(() => ({
   graph: {},
 }));
 
+/**
+ * A line graph component for the average damage results
+ */
 const LineGraph = ({
   results, unitNames, className,
 }) => {

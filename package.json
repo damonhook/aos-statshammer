@@ -1,9 +1,9 @@
 {
     "name": "statshammer-express",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "engines": {
-        "node": "8.11.3",
-        "yarn": "1.13.0"
+        "node": "12.13.1",
+        "yarn": "1.19.2"
     },
     "scripts": {
         "client": "cd client && yarn start",

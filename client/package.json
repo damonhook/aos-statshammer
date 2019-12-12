@@ -1,11 +1,11 @@
 {
     "name": "statshammer",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "private": true,
     "proxy": "http://localhost:5000/",
     "engines": {
-        "node": "8.11.3",
-        "yarn": "1.13.0"
+        "node": "12.13.1",
+        "yarn": "1.19.2"
     },
     "dependencies": {
         "@material-ui/core": "^4.7.0",

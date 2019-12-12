@@ -9,6 +9,9 @@ const useStyles = makeStyles({
   dialog: {},
 });
 
+/**
+ * A dialog box containing various possible actions that can be performed
+ */
 const ActionsDialog = ({
   open, actions, target, onClose,
 }) => {
@@ -47,15 +50,19 @@ const ActionsDialog = ({
 };
 
 ActionsDialog.propTypes = {
+  /** Whether the dialog is open or not. Leave as `true` if you are using a Router to open it */
   open: PropTypes.bool.isRequired,
+  /** An array of possible actions that can be performed */
   actions: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      onClick: PropTypes.func.isRequired,
+      onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
       disabled: PropTypes.func.bool,
     }),
   ).isRequired,
+  /** The target of the actions. This is used to determine the dialog text */
   target: PropTypes.string.isRequired,
+  /** A function to call when the dialog box is closed */
   onClose: PropTypes.func.isRequired,
 };
 
