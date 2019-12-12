@@ -16,7 +16,7 @@ export default class LeaderBonus extends BaseModifier {
   }
 
   static get description() {
-    return 'Add {bonus} attacks to the leader of this unit ({numLeaders} leaders)';
+    return 'Add {bonus} for {characteristic} to the leader of this unit ({numLeaders} leaders)';
   }
 
   static get availableCharacteristics() {
