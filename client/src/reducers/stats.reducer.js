@@ -6,7 +6,7 @@ const INITIAL_STATS = {
   error: null,
 };
 
-const stats = (state = INITIAL_STATS, action) => {
+const statsReducer = (state = INITIAL_STATS, action) => {
   switch (action.type) {
     case FETCH_STATS_PENDING:
       return {
@@ -32,4 +32,4 @@ const stats = (state = INITIAL_STATS, action) => {
   }
 };
 
-export default stats;
+export default statsReducer;

@@ -45,9 +45,13 @@ ControlHeader.defaultProps = {
 };
 
 ControlHeader.propTypes = {
-  onEdit: PropTypes.func,
-  onDelete: PropTypes.func,
-  onCopy: PropTypes.func,
+  /** A function to call when edit button is clicked */
+  onEdit: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  /** A function to call when delete button is clicked */
+  onDelete: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  /** A function to call when copy button is clicked */
+  onCopy: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  /** An array of extra commands that will be placed in a control menu */
   extraItems: PropTypes.arrayOf(PropTypes.object),
   /** CSS classname to give the component */
   className: PropTypes.string,

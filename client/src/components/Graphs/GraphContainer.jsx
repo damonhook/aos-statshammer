@@ -13,7 +13,9 @@ const useSyles = makeStyles({
   responsive: {},
 });
 
-
+/**
+ * A wrapper for all of the graphs
+ */
 const GraphContainer = ({ className, children }) => {
   const classes = useSyles();
 

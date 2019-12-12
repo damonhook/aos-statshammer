@@ -20,11 +20,13 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.contrastText,
   },
   caption: {
-    // marginTop: 'auto',
     paddingBottom: theme.spacing(1),
   },
 }));
 
+/**
+ * A menu list containing various actions that can be performed
+ */
 const AppMenu = ({
   clearAllUnits, addNotification, toggleDarkMode, addUnit,
 }) => {
@@ -106,9 +108,13 @@ const AppMenu = ({
 };
 
 AppMenu.propTypes = {
+  /** A function to clear all of the current units */
   clearAllUnits: PropTypes.func.isRequired,
+  /** A function to call to add a notification to the stack */
   addNotification: PropTypes.func.isRequired,
+  /** A function to call to toggle dark/light themes */
   toggleDarkMode: PropTypes.func.isRequired,
+  /** A function to call to add a new unit */
   addUnit: PropTypes.func.isRequired,
 };
 

@@ -12,6 +12,9 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * A generic Card component based on the material ui Paper
+ */
 const Card = ({ children, className, ...other }) => {
   const classes = useStyles();
   return (
