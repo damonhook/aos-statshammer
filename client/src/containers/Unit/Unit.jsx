@@ -65,7 +65,7 @@ const Unit = ({
         header={`Unit (${unit.name})`}
         onDelete={() => handleDeleteUnit(id)}
         onCopy={addUnitEnabled() ? copyUnit : 'disabled'}
-        extraItems={[{ name: 'Export', onClick: exportUnit, disabled: true }]}
+        extraItems={[{ name: 'Export', onClick: exportUnit }]}
         collapsible
       >
         <TextField

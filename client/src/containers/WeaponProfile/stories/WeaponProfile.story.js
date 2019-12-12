@@ -9,6 +9,7 @@ storiesOf('Containers/WeaponProfile', module)
   .addDecorator(withProvider)
   .add('Basic', () => {
     const profile = {
+      uuid: 'profile',
       active: boolean('Active', true),
       num_models: number('Number of models', 20),
       attacks: number('Attacks', 2),
@@ -24,6 +25,7 @@ storiesOf('Containers/WeaponProfile', module)
   })
   .add('With Modifiers', () => {
     const profile = {
+      uuid: 'profile',
       active: boolean('Active', true),
       num_models: number('Number of models', 20),
       attacks: number('Attacks', 2),
@@ -33,13 +35,9 @@ storiesOf('Containers/WeaponProfile', module)
       damage: number('Damage', 2),
       modifiers: [
         {
-          description: 'Reroll Ones for {characteristic}',
           id: 'reroll_ones',
-          name: 'Reroll Ones',
           options: {
-            characteristic: {
-              value: 'to_hit',
-            },
+            characteristic: 'to_hit',
           },
         },
         {
@@ -47,12 +45,8 @@ storiesOf('Containers/WeaponProfile', module)
           id: 'bonus',
           name: 'Bonus',
           options: {
-            characteristic: {
-              value: 'to_wound',
-            },
-            bonus: {
-              value: 1,
-            },
+            characteristic: 'to_wound',
+            bonus: 1,
           },
         },
       ],

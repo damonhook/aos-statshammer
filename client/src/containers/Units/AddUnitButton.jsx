@@ -1,8 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { ImportExport, Add } from '@material-ui/icons';
 import { addUnitEnabled } from 'utils/unitHelpers';
+import { addNotification } from 'actions/notifications.action';
+import Uploader from 'components/Uploader';
 
 const useStyles = makeStyles({
   group: {
@@ -15,58 +18,14 @@ const useStyles = makeStyles({
       marginRight: 0,
     },
   },
-  input: {
-    display: 'none',
-  },
 });
 
-const UploadButton = ({ onUpload, disabled }) => {
-  const classes = useStyles();
-
-  const submitFiles = useCallback((files) => {
-    if (!files) return;
-    Array.from(files).forEach((file) => {
-      const reader = new global.FileReader();
-      reader.onload = () => {
-        const data = JSON.parse(reader.result);
-        onUpload(data);
-      };
-      reader.readAsText(file);
-    });
-  }, [onUpload]);
-
-  return (
-    <div>
-      <input
-        accept="application/JSON"
-        className={classes.input}
-        id="upload-button"
-        type="file"
-        // eslint-disable-next-line no-param-reassign
-        onChange={(event) => { submitFiles(event.target.files); event.target.value = null; }}
-        disabled={disabled}
-      />
-      <label htmlFor="upload-button">
-        <Button
-          variant="contained"
-          startIcon={<ImportExport />}
-          color="primary"
-          disabled={disabled}
-          className={classes.button}
-          component="span"
-        >
-        Import
-        </Button>
-      </label>
-    </div>
-  );
-};
-
-const AddUnitButton = ({ units, addUnit }) => {
+const AddUnitButton = ({ units, addUnit, addNotification }) => {
   const classes = useStyles();
 
   const onUpload = (data) => {
     if (data && data.name && data.weapon_profiles) {
+      addNotification({ message: 'Successfully imported unit', variant: 'success' });
       addUnit(data.name, data.weapon_profiles);
     }
   };
@@ -84,9 +43,24 @@ const AddUnitButton = ({ units, addUnit }) => {
       >
         Add Unit
       </Button>
-      <UploadButton onUpload={onUpload} disabled />
+      <Uploader
+        onUpload={onUpload}
+        disabled={!addUnitEnabled()}
+        component={(
+          <Button
+            variant="contained"
+            startIcon={<ImportExport />}
+            color="primary"
+            disabled={!addUnitEnabled()}
+            className={classes.button}
+            component="span"
+          >
+            Import
+          </Button>
+        )}
+      />
     </div>
   );
 };
 
-export default AddUnitButton;
+export default connect(null, { addNotification })(AddUnitButton);

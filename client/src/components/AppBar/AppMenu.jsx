@@ -5,12 +5,14 @@ import {
   Menu, MenuItem, IconButton, Typography,
 } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
-import { clearAllUnits } from 'actions/units.action';
+import { clearAllUnits, addUnit } from 'actions/units.action';
 import { toggleDarkMode } from 'actions/config.action';
 import { connect } from 'react-redux';
 import ConfirmationDialog from 'components/ConfirmationDialog';
 import { useHistory, Route } from 'react-router-dom';
 import { addNotification } from 'actions/notifications.action';
+import Uploader from 'components/Uploader';
+import { addUnitEnabled } from 'utils/unitHelpers';
 
 const useStyles = makeStyles((theme) => ({
   menu: {},
@@ -23,7 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AppMenu = ({ clearAllUnits, addNotification, toggleDarkMode }) => {
+const AppMenu = ({
+  clearAllUnits, addNotification, toggleDarkMode, addUnit,
+}) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -53,6 +57,15 @@ const AppMenu = ({ clearAllUnits, addNotification, toggleDarkMode }) => {
     addNotification({ message: 'All units cleared', variant: 'info' });
   }, [addNotification, clearAllUnits, menuItemClick]);
 
+  const isUploadDisabled = !addUnitEnabled();
+
+  const onUnitUpload = useCallback((data) => {
+    if (data && data.name && data.weapon_profiles) {
+      addNotification({ message: 'Successfully imported unit', variant: 'success' });
+      addUnit(data.name, data.weapon_profiles);
+    }
+  }, [addNotification, addUnit]);
+
   return (
     <div className={classes.menu}>
       <IconButton onClick={handleMenuClick} size="medium" className={classes.icon}>
@@ -72,6 +85,13 @@ const AppMenu = ({ clearAllUnits, addNotification, toggleDarkMode }) => {
             Beta
           </Typography>
         </MenuItem>
+        <Uploader
+          onUpload={onUnitUpload}
+          disabled={isUploadDisabled}
+          component={
+            <MenuItem>Import Unit</MenuItem>
+        }
+        />
       </Menu>
       <Route path={confirmPath}>
         <ConfirmationDialog
@@ -89,6 +109,9 @@ AppMenu.propTypes = {
   clearAllUnits: PropTypes.func.isRequired,
   addNotification: PropTypes.func.isRequired,
   toggleDarkMode: PropTypes.func.isRequired,
+  addUnit: PropTypes.func.isRequired,
 };
 
-export default connect(null, { clearAllUnits, addNotification, toggleDarkMode })(AppMenu);
+export default connect(null, {
+  clearAllUnits, addNotification, toggleDarkMode, addUnit,
+})(AppMenu);
