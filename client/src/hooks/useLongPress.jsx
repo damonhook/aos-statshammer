@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 
+/**
+ * A hook used to add long press functionality to a component
+ * @param {func} callback The function to call on long press
+ * @param {int} ms The amount of time in ms to wait before calling the functino
+ */
 const useLongPress = (callback = () => {}, ms = 300) => {
   const [startLongPress, setStartLongPress] = useState(false);
 
