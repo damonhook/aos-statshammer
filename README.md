@@ -1,5 +1,10 @@
 # Age of Sigmar Statshammer
 
+A tool for caclulating and comparing damage outputs for Warhammer Age of Sigmar units.
+
+The tool works by adding a number of weapon profiles to various units, which can contain
+a number of modifiers (abilities)
+
 ## Feature Checklist
 
 ### Interface

@@ -3,10 +3,10 @@ import Reroll from './Reroll';
 import Exploding from './Exploding';
 import MortalWounds from './MortalWounds';
 import Bonus from './Bonus';
-import LeaderExtraAttacks from './LeaderExtraAttacks';
 import RerollOnes from './RerollOnes';
 import BaseModifier from './BaseModifier';
 import ConditionalBonus from './ConditionalBonus';
+import LeaderBonus from './LeaderBonus';
 
 export const MODIFIERS = {
   REROLL_ONES: RerollOnes,
@@ -15,8 +15,8 @@ export const MODIFIERS = {
   EXPLODING: Exploding,
   MORTAL_WOUNDS: MortalWounds,
   BONUS: Bonus,
-  LEADER_EXTRA_ATTACKS: LeaderExtraAttacks,
   CONDITIONAL_BONUS: ConditionalBonus,
+  LEADER_BONUS: LeaderBonus,
 };
 
 export class ModifierManager {

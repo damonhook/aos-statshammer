@@ -69,9 +69,27 @@ class WeaponProfile {
   }
 
   averageDamage(target) {
-    let totalAttacks = this.numModels * this.getAttacks();
-    totalAttacks += this.resolveModifier(m.LEADER_EXTRA_ATTACKS, C.ATTACKS);
-    return this.resolveHits(target, totalAttacks, 0);
+    let { numModels } = this;
+    let totalAttacks = 0;
+
+    const leaderModifiers = this.getLeaderModifiers();
+    let leaderDamage = 0;
+    if (leaderModifiers && leaderModifiers.length) {
+      if (leaderModifiers.length === 1 && leaderModifiers[0].characteristic === C.ATTACKS) {
+        totalAttacks += leaderModifiers[0].resolve(this);
+      } else {
+        const { numLeaders } = leaderModifiers[0];
+        numModels = Math.max(numModels - numLeaders, 0);
+        const leaderProfile = this.getSplitProfile(
+          leaderModifiers, leaderModifiers.map((mod) => mod.getAsBonusModifier()),
+        );
+        leaderProfile.numModels = numLeaders;
+        leaderDamage += leaderProfile.averageDamage(target);
+      }
+    }
+
+    totalAttacks += numModels * this.getAttacks();
+    return this.resolveHits(target, totalAttacks, 0) + leaderDamage;
   }
 
   resolveHits(target, attacks) {
@@ -90,7 +108,7 @@ class WeaponProfile {
     const cbModifier = this.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_HIT);
     let splitDamage = 0;
     if (cbModifier) {
-      const newProfile = this.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()])
+      const newProfile = this.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()]);
       const cbModHits = attacks * cbModifier.resolve(this);
       splitDamage = newProfile.resolveWounds(target, cbModHits);
       hits -= cbModHits;
@@ -115,7 +133,7 @@ class WeaponProfile {
     const cbModifier = this.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_WOUND);
     let splitDamage = 0;
     if (cbModifier) {
-      const newProfile = this.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()])
+      const newProfile = this.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()]);
       const cbModWounds = hits * cbModifier.resolve(this);
       splitDamage = newProfile.resolveSaves(target, cbModWounds);
       wounds -= cbModWounds;
@@ -155,7 +173,6 @@ class WeaponProfile {
   }
 
   getSplitProfile(excludeModifiers, extraModifiers) {
-
     const newProfile = new WeaponProfile(
       this.numModels,
       this.attacks,
@@ -163,12 +180,21 @@ class WeaponProfile {
       this.toWound,
       this.rend,
       this.damage,
-      this.modifiers.modifiers,
+      this.modifiers.modifiers.filter((mod) => !excludeModifiers.includes(mod)),
     );
     extraModifiers.forEach((mod) => {
       newProfile.modifiers.addModifier(mod);
     });
     return newProfile;
+  }
+
+  getLeaderModifiers() {
+    const modList = [];
+    m.LEADER_BONUS.availableCharacteristics.forEach((c) => {
+      const mod = this.modifiers.getModifier(m.LEADER_BONUS, c);
+      if (mod) modList.push(mod);
+    });
+    return modList;
   }
 }
 

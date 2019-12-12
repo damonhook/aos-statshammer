@@ -11,7 +11,7 @@ describe('Units', () => {
   describe('Chainrasp Horde', () => {
     const unit = new Unit('Chainrasp Horde', [
       new WeaponProfile(10, 2, 4, 4, 0, 1, [
-        new m.LEADER_EXTRA_ATTACKS({ numLeaders: 1, bonus: 1 }),
+        new m.LEADER_BONUS({ characteristic: C.ATTACKS, numLeaders: 1, bonus: 1 }),
       ]),
     ]);
     testUnit(unit, [5.25, 4.375, 3.5, 2.625, 1.75, 0.875]);
@@ -20,7 +20,7 @@ describe('Units', () => {
   describe('Mortek Guard Swords', () => {
     const unit = new Unit('Mortek Guard', [
       new WeaponProfile(9, 2, 3, 4, 1, 1, [
-        new m.LEADER_EXTRA_ATTACKS({ numLeaders: 1, bonus: 1 }),
+        new m.LEADER_BONUS({ characteristic: C.ATTACKS, numLeaders: 1, bonus: 1 }),
         new m.EXPLODING({
           characteristic: C.TO_HIT, on: 6, extraHits: 1, unmodified: true,
         }),
@@ -33,7 +33,7 @@ describe('Units', () => {
   describe('Hearthguard Berzerkers Broadaxes', () => {
     const unit = new Unit('Hearthguard Berzerkers', [
       new WeaponProfile(20, 2, 3, 3, 1, 2, [
-        new m.LEADER_EXTRA_ATTACKS({ numLeaders: 1, bonus: 1 }),
+        new m.LEADER_BONUS({ characteristic: C.ATTACKS, numLeaders: 1, bonus: 1 }),
       ]),
     ]);
     testUnit(unit, [36.444, 36.444, 30.37, 24.296, 18.222, 12.148]);
@@ -42,7 +42,7 @@ describe('Units', () => {
   describe('Hearthguard Berzerkers Poleaxes', () => {
     const unit = new Unit('Hearthguard Berzerkers', [
       new WeaponProfile(20, 2, 3, 3, 0, 1, [
-        new m.LEADER_EXTRA_ATTACKS({ numLeaders: 1, bonus: 1 }),
+        new m.LEADER_BONUS({ characteristic: C.ATTACKS, numLeaders: 1, bonus: 1 }),
         new m.MORTAL_WOUNDS({
           characteristic: C.TO_HIT, on: 6, mortalWounds: 2, unmodified: true, inAddition: true,
         }),
@@ -116,16 +116,11 @@ describe('Units', () => {
 
   describe('Kurnoth Hunters Swords', () => {
     const unit = new Unit('Kurnoth Hunters', [
-      new WeaponProfile(2, 4, 3, 3, 1, 2, [
+      new WeaponProfile(3, 4, 3, 3, 1, 2, [
         new m.MORTAL_WOUNDS({
           characteristic: C.TO_WOUND, on: 6, mortalWounds: 1, inAddition: true, unmodified: true,
         }),
-      ]),
-      new WeaponProfile(1, 4, 3, 3, 1, 2, [
-        new m.MORTAL_WOUNDS({
-          characteristic: C.TO_WOUND, on: 6, mortalWounds: 1, inAddition: true, unmodified: true,
-        }),
-        new m.BONUS({ characteristic: C.TO_HIT, bonus: 1 }),
+        new m.LEADER_BONUS({ characteristic: C.TO_HIT, numLeaders: 1, bonus: 1 }),
       ]),
     ]);
     testUnit(unit, [13.000, 13.000, 11.074, 9.148, 7.222, 5.296]);
