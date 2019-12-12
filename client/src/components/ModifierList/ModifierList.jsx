@@ -3,31 +3,20 @@ import React, {
 } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, CircularProgress, Paper } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
 import { MAX_MODIFIERS } from 'appConstants';
 import _ from 'lodash';
-import clsx from 'clsx';
+import PendingModifiers from './PendingModifiers';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   modifierList: {
     flex: '1 1 auto',
     width: '100%',
   },
   activeModifiers: { marginTop: '1em' },
   activeModifierCard: {},
-  loader: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '10em',
-    width: 'auto',
-  },
-  loaderText: {
-    marginTop: theme.spacing(2),
-  },
 }));
 
 const errorReducer = (state, action) => {
@@ -46,16 +35,6 @@ const errorReducer = (state, action) => {
   }
 };
 
-const PendingModifiers = () => {
-  const classes = useStyles();
-  return (
-    <Paper className={clsx(classes.activeModifiers, classes.loader)}>
-      <CircularProgress />
-      <Typography variant="h6" className={classes.loaderText}>Loading...</Typography>
-    </Paper>
-  );
-};
-
 const ModifierList = ({
   modifierState, modifiers, setModifiers, errorCallback,
 }) => {
@@ -69,22 +48,15 @@ const ModifierList = ({
   }, [errors, errorCallback]);
 
   const addModifier = (modifier) => {
-    const newModifier = {
-      id: modifier.id,
-      options: {},
-    };
+    const newModifier = { id: modifier.id, options: {} };
     Object.keys(modifier.options).forEach((k) => {
-      newModifier.options[k] = {};
-      newModifier.options[k].value = '';
+      newModifier.options[k] = '';
       if (modifier.options[k].default != null) {
-        newModifier.options[k].value = modifier.options[k].default;
+        newModifier.options[k] = modifier.options[k].default;
       }
     });
-    if (!modifiers || !modifiers.length) {
-      setModifiers([newModifier]);
-    } else {
-      setModifiers([...modifiers, newModifier]);
-    }
+    if (!modifiers || !modifiers.length) setModifiers([newModifier]);
+    else setModifiers([...modifiers, newModifier]);
     dispatchErrors({ type: 'ADD_ERROR', error: false });
   };
 
@@ -101,10 +73,7 @@ const ModifierList = ({
           ...modifier,
           options: {
             ...modifier.options,
-            [name]: {
-              ...modifier.options[name],
-              value,
-            },
+            [name]: value,
           },
         };
       }

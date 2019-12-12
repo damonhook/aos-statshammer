@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { ChevronRight, HelpOutline } from '@material-ui/icons';
 import { getModifierById } from 'utils/modifierHelpers';
+import SummaryLoading from './SummaryLoading';
 
 const useStyles = makeStyles((theme) => ({
   modifiers: {
@@ -21,30 +22,7 @@ const useStyles = makeStyles((theme) => ({
   helpIcon: {
     marginLeft: theme.spacing(1),
   },
-  loader: {
-    display: 'flex',
-    margin: theme.spacing(0.5, 0, 0.5, 3),
-  },
-  loaderIcon: {
-    marginLeft: theme.spacing(1),
-    alignItems: 'center',
-  },
 }));
-
-const SummaryLoading = () => {
-  const classes = useStyles();
-  const theme = useTheme();
-  return (
-    <Typography component="div" className={classes.loader}>
-      <Typography>Loading...</Typography>
-      <CircularProgress
-        className={classes.loaderIcon}
-        size={theme.typography.body1.fontSize}
-        color="secondary"
-      />
-    </Typography>
-  );
-};
 
 
 const ModifierSummary = ({ modifiers, modifierState }) => {
