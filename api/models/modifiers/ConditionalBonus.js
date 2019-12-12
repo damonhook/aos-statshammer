@@ -23,7 +23,7 @@ export default class ConditionalBonus extends BaseModifier {
   }
 
   static get name() {
-    return 'ConditionalBonus';
+    return 'Conditional Bonus';
   }
 
   static get description() {
