@@ -56,7 +56,7 @@ ActionsDialog.propTypes = {
   actions: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      onClick: PropTypes.func.isRequired,
+      onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
       disabled: PropTypes.func.bool,
     }),
   ).isRequired,

@@ -74,11 +74,11 @@ ListItem.propTypes = {
   /** The react components to render in the card body */
   children: PropTypes.node.isRequired,
   /** A function to call when edit button is clicked */
-  onEdit: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  onEdit: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** A function to call when delete button is clicked */
-  onDelete: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  onDelete: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** A function to call when copy button is clicked */
-  onCopy: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  onCopy: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** An array of extra commands that will be placed in the control menu */
   extraItems: PropTypes.arrayOf(PropTypes.object),
   /** CSS classname to give the component */

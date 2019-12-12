@@ -34,11 +34,12 @@ const ModifierSummary = ({ modifiers, modifierState }) => {
         <b>Modifiers: </b>
         {modifierState.pending ? <SummaryLoading /> : null}
         <List dense disablePadding>
-          {modifiers.map((modifier) => {
+          {modifiers.map((modifier, index) => {
             const modDefinition = getModifierById(modifier.id);
             if (!modDefinition) return null;
             return (
-              <Item dense key={modDefinition.name}>
+              // eslint-disable-next-line react/no-array-index-key
+              <Item dense key={`${modDefinition.name}-${index}`}>
                 <ChevronRight />
                 <span>{modDefinition.name}</span>
                 <Tooltip
@@ -74,9 +75,9 @@ ModifierSummary.defaultProps = {
 ModifierSummary.propTypes = {
   /** The list of currently applied modifiers */
   modifiers: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    options: PropTypes.object.isRequired,
+    name: PropTypes.string,
+    description: PropTypes.string,
+    options: PropTypes.object,
   })),
   /** The current modifier definitions state in the store */
   modifierState: PropTypes.shape({

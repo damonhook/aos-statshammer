@@ -26,18 +26,18 @@ const ModifierDescription = ({ definition, options, className }) => {
 
   const getFormattedDescription = useCallback(() => {
     const params = Object.keys(options).reduce((acc, key) => {
-      if (options[key]) {
-        if (options[key].type === 'boolean') {
-          acc[key] = options[key].value ? getHtmlForValue(key, key) : '';
-        } else if (options[key].value != null && options[key].value !== '') {
-          acc[key] = getHtmlForValue(key, options[key].value);
+      if (options[key] != null) {
+        if (definition.options[key].type === 'boolean') {
+          acc[key] = options[key] ? getHtmlForValue(key, key) : '';
+        } else if (options[key] != null && options[key] !== '') {
+          acc[key] = getHtmlForValue(key, options[key]);
         }
       }
       return acc;
     }, {});
     const desc = formatUnicorn(description, params).trim().replace(/\s+/g, ' ').replace(/_/g, ' ');
     return desc[0].toUpperCase() + desc.slice(1);
-  }, [description, options]);
+  }, [definition.options, description, options]);
 
   return (
     <Typography component="div" className={clsx(classes.description, className)}>
@@ -55,6 +55,7 @@ ModifierDescription.propTypes = {
   /** The modifier definition */
   definition: PropTypes.shape({
     description: PropTypes.string.isRequired,
+    options: PropTypes.object.isRequired,
   }).isRequired,
   /** The object containing the values for the modifier instance */
   options: PropTypes.shape().isRequired,

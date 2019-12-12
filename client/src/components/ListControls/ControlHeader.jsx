@@ -14,10 +14,11 @@ const HeaderButton = ({
 
 HeaderButton.defaultProps = {
   disabled: false,
+  onClick: null,
 };
 
 HeaderButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   icon: PropTypes.node.isRequired,
   tooltip: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
@@ -28,9 +29,28 @@ const ControlHeader = ({
 }) => (
   <div>
     <ButtonGroup className={`list-controls ${className}`}>
-      {onEdit && <HeaderButton onClick={onEdit} icon={<Edit />} tooltip="Edit" />}
-      {onCopy && <HeaderButton onClick={onCopy} icon={<FileCopy />} disabled={onCopy === 'disabled'} tooltip="Copy" />}
-      {onDelete && <HeaderButton onClick={onDelete} icon={<Delete />} tooltip="Delete" />}
+      {onEdit && (
+      <HeaderButton
+        onClick={typeof onEdit !== 'string' ? onEdit : null}
+        icon={<Edit />}
+        tooltip="Edit"
+      />
+      )}
+      {onCopy && (
+      <HeaderButton
+        onClick={typeof onCopy !== 'string' ? onCopy : null}
+        icon={<FileCopy />}
+        disabled={onCopy === 'disabled'}
+        tooltip="Copy"
+      />
+      )}
+      {onDelete && (
+      <HeaderButton
+        onClick={typeof onDelete !== 'string' ? onDelete : null}
+        icon={<Delete />}
+        tooltip="Delete"
+      />
+      )}
       {extraItems && <ControlMenu extraItems={extraItems} size="small" />}
     </ButtonGroup>
   </div>
@@ -46,11 +66,11 @@ ControlHeader.defaultProps = {
 
 ControlHeader.propTypes = {
   /** A function to call when edit button is clicked */
-  onEdit: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  onEdit: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** A function to call when delete button is clicked */
-  onDelete: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  onDelete: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** A function to call when copy button is clicked */
-  onCopy: PropTypes.oneOfType(PropTypes.func, PropTypes.string),
+  onCopy: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** An array of extra commands that will be placed in a control menu */
   extraItems: PropTypes.arrayOf(PropTypes.object),
   /** CSS classname to give the component */
