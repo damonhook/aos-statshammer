@@ -103,7 +103,7 @@ const AppMenu = ({
           </Typography>
         </MenuItem>
         <Uploader
-          onUpload={onUnitUpload}
+          onUpload={(data) => menuItemClick(() => onUnitUpload(data))}
           disabled={isUploadDisabled}
           component={
             <MenuItem disabled={isUploadDisabled}>Import Unit</MenuItem>
