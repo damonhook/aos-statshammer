@@ -17,7 +17,7 @@ const useStyles = makeStyles({
  * A menu component with the various options
  */
 const ControlMenu = ({
-  onEdit, onDelete, onCopy, extraItems, size, className,
+  primaryItems, secondaryItems, size, className,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -37,7 +37,10 @@ const ControlMenu = ({
     handleClose();
   };
 
-  const hasDivider = (onEdit || onCopy || onDelete) && (extraItems && extraItems.length);
+  const hasDivider = (
+    (primaryItems && primaryItems.length)
+    && (secondaryItems && secondaryItems.length)
+  );
 
   return (
     <div className={clsx(classes.menu, className)}>
@@ -51,11 +54,13 @@ const ControlMenu = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {onEdit && <MenuItem onClick={() => menuItemClick(onEdit)}>Edit</MenuItem>}
-        {onCopy && <MenuItem onClick={() => menuItemClick(onCopy)} disabled={onCopy === 'disabled'}>Copy</MenuItem>}
-        {onDelete && <MenuItem onClick={() => menuItemClick(onDelete)}>Delete</MenuItem>}
+        {primaryItems && primaryItems.map(({ name, onClick, disabled }) => (
+          <MenuItem onClick={() => menuItemClick(onClick)} key={name} disabled={disabled}>
+            {name}
+          </MenuItem>
+        ))}
         {hasDivider && <Divider />}
-        {extraItems && extraItems.map(({ name, onClick, disabled }) => (
+        {secondaryItems && secondaryItems.map(({ name, onClick, disabled }) => (
           <MenuItem onClick={() => menuItemClick(onClick)} key={name} disabled={disabled}>
             {name}
           </MenuItem>
@@ -66,23 +71,17 @@ const ControlMenu = ({
 };
 
 ControlMenu.defaultProps = {
-  onEdit: null,
-  onDelete: null,
-  onCopy: null,
-  extraItems: null,
+  primaryItems: null,
+  secondaryItems: null,
   className: null,
   size: 'medium',
 };
 
 ControlMenu.propTypes = {
-  /** A function to call when edit button is clicked */
-  onEdit: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** A function to call when delete button is clicked */
-  onDelete: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** A function to call when copy button is clicked */
-  onCopy: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** An array of extra commands that will be placed in the control menu */
-  extraItems: PropTypes.arrayOf(PropTypes.object),
+  /** An array of primary commands that will be placed in the first section of the control menu */
+  primaryItems: PropTypes.arrayOf(PropTypes.object),
+  /** An array of extra commands that will be placed in the second section of the control menu */
+  secondaryItems: PropTypes.arrayOf(PropTypes.object),
   /** CSS classname to give the component */
   className: PropTypes.string,
   /** The size of the menu component */

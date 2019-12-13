@@ -14,6 +14,7 @@ import clsx from 'clsx';
 import ModifierSummary from 'components/ModifierSummary';
 import { useHistory } from 'react-router-dom';
 import { getUnitByPosition } from 'utils/unitHelpers';
+import { Delete, FileCopy, Edit } from '@material-ui/icons';
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WeaponProfile = ({
-  unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile,
+  unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile, numProfiles,
   addWeaponProfile, addProfileEnabled, addNotification, moveWeaponProfile,
 }) => {
   const classes = useStyles();
@@ -65,7 +66,7 @@ const WeaponProfile = ({
   }, [addNotification, deleteWeaponProfile]);
 
   const moveUpEnabled = id > 0;
-  const moveDownEnabled = id < (unit.weapon_profiles.length - 1);
+  const moveDownEnabled = id < (numProfiles - 1);
 
   const moveProfileUp = () => { moveWeaponProfile(id, id - 1, unitId); };
   const moveProfileDown = () => { moveWeaponProfile(id, id + 1, unitId); };
@@ -75,10 +76,20 @@ const WeaponProfile = ({
       <ListItem
         className={clsx(classes.profile, profile.active ? '' : classes.inactive)}
         header="Weapon Profile"
+        primaryItems={[
+          { name: 'Edit', onClick: handleOpen, icon: <Edit /> },
+          {
+            name: 'Copy',
+            onClick: () => addWeaponProfile(unitId, { ...profile }),
+            icon: <FileCopy />,
+            disabled: !addProfileEnabled,
+          },
+          { name: 'Delete', onClick: () => handleDelete(id, unitId), icon: <Delete /> },
+        ]}
         onEdit={handleOpen}
         onDelete={() => handleDelete(id, unitId)}
         onCopy={addProfileEnabled ? () => addWeaponProfile(unitId, { ...profile }) : 'disabled'}
-        extraItems={[
+        secondaryItems={[
           { name: 'Move Up', onClick: moveProfileUp, disabled: !moveUpEnabled },
           { name: 'Move Down', onClick: moveProfileDown, disabled: !moveDownEnabled },
         ]}
@@ -103,6 +114,10 @@ const WeaponProfile = ({
   );
 };
 
+WeaponProfile.defaultProps = {
+  numProfiles: 0,
+};
+
 WeaponProfile.propTypes = {
   unitId: PropTypes.number.isRequired,
   id: PropTypes.number.isRequired,
@@ -115,6 +130,7 @@ WeaponProfile.propTypes = {
   addProfileEnabled: PropTypes.bool.isRequired,
   addNotification: PropTypes.func.isRequired,
   moveWeaponProfile: PropTypes.func.isRequired,
+  numProfiles: PropTypes.number,
 };
 
 export default connect(null, {

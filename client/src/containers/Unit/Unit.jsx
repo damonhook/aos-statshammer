@@ -8,7 +8,7 @@ import { addNotification } from 'actions/notifications.action';
 import { addWeaponProfile } from 'actions/weaponProfiles.action';
 import ListItem from 'components/ListItem';
 import { TextField, Button } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Add, Delete, FileCopy } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { MAX_PROFILES } from 'appConstants';
 import clsx from 'clsx';
@@ -67,14 +67,20 @@ const Unit = ({
   const moveUnitUp = () => { moveUnit(id, id - 1); };
   const moveUnitDown = () => { moveUnit(id, id + 1); };
 
+  const numProfiles = unit.weapon_profiles ? unit.weapon_profiles.length : 0;
+
   return (
     <div ref={unitRef}>
       <ListItem
         className={clsx(classes.unit, className)}
         header={`Unit (${unit.name})`}
-        onDelete={() => handleDeleteUnit(id)}
-        onCopy={addUnitEnabled() ? copyUnit : 'disabled'}
-        extraItems={[
+        primaryItems={[
+          {
+            name: 'Copy', onClick: copyUnit, icon: <FileCopy />, disabled: !addUnitEnabled(),
+          },
+          { name: 'Delete', onClick: () => handleDeleteUnit(id), icon: <Delete /> },
+        ]}
+        secondaryItems={[
           { name: 'Export', onClick: exportUnit },
           { name: 'Move Up', onClick: moveUnitUp, disabled: !moveUpEnabled },
           { name: 'Move Down', onClick: moveUnitDown, disabled: !moveDownEnabled },
@@ -98,6 +104,7 @@ const Unit = ({
                 profile={profile}
                 key={profile.uuid}
                 addProfileEnabled={addProfileEnabled}
+                numProfiles={numProfiles}
               />
             ))
             : (

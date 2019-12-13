@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import { getModifierById } from 'utils/modifierHelpers';
+import { Delete } from '@material-ui/icons';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
 import { errorReducer } from './reducers';
@@ -64,6 +65,9 @@ const ModifierItem = ({
       <ListItem
         className={classes.modifier}
         onDelete={() => removeModifier(index)}
+        primaryItems={[
+          { name: 'Delete', onClick: () => removeModifier(index), icon: <Delete /> },
+        ]}
         header={definition.name}
         collapsible
       >

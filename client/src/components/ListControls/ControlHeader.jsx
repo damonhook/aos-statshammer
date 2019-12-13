@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { IconButton, ButtonGroup, Tooltip } from '@material-ui/core';
-import { Edit, Delete, FileCopy } from '@material-ui/icons';
 import ControlMenu from './ControlMenu';
 
 const HeaderButton = ({
@@ -24,55 +23,34 @@ HeaderButton.propTypes = {
   disabled: PropTypes.bool,
 };
 
-const ControlHeader = ({
-  onEdit, onDelete, onCopy, extraItems, className,
-}) => (
+const ControlHeader = ({ primaryItems, secondaryItems, className }) => (
   <div>
     <ButtonGroup className={`list-controls ${className}`}>
-      {onEdit && (
-      <HeaderButton
-        onClick={typeof onEdit !== 'string' ? onEdit : null}
-        icon={<Edit />}
-        tooltip="Edit"
-      />
-      )}
-      {onCopy && (
-      <HeaderButton
-        onClick={typeof onCopy !== 'string' ? onCopy : null}
-        icon={<FileCopy />}
-        disabled={onCopy === 'disabled'}
-        tooltip="Copy"
-      />
-      )}
-      {onDelete && (
-      <HeaderButton
-        onClick={typeof onDelete !== 'string' ? onDelete : null}
-        icon={<Delete />}
-        tooltip="Delete"
-      />
-      )}
-      {extraItems && <ControlMenu extraItems={extraItems} size="small" />}
+      {primaryItems && primaryItems.map(({
+        name, onClick, disabled, icon,
+      }) => (
+        <HeaderButton
+          onClick={onClick}
+          icon={icon}
+          tooltip={name}
+        />
+      ))}
+      {secondaryItems && <ControlMenu secondaryItems={secondaryItems} size="small" />}
     </ButtonGroup>
   </div>
 );
 
 ControlHeader.defaultProps = {
-  onEdit: null,
-  onDelete: null,
-  onCopy: null,
-  extraItems: null,
+  primaryItems: null,
+  secondaryItems: null,
   className: null,
 };
 
 ControlHeader.propTypes = {
-  /** A function to call when edit button is clicked */
-  onEdit: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** A function to call when delete button is clicked */
-  onDelete: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** A function to call when copy button is clicked */
-  onCopy: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  /** An array of commands that will be placed in the header */
+  primaryItems: PropTypes.arrayOf(PropTypes.object),
   /** An array of extra commands that will be placed in a control menu */
-  extraItems: PropTypes.arrayOf(PropTypes.object),
+  secondaryItems: PropTypes.arrayOf(PropTypes.object),
   /** CSS classname to give the component */
   className: PropTypes.string,
 };
