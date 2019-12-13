@@ -32,13 +32,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const graphColors = [
-  '#8884d8',
-  '#82ca9d',
-  '#ff7300',
-  '#413ea0',
-  '#f50057',
-];
+const graphNames = ['Bar Graph', 'Line Graph', 'Radar Graph'];
+const graphList = [BarGraph, LineGraph, RadarGraph];
 
 const GraphWrapper = ({
   loading, error, children, numUnits,
@@ -57,7 +52,6 @@ const GraphWrapper = ({
 
 const GraphTabbed = ({ stats, unitNames, graphList }) => {
   const classes = useStyles();
-  const tabNames = ['Line Graph', 'Bar Graph', 'Radar Graph'];
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
 
   return (
@@ -70,12 +64,12 @@ const GraphTabbed = ({ stats, unitNames, graphList }) => {
     >
       <Tabbed
         className={classes.tabs}
-        tabNames={tabNames}
+        tabNames={graphNames}
         tabContent={graphList.map((Graph, index) => (
           <GraphWrapper
             loading={firstLoad}
             numUnits={unitNames.length}
-            key={tabNames[index]}
+            key={graphNames[index]}
             error={Boolean(stats.error)}
           >
             <Paper square className={classes.tab}>
@@ -83,7 +77,6 @@ const GraphTabbed = ({ stats, unitNames, graphList }) => {
                 className={classes.content}
                 results={stats.payload}
                 unitNames={unitNames}
-                colors={graphColors}
               />
             </Paper>
           </GraphWrapper>
@@ -95,15 +88,14 @@ const GraphTabbed = ({ stats, unitNames, graphList }) => {
 
 const GraphList = ({ stats, unitNames, graphList }) => {
   const classes = useStyles();
-  const names = ['Line Graph', 'Bar Graph', 'Radar Graph'];
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
 
   return (
     <Typography component="div">
       {graphList.map((Graph, index) => (
         <ListItem
-          key={names[index]}
-          header={names[index]}
+          key={graphNames[index]}
+          header={graphNames[index]}
           collapsible
           loading={stats.pending}
           loaderDelay={firstLoad ? 0 : 350}
@@ -117,7 +109,6 @@ const GraphList = ({ stats, unitNames, graphList }) => {
               className={classes.content}
               results={stats.payload}
               unitNames={unitNames}
-              colors={graphColors}
             />
           </GraphWrapper>
         </ListItem>
@@ -129,10 +120,6 @@ const GraphList = ({ stats, unitNames, graphList }) => {
 const Graphs = ({ stats, unitNames, config }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const graphList = [
-    LineGraph, BarGraph, RadarGraph,
-  ];
 
   return mobile || config.desktopGraphList
     ? (
