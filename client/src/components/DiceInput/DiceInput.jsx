@@ -21,7 +21,9 @@ const DiceInput = ({
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const isDice = useCallback((val) => Boolean(String(val).match(/^[dD]\d+$/)), []);
+  const isDice = useCallback((val) => (
+    Boolean(String(val).replace(/\s/g, '').match(/^(?:\d*[dD]?\d+)(?:\+\d*[dD]?\d+)*$/))
+  ), []);
   const isValid = useCallback((val) => !Number.isNaN(Number(val)) || isDice(val), [isDice]);
 
   const setErrorState = useCallback((errMessage) => {

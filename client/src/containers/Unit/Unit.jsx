@@ -124,6 +124,10 @@ const Unit = ({
   );
 };
 
-export default connect(null, {
+const mapStateToProps = (state) => ({
+  units: state.units,
+});
+
+export default connect(mapStateToProps, {
   addWeaponProfile, deleteUnit, editUnitName, addUnit, addNotification, moveUnit,
 })(Unit);

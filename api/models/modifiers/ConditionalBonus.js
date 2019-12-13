@@ -1,8 +1,9 @@
 import { Characteristics as C, getCharacteristic } from '../../constants';
-import { parseDice, D6 } from '../dice';
+import { D6 } from '../dice';
 import {
   numberOption, booleanOption, rollOption, choiceOption,
 } from './ModifierOptions';
+import DiceValue from '../diceValue';
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';
 
@@ -12,7 +13,7 @@ export default class ConditionalBonus extends BaseModifier {
   }) {
     super({ characteristic });
     this.on = Number(on);
-    this.bonus = parseDice(bonus);
+    this.bonus = DiceValue.parse(bonus);
     this.unmodified = Boolean(unmodified);
 
     const c = getCharacteristic(bonusToCharacteristic);

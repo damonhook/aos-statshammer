@@ -24,7 +24,7 @@ const Results = ({ stats, unitNames, className }) => {
   return (
     <Typography className={clsx(classes.results, className)} component="div">
       <ListItem
-        header="Table"
+        header="Average Damage Table"
         collapsible
         loading={stats.pending}
         loaderDelay={firstLoad ? 0 : 350}

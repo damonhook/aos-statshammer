@@ -8,6 +8,7 @@ const lightTheme = createMuiTheme({
       nested: '#fff',
       paper: '#fff',
       default: grey[100],
+      error: red.A100,
     },
     graphs: {
       grid: grey[300],
@@ -43,6 +44,7 @@ const darkTheme = createMuiTheme({
       nested: grey[800],
       paper: '#333',
       default: grey[900],
+      error: red.A100,
     },
     graphs: {
       grid: grey[700],

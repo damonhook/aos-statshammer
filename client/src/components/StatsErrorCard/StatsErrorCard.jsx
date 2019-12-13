@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Typography } from '@material-ui/core';
+import { lighten } from '@material-ui/core/styles/colorManipulator';
 import clsx from 'clsx';
 import { fetchStatsCompare } from 'api';
 import { bindActionCreators } from 'redux';
@@ -15,8 +16,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: red[100],
-    color: theme.palette.getContrastText(red[100]),
+    // backgroundColor: red[100],
+    backgroundColor: theme.palette.background.error,
+    color: theme.palette.getContrastText(theme.palette.background.error),
     width: '100%',
     height: '100%',
     padding: theme.spacing(2),
@@ -26,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.short,
     }),
     '&:hover': {
-      backgroundColor: red[200],
+      // backgroundColor: red[200],
+      backgroundColor: lighten(theme.palette.background.error, 0.3),
     },
     '&:focus, &:active': {
       backgroundColor: red[300],
