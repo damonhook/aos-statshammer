@@ -32,6 +32,10 @@ export class Dice {
     return 1 - this.getProbability(target);
   }
 
+  toString() {
+    return `D${this.sides}`;
+  }
+
   /**
    * Build a `Dice` class or `Number` by parsing a value
    * @param {string|Dice|int|float} val The value to parse

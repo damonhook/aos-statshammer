@@ -33,6 +33,7 @@ class DiceValue {
    */
   static parse(val) {
     if (val instanceof this) return val;
+    if (val instanceof Dice) return new this([val]);
     let items = String(val).split(/\+/);
     items = items.reduce((acc, item) => {
       const i = item.trim();

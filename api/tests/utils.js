@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
+import assert from 'assert';
 import Target from '../models/target';
-
-const assert = require('assert');
 
 export const SAVES = [0, 6, 5, 4, 3, 2];
 
