@@ -1,6 +1,6 @@
 {
     "name": "statshammer-express",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "engines": {
         "node": "12.13.1",
         "yarn": "1.19.2"
