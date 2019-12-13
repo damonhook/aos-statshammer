@@ -1,5 +1,5 @@
 import React, {
-  useRef, useEffect, useState, useCallback,
+  useRef, useEffect, useCallback, useReducer,
 } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { getModifierById } from 'utils/modifierHelpers';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
+import { errorReducer } from './reducers';
 
 const useStyles = makeStyles((theme) => ({
   modifier: {},
@@ -37,7 +38,7 @@ const ModifierItem = ({
 }) => {
   const classes = useStyles();
   const itemRef = useRef(null);
-  const [errors, setErrors] = useState({});
+  const [errors, dispatchErrors] = useReducer(errorReducer, {});
   const definition = getModifierById(id);
 
   useEffect(() => {
@@ -51,10 +52,7 @@ const ModifierItem = ({
   }, [errors, errorCallback]);
 
   const getErrorCallback = useCallback(_.memoize((name) => (error) => {
-    setErrors({
-      ...errors,
-      [name]: error,
-    });
+    dispatchErrors({ type: 'SET_ERROR', name, error });
   }), []);
 
   if (!definition) return null;

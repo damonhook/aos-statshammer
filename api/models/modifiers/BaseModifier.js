@@ -5,7 +5,9 @@ export default class BaseModifier {
   constructor({ characteristic }) {
     const c = getCharacteristic(characteristic);
     if (!this.constructor.availableCharacteristics.includes(c)) {
-      throw new Error(`Invalid characteristic provided to ${this.constructor.name}`);
+      throw new Error(
+        `Invalid characteristic provided to ${this.constructor.name} (${characteristic})`,
+      );
     }
     this.characteristic = c;
   }

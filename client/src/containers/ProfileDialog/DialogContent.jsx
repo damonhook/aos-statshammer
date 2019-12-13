@@ -55,6 +55,7 @@ const DialogContent = ({
   const classes = useStyles();
 
   const getErrorCallback = useCallback(_.memoize((name) => (error) => {
+    // console.log(name, error);
     errorCallback(name, error);
   }), []);
 
@@ -104,6 +105,7 @@ const DialogContent = ({
                 label="Rend"
                 value={profile.rend}
                 onChange={(val) => onChange('rend', val)}
+                errorCallback={getErrorCallback('to_wound')}
               />
               <DiceInput
                 className={classes.field}

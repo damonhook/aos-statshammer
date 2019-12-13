@@ -44,6 +44,7 @@ const RadarGraph = ({
             dataKey={name}
             stroke={theme.palette.graphs.series[index]}
             fill={theme.palette.graphs.series[index]}
+            activeDot={{ stroke: theme.palette.background.paper }}
             fillOpacity={0.1}
             key={name}
           />

@@ -10,7 +10,7 @@ import ModifierItem from 'components/ModifierItem';
 import { MAX_MODIFIERS } from 'appConstants';
 import _ from 'lodash';
 import PendingModifiers from './PendingModifiers';
-import errorReducer from './errorReducer';
+import { errorReducer } from './reducers';
 
 const useStyles = makeStyles(() => ({
   modifierList: {

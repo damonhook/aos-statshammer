@@ -28,7 +28,7 @@ const StatsSubscriber = ({ units, fetchStatsCompare }) => {
     prevUnits = prevUnits.map((u) => filterNameFromUnit(u));
     const newUnits = units.map((u) => filterNameFromUnit(u));
     if (JSON.stringify(prevUnits) !== JSON.stringify(newUnits)) {
-      fetchStatsCompare(units);
+      fetchStatsCompare();
     }
   };
 

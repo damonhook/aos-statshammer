@@ -16,12 +16,12 @@ import { useHistory } from 'react-router-dom';
 import { getUnitByPosition } from 'utils/unitHelpers';
 import Characteristics from './Characteristics';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   profile: {
     display: 'flex',
   },
   inactive: {
-    color: 'gray',
+    color: theme.palette.action.disabled,
   },
   content: {
     display: 'flex',
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     cursor: 'pointer',
     WebkitTapHighlightColor: 'rgba(0,0,0,0)',
   },
-});
+}));
 
 const WeaponProfile = ({
   unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile,
@@ -82,7 +82,7 @@ const WeaponProfile = ({
           <div className={classes.details} onClick={handleOpen} role="button">
             <Characteristics profile={profile} />
             {profile.modifiers && profile.modifiers.length ? (
-              <ModifierSummary modifiers={profile.modifiers} />
+              <ModifierSummary modifiers={profile.modifiers} active={profile.active} />
             ) : null}
           </div>
         </div>

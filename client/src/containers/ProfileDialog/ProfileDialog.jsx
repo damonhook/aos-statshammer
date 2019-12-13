@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useCallback, useMemo,
+  useEffect, useCallback, useMemo, useReducer,
 } from 'react';
 import {
   Button, Dialog, useMediaQuery, DialogActions, Slide,
@@ -12,6 +12,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { getUnitByUuid, getUnitIndexByUuid } from 'utils/unitHelpers';
 import DialogTitle from './DialogTitle';
 import DialogContent from './DialogContent';
+import { errorReducer, profileReducer } from './reducers';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +46,7 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
     history.replace('/');
   }
 
-  const [state, setState] = useState({
+  const [state, dispatchState] = useReducer(profileReducer, {
     num_models: 1,
     attacks: 1,
     to_hit: 4,
@@ -55,7 +56,7 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
     modifiers: [],
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, dispatchErrors] = useReducer(errorReducer, {
     num_models: false,
     attacks: false,
     to_hit: false,
@@ -67,31 +68,17 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
 
   useEffect(() => {
     if (profile) {
-      setState({
-        num_models: profile.num_models,
-        attacks: profile.attacks,
-        to_hit: profile.to_hit,
-        to_wound: profile.to_wound,
-        rend: profile.rend,
-        damage: profile.damage,
-        modifiers: profile.modifiers,
-      });
+      dispatchState({ type: 'INIT_PROFILE', profile });
     }
   }, [profile]);
 
-  const setStateByName = useCallback((name, newVal) => {
-    setState({
-      ...state,
-      [name]: newVal,
-    });
-  }, [state]);
+  const setStateByName = useCallback((name, val) => {
+    dispatchState({ type: 'SET_PROFILE', name, val });
+  }, []);
 
   const setErrorByName = useCallback((name, error) => {
-    setErrors({
-      ...errors,
-      [name]: error,
-    });
-  }, [errors]);
+    dispatchErrors({ type: 'SET_ERROR', name, error });
+  }, []);
 
   const handleClose = useCallback(() => {
     history.goBack();
