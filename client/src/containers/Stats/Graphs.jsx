@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const graphNames = ['Bar Graph', 'Line Graph', 'Radar Graph'];
-const graphList = [BarGraph, LineGraph, RadarGraph];
+const graphNames = ['Line Graph', 'Bar Graph', 'Radar Graph'];
+const graphList = [LineGraph, BarGraph, RadarGraph];
 
 const GraphWrapper = ({
   loading, error, children, numUnits,

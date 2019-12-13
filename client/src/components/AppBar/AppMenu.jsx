@@ -4,7 +4,9 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Menu, MenuItem, IconButton, Typography, Button, useMediaQuery,
 } from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
+import {
+  MoreVert, BarChart, ImportExport, BrightnessMedium, Delete,
+} from '@material-ui/icons';
 import { clearAllUnits, addUnit } from 'actions/units.action';
 import { toggleDarkMode, toggleDesktopGraphList } from 'actions/config.action';
 import { connect } from 'react-redux';
@@ -14,6 +16,7 @@ import { addNotification } from 'actions/notifications.action';
 import Uploader from 'components/Uploader';
 import { addUnitEnabled } from 'utils/unitHelpers';
 
+
 const useStyles = makeStyles((theme) => ({
   menu: {},
   icon: {
@@ -21,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
   caption: {
     paddingBottom: theme.spacing(1),
+  },
+  menuItemIcon: {
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -117,8 +123,12 @@ const AppMenu = ({
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={() => setLocation(confirmPath)}>Clear Units</MenuItem>
+        <MenuItem onClick={() => setLocation(confirmPath)}>
+          <Delete className={classes.menuItemIcon} />
+          Clear Units
+        </MenuItem>
         <MenuItem onClick={() => menuItemClick(toggleDarkMode)}>
+          <BrightnessMedium className={classes.menuItemIcon} />
           <span>Toggle Dark Mode&nbsp;</span>
           <Typography variant="caption" color="secondary" className={classes.caption}>
             Beta
@@ -126,15 +136,19 @@ const AppMenu = ({
         </MenuItem>
         {!mobile && (
           <MenuItem onClick={() => menuItemClick(toggleDesktopGraphList)}>
+            <BarChart className={classes.menuItemIcon} />
             Toggle Graph List/Tabs
           </MenuItem>
         )}
         <Uploader
           onUpload={(data) => menuItemClick(() => onUnitUpload(data))}
           disabled={isUploadDisabled}
-          component={
-            <MenuItem disabled={isUploadDisabled}>Import Unit</MenuItem>
-          }
+          component={(
+            <MenuItem disabled={isUploadDisabled}>
+              <ImportExport className={classes.menuItemIcon} />
+              Import Unit
+            </MenuItem>
+          )}
         />
       </Menu>
       <Route path={confirmPath}>
