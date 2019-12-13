@@ -1,5 +1,5 @@
 /**
- * A class used to represent a dice value (e.g: D3, D6)
+ * A class used to represent a single dice (e.g: D3, D6)
  */
 export class Dice {
   /**
