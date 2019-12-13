@@ -38,31 +38,53 @@ const AppMenu = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const confirmPath = '/units/confirm';
 
+  /**
+   * Handle the on click event for the menu button (Open the menu)
+   * @param {object} event The event object passed from the DOM element caller
+   */
   const handleMenuClick = useCallback((event) => {
     setAnchorEl(event.currentTarget);
   }, []);
 
+  /** Handle closing the menu */
   const handleMenuClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
 
+  /**
+   * Handle the onclick event for any given menu item
+   * @param {func} action The function to call for the given menu item
+   */
   const menuItemClick = useCallback((action) => {
     action();
     handleMenuClose();
   }, [handleMenuClose]);
 
+  /**
+   * Change the URL bar to a new location. This is used to display dialog boxes that
+   * retains proper navigation
+   * @param {string} newloc the new URL to set
+   */
   const setLocation = useCallback((newloc) => {
     handleMenuClose();
     history.push(newloc);
   }, [handleMenuClose, history]);
 
+  /**
+   * Handle the case when the confirm option is selected from the clear all units dialog
+   */
   const clearAllConfirmed = useCallback(() => {
     menuItemClick(clearAllUnits);
     addNotification({ message: 'All units cleared', variant: 'info' });
   }, [addNotification, clearAllUnits, menuItemClick]);
 
+  /** Is the upload menu item disabled or not */
   const isUploadDisabled = !addUnitEnabled();
 
+  /** The function to call when a file upload happens.
+   * In this case that would be importing the uploaded unit data
+   * @param {object} data the JSON from the uploaded unit
+   * */
   const onUnitUpload = useCallback((data) => {
     if (data && data.name && data.weapon_profiles) {
       addNotification({ message: 'Successfully imported unit', variant: 'success' });
