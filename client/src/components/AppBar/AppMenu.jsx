@@ -91,7 +91,7 @@ const AppMenu = ({
           onUpload={onUnitUpload}
           disabled={isUploadDisabled}
           component={
-            <MenuItem>Import Unit</MenuItem>
+            <MenuItem disabled={isUploadDisabled}>Import Unit</MenuItem>
         }
         />
       </Menu>

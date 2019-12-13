@@ -48,11 +48,11 @@ const useStyles = makeStyles((theme) => ({
 /**
  * A card representing that there was an error getting the stats
  */
-const StatsErrorCard = ({ units, fetchStatsCompare, className }) => {
+const StatsErrorCard = ({ fetchStatsCompare, className }) => {
   const classes = useStyles();
 
   const handleClick = () => {
-    fetchStatsCompare(units);
+    fetchStatsCompare();
   };
 
   return (
@@ -76,18 +76,15 @@ StatsErrorCard.defaultProps = {
 };
 
 StatsErrorCard.propTypes = {
-  /** The current units state from the store */
-  units: PropTypes.arrayOf(PropTypes.object).isRequired,
   /** A function used to fetch the stats */
   fetchStatsCompare: PropTypes.func.isRequired,
   /** CSS classname to give the component */
   className: PropTypes.string,
 };
 
-const mapStateToProps = (state) => ({ units: state.units });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchStatsCompare,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(StatsErrorCard);
+export default connect(null, mapDispatchToProps)(StatsErrorCard);

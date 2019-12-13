@@ -22,7 +22,7 @@ const GraphTooltip = ({ active, payload, label }) => {
       <Paper className={classes.tooltip}>
         <Typography variant="h6">{`Save: ${label !== 'None' ? `${label}+` : '-'}`}</Typography>
         {(payload || []).map(({ color, name, value }) => (
-          <Typography style={{ color }}>{`${name}: ${value}`}</Typography>
+          <Typography style={{ color }} key={name}>{`${name}: ${value}`}</Typography>
         ))}
       </Paper>
     );

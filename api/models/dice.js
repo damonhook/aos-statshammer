@@ -49,7 +49,7 @@ export const parseDice = (val) => {
   }
   const num = Number(val);
   if (Number.isNaN(num)) {
-    throw new Error('Invalid Value or Dice');
+    throw new Error(`Invalid Value or Dice (${val})`);
   }
   return num;
 };

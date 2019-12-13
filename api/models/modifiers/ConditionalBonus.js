@@ -17,7 +17,9 @@ export default class ConditionalBonus extends BaseModifier {
 
     const c = getCharacteristic(bonusToCharacteristic);
     if (!this.constructor.availableBonusToCharacteristics.includes(c)) {
-      throw new Error(`Invalid 'bonus to characteristic' provided to ${this.constructor.name}`);
+      throw new Error(
+        `Invalid 'bonusToCharacteristic' provided to ${this.constructor.name} (${characteristic})`,
+      );
     }
     this.bonusToCharacteristic = c;
   }

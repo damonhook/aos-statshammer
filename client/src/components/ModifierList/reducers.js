@@ -1,4 +1,5 @@
-const errorReducer = (state, action) => {
+// eslint-disable-next-line import/prefer-default-export
+export const errorReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_ERROR':
       return [...state, action.err];
@@ -13,5 +14,3 @@ const errorReducer = (state, action) => {
       return state;
   }
 };
-
-export default errorReducer;
