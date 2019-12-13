@@ -20,6 +20,7 @@
         "@babel/polyfill": "^7.7.0",
         "@babel/preset-env": "^7.7.4",
         "@babel/register": "^7.7.4",
+        "babel-plugin-import": "^1.13.0",
         "body-parser": "^1.18.3",
         "eslint": "^6.7.2",
         "eslint-config-airbnb": "^18.0.1",
@@ -32,7 +33,6 @@
         "mocha": "^6.2.2"
     },
     "devDependencies": {
-        "babel-plugin-import": "^1.13.0",
         "concurrently": "^4.0.1"
     }
 }
