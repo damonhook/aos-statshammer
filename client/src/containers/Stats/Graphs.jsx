@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Tabbed from 'components/Tabbed';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
@@ -125,7 +126,7 @@ const GraphList = ({ stats, unitNames, graphList }) => {
   );
 };
 
-const Graphs = ({ stats, unitNames }) => {
+const Graphs = ({ stats, unitNames, config }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -133,7 +134,7 @@ const Graphs = ({ stats, unitNames }) => {
     LineGraph, BarGraph, RadarGraph,
   ];
 
-  return mobile
+  return mobile || config.desktopGraphList
     ? (
       <GraphList
         stats={stats}
@@ -150,5 +151,8 @@ const Graphs = ({ stats, unitNames }) => {
     );
 };
 
+const mapStateToProps = (state) => ({
+  config: state.config,
+});
 
-export default Graphs;
+export default connect(mapStateToProps)(Graphs);

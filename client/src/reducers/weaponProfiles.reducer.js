@@ -1,8 +1,9 @@
 import nanoid from 'nanoid';
 import {
   TOGGLE_WEAPON_PROFILE, EDIT_WEAPON_PROFILE, ADD_WEAPON_PROFILE, DELETE_WEAPON_PROFILE,
+  MOVE_WEAPON_PROFILE,
 } from '../actions/weaponProfiles.action';
-import { updateItemInArray } from './helpers';
+import { updateItemInArray, moveItemInArray } from './helpers';
 
 const addWeaponProfile = (state, action) => [
   ...state,
@@ -21,6 +22,10 @@ const editWeaponProfile = (state, action) => updateItemInArray(state, action.id,
 
 const deleteWeaponProfile = (state, action) => state.filter((_, index) => index !== action.id);
 
+const moveWeaponProfile = (state, action) => (
+  moveItemInArray(state, action.index, action.newIndex, (newState) => newState)
+);
+
 const weaponProfilesReducer = (state, action) => {
   switch (action.type) {
     case TOGGLE_WEAPON_PROFILE:
@@ -31,6 +36,8 @@ const weaponProfilesReducer = (state, action) => {
       return addWeaponProfile(state, action);
     case DELETE_WEAPON_PROFILE:
       return deleteWeaponProfile(state, action);
+    case MOVE_WEAPON_PROFILE:
+      return moveWeaponProfile(state, action);
     default:
       return state;
   }

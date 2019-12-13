@@ -1,10 +1,10 @@
 import nanoid from 'nanoid';
 import {
-  ADD_UNIT, DELETE_UNIT, EDIT_UNIT_NAME, CLEAR_ALL_UNITS,
+  ADD_UNIT, DELETE_UNIT, EDIT_UNIT_NAME, CLEAR_ALL_UNITS, MOVE_UNIT,
 } from '../actions/units.action';
 import { DEFAULT_WEAPON_PROFILE } from '../actions/weaponProfiles.action';
 import weaponProfilesReducer from './weaponProfiles.reducer';
-import { updateItemInArray } from './helpers';
+import { updateItemInArray, moveItemInArray } from './helpers';
 
 const DEFAULT_UNIT = {
   name: 'Unit 1',
@@ -35,7 +35,11 @@ const editUnitName = (state, action) => updateItemInArray(state, action.unitId, 
   name: action.name,
 }));
 
-const clearAllUnits = (state, action) => [];
+const clearAllUnits = () => [];
+
+const moveUnit = (state, action) => (
+  moveItemInArray(state, action.index, action.newIndex, (newState) => newState)
+);
 
 const unitReducer = (state, action) => {
   switch (action.type) {
@@ -57,6 +61,8 @@ const unitsReducer = (state = INITIAL_STATE, action) => {
       return editUnitName(state, action);
     case CLEAR_ALL_UNITS:
       return clearAllUnits(state, action);
+    case MOVE_UNIT:
+      return moveUnit(state, action);
     default:
       if (action && typeof action.unitId === 'number') {
         return state.map((unit, index) => {

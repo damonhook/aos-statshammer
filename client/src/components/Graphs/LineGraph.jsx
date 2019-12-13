@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label,
 } from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -22,14 +22,23 @@ const LineGraph = ({
   const classes = useStyles();
   const theme = useTheme();
 
+  const xAxisLabel = (value) => (value === 'None' ? '-' : `${value}+`);
+
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
       <LineChart
         data={results}
       >
         <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
-        <XAxis dataKey="save" stroke={theme.palette.graphs.axis} />
-        <YAxis stroke={theme.palette.graphs.axis} />
+        <XAxis dataKey="save" stroke={theme.palette.graphs.axis} tickFormatter={xAxisLabel} />
+        <YAxis stroke={theme.palette.graphs.axis}>
+          <Label
+            value="Average Damage"
+            angle={-90}
+            position="insideLeft"
+            fill={theme.palette.graphs.axis}
+          />
+        </YAxis>
         <Tooltip content={<GraphTooltip />} />
         <Legend />
         {unitNames.map((name, index) => (

@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import WeaponProfile from 'containers/WeaponProfile';
 import { connect } from 'react-redux';
-import { deleteUnit, editUnitName, addUnit } from 'actions/units.action';
+import {
+  deleteUnit, editUnitName, addUnit, moveUnit,
+} from 'actions/units.action';
 import { addNotification } from 'actions/notifications.action';
 import { addWeaponProfile } from 'actions/weaponProfiles.action';
 import ListItem from 'components/ListItem';
@@ -11,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { MAX_PROFILES } from 'appConstants';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
-import { addUnitEnabled } from 'utils/unitHelpers';
+import { addUnitEnabled, getNumUnits } from 'utils/unitHelpers';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,14 +29,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Unit = ({
-  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit, className, addNotification,
+  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit, className,
+  addNotification, moveUnit,
 }) => {
   const unitRef = useRef(null);
   const classes = useStyles();
 
   useEffect(() => {
     if (unitRef.current) unitRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [id]);
+  }, [unit.uuid]);
 
   const handleDeleteUnit = useCallback((id) => {
     addNotification({ message: 'Deleted Unit' });
@@ -52,11 +55,17 @@ const Unit = ({
   }, [unit, addNotification]);
 
   const addProfileEnabled = unit.weapon_profiles.length < MAX_PROFILES;
+  const moveUpEnabled = id > 0;
+  const moveDownEnabled = id < getNumUnits() - 1;
+
   const unitNameError = (!unit.name || unit.name === '');
 
   const copyUnit = () => {
     addUnit(`${unit.name} copy`, [...unit.weapon_profiles]);
   };
+
+  const moveUnitUp = () => { moveUnit(id, id - 1); };
+  const moveUnitDown = () => { moveUnit(id, id + 1); };
 
   return (
     <div ref={unitRef}>
@@ -65,7 +74,11 @@ const Unit = ({
         header={`Unit (${unit.name})`}
         onDelete={() => handleDeleteUnit(id)}
         onCopy={addUnitEnabled() ? copyUnit : 'disabled'}
-        extraItems={[{ name: 'Export', onClick: exportUnit }]}
+        extraItems={[
+          { name: 'Export', onClick: exportUnit },
+          { name: 'Move Up', onClick: moveUnitUp, disabled: !moveUpEnabled },
+          { name: 'Move Down', onClick: moveUnitDown, disabled: !moveDownEnabled },
+        ]}
         collapsible
       >
         <TextField
@@ -112,5 +125,5 @@ const Unit = ({
 };
 
 export default connect(null, {
-  addWeaponProfile, deleteUnit, editUnitName, addUnit, addNotification,
+  addWeaponProfile, deleteUnit, editUnitName, addUnit, addNotification, moveUnit,
 })(Unit);

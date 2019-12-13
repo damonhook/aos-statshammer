@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
+  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile, moveWeaponProfile,
 } from 'actions/weaponProfiles.action';
 import { addNotification } from 'actions/notifications.action';
 import { Switch } from '@material-ui/core';
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WeaponProfile = ({
   unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile,
-  addWeaponProfile, addProfileEnabled, addNotification,
+  addWeaponProfile, addProfileEnabled, addNotification, moveWeaponProfile,
 }) => {
   const classes = useStyles();
   const profileRef = useRef(null);
@@ -53,7 +53,7 @@ const WeaponProfile = ({
 
   useEffect(() => {
     if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [id]);
+  }, [profile.uuid]);
 
   const handleOpen = useCallback(() => {
     history.push(editPath);
@@ -64,6 +64,12 @@ const WeaponProfile = ({
     deleteWeaponProfile(id, unitId);
   }, [addNotification, deleteWeaponProfile]);
 
+  const moveUpEnabled = id > 0;
+  const moveDownEnabled = id < (unit.weapon_profiles.length - 1);
+
+  const moveProfileUp = () => { moveWeaponProfile(id, id - 1, unitId); };
+  const moveProfileDown = () => { moveWeaponProfile(id, id + 1, unitId); };
+
   return (
     <div ref={profileRef}>
       <ListItem
@@ -72,6 +78,10 @@ const WeaponProfile = ({
         onEdit={handleOpen}
         onDelete={() => handleDelete(id, unitId)}
         onCopy={addProfileEnabled ? () => addWeaponProfile(unitId, { ...profile }) : 'disabled'}
+        extraItems={[
+          { name: 'Move Up', onClick: moveProfileUp, disabled: !moveUpEnabled },
+          { name: 'Move Down', onClick: moveProfileDown, disabled: !moveDownEnabled },
+        ]}
         collapsible
       >
         <div className={classes.content}>
@@ -104,8 +114,9 @@ WeaponProfile.propTypes = {
   addWeaponProfile: PropTypes.func.isRequired,
   addProfileEnabled: PropTypes.bool.isRequired,
   addNotification: PropTypes.func.isRequired,
+  moveWeaponProfile: PropTypes.func.isRequired,
 };
 
 export default connect(null, {
-  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile, addNotification,
+  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile, addNotification, moveWeaponProfile,
 })(WeaponProfile);

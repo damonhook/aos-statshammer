@@ -30,11 +30,17 @@ const RadarGraph = ({
   const classes = useStyles();
   const theme = useTheme();
 
+  const radarAxisLabel = (value) => (value === 'None' ? '-' : `${value}+`);
+
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
       <RadarChart data={results} outerRadius={120} cy="40%">
         <PolarGrid stroke={theme.palette.graphs.grid} />
-        <PolarAngleAxis dataKey="save" stroke={theme.palette.graphs.axis} />
+        <PolarAngleAxis
+          dataKey="save"
+          stroke={theme.palette.graphs.axis}
+          tickFormatter={radarAxisLabel}
+        />
         <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={0} />
         <Tooltip content={<GraphTooltip />} />
         <Legend />

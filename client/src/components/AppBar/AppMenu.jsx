@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { clearAllUnits, addUnit } from 'actions/units.action';
-import { toggleDarkMode } from 'actions/config.action';
+import { toggleDarkMode, toggleDesktopGraphList } from 'actions/config.action';
 import { connect } from 'react-redux';
 import ConfirmationDialog from 'components/ConfirmationDialog';
 import { useHistory, Route } from 'react-router-dom';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
  * A menu list containing various actions that can be performed
  */
 const AppMenu = ({
-  clearAllUnits, addNotification, toggleDarkMode, addUnit,
+  clearAllUnits, addNotification, toggleDarkMode, addUnit, toggleDesktopGraphList,
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -102,6 +102,11 @@ const AppMenu = ({
             Beta
           </Typography>
         </MenuItem>
+        {!mobile && (
+          <MenuItem onClick={() => menuItemClick(toggleDesktopGraphList)}>
+            Toggle Graph List/Tabs
+          </MenuItem>
+        )}
         <Uploader
           onUpload={(data) => menuItemClick(() => onUnitUpload(data))}
           disabled={isUploadDisabled}
@@ -131,8 +136,10 @@ AppMenu.propTypes = {
   toggleDarkMode: PropTypes.func.isRequired,
   /** A function to call to add a new unit */
   addUnit: PropTypes.func.isRequired,
+  /** A function to call to toggle the desktop graph list */
+  toggleDesktopGraphList: PropTypes.func.isRequired,
 };
 
 export default connect(null, {
-  clearAllUnits, addNotification, toggleDarkMode, addUnit,
+  clearAllUnits, addNotification, toggleDarkMode, addUnit, toggleDesktopGraphList,
 })(AppMenu);
