@@ -2,15 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ModifierDescription from 'components/ModifierItem/ModifierDescription';
-import { makeStyles } from '@material-ui/core/styles';
-import { List, ListItem as Item, Tooltip } from '@material-ui/core';
-import { ChevronRight, HelpOutline } from '@material-ui/icons';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {
+  List, ListItem as Item, Tooltip, useMediaQuery,
+} from '@material-ui/core';
+import { ChevronRight, HelpOutline, ArrowRight } from '@material-ui/icons';
 import { getModifierById } from 'utils/modifierHelpers';
 import SummaryLoading from './SummaryLoading';
 
 const useStyles = makeStyles((theme) => ({
   modifiers: {
     marginTop: '1em',
+  },
+  item: {
+    display: 'flex',
+    alignItems: 'start',
   },
   modifierTooltip: {
     color: '#fff',
@@ -19,6 +25,14 @@ const useStyles = makeStyles((theme) => ({
   },
   helpIcon: {
     marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+  descriptionFull: {
+    marginLeft: theme.spacing(1),
+    fontSize: theme.typography.caption.fontSize,
+    color: theme.typography.caption.color,
+    margin: 'auto',
+    flex: '1 1 25%',
   },
 }));
 
@@ -27,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
  */
 const ModifierSummary = ({ modifiers, modifierState }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const large = useMediaQuery(theme.breakpoints.up('lg'));
 
   return (modifiers && modifiers.length
     ? (
@@ -39,7 +55,7 @@ const ModifierSummary = ({ modifiers, modifierState }) => {
             if (!modDefinition) return null;
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <Item dense key={`${modDefinition.name}-${index}`}>
+              <Item dense key={`${modDefinition.name}-${index}`} className={classes.item}>
                 <ChevronRight />
                 <span>{modDefinition.name}</span>
                 <Tooltip
@@ -52,12 +68,19 @@ const ModifierSummary = ({ modifiers, modifierState }) => {
                     />
                   )}
                   onClick={(e) => { e.stopPropagation(); }}
-                  className={classes.helpIcon}
                   disableFocusListener
                   disableTouchListener
                 >
-                  <HelpOutline />
+                  {large ? <span>:</span> : <HelpOutline className={classes.helpIcon} />}
                 </Tooltip>
+                {large
+                  && (
+                    <ModifierDescription
+                      definition={modDefinition}
+                      options={modifier.options}
+                      className={classes.descriptionFull}
+                    />
+                  )}
               </Item>
             );
           })}

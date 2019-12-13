@@ -39,7 +39,7 @@ const FormField = ({
   return (
     <TextField
       className={clsx(classes.field, className)}
-      variant="outlined"
+      variant="filled"
       type="number"
       label={label}
       value={value}

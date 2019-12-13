@@ -59,7 +59,7 @@ const ModifierInput = ({
           name={name}
           className={classes.modifierInput}
           fullWidth
-          variant="outlined"
+          variant="filled"
           value={val}
           {...errorProps}
           onChange={handleChange}
@@ -123,7 +123,7 @@ const ModifierInput = ({
             className={classes.modifierInput}
             fullWidth
             type="number"
-            variant="outlined"
+            variant="filled"
             value={val}
             {...errorProps}
             onChange={handleChange}

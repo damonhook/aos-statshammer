@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  Menu, MenuItem, IconButton, Typography,
+  Menu, MenuItem, IconButton, Typography, Button, useMediaQuery,
 } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { clearAllUnits, addUnit } from 'actions/units.action';
@@ -32,6 +32,8 @@ const AppMenu = ({
 }) => {
   const classes = useStyles();
   const history = useHistory();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [anchorEl, setAnchorEl] = useState(null);
   const confirmPath = '/units/confirm';
@@ -70,9 +72,22 @@ const AppMenu = ({
 
   return (
     <div className={classes.menu}>
-      <IconButton onClick={handleMenuClick} size="medium" className={classes.icon}>
-        <MoreVert />
-      </IconButton>
+      {mobile
+        ? (
+          <IconButton onClick={handleMenuClick} size="medium" className={classes.icon}>
+            <MoreVert />
+          </IconButton>
+        )
+        : (
+          <Button
+            onClick={handleMenuClick}
+            size="medium"
+            className={classes.icon}
+            startIcon={<MoreVert />}
+          >
+          More
+          </Button>
+        )}
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
