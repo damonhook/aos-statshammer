@@ -8,6 +8,7 @@ export const fetchStatsCompare = () => async (dispatch) => {
   dispatch(fetchStatsPending());
   try {
     const units = getUnits();
+    if (!units) dispatch(fetchStatsSuccess([]));
     const data = {
       units: units.map((unit) => ({
         name: unit.uuid,
