@@ -11,7 +11,9 @@ import ModifierDescription from './ModifierDescription';
 import { errorReducer } from './reducers';
 
 const useStyles = makeStyles((theme) => ({
-  modifier: {},
+  modifier: {
+    background: theme.palette.background.nested,
+  },
   modifierContent: {
     display: 'flex',
     flex: 1,

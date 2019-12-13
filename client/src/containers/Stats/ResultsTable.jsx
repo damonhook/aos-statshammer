@@ -9,7 +9,9 @@ import StatsErrorCard from 'components/StatsErrorCard';
 
 
 const useStyles = makeStyles((theme) => ({
-  table: {},
+  table: {
+    background: theme.palette.background.nested,
+  },
   skeleton: {},
   container: {
     overflowX: 'scroll',
@@ -20,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 11,
   },
   header: {
-    backgroundColor: theme.palette.background.default,
+    fontWeight: theme.typography.fontWeightBold,
   },
   cell: {
     background: theme.palette.background.palette,

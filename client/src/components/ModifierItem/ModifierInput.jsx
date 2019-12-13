@@ -7,16 +7,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import RollInput from 'components/RollInput';
 import DiceInput from 'components/DiceInput';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   modifierInput: {
     marginRight: '1em',
     margin: '.5em 0',
     width: '100%',
   },
-  choice: {
-
-  },
-});
+  choice: {},
+}));
 
 const ModifierInput = ({
   index, name, option, val, onOptionChange, errorCallback,
@@ -59,7 +57,7 @@ const ModifierInput = ({
           name={name}
           className={classes.modifierInput}
           fullWidth
-          variant="filled"
+          variant="outlined"
           value={val}
           {...errorProps}
           onChange={handleChange}
@@ -81,6 +79,7 @@ const ModifierInput = ({
               checked={val}
               {...errorProps}
               onChange={handleChecked}
+              color="primary"
             />
           )}
           label={name}
@@ -98,6 +97,7 @@ const ModifierInput = ({
           onChange={(event) => onOptionChange(index, name, event.target.value)}
           allowOnes={option.allowOnes}
           errorCallback={childErrorCallback}
+          variant="outlined"
           required
         />
       );
@@ -113,6 +113,7 @@ const ModifierInput = ({
             value={val}
             onChange={(event) => onOptionChange(index, name, event.target.value)}
             errorCallback={childErrorCallback}
+            variant="outlined"
             required
           />
         )
@@ -123,7 +124,7 @@ const ModifierInput = ({
             className={classes.modifierInput}
             fullWidth
             type="number"
-            variant="filled"
+            variant="outlined"
             value={val}
             {...errorProps}
             onChange={handleChange}
@@ -143,14 +144,14 @@ ModifierInput.propTypes = {
   name: PropTypes.string.isRequired,
   /** The option properties for the modifier definition */
   option: PropTypes.shape({
-    type: PropTypes.string.isRequired,
-    items: PropTypes.arrayOf([PropTypes.string]),
-    default: PropTypes.string,
+    type: PropTypes.string,
+    items: PropTypes.arrayOf(PropTypes.string),
+    default: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     allowOnes: PropTypes.bool,
     allowDice: PropTypes.bool,
   }).isRequired,
   /** The current value of the option */
-  val: PropTypes.string.isRequired,
+  val: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   /** A callback function to call when any of the option values are changed */
   onOptionChange: PropTypes.func.isRequired,
   /** An optional callback function used to pass back the error state of the modifier item */

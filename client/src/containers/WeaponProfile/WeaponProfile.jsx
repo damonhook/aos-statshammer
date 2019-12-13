@@ -19,6 +19,7 @@ import Characteristics from './Characteristics';
 const useStyles = makeStyles((theme) => ({
   profile: {
     display: 'flex',
+    background: theme.palette.background.nested,
   },
   inactive: {
     color: theme.palette.action.disabled,

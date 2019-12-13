@@ -1,9 +1,14 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { grey } from '@material-ui/core/colors';
+import { grey, red, teal } from '@material-ui/core/colors';
 
 const lightTheme = createMuiTheme({
   palette: {
     type: 'light',
+    background: {
+      nested: '#fff',
+      paper: '#fff',
+      default: grey[100],
+    },
     graphs: {
       grid: grey[300],
       axis: grey[700],
@@ -29,10 +34,15 @@ const darkTheme = createMuiTheme({
   palette: {
     type: 'dark',
     primary: {
-      main: '#5c6bc0',
+      main: teal[500],
     },
     secondary: {
-      main: '#ff5252',
+      main: red[500],
+    },
+    background: {
+      nested: grey[800],
+      paper: '#333',
+      default: grey[900],
     },
     graphs: {
       grid: grey[700],
