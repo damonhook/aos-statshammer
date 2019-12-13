@@ -6,8 +6,9 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   List, ListItem as Item, Tooltip, useMediaQuery,
 } from '@material-ui/core';
-import { ChevronRight, HelpOutline, ArrowRight } from '@material-ui/icons';
+import { ChevronRight, HelpOutline } from '@material-ui/icons';
 import { getModifierById } from 'utils/modifierHelpers';
+import clsx from 'clsx';
 import SummaryLoading from './SummaryLoading';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   item: {
     display: 'flex',
     alignItems: 'start',
+    paddingLeft: theme.spacing(1),
   },
   modifierTooltip: {
     color: '#fff',
@@ -29,17 +31,20 @@ const useStyles = makeStyles((theme) => ({
   },
   descriptionFull: {
     marginLeft: theme.spacing(1),
-    fontSize: theme.typography.caption.fontSize,
+    fontSize: theme.typography.body2.fontSize,
     color: theme.typography.caption.color,
     margin: 'auto',
     flex: '1 1 25%',
+  },
+  inactive: {
+    color: theme.palette.action.disabledBackground,
   },
 }));
 
 /**
  * A brief summary of the applied modifiers, used for the main page
  */
-const ModifierSummary = ({ modifiers, modifierState }) => {
+const ModifierSummary = ({ modifiers, modifierState, active }) => {
   const classes = useStyles();
   const theme = useTheme();
   const large = useMediaQuery(theme.breakpoints.up('lg'));
@@ -78,7 +83,7 @@ const ModifierSummary = ({ modifiers, modifierState }) => {
                     <ModifierDescription
                       definition={modDefinition}
                       options={modifier.options}
-                      className={classes.descriptionFull}
+                      className={clsx(classes.descriptionFull, active ? '' : classes.inactive)}
                     />
                   )}
               </Item>
@@ -93,6 +98,7 @@ const ModifierSummary = ({ modifiers, modifierState }) => {
 
 ModifierSummary.defaultProps = {
   modifiers: [],
+  active: true,
 };
 
 ModifierSummary.propTypes = {
@@ -107,6 +113,8 @@ ModifierSummary.propTypes = {
     modifiers: PropTypes.array,
     pending: PropTypes.bool,
   }).isRequired,
+  /** Whether the profile the summary belongs to is active */
+  active: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({

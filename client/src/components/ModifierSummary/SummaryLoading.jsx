@@ -5,7 +5,7 @@ import { Typography, CircularProgress } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   loader: {
     display: 'flex',
-    margin: theme.spacing(0.5, 0, 0.5, 3),
+    margin: theme.spacing(0.5, 0, 0.5, 2),
   },
   loaderIcon: {
     marginLeft: theme.spacing(1),

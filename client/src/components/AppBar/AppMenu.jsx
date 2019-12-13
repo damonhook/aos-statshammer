@@ -85,7 +85,7 @@ const AppMenu = ({
             className={classes.icon}
             startIcon={<MoreVert />}
           >
-          More
+            More
           </Button>
         )}
       <Menu
@@ -107,7 +107,7 @@ const AppMenu = ({
           disabled={isUploadDisabled}
           component={
             <MenuItem disabled={isUploadDisabled}>Import Unit</MenuItem>
-        }
+          }
         />
       </Menu>
       <Route path={confirmPath}>
