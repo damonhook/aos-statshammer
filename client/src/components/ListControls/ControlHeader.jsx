@@ -30,9 +30,11 @@ const ControlHeader = ({ primaryItems, secondaryItems, className }) => (
         name, onClick, disabled, icon,
       }) => (
         <HeaderButton
+          key={name}
           onClick={onClick}
           icon={icon}
           tooltip={name}
+          disabled={disabled}
         />
       ))}
       {secondaryItems && <ControlMenu secondaryItems={secondaryItems} size="small" />}

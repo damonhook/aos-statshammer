@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import { Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
 import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
 import { MAX_MODIFIERS } from 'appConstants';
 import _ from 'lodash';
+import { moveItemInArray } from 'reducers/helpers';
 import PendingModifiers from './PendingModifiers';
 import { errorReducer } from './reducers';
 
@@ -55,6 +57,12 @@ const ModifierList = ({
     dispatchErrors({ type: 'REMOVE_ERROR', index });
   };
 
+  const moveModifier = (index, newIndex) => {
+    moveItemInArray(modifiers, index, newIndex, (newState) => {
+      setModifiers(newState);
+    });
+  };
+
   const onOptionChange = (index, name, value) => {
     if (!modifiers) return;
     setModifiers(modifiers.map((modifier, i) => {
@@ -75,6 +83,9 @@ const ModifierList = ({
     dispatchErrors({ type: 'SET_ERROR', index, error });
   }), []);
 
+  const moveUpEnabled = (index) => index > 0;
+  const moveDownEnabled = (index) => index < (modifiers || []).length - 1;
+
   return (
     <Typography component="div" className={classes.modifierList}>
       <label>Modifiers:</label>
@@ -85,7 +96,21 @@ const ModifierList = ({
             {(modifiers || []).map((modifier, index) => (
               <ModifierItem
                 {...modifier}
-                removeModifier={removeModifier}
+                actions={[
+                  {
+                    name: 'Move Up',
+                    onClick: () => moveModifier(index, index - 1),
+                    icon: <ArrowUpward />,
+                    disabled: !moveUpEnabled(index),
+                  },
+                  {
+                    name: 'Move Down',
+                    onClick: () => moveModifier(index, index + 1),
+                    icon: <ArrowDownward />,
+                    disabled: !moveDownEnabled(index),
+                  },
+                  { name: 'Delete', onClick: () => removeModifier(index), icon: <Delete /> },
+                ]}
                 index={index}
                 // eslint-disable-next-line react/no-array-index-key
                 key={index}
@@ -104,6 +129,7 @@ const ModifierList = ({
 };
 
 ModifierList.defaultProps = {
+  modifiers: [],
   errorCallback: null,
 };
 
@@ -117,7 +143,7 @@ ModifierList.propTypes = {
   modifiers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.isRequired,
     options: PropTypes.object.isRequired,
-  })).isRequired,
+  })),
   /** A callback function to call when the modifiers list is changed */
   setModifiers: PropTypes.func.isRequired,
   /** A callback function to pass back the error state of the list of modifiers */

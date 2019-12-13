@@ -49,26 +49,39 @@ const WeaponProfile = ({
   const profileRef = useRef(null);
   const history = useHistory();
 
+  /** The unit that this profile belongs to */
   const unit = useMemo(() => getUnitByPosition(unitId), [unitId]);
+  /** The URL used to open an edit dialog for this item */
   const editPath = `/units/${unit.uuid}/${id}`;
 
+  // Scroll to the component when it is first created
   useEffect(() => {
     if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [profile.uuid]);
 
+  /** Handle open/close of the edit profile dialog */
   const handleOpen = useCallback(() => {
     history.push(editPath);
   }, [editPath, history]);
 
+  /**
+   * Handle the delete button for the profile
+   * @param {int} id The index of the profile to delete
+   * @param {int} unitId The index of the unit that this profile belongs to
+   */
   const handleDelete = useCallback((id, unitId) => {
     addNotification({ message: 'Deleted Profile' });
     deleteWeaponProfile(id, unitId);
   }, [addNotification, deleteWeaponProfile]);
 
+  /** Whether the move up button is enabled or not */
   const moveUpEnabled = id > 0;
+  /** Whether the move down button is enabled or not */
   const moveDownEnabled = id < (numProfiles - 1);
 
+  /** Move this profile up by one space */
   const moveProfileUp = () => { moveWeaponProfile(id, id - 1, unitId); };
+  /** Move this profile down by one space */
   const moveProfileDown = () => { moveWeaponProfile(id, id + 1, unitId); };
 
   return (
@@ -86,9 +99,6 @@ const WeaponProfile = ({
           },
           { name: 'Delete', onClick: () => handleDelete(id, unitId), icon: <Delete /> },
         ]}
-        onEdit={handleOpen}
-        onDelete={() => handleDelete(id, unitId)}
-        onCopy={addProfileEnabled ? () => addWeaponProfile(unitId, { ...profile }) : 'disabled'}
         secondaryItems={[
           { name: 'Move Up', onClick: moveProfileUp, disabled: !moveUpEnabled },
           { name: 'Move Down', onClick: moveProfileDown, disabled: !moveDownEnabled },
@@ -123,6 +133,8 @@ WeaponProfile.propTypes = {
   id: PropTypes.number.isRequired,
   profile: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
+    modifiers: PropTypes.array,
+    active: PropTypes.bool,
   }).isRequired,
   toggleWeaponProfile: PropTypes.func.isRequired,
   deleteWeaponProfile: PropTypes.func.isRequired,

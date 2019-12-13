@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import { getModifierById } from 'utils/modifierHelpers';
-import { Delete } from '@material-ui/icons';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
 import { errorReducer } from './reducers';
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
  * A component representing a single modifier in the Profile Dialog
  */
 const ModifierItem = ({
-  index, id, options, removeModifier, onOptionChange, errorCallback,
+  index, id, options, actions, onOptionChange, errorCallback,
 }) => {
   const classes = useStyles();
   const itemRef = useRef(null);
@@ -64,10 +63,7 @@ const ModifierItem = ({
     <div ref={itemRef}>
       <ListItem
         className={classes.modifier}
-        onDelete={() => removeModifier(index)}
-        primaryItems={[
-          { name: 'Delete', onClick: () => removeModifier(index), icon: <Delete /> },
-        ]}
+        primaryItems={actions}
         header={definition.name}
         collapsible
       >
@@ -97,6 +93,7 @@ const ModifierItem = ({
 };
 
 ModifierItem.defaultProps = {
+  actions: null,
   errorCallback: null,
 };
 
@@ -107,8 +104,8 @@ ModifierItem.propTypes = {
   id: PropTypes.string.isRequired,
   /** An object containing all of the option values */
   options: PropTypes.shape({ value: PropTypes.any }).isRequired,
-  /** A callback function used to remove the modifier from the list */
-  removeModifier: PropTypes.func.isRequired,
+  /** A list of actions that can be performed on the item (displayed in the header) */
+  actions: PropTypes.arrayOf(PropTypes.object),
   /** A callback function to call when any of the option values are changed */
   onOptionChange: PropTypes.func.isRequired,
   /** An optional callback function used to pass back the error state of the modifier item */
