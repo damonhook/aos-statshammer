@@ -5,6 +5,7 @@ import { MODIFIERS as m } from '../models/modifiers';
 import { Characteristics as C } from '../constants';
 import { D6 } from '../models/dice';
 import { testUnit } from './utils';
+import DiceValue from '../models/diceValue';
 
 
 describe('Units', () => {
@@ -139,5 +140,12 @@ describe('Units', () => {
       ]),
     ]);
     testUnit(unit, [20.000, 17.778, 14.444, 11.111, 7.778, 4.444]);
+  });
+
+  describe('Rattling Gunners', () => {
+    const unit = new Unit('Rattling Gunners', [
+      new WeaponProfile(1, DiceValue.parse('2D6'), 4, 4, 1, 1, []),
+    ]);
+    testUnit(unit, [1.75, 1.75, 1.458, 1.167, 0.875, 0.583]);
   });
 });
