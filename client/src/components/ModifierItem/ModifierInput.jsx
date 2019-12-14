@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RollInput from 'components/RollInput';
+import _ from 'lodash';
 import DiceInput from 'components/DiceInput';
 
 const useStyles = makeStyles(() => ({
@@ -16,7 +17,7 @@ const useStyles = makeStyles(() => ({
   choice: {},
 }));
 
-const ModifierInput = ({
+const ModifierInput = React.memo(({
   index, name, option, val, onOptionChange, errorCallback,
 }) => {
   const classes = useStyles();
@@ -131,7 +132,7 @@ const ModifierInput = ({
           />
         );
   }
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 ModifierInput.defaultProps = {
   errorCallback: null,

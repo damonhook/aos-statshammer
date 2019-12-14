@@ -10,7 +10,6 @@ import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
 import { MAX_MODIFIERS } from 'appConstants';
 import _ from 'lodash';
-import { moveItemInArray } from 'reducers/helpers';
 import PendingModifiers from './PendingModifiers';
 import { errorReducer } from './reducers';
 
@@ -27,8 +26,8 @@ const useStyles = makeStyles(() => ({
  * A component in charge of displaying the list of currently applied modifiers, as well as,
  * display the modifier selector
  */
-const ModifierList = ({
-  modifierState, modifiers, setModifiers, errorCallback,
+const ModifierList = React.memo(({
+  pending, modifiers, errorCallback, dispatchModifiers,
 }) => {
   const classes = useStyles();
   const [errors, dispatchErrors] = useReducer(errorReducer, []);
@@ -39,7 +38,7 @@ const ModifierList = ({
     }
   }, [errors, errorCallback]);
 
-  const addModifier = (modifier) => {
+  const addModifier = useCallback((modifier) => {
     const newModifier = { id: modifier.id, options: {} };
     Object.keys(modifier.options).forEach((k) => {
       newModifier.options[k] = '';
@@ -47,37 +46,24 @@ const ModifierList = ({
         newModifier.options[k] = modifier.options[k].default;
       }
     });
-    if (!modifiers || !modifiers.length) setModifiers([newModifier]);
-    else setModifiers([...modifiers, newModifier]);
+    dispatchModifiers({ type: 'ADD_MODIFIER', modifier: newModifier });
     dispatchErrors({ type: 'ADD_ERROR', error: false });
-  };
+  }, [dispatchModifiers]);
 
-  const removeModifier = (index) => {
-    setModifiers(modifiers.filter((_, i) => i !== index));
+  const removeModifier = useCallback((index) => {
+    dispatchModifiers({ type: 'REMOVE_MODIFIER', index });
     dispatchErrors({ type: 'REMOVE_ERROR', index });
-  };
+  }, [dispatchModifiers]);
 
-  const moveModifier = (index, newIndex) => {
-    moveItemInArray(modifiers, index, newIndex, (newState) => {
-      setModifiers(newState);
+  const moveModifier = useCallback((index, newIndex) => {
+    dispatchModifiers({ type: 'MOVE_MODIFIER', index, newIndex });
+  }, [dispatchModifiers]);
+
+  const onOptionChange = useCallback((index, name, value) => {
+    dispatchModifiers({
+      type: 'EDIT_MODIFIER_OPTION', index, name, value,
     });
-  };
-
-  const onOptionChange = (index, name, value) => {
-    if (!modifiers) return;
-    setModifiers(modifiers.map((modifier, i) => {
-      if (i === index) {
-        return {
-          ...modifier,
-          options: {
-            ...modifier.options,
-            [name]: value,
-          },
-        };
-      }
-      return modifier;
-    }));
-  };
+  }, [dispatchModifiers]);
 
   const getErrorCallback = useCallback(_.memoize((index) => (error) => {
     dispatchErrors({ type: 'SET_ERROR', index, error });
@@ -89,7 +75,7 @@ const ModifierList = ({
   return (
     <Typography component="div" className={classes.modifierList}>
       <label>Modifiers:</label>
-      {modifierState.pending
+      {pending
         ? <PendingModifiers />
         : (
           <div className={classes.activeModifiers}>
@@ -112,8 +98,7 @@ const ModifierList = ({
                   { name: 'Delete', onClick: () => removeModifier(index), icon: <Delete /> },
                 ]}
                 index={index}
-                // eslint-disable-next-line react/no-array-index-key
-                key={index}
+                key={modifier.uuid}
                 onOptionChange={onOptionChange}
                 errorCallback={getErrorCallback(index)}
               />
@@ -126,7 +111,7 @@ const ModifierList = ({
       />
     </Typography>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 ModifierList.defaultProps = {
   modifiers: [],
@@ -134,24 +119,21 @@ ModifierList.defaultProps = {
 };
 
 ModifierList.propTypes = {
-  /** The current modifiers state as in the store */
-  modifierState: PropTypes.shape({
-    pending: PropTypes.bool.isRequired,
-    modifiers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
+  /** Whether the modifiers state is pending */
+  pending: PropTypes.bool.isRequired,
   /** A list of the currently applied modifiers */
   modifiers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.isRequired,
     options: PropTypes.object.isRequired,
   })),
-  /** A callback function to call when the modifiers list is changed */
-  setModifiers: PropTypes.func.isRequired,
   /** A callback function to pass back the error state of the list of modifiers */
   errorCallback: PropTypes.func,
+  /** A callback function used to dispatch changes to the modifier list/item */
+  dispatchModifiers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  modifierState: state.modifiers,
+  pending: state.modifiers.pending,
 });
 
 export default connect(mapStateToProps)(ModifierList);

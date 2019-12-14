@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * A component representing a single modifier in the Profile Dialog
  */
-const ModifierItem = ({
+const ModifierItem = React.memo(({
   index, id, options, actions, onOptionChange, errorCallback,
 }) => {
   const classes = useStyles();
@@ -90,7 +90,7 @@ const ModifierItem = ({
       </ListItem>
     </div>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 ModifierItem.defaultProps = {
   actions: null,

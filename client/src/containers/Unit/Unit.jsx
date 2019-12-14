@@ -13,7 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { MAX_PROFILES } from 'appConstants';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
-import { addUnitEnabled, getNumUnits } from 'utils/unitHelpers';
+import { addUnitEnabled } from 'utils/unitHelpers';
+import _ from 'lodash';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,9 +29,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Unit = ({
+const downloadUnit = (unit) => {
+  const data = encodeURIComponent(JSON.stringify(unit));
+  // eslint-disable-next-line no-undef
+  const a = document.createElement('a');
+  a.href = `data:text/json;charset=utf-8,${data}`;
+  a.download = `${unit.name}.json`;
+  a.click();
+};
+
+const Unit = React.memo(({
   id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit, className,
-  addNotification, moveUnit,
+  addNotification, moveUnit, numUnits,
 }) => {
   const unitRef = useRef(null);
   const classes = useStyles();
@@ -45,18 +55,12 @@ const Unit = ({
   }, [addNotification, deleteUnit]);
 
   const exportUnit = useCallback(() => {
-    const data = encodeURIComponent(JSON.stringify(unit));
-    // eslint-disable-next-line no-undef
-    const a = document.createElement('a');
-    a.href = `data:text/json;charset=utf-8,${data}`;
-    a.download = `${unit.name}.json`;
-    a.click();
+    downloadUnit(unit);
     addNotification({ message: 'Exported Unit', variant: 'success' });
   }, [unit, addNotification]);
 
-  const addProfileEnabled = unit.weapon_profiles.length < MAX_PROFILES;
-  const moveUpEnabled = id > 0;
-  const moveDownEnabled = id < getNumUnits() - 1;
+  const numProfiles = unit.weapon_profiles ? unit.weapon_profiles.length : 0;
+  const addProfileEnabled = numProfiles < MAX_PROFILES;
 
   const unitNameError = (!unit.name || unit.name === '');
 
@@ -67,7 +71,6 @@ const Unit = ({
   const moveUnitUp = () => { moveUnit(id, id - 1); };
   const moveUnitDown = () => { moveUnit(id, id + 1); };
 
-  const numProfiles = unit.weapon_profiles ? unit.weapon_profiles.length : 0;
 
   return (
     <div ref={unitRef}>
@@ -82,8 +85,8 @@ const Unit = ({
         ]}
         secondaryItems={[
           { name: 'Export', onClick: exportUnit },
-          { name: 'Move Up', onClick: moveUnitUp, disabled: !moveUpEnabled },
-          { name: 'Move Down', onClick: moveUnitDown, disabled: !moveDownEnabled },
+          { name: 'Move Up', onClick: moveUnitUp, disabled: id <= 0 },
+          { name: 'Move Down', onClick: moveUnitDown, disabled: id >= numUnits - 1 },
         ]}
         collapsible
       >
@@ -129,10 +132,10 @@ const Unit = ({
       </ListItem>
     </div>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 const mapStateToProps = (state) => ({
-  units: state.units,
+  numUnits: state.units.length,
 });
 
 export default connect(mapStateToProps, {

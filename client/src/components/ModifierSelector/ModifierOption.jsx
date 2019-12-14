@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
 import { ListItem, Typography } from '@material-ui/core';
+import _ from 'lodash';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * A single modifier definition
  */
-const ModifierOption = ({ modifier, onClick }) => {
+const ModifierOption = React.memo(({ modifier, onClick }) => {
   const classes = useStyles();
   return (
     <ListItem className={classes.modifierOption} onClick={() => onClick(modifier)} button>
@@ -49,7 +50,7 @@ const ModifierOption = ({ modifier, onClick }) => {
       </div>
     </ListItem>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 ModifierOption.propTypes = {
   /** The modifier definition object */

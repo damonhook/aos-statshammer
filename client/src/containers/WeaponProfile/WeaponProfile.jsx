@@ -15,6 +15,7 @@ import ModifierSummary from 'components/ModifierSummary';
 import { useHistory } from 'react-router-dom';
 import { getUnitByPosition } from 'utils/unitHelpers';
 import { Delete, FileCopy, Edit } from '@material-ui/icons';
+import _ from 'lodash';
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WeaponProfile = ({
+const WeaponProfile = React.memo(({
   unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile, numProfiles,
   addWeaponProfile, addProfileEnabled, addNotification, moveWeaponProfile,
 }) => {
@@ -122,7 +123,7 @@ const WeaponProfile = ({
       </ListItem>
     </div>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 WeaponProfile.defaultProps = {
   numProfiles: 0,

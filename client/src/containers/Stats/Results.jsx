@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
 import ListItem from 'components/ListItem';
+import _ from 'lodash';
 import Graphs from './Graphs';
 import ResultsTable from './ResultsTable';
 
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Results = ({ stats, unitNames, className }) => {
+const Results = React.memo(({ stats, unitNames, className }) => {
   const classes = useStyles();
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
 
@@ -34,6 +35,6 @@ const Results = ({ stats, unitNames, className }) => {
       <Graphs stats={stats} unitNames={unitNames} />
     </Typography>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 export default Results;

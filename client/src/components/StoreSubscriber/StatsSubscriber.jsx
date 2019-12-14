@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
 import { usePrevious } from 'hooks';
+import _ from 'lodash';
 
 /**
  * Filter out the name from a unit as there is not need to refetch the stats
@@ -27,7 +28,7 @@ const StatsSubscriber = ({ units, fetchStatsCompare }) => {
     let prevUnits = (prevState && prevState.units) ? prevState.units : [];
     prevUnits = prevUnits.map((u) => filterNameFromUnit(u));
     const newUnits = units.map((u) => filterNameFromUnit(u));
-    if (JSON.stringify(prevUnits) !== JSON.stringify(newUnits)) {
+    if (!_.isEqual(prevUnits, newUnits)) {
       fetchStatsCompare();
     }
   };

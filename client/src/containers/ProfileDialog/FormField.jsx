@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { TextField, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import _ from 'lodash';
 
 
 const useStyles = makeStyles(() => ({
   field: {},
 }));
 
-
-const FormField = ({
+const FormField = React.memo(({
   label, value, onChange, className, startAdornment, endAdornment, type, errorCallback,
 }) => {
   const classes = useStyles();
@@ -33,7 +33,7 @@ const FormField = ({
   const handleChange = useCallback((event) => {
     const val = event.target.value;
     setError(val == null || val === '');
-    onChange(val);
+    onChange(event);
   }, [onChange]);
 
   return (
@@ -50,7 +50,7 @@ const FormField = ({
     />
 
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 FormField.defaultProps = {
   type: 'number',
