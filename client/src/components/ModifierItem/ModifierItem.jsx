@@ -72,12 +72,12 @@ const ModifierItem = ({
           {definition.options && Object.keys(definition.options).length
             ? (
               <div className={classes.modifierSettings}>
-                {Object.keys(options).map((n) => (
+                {Object.keys(definition.options).map((n) => (
                   <ModifierInput
                     index={index}
                     name={n}
                     option={definition.options[n]}
-                    val={options[n]}
+                    val={options[n] != null ? options[n] : ''}
                     onOptionChange={onOptionChange}
                     key={n}
                     errorCallback={getErrorCallback(n)}

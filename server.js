@@ -1,4 +1,5 @@
-import '@babel/polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
