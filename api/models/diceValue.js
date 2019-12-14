@@ -5,7 +5,8 @@ import { Dice } from './dice';
  */
 class DiceValue {
   /**
-   * @param {[Dice,Number]} items
+   * @param {[Dice,Number]} additions
+   * @param {[Dice,Number]} subtractions
    */
   constructor(additions = [], subtractions = []) {
     const validateItem = (item) => {
