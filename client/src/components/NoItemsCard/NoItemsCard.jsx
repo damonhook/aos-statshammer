@@ -24,16 +24,24 @@ const useStyles = makeStyles((theme) => ({
     height: 'auto',
     maxWidth: '3rem',
   },
+  nested: {
+    backgroundColor: theme.palette.background.nested,
+  },
 }));
 
 /**
  * A card used to represent the lack of items in a list
  */
-const NoItemsCard = ({ header, body, dense }) => {
+const NoItemsCard = ({
+  header, body, dense, nested,
+}) => {
   const classes = useStyles();
 
   return (
-    <Paper className={clsx(classes.noItemsContainer, dense ? classes.dense : '')}>
+    <Paper className={clsx(
+      classes.noItemsContainer, dense && classes.dense, nested && classes.nested,
+    )}
+    >
       <InfoOutlined className={classes.icon} />
       <div className={classes.content}>
         <Typography variant={dense ? 'h6' : 'h5'} component="h3">
@@ -49,6 +57,7 @@ const NoItemsCard = ({ header, body, dense }) => {
 
 NoItemsCard.defaultProps = {
   dense: false,
+  nested: false,
 };
 
 NoItemsCard.propTypes = {
@@ -58,6 +67,8 @@ NoItemsCard.propTypes = {
   body: PropTypes.string.isRequired,
   /** Whether the card should be densly packed */
   dense: PropTypes.bool,
+  /** Whether the card should represent a nested card */
+  nested: PropTypes.bool,
 };
 
 export default NoItemsCard;

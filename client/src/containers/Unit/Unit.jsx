@@ -116,6 +116,7 @@ const Unit = React.memo(({
                 header="No Profiles"
                 body="No profiles have been added for this unit"
                 dense
+                nested
               />
             )}
         </div>
