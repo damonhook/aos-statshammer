@@ -34,7 +34,7 @@ class WeaponProfile {
   getAttacks(unmodified = false) {
     let attacks = this.attacks.average;
     if (!unmodified) attacks += this.resolveStackableModifier(m.BONUS, C.ATTACKS);
-    return attacks;
+    return Math.max(attacks, 1);
   }
 
   /**
@@ -74,7 +74,7 @@ class WeaponProfile {
   getDamage(unmodified = false) {
     let damage = this.damage.average;
     if (!unmodified) damage += this.resolveStackableModifier(m.BONUS, C.DAMAGE);
-    return Math.max(damage, 0);
+    return Math.max(damage, 1);
   }
 
   /**
