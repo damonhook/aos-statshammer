@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile,
+  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile, moveWeaponProfile,
 } from 'actions/weaponProfiles.action';
 import { addNotification } from 'actions/notifications.action';
 import { Switch } from '@material-ui/core';
@@ -14,11 +14,14 @@ import clsx from 'clsx';
 import ModifierSummary from 'components/ModifierSummary';
 import { useHistory } from 'react-router-dom';
 import { getUnitByPosition } from 'utils/unitHelpers';
+import { Delete, FileCopy, Edit } from '@material-ui/icons';
+import _ from 'lodash';
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles((theme) => ({
   profile: {
     display: 'flex',
+    background: theme.palette.background.nested,
   },
   inactive: {
     color: theme.palette.action.disabled,
@@ -39,38 +42,68 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WeaponProfile = ({
-  unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile,
-  addWeaponProfile, addProfileEnabled, addNotification,
+const WeaponProfile = React.memo(({
+  unitId, id, profile, toggleWeaponProfile, deleteWeaponProfile, numProfiles,
+  addWeaponProfile, addProfileEnabled, addNotification, moveWeaponProfile,
 }) => {
   const classes = useStyles();
   const profileRef = useRef(null);
   const history = useHistory();
 
+  /** The unit that this profile belongs to */
   const unit = useMemo(() => getUnitByPosition(unitId), [unitId]);
+  /** The URL used to open an edit dialog for this item */
   const editPath = `/units/${unit.uuid}/${id}`;
 
+  // Scroll to the component when it is first created
   useEffect(() => {
     if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [id]);
+  }, [profile.uuid]);
 
+  /** Handle open/close of the edit profile dialog */
   const handleOpen = useCallback(() => {
     history.push(editPath);
   }, [editPath, history]);
 
+  /**
+   * Handle the delete button for the profile
+   * @param {int} id The index of the profile to delete
+   * @param {int} unitId The index of the unit that this profile belongs to
+   */
   const handleDelete = useCallback((id, unitId) => {
     addNotification({ message: 'Deleted Profile' });
     deleteWeaponProfile(id, unitId);
   }, [addNotification, deleteWeaponProfile]);
+
+  /** Whether the move up button is enabled or not */
+  const moveUpEnabled = id > 0;
+  /** Whether the move down button is enabled or not */
+  const moveDownEnabled = id < (numProfiles - 1);
+
+  /** Move this profile up by one space */
+  const moveProfileUp = () => { moveWeaponProfile(id, id - 1, unitId); };
+  /** Move this profile down by one space */
+  const moveProfileDown = () => { moveWeaponProfile(id, id + 1, unitId); };
 
   return (
     <div ref={profileRef}>
       <ListItem
         className={clsx(classes.profile, profile.active ? '' : classes.inactive)}
         header="Weapon Profile"
-        onEdit={handleOpen}
-        onDelete={() => handleDelete(id, unitId)}
-        onCopy={addProfileEnabled ? () => addWeaponProfile(unitId, { ...profile }) : 'disabled'}
+        primaryItems={[
+          { name: 'Edit', onClick: handleOpen, icon: <Edit /> },
+          {
+            name: 'Copy',
+            onClick: () => addWeaponProfile(unitId, { ...profile }),
+            icon: <FileCopy />,
+            disabled: !addProfileEnabled,
+          },
+          { name: 'Delete', onClick: () => handleDelete(id, unitId), icon: <Delete /> },
+        ]}
+        secondaryItems={[
+          { name: 'Move Up', onClick: moveProfileUp, disabled: !moveUpEnabled },
+          { name: 'Move Down', onClick: moveProfileDown, disabled: !moveDownEnabled },
+        ]}
         collapsible
       >
         <div className={classes.content}>
@@ -90,6 +123,10 @@ const WeaponProfile = ({
       </ListItem>
     </div>
   );
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
+
+WeaponProfile.defaultProps = {
+  numProfiles: 0,
 };
 
 WeaponProfile.propTypes = {
@@ -97,14 +134,18 @@ WeaponProfile.propTypes = {
   id: PropTypes.number.isRequired,
   profile: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
+    modifiers: PropTypes.array,
+    active: PropTypes.bool,
   }).isRequired,
   toggleWeaponProfile: PropTypes.func.isRequired,
   deleteWeaponProfile: PropTypes.func.isRequired,
   addWeaponProfile: PropTypes.func.isRequired,
   addProfileEnabled: PropTypes.bool.isRequired,
   addNotification: PropTypes.func.isRequired,
+  moveWeaponProfile: PropTypes.func.isRequired,
+  numProfiles: PropTypes.number,
 };
 
 export default connect(null, {
-  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile, addNotification,
+  toggleWeaponProfile, deleteWeaponProfile, addWeaponProfile, addNotification, moveWeaponProfile,
 })(WeaponProfile);

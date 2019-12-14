@@ -7,6 +7,7 @@ import {
 import { Add, Remove, Sync } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useHistory, useLocation, Route } from 'react-router-dom';
+import _ from 'lodash';
 import ModifierOption from './ModifierOption';
 import SelectorDialog from './SelectorDialog';
 
@@ -19,7 +20,7 @@ const useStyles = makeStyles(() => ({
 /**
  * A component used to select new modifiers to apply
  */
-const ModifierSelector = ({
+const ModifierSelector = React.memo(({
   modifiers, pending, error, onClick, disabled,
 }) => {
   const classes = useStyles();
@@ -120,7 +121,7 @@ const ModifierSelector = ({
         )}
     </div>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 ModifierSelector.defaultProps = {
   error: null,

@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import WeaponProfile from 'containers/WeaponProfile';
 import { connect } from 'react-redux';
-import { deleteUnit, editUnitName, addUnit } from 'actions/units.action';
+import {
+  deleteUnit, editUnitName, addUnit, moveUnit,
+} from 'actions/units.action';
 import { addNotification } from 'actions/notifications.action';
 import { addWeaponProfile } from 'actions/weaponProfiles.action';
 import ListItem from 'components/ListItem';
 import { TextField, Button } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Add, Delete, FileCopy } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { MAX_PROFILES } from 'appConstants';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
 import { addUnitEnabled } from 'utils/unitHelpers';
+import _ from 'lodash';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,15 +30,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Unit = ({
-  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit, className, addNotification,
+const downloadUnit = (unit) => {
+  const data = encodeURIComponent(JSON.stringify(unit));
+  // eslint-disable-next-line no-undef
+  const a = document.createElement('a');
+  a.href = `data:text/json;charset=utf-8,${data}`;
+  a.download = `${unit.name}.json`;
+  a.click();
+};
+
+const Unit = React.memo(({
+  id, unit, addWeaponProfile, deleteUnit, editUnitName, addUnit, className,
+  addNotification, moveUnit, numUnits,
 }) => {
   const unitRef = useRef(null);
   const classes = useStyles();
 
   useEffect(() => {
     if (unitRef.current) unitRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [id]);
+  }, [unit.uuid]);
 
   const handleDeleteUnit = useCallback((id) => {
     addNotification({ message: 'Deleted Unit' });
@@ -42,30 +56,39 @@ const Unit = ({
   }, [addNotification, deleteUnit]);
 
   const exportUnit = useCallback(() => {
-    const data = encodeURIComponent(JSON.stringify(unit));
-    // eslint-disable-next-line no-undef
-    const a = document.createElement('a');
-    a.href = `data:text/json;charset=utf-8,${data}`;
-    a.download = `${unit.name}.json`;
-    a.click();
+    downloadUnit(unit);
     addNotification({ message: 'Exported Unit', variant: 'success' });
   }, [unit, addNotification]);
 
-  const addProfileEnabled = unit.weapon_profiles.length < MAX_PROFILES;
+  const numProfiles = unit.weapon_profiles ? unit.weapon_profiles.length : 0;
+  const addProfileEnabled = numProfiles < MAX_PROFILES;
+
   const unitNameError = (!unit.name || unit.name === '');
 
   const copyUnit = () => {
     addUnit(`${unit.name} copy`, [...unit.weapon_profiles]);
   };
 
+  const moveUnitUp = () => { moveUnit(id, id - 1); };
+  const moveUnitDown = () => { moveUnit(id, id + 1); };
+
+
   return (
     <div ref={unitRef}>
       <ListItem
         className={clsx(classes.unit, className)}
         header={`Unit (${unit.name})`}
-        onDelete={() => handleDeleteUnit(id)}
-        onCopy={addUnitEnabled() ? copyUnit : 'disabled'}
-        extraItems={[{ name: 'Export', onClick: exportUnit }]}
+        primaryItems={[
+          {
+            name: 'Copy', onClick: copyUnit, icon: <FileCopy />, disabled: !addUnitEnabled(),
+          },
+          { name: 'Delete', onClick: () => handleDeleteUnit(id), icon: <Delete /> },
+        ]}
+        secondaryItems={[
+          { name: 'Export', onClick: exportUnit },
+          { name: 'Move Up', onClick: moveUnitUp, disabled: id <= 0 },
+          { name: 'Move Down', onClick: moveUnitDown, disabled: id >= numUnits - 1 },
+        ]}
         collapsible
       >
         <TextField
@@ -85,6 +108,7 @@ const Unit = ({
                 profile={profile}
                 key={profile.uuid}
                 addProfileEnabled={addProfileEnabled}
+                numProfiles={numProfiles}
               />
             ))
             : (
@@ -92,6 +116,7 @@ const Unit = ({
                 header="No Profiles"
                 body="No profiles have been added for this unit"
                 dense
+                nested
               />
             )}
         </div>
@@ -109,8 +134,33 @@ const Unit = ({
       </ListItem>
     </div>
   );
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
+
+Unit.defaultProps = {
+  className: null,
 };
 
-export default connect(null, {
-  addWeaponProfile, deleteUnit, editUnitName, addUnit, addNotification,
+Unit.propTypes = {
+  id: PropTypes.number.isRequired,
+  unit: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
+    weapon_profiles: PropTypes.array,
+  }).isRequired,
+  addWeaponProfile: PropTypes.func.isRequired,
+  deleteUnit: PropTypes.func.isRequired,
+  editUnitName: PropTypes.func.isRequired,
+  addUnit: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  addNotification: PropTypes.func.isRequired,
+  moveUnit: PropTypes.func.isRequired,
+  numUnits: PropTypes.number.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  numUnits: state.units.length,
+});
+
+export default connect(mapStateToProps, {
+  addWeaponProfile, deleteUnit, editUnitName, addUnit, addNotification, moveUnit,
 })(Unit);

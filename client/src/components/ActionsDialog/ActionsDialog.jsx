@@ -16,6 +16,7 @@ const ActionsDialog = ({
   open, actions, target, onClose,
 }) => {
   const classes = useStyles();
+  if (!actions || !actions.length) return null;
 
   return (
     <Dialog

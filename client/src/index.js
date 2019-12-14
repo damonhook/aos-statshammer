@@ -1,4 +1,5 @@
-import '@babel/polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -7,6 +8,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import store, { persistor } from './store';
 import * as serviceWorker from './serviceWorker';
+
 
 ReactDOM.render(
   <Provider store={store}>

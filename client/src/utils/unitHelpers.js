@@ -3,6 +3,8 @@ import { MAX_UNITS } from 'appConstants';
 
 export const getUnits = () => store.getState().units;
 
+export const getNumUnits = () => getUnits().length;
+
 export const getUnitByUuid = (uuid) => getUnits().find((unit) => unit.uuid === uuid);
 
 export const getUnitIndexByUuid = (uuid) => (

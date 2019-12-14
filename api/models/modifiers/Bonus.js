@@ -1,12 +1,12 @@
 import { Characteristics as C } from '../../constants';
-import { Dice, parseDice } from '../dice';
+import DiceValue from '../diceValue';
 import { numberOption } from './ModifierOptions';
 import BaseModifier from './BaseModifier';
 
 export default class Bonus extends BaseModifier {
   constructor({ characteristic, bonus }) {
     super({ characteristic });
-    this.bonus = parseDice(bonus);
+    this.bonus = DiceValue.parse(bonus);
   }
 
   static get name() {
@@ -28,11 +28,7 @@ export default class Bonus extends BaseModifier {
     };
   }
 
-  // eslint-disable-next-line no-unused-vars
-  resolve(owner) {
-    if (this.bonus instanceof Dice) {
-      return this.bonus.average;
-    }
-    return this.bonus;
+  resolve() {
+    return this.bonus.average;
   }
 }

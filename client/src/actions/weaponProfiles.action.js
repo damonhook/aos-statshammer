@@ -2,6 +2,7 @@ export const TOGGLE_WEAPON_PROFILE = 'TOGGLE_WEAPON_PROFILE';
 export const EDIT_WEAPON_PROFILE = 'EDIT_WEAPON_PROFILE';
 export const ADD_WEAPON_PROFILE = 'ADD_WEAPON_PROFILE';
 export const DELETE_WEAPON_PROFILE = 'DELETE_WEAPON_PROFILE';
+export const MOVE_WEAPON_PROFILE = 'MOVE_WEAPON_PROFILE';
 
 export const toggleWeaponProfile = (id, unitId = 0) => ({
   type: TOGGLE_WEAPON_PROFILE,
@@ -37,3 +38,10 @@ export const deleteWeaponProfile = (id, unitId = 0) => ({
   id,
   unitId,
 });
+
+export const moveWeaponProfile = (index, newIndex, unitId = 0) => ({
+    type: MOVE_WEAPON_PROFILE,
+    index,
+    newIndex,
+    unitId,
+  });

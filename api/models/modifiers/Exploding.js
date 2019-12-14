@@ -1,5 +1,6 @@
 import { Characteristics as C } from '../../constants';
-import { D6, Dice, parseDice } from '../dice';
+import { D6 } from '../dice';
+import DiceValue from '../diceValue';
 import { numberOption, booleanOption, rollOption } from './ModifierOptions';
 import BaseModifier from './BaseModifier';
 
@@ -9,7 +10,7 @@ export default class Exploding extends BaseModifier {
   }) {
     super({ characteristic });
     this.on = Number(on);
-    this.extraHits = parseDice(extraHits);
+    this.extraHits = DiceValue.parse(extraHits);
     this.unmodified = Boolean(unmodified);
   }
 
@@ -36,13 +37,10 @@ export default class Exploding extends BaseModifier {
 
   // eslint-disable-next-line no-unused-vars
   resolve(owner) {
-    return D6.getProbability(this.on) * this.getExtraHits();
+    return D6.getProbability(this.on) * this.getExtra();
   }
 
-  getExtraHits() {
-    if (this.extraHits instanceof Dice) {
-      return this.extraHits.average;
-    }
-    return this.extraHits;
+  getExtra() {
+    return this.extraHits.average;
   }
 }

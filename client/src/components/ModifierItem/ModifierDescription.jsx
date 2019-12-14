@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import clsx from 'clsx';
+import _ from 'lodash';
 
 const formatUnicorn = require('format-unicorn/safe');
 
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
  * A component used to render the modifier description. It will use the definition description
  * as a base and substitute the current values into it
  * */
-const ModifierDescription = ({ definition, options, className }) => {
+const ModifierDescription = React.memo(({ definition, options, className }) => {
   const classes = useStyles();
 
   const { description } = definition;
@@ -45,7 +46,7 @@ const ModifierDescription = ({ definition, options, className }) => {
       <span dangerouslySetInnerHTML={{ __html: getFormattedDescription() }} />
     </Typography>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 ModifierDescription.defaultProps = {
   className: null,

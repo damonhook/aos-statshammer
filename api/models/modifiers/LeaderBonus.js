@@ -1,6 +1,6 @@
 import { Characteristics as C } from '../../constants';
 import { numberOption } from './ModifierOptions';
-import { Dice, parseDice } from '../dice';
+import DiceValue from '../diceValue';
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';
 
@@ -8,7 +8,7 @@ export default class LeaderBonus extends BaseModifier {
   constructor({ characteristic, numLeaders = 1, bonus = 1 }) {
     super({ characteristic });
     this.numLeaders = Number(numLeaders);
-    this.bonus = parseDice(bonus);
+    this.bonus = DiceValue.parse(bonus);
   }
 
   static get name() {
@@ -37,10 +37,7 @@ export default class LeaderBonus extends BaseModifier {
   }
 
   getBonus() {
-    if (this.bonus instanceof Dice) {
-      return this.bonus.average;
-    }
-    return this.bonus;
+    return this.bonus.average;
   }
 
   getAsBonusModifier() {

@@ -6,8 +6,10 @@ import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
+import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import ProfileDialog from 'containers/ProfileDialog';
+import _ from 'lodash';
 import AddUnitButton from './AddUnitButton';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Units = ({ units, addUnit, className }) => {
+const Units = React.memo(({ units, addUnit, className }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -40,6 +42,16 @@ const Units = ({ units, addUnit, className }) => {
       </Route>
     </div>
   );
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
+
+Units.defaultProps = {
+  className: null,
+};
+
+Units.propTypes = {
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  addUnit: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({ units: state.units });

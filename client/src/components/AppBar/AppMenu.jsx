@@ -4,15 +4,18 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Menu, MenuItem, IconButton, Typography, Button, useMediaQuery,
 } from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
+import {
+  MoreVert, BarChart, ImportExport, BrightnessMedium, Delete,
+} from '@material-ui/icons';
 import { clearAllUnits, addUnit } from 'actions/units.action';
-import { toggleDarkMode } from 'actions/config.action';
+import { toggleDarkMode, toggleDesktopGraphList } from 'actions/config.action';
 import { connect } from 'react-redux';
 import ConfirmationDialog from 'components/ConfirmationDialog';
 import { useHistory, Route } from 'react-router-dom';
 import { addNotification } from 'actions/notifications.action';
 import Uploader from 'components/Uploader';
 import { addUnitEnabled } from 'utils/unitHelpers';
+
 
 const useStyles = makeStyles((theme) => ({
   menu: {},
@@ -22,13 +25,16 @@ const useStyles = makeStyles((theme) => ({
   caption: {
     paddingBottom: theme.spacing(1),
   },
+  menuItemIcon: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
 /**
  * A menu list containing various actions that can be performed
  */
 const AppMenu = ({
-  clearAllUnits, addNotification, toggleDarkMode, addUnit,
+  clearAllUnits, addNotification, toggleDarkMode, addUnit, toggleDesktopGraphList,
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -38,31 +44,53 @@ const AppMenu = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const confirmPath = '/units/confirm';
 
+  /**
+   * Handle the on click event for the menu button (Open the menu)
+   * @param {object} event The event object passed from the DOM element caller
+   */
   const handleMenuClick = useCallback((event) => {
     setAnchorEl(event.currentTarget);
   }, []);
 
+  /** Handle closing the menu */
   const handleMenuClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
 
+  /**
+   * Handle the onclick event for any given menu item
+   * @param {func} action The function to call for the given menu item
+   */
   const menuItemClick = useCallback((action) => {
     action();
     handleMenuClose();
   }, [handleMenuClose]);
 
+  /**
+   * Change the URL bar to a new location. This is used to display dialog boxes that
+   * retains proper navigation
+   * @param {string} newloc the new URL to set
+   */
   const setLocation = useCallback((newloc) => {
     handleMenuClose();
     history.push(newloc);
   }, [handleMenuClose, history]);
 
+  /**
+   * Handle the case when the confirm option is selected from the clear all units dialog
+   */
   const clearAllConfirmed = useCallback(() => {
     menuItemClick(clearAllUnits);
     addNotification({ message: 'All units cleared', variant: 'info' });
   }, [addNotification, clearAllUnits, menuItemClick]);
 
+  /** Is the upload menu item disabled or not */
   const isUploadDisabled = !addUnitEnabled();
 
+  /** The function to call when a file upload happens.
+   * In this case that would be importing the uploaded unit data
+   * @param {object} data the JSON from the uploaded unit
+   * */
   const onUnitUpload = useCallback((data) => {
     if (data && data.name && data.weapon_profiles) {
       addNotification({ message: 'Successfully imported unit', variant: 'success' });
@@ -95,19 +123,32 @@ const AppMenu = ({
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={() => setLocation(confirmPath)}>Clear Units</MenuItem>
+        <MenuItem onClick={() => setLocation(confirmPath)}>
+          <Delete className={classes.menuItemIcon} />
+          Clear Units
+        </MenuItem>
         <MenuItem onClick={() => menuItemClick(toggleDarkMode)}>
+          <BrightnessMedium className={classes.menuItemIcon} />
           <span>Toggle Dark Mode&nbsp;</span>
           <Typography variant="caption" color="secondary" className={classes.caption}>
             Beta
           </Typography>
         </MenuItem>
+        {!mobile && (
+          <MenuItem onClick={() => menuItemClick(toggleDesktopGraphList)}>
+            <BarChart className={classes.menuItemIcon} />
+            Toggle Graph List/Tabs
+          </MenuItem>
+        )}
         <Uploader
           onUpload={(data) => menuItemClick(() => onUnitUpload(data))}
           disabled={isUploadDisabled}
-          component={
-            <MenuItem disabled={isUploadDisabled}>Import Unit</MenuItem>
-          }
+          component={(
+            <MenuItem disabled={isUploadDisabled}>
+              <ImportExport className={classes.menuItemIcon} />
+              Import Unit
+            </MenuItem>
+          )}
         />
       </Menu>
       <Route path={confirmPath}>
@@ -131,8 +172,10 @@ AppMenu.propTypes = {
   toggleDarkMode: PropTypes.func.isRequired,
   /** A function to call to add a new unit */
   addUnit: PropTypes.func.isRequired,
+  /** A function to call to toggle the desktop graph list */
+  toggleDesktopGraphList: PropTypes.func.isRequired,
 };
 
 export default connect(null, {
-  clearAllUnits, addNotification, toggleDarkMode, addUnit,
+  clearAllUnits, addNotification, toggleDarkMode, addUnit, toggleDesktopGraphList,
 })(AppMenu);

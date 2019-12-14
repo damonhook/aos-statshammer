@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import {
   Typography, DialogContent as Content,
 } from '@material-ui/core';
@@ -49,15 +50,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DialogContent = ({
-  profile, onChange, onSubmit, errorCallback, submitDisabled,
+const DialogContent = React.memo(({
+  profile, onChange, onSubmit, errorCallback, submitDisabled, dispatchState,
 }) => {
   const classes = useStyles();
 
   const getErrorCallback = useCallback(_.memoize((name) => (error) => {
-    // console.log(name, error);
     errorCallback(name, error);
   }), []);
+
+  const getHandler = useCallback(_.memoize((name) => (event) => {
+    onChange(name, event.target.value);
+  }), []);
+
+  const handleModifiersChange = (val) => onChange('modifiers', val);
 
   return (
     <Content dividers>
@@ -71,7 +77,7 @@ const DialogContent = ({
                 className={classes.field}
                 label="# Models"
                 value={profile.num_models}
-                onChange={(val) => onChange('num_models', val)}
+                onChange={getHandler('num_models')}
                 errorCallback={getErrorCallback('num_models')}
                 type="number"
               />
@@ -79,7 +85,7 @@ const DialogContent = ({
                 className={classes.field}
                 label="Attacks"
                 value={profile.attacks}
-                onChange={(e) => onChange('attacks', e.target.value)}
+                onChange={getHandler('attacks')}
                 errorCallback={getErrorCallback('attacks')}
                 required
               />
@@ -88,7 +94,7 @@ const DialogContent = ({
                 endAdornment="+"
                 label="To Hit"
                 value={profile.to_hit}
-                onChange={(e) => onChange('to_hit', e.target.value)}
+                onChange={getHandler('to_hit')}
                 errorCallback={getErrorCallback('to_hit')}
               />
               <RollInput
@@ -96,7 +102,7 @@ const DialogContent = ({
                 endAdornment="+"
                 label="To Wound"
                 value={profile.to_wound}
-                onChange={(e) => onChange('to_wound', e.target.value)}
+                onChange={getHandler('to_wound')}
                 errorCallback={getErrorCallback('to_wound')}
               />
               <FormField
@@ -104,14 +110,14 @@ const DialogContent = ({
                 startAdornment="-"
                 label="Rend"
                 value={profile.rend}
-                onChange={(val) => onChange('rend', val)}
+                onChange={getHandler('rend')}
                 errorCallback={getErrorCallback('to_wound')}
               />
               <DiceInput
                 className={classes.field}
                 label="Damage"
                 value={profile.damage}
-                onChange={(e) => onChange('damage', e.target.value)}
+                onChange={getHandler('damage')}
                 errorCallback={getErrorCallback('damage')}
                 required
               />
@@ -120,7 +126,8 @@ const DialogContent = ({
           <div className={clsx(classes.formSection, classes.modifiers)}>
             <ModifierList
               modifiers={profile.modifiers}
-              setModifiers={(val) => onChange('modifiers', val)}
+              setModifiers={handleModifiersChange}
+              dispatchModifiers={dispatchState}
               tabIndex={-1}
               errorCallback={getErrorCallback('modifiers')}
             />
@@ -129,7 +136,27 @@ const DialogContent = ({
       </Typography>
     </Content>
   );
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
+
+DialogContent.defaultProps = {
+  submitDisabled: false,
 };
 
+DialogContent.propTypes = {
+  profile: PropTypes.shape({
+    num_models: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    attacks: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    to_hit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    to_wound: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    rend: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    damage: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    modifiers: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  errorCallback: PropTypes.func.isRequired,
+  submitDisabled: PropTypes.bool,
+  dispatchState: PropTypes.func.isRequired,
+};
 
 export default DialogContent;

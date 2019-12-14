@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ListItemHeader = ({
-  header, onEdit, onDelete, onCopy, extraItems, className, collapsible, collapsed, setColapsed,
+  header, primaryItems, secondaryItems, className, collapsible, collapsed, setColapsed,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -54,14 +54,13 @@ const ListItemHeader = ({
 
   const handleClick = () => setColapsed((!collapsible) ? false : !collapsed);
 
-  const dialogActions = [];
-  if (onDelete) dialogActions.push({ label: 'Delete', onClick: onDelete });
-  if (onCopy) {
-    dialogActions.push({
-      label: 'Copy',
-      onClick: onCopy,
-      disabled: (!onCopy || onCopy === 'disabled'),
-    });
+  let dialogActions = [];
+  if (primaryItems && primaryItems.length) {
+    dialogActions = primaryItems.map(({ name, onClick, disabled }) => ({
+      label: name,
+      onClick,
+      disabled,
+    }));
   }
 
   return (
@@ -96,10 +95,8 @@ const ListItemHeader = ({
         />
       )}
       <ListControls
-        onEdit={onEdit}
-        onDelete={onDelete}
-        onCopy={onCopy}
-        extraItems={extraItems}
+        primaryItems={primaryItems}
+        secondaryItems={secondaryItems}
         className={classes.listControls}
       />
     </Card.Header>
@@ -108,10 +105,8 @@ const ListItemHeader = ({
 
 ListItemHeader.defaultProps = {
   children: null,
-  onEdit: null,
-  onDelete: null,
-  onCopy: null,
-  extraItems: null,
+  primaryItems: null,
+  secondaryItems: null,
   className: null,
   collapsible: false,
   collapsed: false,
@@ -123,14 +118,12 @@ ListItemHeader.propTypes = {
   header: PropTypes.string.isRequired,
   /** The react components to render in the card body */
   children: PropTypes.node,
-  /** A function to call when edit button is clicked */
-  onEdit: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** A function to call when delete button is clicked */
-  onDelete: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** A function to call when copy button is clicked */
-  onCopy: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  /** An array of (primary) commands that will be placed in the header for desktop, and in
+   * the first portion of the menu for mobile
+   * */
+  primaryItems: PropTypes.arrayOf(PropTypes.object),
   /** An array of extra commands that will be placed in the control menu */
-  extraItems: PropTypes.arrayOf(PropTypes.object),
+  secondaryItems: PropTypes.arrayOf(PropTypes.object),
   /** CSS classname to give the component */
   className: PropTypes.string,
   /** Whether the list item is collapsible or not */

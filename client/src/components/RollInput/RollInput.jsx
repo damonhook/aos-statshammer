@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, InputAdornment } from '@material-ui/core';
 import clsx from 'clsx';
+import _ from 'lodash';
 
 const useStyles = makeStyles({
   rollInput: {},
 });
 
-const RollInput = ({
+const RollInput = React.memo(({
   label, value, onChange, className, required, allowOnes,
   startAdornment, endAdornment, errorCallback, ...other
 }) => {
@@ -75,7 +76,7 @@ const RollInput = ({
       {...other}
     />
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 RollInput.defaultProps = {
   label: null,

@@ -1,5 +1,6 @@
 import { Characteristics as C } from '../../constants';
-import { D6, Dice, parseDice } from '../dice';
+import { D6 } from '../dice';
+import DiceValue from '../diceValue';
 import BaseModifier from './BaseModifier';
 import { numberOption, booleanOption, rollOption } from './ModifierOptions';
 
@@ -9,7 +10,7 @@ export default class MortalWounds extends BaseModifier {
   }) {
     super({ characteristic });
     this.on = Number(on);
-    this.mortalWounds = parseDice(mortalWounds);
+    this.mortalWounds = DiceValue.parse(mortalWounds);
     this.unmodified = Boolean(unmodified);
     this.inAddition = Boolean(inAddition);
   }
@@ -46,9 +47,6 @@ export default class MortalWounds extends BaseModifier {
   }
 
   getMortalWounds() {
-    if (this.mortalWounds instanceof Dice) {
-      return this.mortalWounds.average;
-    }
-    return this.mortalWounds;
+    return this.mortalWounds.average;
   }
 }

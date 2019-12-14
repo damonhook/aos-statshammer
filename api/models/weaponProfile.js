@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import { ModifierManager, MODIFIERS as m } from './modifiers';
 import { Characteristics as C } from '../constants';
-import { D6, Dice, parseDice } from './dice';
+import { D6 } from './dice';
+import DiceValue from './diceValue';
 
 /**
  * A class representing a single weapon profile belonging to a unit
@@ -9,20 +10,20 @@ import { D6, Dice, parseDice } from './dice';
 class WeaponProfile {
   /**
    * @param {int} numModels The number of models that have this profile
-   * @param {int|Dice} attacks The number of attacks per model
+   * @param {int|DiceValue} attacks The number of attacks per model
    * @param {int} toHit The amount you have to roll >= to hit
    * @param {int} toWound The amount you have to roll >= to wound
    * @param {int} rend The amount of rend the profile has
-   * @param {int|Dice} damage The amount of damage per wound this profile does
+   * @param {int|DiceValue} damage The amount of damage per wound this profile does
    * @param {object[]} modifiers The array of modifiers the profile has
    */
   constructor(numModels, attacks, toHit, toWound, rend, damage, modifiers = []) {
     this.numModels = Number(numModels);
-    this.attacks = parseDice(attacks);
+    this.attacks = DiceValue.parse(attacks);
     this.toHit = Number(toHit);
     this.toWound = Number(toWound);
     this.rend = Number(rend);
-    this.damage = parseDice(damage);
+    this.damage = DiceValue.parse(damage);
     this.modifiers = new ModifierManager(modifiers);
   }
 
@@ -31,12 +32,9 @@ class WeaponProfile {
    * @param {bool} unmodified Whether you want the unmodified characteristic or not
    */
   getAttacks(unmodified = false) {
-    let { attacks } = this;
-    if (attacks instanceof Dice) {
-      attacks = attacks.average;
-    }
+    let attacks = this.attacks.average;
     if (!unmodified) attacks += this.resolveStackableModifier(m.BONUS, C.ATTACKS);
-    return attacks;
+    return Math.max(attacks, 1);
   }
 
   /**
@@ -74,12 +72,9 @@ class WeaponProfile {
    * @param {bool} unmodified Whether you want the unmodified characteristic or not
    */
   getDamage(unmodified = false) {
-    let { damage } = this;
-    if (damage instanceof Dice) damage = damage.average;
-    else damage = Number(damage);
-
+    let damage = this.damage.average;
     if (!unmodified) damage += this.resolveStackableModifier(m.BONUS, C.DAMAGE);
-    return Math.max(damage, 0);
+    return Math.max(damage, 1);
   }
 
   /**

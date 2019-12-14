@@ -1,6 +1,6 @@
 {
     "name": "statshammer",
-    "version": "0.3.3",
+    "version": "0.4.0",
     "private": true,
     "proxy": "http://localhost:5000/",
     "engines": {
@@ -23,6 +23,7 @@
         "@storybook/theming": "^5.2.6",
         "babel-plugin-import": "^1.13.0",
         "clsx": "^1.0.4",
+        "core-js": "^3.5.0",
         "cross-fetch": "^3.0.4",
         "eslint": "^6.6.0",
         "eslint-config-airbnb": "^18.0.1",
@@ -45,6 +46,7 @@
         "redux": "^4.0.4",
         "redux-persist": "^6.0.0",
         "redux-thunk": "^2.3.0",
+        "regenerator-runtime": "^0.13.3",
         "typeface-roboto": "^0.0.75",
         "use-debounce": "^3.2.0",
         "uuid": "^3.3.3"

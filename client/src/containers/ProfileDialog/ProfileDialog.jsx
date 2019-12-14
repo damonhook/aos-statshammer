@@ -110,6 +110,7 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
         onSubmit={submit}
         errorCallback={setErrorByName}
         submitDisabled={submitDisabled}
+        dispatchState={dispatchState}
       />
       <DialogActions className={classes.actions}>
         <Button

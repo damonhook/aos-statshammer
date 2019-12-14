@@ -19,6 +19,7 @@ const App = ({ config }) => (
       <CssBaseline />
       <Switch>
         <Route exact path="/" component={AppContentWrapper} />
+        <Redirect exact from="/units" to="/" />
         <Route path="/units" component={AppContentWrapper} />
         <Redirect to="/" />
       </Switch>

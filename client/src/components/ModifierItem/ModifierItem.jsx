@@ -11,7 +11,9 @@ import ModifierDescription from './ModifierDescription';
 import { errorReducer } from './reducers';
 
 const useStyles = makeStyles((theme) => ({
-  modifier: {},
+  modifier: {
+    background: theme.palette.background.nested,
+  },
   modifierContent: {
     display: 'flex',
     flex: 1,
@@ -33,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
 /**
  * A component representing a single modifier in the Profile Dialog
  */
-const ModifierItem = ({
-  index, id, options, removeModifier, onOptionChange, errorCallback,
+const ModifierItem = React.memo(({
+  index, id, options, actions, onOptionChange, errorCallback,
 }) => {
   const classes = useStyles();
   const itemRef = useRef(null);
@@ -61,7 +63,7 @@ const ModifierItem = ({
     <div ref={itemRef}>
       <ListItem
         className={classes.modifier}
-        onDelete={() => removeModifier(index)}
+        primaryItems={actions}
         header={definition.name}
         collapsible
       >
@@ -70,12 +72,12 @@ const ModifierItem = ({
           {definition.options && Object.keys(definition.options).length
             ? (
               <div className={classes.modifierSettings}>
-                {Object.keys(options).map((n) => (
+                {Object.keys(definition.options).map((n) => (
                   <ModifierInput
                     index={index}
                     name={n}
                     option={definition.options[n]}
-                    val={options[n]}
+                    val={options[n] != null ? options[n] : ''}
                     onOptionChange={onOptionChange}
                     key={n}
                     errorCallback={getErrorCallback(n)}
@@ -88,9 +90,10 @@ const ModifierItem = ({
       </ListItem>
     </div>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 ModifierItem.defaultProps = {
+  actions: null,
   errorCallback: null,
 };
 
@@ -101,8 +104,8 @@ ModifierItem.propTypes = {
   id: PropTypes.string.isRequired,
   /** An object containing all of the option values */
   options: PropTypes.shape({ value: PropTypes.any }).isRequired,
-  /** A callback function used to remove the modifier from the list */
-  removeModifier: PropTypes.func.isRequired,
+  /** A list of actions that can be performed on the item (displayed in the header) */
+  actions: PropTypes.arrayOf(PropTypes.object),
   /** A callback function to call when any of the option values are changed */
   onOptionChange: PropTypes.func.isRequired,
   /** An optional callback function used to pass back the error state of the modifier item */

@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
  * contain various list related controls, as well as, optionally be collapsible.
  */
 const ListItem = ({
-  children, header, onEdit, onDelete, onCopy, extraItems, className, collapsible,
+  children, header, primaryItems, secondaryItems, className, collapsible,
   loading, loaderDelay, ...other
 }) => {
   const classes = useStyles();
@@ -39,10 +39,8 @@ const ListItem = ({
     <Card className={clsx(classes.listItem, className)} {...other}>
       <ListItemHeader
         header={header}
-        onEdit={onEdit}
-        onDelete={onDelete}
-        onCopy={onCopy}
-        extraItems={extraItems}
+        primaryItems={primaryItems}
+        secondaryItems={secondaryItems}
         collapsible={collapsible}
         collapsed={collapsed}
         setColapsed={setColapsed}
@@ -58,10 +56,8 @@ const ListItem = ({
 };
 
 ListItem.defaultProps = {
-  onEdit: null,
-  onDelete: null,
-  onCopy: null,
-  extraItems: null,
+  primaryItems: null,
+  secondaryItems: null,
   className: null,
   collapsible: false,
   loading: false,
@@ -73,14 +69,12 @@ ListItem.propTypes = {
   header: PropTypes.string.isRequired,
   /** The react components to render in the card body */
   children: PropTypes.node.isRequired,
-  /** A function to call when edit button is clicked */
-  onEdit: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** A function to call when delete button is clicked */
-  onDelete: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** A function to call when copy button is clicked */
-  onCopy: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  /** An array of (primary) commands that will be placed in the header for desktop, and in
+   * the first portion of the menu for mobile
+   * */
+  primaryItems: PropTypes.arrayOf(PropTypes.object),
   /** An array of extra commands that will be placed in the control menu */
-  extraItems: PropTypes.arrayOf(PropTypes.object),
+  secondaryItems: PropTypes.arrayOf(PropTypes.object),
   /** CSS classname to give the component */
   className: PropTypes.string,
   /** Whether the list item is collapsible or not */

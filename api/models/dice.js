@@ -1,5 +1,5 @@
 /**
- * A class used to represent a dice value (e.g: D3, D6)
+ * A class used to represent a single dice (e.g: D3, D6)
  */
 export class Dice {
   /**
@@ -31,32 +31,36 @@ export class Dice {
   getInverseProbability(target) {
     return 1 - this.getProbability(target);
   }
+
+  toString() {
+    return `D${this.sides}`;
+  }
+
+  /**
+   * Build a `Dice` class or `Number` by parsing a value
+   * @param {string|Dice|int|float} val The value to parse
+   */
+  static parse(val) {
+    if (val instanceof Dice) {
+      return val;
+    }
+    if (typeof val === 'string') {
+      const match = val.match(/^[dD](\d+)$/);
+      if (match && match[1]) {
+        return new Dice(match[1]);
+      }
+    }
+    const num = Number(val);
+    if (Number.isNaN(num)) {
+      throw new Error(`Invalid Value or Dice (${val})`);
+    }
+    return num;
+  }
 }
 
-/**
- * Get a `Dice` class or `Number` for a given value
- * @param {string|Dice|int|float} val The value to parse
- */
-export const parseDice = (val) => {
-  if (val instanceof Dice) {
-    return val;
-  }
-  if (typeof val === 'string') {
-    const match = val.match(/^[dD](\d+)$/);
-    if (match && match[1]) {
-      return new Dice(match[1]);
-    }
-  }
-  const num = Number(val);
-  if (Number.isNaN(num)) {
-    throw new Error(`Invalid Value or Dice (${val})`);
-  }
-  return num;
-};
-
 /** A 3 sided dice */
-export const D3 = new Dice(3);
+const D3 = new Dice(3);
 /** A 6 sided dice */
-export const D6 = new Dice(6);
+const D6 = new Dice(6);
 
-export { Dice as default };
+export { Dice as default, D3, D6 };
