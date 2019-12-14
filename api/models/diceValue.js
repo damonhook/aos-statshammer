@@ -7,16 +7,21 @@ class DiceValue {
   /**
    * @param {[Dice,Number]} items
    */
-  constructor(items) {
-    const dice = [];
-    let additions = 0;
-    items.forEach((item) => {
-      if (item instanceof Dice) dice.push(item);
-      else if (!Number.isNaN(Number(item))) additions += Number(item);
-      else throw new Error(`Invalid item ${item} passed to DiceValue`);
-    });
-    this.dice = dice;
+  constructor(additions = [], subtractions = []) {
+    const validateItem = (item) => {
+      if (!(item instanceof Dice) && Number.isNaN(Number(item))) {
+        throw new Error('Invalid Dice / Number provided to DiceValue');
+      }
+    };
+
+    additions.forEach(validateItem);
+    subtractions.forEach(validateItem);
+
     this.additions = additions;
+    this.subtractions = subtractions;
+    if (this.average < 0) {
+      throw new Error('You cannot have a negative average');
+    }
   }
 
   /**
@@ -24,7 +29,13 @@ class DiceValue {
    * summed with the additions)
    * */
   get average() {
-    return this.dice.reduce((acc, die) => acc + die.average, 0) + this.additions;
+    const averageAditions = this.additions.reduce((acc, item) => (
+      (item instanceof Dice) ? acc + item.average : acc + Number(item)
+    ), 0);
+    const averageSubtractions = this.subtractions.reduce((acc, item) => (
+      (item instanceof Dice) ? acc + item.average : acc + Number(item)
+    ), 0);
+    return averageAditions - averageSubtractions;
   }
 
   /**
@@ -34,18 +45,20 @@ class DiceValue {
   static parse(val) {
     if (val instanceof this) return val;
     if (val instanceof Dice) return new this([val]);
-    let items = String(val).split(/\+/);
-    items = items.reduce((acc, item) => {
-      const i = item.trim();
-      const multiDiceMatch = i.match(/^(\d+)([dD]\d+)$/);
+    const additions = [];
+    const subtractions = [];
+    const items = String(val).replace(/\s/g, '').split(/(?=[+-])/g).filter((item) => item);
+    items.forEach((item) => {
+      const acc = (item.charAt(0) === '-') ? subtractions : additions;
+      const val = item.replace(/^[+-]/, '');
+      const multiDiceMatch = val.match(/^(\d+)([dD]\d+)$/);
       if (multiDiceMatch && multiDiceMatch[1] && multiDiceMatch[2]) {
         acc.push(...[...Array(Number(multiDiceMatch[1]))].map(() => Dice.parse(multiDiceMatch[2])));
       } else {
-        acc.push(Dice.parse(i));
+        acc.push(Dice.parse(val));
       }
-      return acc;
-    }, []);
-    return new this(items);
+    });
+    return new this(additions, subtractions);
   }
 }
 

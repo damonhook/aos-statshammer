@@ -23,7 +23,7 @@ const DiceInput = React.memo(({
   const [errorMessage, setErrorMessage] = useState(null);
 
   const isDice = useCallback((val) => (
-    Boolean(String(val).replace(/\s/g, '').match(/^(?:\d*[dD]?\d+)(?:\+\d*[dD]?\d+)*$/))
+    Boolean(String(val).replace(/\s/g, '').match(/^(?:\d*[dD]?\d+)(?:[+-]\d*[dD]?\d+)*$/))
   ), []);
   const isValid = useCallback((val) => !Number.isNaN(Number(val)) || isDice(val), [isDice]);
 
