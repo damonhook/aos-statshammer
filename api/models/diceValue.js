@@ -19,9 +19,6 @@ class DiceValue {
 
     this.additions = additions;
     this.subtractions = subtractions;
-    if (this.average < 0) {
-      throw new Error('You cannot have a negative average');
-    }
   }
 
   /**
@@ -35,7 +32,7 @@ class DiceValue {
     const averageSubtractions = this.subtractions.reduce((acc, item) => (
       (item instanceof Dice) ? acc + item.average : acc + Number(item)
     ), 0);
-    return averageAditions - averageSubtractions;
+    return Math.max(averageAditions - averageSubtractions, 0);
   }
 
   /**
