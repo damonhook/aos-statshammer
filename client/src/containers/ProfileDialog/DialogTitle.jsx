@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Typography, DialogTitle as Title, AppBar, Toolbar, IconButton,
 } from '@material-ui/core';
@@ -29,6 +30,16 @@ const DialogTitle = ({ header, fullScreen, onClose }) => {
       )
       : <Title>{header}</Title>
   );
+};
+
+DialogTitle.defaultProps = {
+  fullScreen: false,
+};
+
+DialogTitle.propTypes = {
+  header: PropTypes.string.isRequired,
+  fullScreen: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default DialogTitle;

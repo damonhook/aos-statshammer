@@ -6,6 +6,7 @@ import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
+import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import ProfileDialog from 'containers/ProfileDialog';
 import _ from 'lodash';
@@ -42,6 +43,16 @@ const Units = React.memo(({ units, addUnit, className }) => {
     </div>
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
+
+Units.defaultProps = {
+  className: null,
+};
+
+Units.propTypes = {
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  addUnit: PropTypes.func.isRequired,
+  className: PropTypes.string,
+};
 
 const mapStateToProps = (state) => ({ units: state.units });
 

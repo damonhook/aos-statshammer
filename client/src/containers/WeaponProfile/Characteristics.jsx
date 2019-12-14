@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Typography, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -61,6 +62,23 @@ const Characteristics = ({ profile, className, ...other }) => {
       <Characteristic name="Damage" text={`${profile.damage}`} />
     </Typography>
   );
+};
+
+Characteristics.defaultProps = {
+  className: null,
+};
+
+Characteristics.propTypes = {
+  profile: PropTypes.shape({
+    num_models: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    attacks: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    to_hit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    to_wound: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    rend: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    damage: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    modifiers: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+  className: PropTypes.string,
 };
 
 export default Characteristics;

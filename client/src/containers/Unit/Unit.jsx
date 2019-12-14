@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import WeaponProfile from 'containers/WeaponProfile';
 import { connect } from 'react-redux';
 import {
@@ -133,6 +134,27 @@ const Unit = React.memo(({
     </div>
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
+
+Unit.defaultProps = {
+  className: null,
+};
+
+Unit.propTypes = {
+  id: PropTypes.number.isRequired,
+  unit: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
+    weapon_profiles: PropTypes.array,
+  }).isRequired,
+  addWeaponProfile: PropTypes.func.isRequired,
+  deleteUnit: PropTypes.func.isRequired,
+  editUnitName: PropTypes.func.isRequired,
+  addUnit: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  addNotification: PropTypes.func.isRequired,
+  moveUnit: PropTypes.func.isRequired,
+  numUnits: PropTypes.number.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   numUnits: state.units.length,

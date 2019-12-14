@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import {
   Typography, DialogContent as Content,
 } from '@material-ui/core';
@@ -136,5 +137,26 @@ const DialogContent = React.memo(({
     </Content>
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
+
+DialogContent.defaultProps = {
+  submitDisabled: false,
+};
+
+DialogContent.propTypes = {
+  profile: PropTypes.shape({
+    num_models: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    attacks: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    to_hit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    to_wound: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    rend: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    damage: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    modifiers: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  errorCallback: PropTypes.func.isRequired,
+  submitDisabled: PropTypes.bool,
+  dispatchState: PropTypes.func.isRequired,
+};
 
 export default DialogContent;
