@@ -32,9 +32,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const graphNames = ['Line Graph', 'Bar Graph', 'Radar Graph'];
-const graphList = [LineGraph, BarGraph, RadarGraph];
-
 const GraphWrapper = ({
   loading, error, children, numUnits,
 }) => {
@@ -50,7 +47,7 @@ const GraphWrapper = ({
   return <div>{children}</div>;
 };
 
-const GraphTabbed = ({ stats, unitNames, graphList }) => {
+const GraphTabbed = ({ stats, unitNames, graphMap }) => {
   const classes = useStyles();
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
 
@@ -64,12 +61,12 @@ const GraphTabbed = ({ stats, unitNames, graphList }) => {
     >
       <Tabbed
         className={classes.tabs}
-        tabNames={graphNames}
-        tabContent={graphList.map((Graph, index) => (
+        tabNames={[...graphMap.keys()]}
+        tabContent={[...graphMap].map(([name, Graph]) => (
           <GraphWrapper
             loading={firstLoad}
             numUnits={unitNames.length}
-            key={graphNames[index]}
+            key={name}
             error={Boolean(stats.error)}
           >
             <Paper square className={classes.tab}>
@@ -86,16 +83,16 @@ const GraphTabbed = ({ stats, unitNames, graphList }) => {
   );
 };
 
-const GraphList = ({ stats, unitNames, graphList }) => {
+const GraphList = ({ stats, unitNames, graphMap }) => {
   const classes = useStyles();
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
 
   return (
     <Typography component="div">
-      {graphList.map((Graph, index) => (
+      {[...graphMap].map(([name, Graph]) => (
         <ListItem
-          key={graphNames[index]}
-          header={graphNames[index]}
+          key={name}
+          header={name}
           collapsible
           loading={stats.pending}
           loaderDelay={firstLoad ? 0 : 350}
@@ -120,20 +117,25 @@ const GraphList = ({ stats, unitNames, graphList }) => {
 const Graphs = ({ stats, unitNames, config }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const graphMap = new Map([
+    ['Bar Graph', BarGraph],
+    ['Line Graph', LineGraph],
+    ['Radar Graph', RadarGraph],
+  ]);
 
   return mobile || config.desktopGraphList
     ? (
       <GraphList
         stats={stats}
         unitNames={unitNames}
-        graphList={graphList}
+        graphMap={graphMap}
       />
     )
     : (
       <GraphTabbed
         stats={stats}
         unitNames={unitNames}
-        graphList={graphList}
+        graphMap={graphMap}
       />
     );
 };
