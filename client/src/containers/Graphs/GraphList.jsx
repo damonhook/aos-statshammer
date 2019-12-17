@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ListItem from 'components/ListItem';
@@ -42,6 +43,19 @@ const GraphList = ({ stats, unitNames, graphMap }) => {
       ))}
     </Typography>
   );
+};
+
+GraphList.propTypes = {
+  /** The current state of the stats reducer. */
+  stats: PropTypes.shape({
+    pending: PropTypes.bool,
+    payload: PropTypes.arrayOf(PropTypes.object),
+    error: PropTypes.string,
+  }).isRequired,
+  /** An array containing the unit names */
+  unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  /** A mapping of Graph Name -> Graph Component, in render order */
+  graphMap: PropTypes.instanceOf(Map).isRequired,
 };
 
 export default GraphList;

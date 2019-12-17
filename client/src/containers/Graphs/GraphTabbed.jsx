@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabbed from 'components/Tabbed';
 import { Paper } from '@material-ui/core';
@@ -53,6 +54,19 @@ const GraphTabbed = ({ stats, unitNames, graphMap }) => {
       />
     </ListItem>
   );
+};
+
+GraphTabbed.propTypes = {
+  /** The current state of the stats reducer. */
+  stats: PropTypes.shape({
+    pending: PropTypes.bool,
+    payload: PropTypes.arrayOf(PropTypes.object),
+    error: PropTypes.string,
+  }).isRequired,
+  /** An array containing the unit names */
+  unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  /** A mapping of Graph Name -> Graph Component, in render order */
+  graphMap: PropTypes.instanceOf(Map).isRequired,
 };
 
 export default GraphTabbed;

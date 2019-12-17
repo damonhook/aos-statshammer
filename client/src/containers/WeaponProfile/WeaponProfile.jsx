@@ -85,11 +85,13 @@ const WeaponProfile = React.memo(({
   /** Move this profile down by one space */
   const moveProfileDown = () => { moveWeaponProfile(id, id + 1, unitId); };
 
+  const header = `Weapon Profile ${profile.name ? `(${profile.name})` : ''}`;
+
   return (
     <div ref={profileRef}>
       <ListItem
         className={clsx(classes.profile, profile.active ? '' : classes.inactive)}
-        header="Weapon Profile"
+        header={header}
         primaryItems={[
           { name: 'Edit', onClick: handleOpen, icon: <Edit /> },
           {
@@ -134,6 +136,7 @@ WeaponProfile.propTypes = {
   id: PropTypes.number.isRequired,
   profile: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
+    name: PropTypes.string,
     modifiers: PropTypes.array,
     active: PropTypes.bool,
   }).isRequired,
