@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import Results from 'containers/Stats/Results';
-import Graphs from 'containers/Stats/Graphs';
+import Graphs from 'containers/Graphs';
 import ResultsTable from 'containers/Stats/ResultsTable';
 import { boolean } from '@storybook/addon-knobs';
 import { withProvider } from 'utils/exampleStore';

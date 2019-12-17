@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
-import Graphs from './Graphs';
+import Graphs from 'containers/Graphs';
 import ResultsTable from './ResultsTable';
 
 
