@@ -1,11 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { Typography, Button } from '@material-ui/core';
+import { Typography, Button, useMediaQuery } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import Graphs from 'containers/Graphs';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { GetApp } from '@material-ui/icons';
 import ResultsTable from './ResultsTable';
 
@@ -22,12 +22,9 @@ const useStyles = makeStyles({
 
 const Results = React.memo(({ stats, unitNames, className }) => {
   const classes = useStyles();
+  const theme = useTheme();
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
-  const history = useHistory();
-
-  const onPdfClick = () => {
-    history.push('/pdf');
-  };
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Typography className={clsx(classes.results, className)} component="div">
@@ -40,15 +37,19 @@ const Results = React.memo(({ stats, unitNames, className }) => {
         <ResultsTable stats={stats} unitNames={unitNames} />
       </ListItem>
       <Graphs stats={stats} unitNames={unitNames} />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={onPdfClick}
-        fullWidth
-        startIcon={<GetApp />}
-      >
-        Download PDF
-      </Button>
+      {!mobile
+        && (
+          <Link to="/pdf">
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              startIcon={<GetApp />}
+            >
+              Download PDF
+            </Button>
+          </Link>
+        )}
     </Typography>
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));

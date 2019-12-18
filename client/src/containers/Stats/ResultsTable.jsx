@@ -20,12 +20,13 @@ const useStyles = makeStyles((theme) => ({
     position: 'sticky',
     left: 0,
     zIndex: 11,
+    backgroundColor: theme.palette.background.paper,
   },
   header: {
     fontWeight: theme.typography.fontWeightBold,
   },
   cell: {
-    background: theme.palette.background.palette,
+    background: theme.palette.background.paper,
   },
   error: {
     width: 'auto',

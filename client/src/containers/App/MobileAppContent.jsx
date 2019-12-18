@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Units, { AddUnitsFab } from 'containers/Units';
-import Stats from 'containers/Stats';
+import Stats, { ExportPdfFab } from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabbed from 'components/Tabbed';
 import clsx from 'clsx';
@@ -21,6 +21,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const Fab = ({ activeIndex }) => {
+  switch (activeIndex) {
+    case 0:
+      return <AddUnitsFab />;
+    case 1:
+      return <ExportPdfFab />;
+    default:
+      return null;
+  }
+};
+
+Fab.propTypes = {
+  activeIndex: PropTypes.number.isRequired,
+};
 
 const MobileAppContent = ({ className }) => {
   const classes = useStyles();
@@ -29,7 +43,7 @@ const MobileAppContent = ({ className }) => {
 
   return (
     <div className={clsx(classes.mobileContent, className)}>
-      {activeTab === 0 && <AddUnitsFab />}
+      <Fab activeIndex={activeTab} />
       <Tabbed
         className={classes.tabs}
         tabNames={['Units', 'Stats']}
