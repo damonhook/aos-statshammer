@@ -6,7 +6,7 @@ import { Paper } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import GraphWrapper from './GraphWrapper';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   tabs: {
     margin: '-1em -1em 0',
   },
@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
   },
   content: {
     height: '350px',
-    paddingTop: '2em',
+    paddingTop: 0,
     overflow: 'hidden',
     flexBasis: '50%',
   },

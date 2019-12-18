@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
-import getTheme from 'themes';
+import getTheme, { lightTheme } from 'themes';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,7 +10,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import PDFViewer from 'pdf';
+import PdfContainer from 'containers/PdfContainer';
 import AppContentWrapper from './AppContentWrapper';
 
 
@@ -22,7 +22,7 @@ const App = ({ config }) => (
         <Route exact path="/" component={AppContentWrapper} />
         <Redirect exact from="/units" to="/" />
         <Route path="/units" component={AppContentWrapper} />
-        <Route exact path="/pdf" component={PDFViewer} />
+        <Route exact path="/pdf" component={PdfContainer} />
         <Redirect to="/" />
       </Switch>
     </ThemeProvider>

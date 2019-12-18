@@ -25,7 +25,7 @@ const ReactToPDF = ({
   const refCallback = useCallback((node) => {
     setTimeout(() => {
       html2canvas(node).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
+        const imgData = canvas.toDataURL('image/jpeg');
         callback(imgData);
       });
     }, 400);

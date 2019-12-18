@@ -8,7 +8,7 @@ import GraphWrapper from './GraphWrapper';
 const useStyles = makeStyles(() => ({
   content: {
     height: '350px',
-    paddingTop: '2em',
+    paddingTop: 0,
     overflow: 'hidden',
     flexBasis: '50%',
   },
