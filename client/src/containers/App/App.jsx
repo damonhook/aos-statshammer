@@ -10,7 +10,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { PDFViewer } from 'containers/Pdf';
+import PDFViewer from 'pdf';
 import AppContentWrapper from './AppContentWrapper';
 
 

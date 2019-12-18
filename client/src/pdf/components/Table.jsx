@@ -39,19 +39,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const PDFTableHead = ({ children, style = {} }) => (
+const TableHead = ({ children, style = {} }) => (
   <View style={[styles.header, style]}>
     {children}
   </View>
 );
 
-const PDFTableRow = ({ children, style = {} }) => (
+const TableRow = ({ children, style = {} }) => (
   <View style={[styles.row, style]}>
     {children}
   </View>
 );
 
-const PDFTableCell = ({ children, variant = 'basic', style = {} }) => {
+const TableCell = ({
+  children, variant = 'basic', style = {}, bold,
+}) => {
   const styleLookup = {
     basic: {},
     long: styles.long,
@@ -59,21 +61,21 @@ const PDFTableCell = ({ children, variant = 'basic', style = {} }) => {
   };
   return (
     <View style={[styles.cell, styleLookup[variant], style]}>
-      <Text>
+      <Text style={bold ? { fontWeight: 'bold' } : {}}>
         {children}
       </Text>
     </View>
   );
 };
 
-const PDFTable = ({ children, style = {} }) => (
+const Table = ({ children, style = {} }) => (
   <View style={[styles.table, style]}>
     {children}
   </View>
 );
 
-PDFTable.Head = PDFTableHead;
-PDFTable.Row = PDFTableRow;
-PDFTable.Cell = PDFTableCell;
+Table.Head = TableHead;
+Table.Row = TableRow;
+Table.Cell = TableCell;
 
-export default PDFTable;
+export default Table;

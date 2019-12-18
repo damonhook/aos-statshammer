@@ -1,5 +1,5 @@
 import React from 'react';
-import { PDFTable as Table } from 'components/PDF';
+import Table from 'pdf/components/Table';
 
 const transposeData = (unitNames, results) => unitNames.reduce((acc, name) => {
   const item = { name };

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
-import { fetchStatsCompare } from 'api';
+import { fetchStatsCompare, fetchModifiers } from 'api';
 import { bindActionCreators } from 'redux';
 import { PDFViewer as ViewWrapper } from '@react-pdf/renderer';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
 import { lightTheme } from 'themes';
-import ReactToPDF from './ReactToPDF';
-import Pdf from './Pdf';
+import ReactToPDF from 'pdf/components/ReactToPDF';
+import Pdf from 'pdf/document';
+import 'pdf/font';
 
 const applyMapping = (mapping, results) => (
   results.map((result) => Object.keys(result).reduce((acc, key) => {
@@ -28,11 +29,14 @@ const useStyles = makeStyles(() => ({
     flex: 1,
     height: '100%',
   },
-  hidden: {},
+  hidden: {
+    position: 'absolute',
+    left: -2000,
+  },
 }));
 
 const PDFViewer = ({
-  pending, payload, nameMapping, fetchStatsCompare,
+  pending, payload, units, modifiers, modifiersPending, fetchStatsCompare, fetchModifiers,
 }) => {
   const classes = useStyles();
   const [barGraph, setBarGraph] = useState(null);
@@ -40,8 +44,12 @@ const PDFViewer = ({
   const [radarGraph, setRadarGraph] = useState(null);
   const [results, setResults] = useState(null);
 
+  const nameMapping = useMemo(() => (
+    units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {})
+  ), [units]);
+
   useEffect(() => {
-    if (!pending && !payload) {
+    if (!pending && (!payload || !payload.length)) {
       fetchStatsCompare();
     } else if (payload && payload.length) {
       const mappedResults = applyMapping(nameMapping, payload);
@@ -49,44 +57,52 @@ const PDFViewer = ({
     }
   }, [pending, payload, fetchStatsCompare, nameMapping]);
 
+  useEffect(() => {
+    if (!modifiersPending && (!modifiers || !modifiers.length)) {
+      fetchModifiers();
+    }
+  }, [fetchModifiers, modifiers, modifiersPending]);
+
   if (!results || !results.length) return null;
 
   const unitNames = Object.values(nameMapping);
-  const images = [barGraph, lineGraph, radarGraph];
+  const images = [barGraph, lineGraph, radarGraph].filter((image) => image != null);
+  const loaded = modifiers && modifiers.length && images && images.length;
   return (
     <div>
-      {(images && images.length)
-        && (
+      {loaded
+        ? (
           <div className={classes.pdfContainer}>
             <div className={classes.inner}>
               <ViewWrapper width="100%" height="100%">
-                <Pdf images={images} results={results} unitNames={unitNames} />
+                <Pdf images={images} results={results} units={units} />
               </ViewWrapper>
             </div>
           </div>
-        )}
+        )
+        : null}
       <div className={classes.hidden}>
         <ThemeProvider theme={lightTheme}>
-          <ReactToPDF callback={setBarGraph} height={300} width={700} stretch>
+          <ReactToPDF callback={setBarGraph} height={350} width={900} stretch>
             <BarGraph
               isAnimationActive={false}
               unitNames={unitNames}
               results={results}
             />
           </ReactToPDF>
-          <ReactToPDF callback={setLineGraph} height={300} width={700} stretch>
+          <ReactToPDF callback={setLineGraph} height={350} width={900} stretch>
             <LineGraph
               isAnimationActive={false}
               unitNames={unitNames}
               results={results}
             />
           </ReactToPDF>
-          <ReactToPDF callback={setRadarGraph} height={300} width={700} stretch>
+          <ReactToPDF callback={setRadarGraph} height={350} width={900} stretch>
             <RadarGraph
               isAnimationActive={false}
               unitNames={unitNames}
               results={results}
-              outerRadius={90}
+              outerRadius={95}
             />
           </ReactToPDF>
         </ThemeProvider>
@@ -96,13 +112,16 @@ const PDFViewer = ({
 };
 
 const mapStateToProps = (state) => ({
-  nameMapping: state.units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {}),
+  units: state.units,
   pending: state.stats.pending,
   payload: state.stats.payload,
+  modifiersPending: state.modifiers.pending,
+  modifiers: state.modifiers.modifiers,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchStatsCompare,
+  fetchModifiers,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(PDFViewer);
