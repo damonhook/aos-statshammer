@@ -1,13 +1,16 @@
 import React, {
   useMemo, useLayoutEffect, useCallback, useState,
 } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
-import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { useRefCallback } from 'hooks';
-import generate from './generate';
+import { lightTheme } from 'themes';
+import generate from './generator';
+import PdfLoader from './PdfLoader';
+import GraphWrapper from './GraphWrapper';
 
 
 const useStyles = makeStyles(() => ({
@@ -15,14 +18,6 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     position: 'absolute',
     left: -2000,
-  },
-  container: {
-    // width: '100%',
-    width: '1000px',
-    height: '100%',
-  },
-  graph: {
-    height: '400px',
   },
   graphGroup: {
     display: 'flex',
@@ -45,18 +40,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const GraphWrapper = ({ children }) => {
-  const classes = useStyles();
-  return (
-    <div className={clsx(classes.container, 'pdf-copy')}>
-      <div className={classes.graph}>
-        {children}
-      </div>
-    </div>
-  );
-};
-
-
 const PdfGenerator = ({ units, results, modifiers }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -64,31 +47,29 @@ const PdfGenerator = ({ units, results, modifiers }) => {
   const [doc, setDoc] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const mobile = theme.breakpoints.down('sm');
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const unitNames = useMemo(() => units.map(({ name }) => name), [units]);
 
   const generatePdf = useCallback(() => (
     generate('pdf-copy', units, results, modifiers, unitNames)
   ), [modifiers, results, unitNames, units]);
 
-  const refCallback = useCallback((node) => {
+  const refCallback = useCallback(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 400);
+    }, 800);
   }, []);
   const [ref] = useRefCallback(refCallback);
 
   useLayoutEffect(() => {
     if (!loading) {
-      setTimeout(() => {
-        generatePdf().then((result) => {
-          setDoc(result);
-          if (mobile) {
-            result.save('aos-statshammer.pdf');
-            history.goBack();
-          }
-        });
-      }, 1000);
+      generatePdf().then((result) => {
+        setDoc(result);
+        if (mobile) {
+          result.save('aos-statshammer.pdf');
+          history.goBack();
+        }
+      });
     }
   }, [generatePdf, history, loading, mobile]);
 
@@ -99,29 +80,38 @@ const PdfGenerator = ({ units, results, modifiers }) => {
 
   return (
     <div>
-      <div className={classes.hidden} ref={ref}>
-        <GraphWrapper>
-          <BarGraph isAnimationActive={false} unitNames={unitNames} results={results} />
-        </GraphWrapper>
-        <GraphWrapper>
-          <div className={classes.graphGroup}>
-            <LineGraph
-              className={classes.line}
-              isAnimationActive={false}
-              unitNames={unitNames}
-              results={results}
-            />
-            <RadarGraph
-              className={classes.radar}
-              isAnimationActive={false}
-              unitNames={unitNames}
-              results={results}
-            />
-          </div>
-        </GraphWrapper>
-      </div>
+      {loading && <PdfLoader />}
+      <ThemeProvider theme={lightTheme}>
+        <div className={classes.hidden} ref={ref}>
+          <GraphWrapper>
+            <BarGraph isAnimationActive={false} unitNames={unitNames} results={results} />
+          </GraphWrapper>
+          <GraphWrapper>
+            <div className={classes.graphGroup}>
+              <LineGraph
+                className={classes.line}
+                isAnimationActive={false}
+                unitNames={unitNames}
+                results={results}
+              />
+              <RadarGraph
+                className={classes.radar}
+                isAnimationActive={false}
+                unitNames={unitNames}
+                results={results}
+              />
+            </div>
+          </GraphWrapper>
+        </div>
+      </ThemeProvider>
     </div>
   );
+};
+
+PdfGenerator.propTypes = {
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  modifiers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default PdfGenerator;

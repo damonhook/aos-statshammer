@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
-import getTheme, { lightTheme } from 'themes';
+import getTheme from 'themes';
 import {
   BrowserRouter as Router,
   Switch,

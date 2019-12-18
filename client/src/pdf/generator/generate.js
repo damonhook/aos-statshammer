@@ -4,40 +4,10 @@ import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
 import { getModifierById } from 'utils/modifierHelpers';
 import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
-
-class Cursor {
-  constructor(margin = 0) {
-    this._pos = margin;
-    this._margin = margin;
-  }
-
-  get pos() {
-    return this._pos;
-  }
-
-  set pos(newPos) {
-    this._pos = newPos;
-  }
-
-  incr(amt) {
-    this._pos += amt;
-  }
-
-  reset() {
-    this._pos = this._margin;
-  }
-}
+import Cursor from './cursor';
 
 const margin = 20;
 const cursor = new Cursor(margin);
-
-const renderPreview = (doc) => {
-  // const iframe = document.createElement('iframe');
-  // iframe.setAttribute('style', 'position:absolute;right:0; top:0; bottom:0; height:100%; width:100%;');
-  // document.body.appendChild(iframe);
-
-  // iframe.src = doc.output('datauristring');
-};
 
 const getModifierItems = (modifiers) => {
   const modifierItems = modifiers.map(({ id, options }) => {
@@ -205,7 +175,6 @@ const generate = (graphClassName, units, results, modifiers, unitNames) => {
       cursor.incr(imgHeight + 20);
     }));
   });
-  // Promise.all(promises).then(() => renderPreview(doc));
   return Promise.all(promises).then(() => doc);
 };
 
