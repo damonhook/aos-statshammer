@@ -23,6 +23,11 @@ const LineGraph = ({
   const theme = useTheme();
 
   const xAxisLabel = (value) => (value === 'None' ? '-' : `${value}+`);
+  const formatLegendEntry = (value) => (
+    <span style={{ color: theme.palette.getContrastText(theme.palette.background.paper) }}>
+      {value}
+    </span>
+  );
 
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
@@ -38,7 +43,7 @@ const LineGraph = ({
           />
         </YAxis>
         <Tooltip content={<GraphTooltip />} />
-        <Legend />
+        <Legend formatter={formatLegendEntry} />
         {unitNames.map((name, index) => (
           <Line
             type="monotone"

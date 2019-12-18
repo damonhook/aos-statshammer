@@ -24,6 +24,11 @@ const BarGraph = ({
   const theme = useTheme();
 
   const xAxisLabel = (value) => (value === 'None' ? '-' : `${value}+`);
+  const formatLegendEntry = (value) => (
+    <span style={{ color: theme.palette.getContrastText(theme.palette.background.paper) }}>
+      {value}
+    </span>
+  );
 
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
@@ -41,7 +46,7 @@ const BarGraph = ({
           />
         </YAxis>
         <Tooltip content={<GraphTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
-        <Legend />
+        <Legend formatter={formatLegendEntry} />
         {unitNames.map((name, index) => (
           <Bar
             type="monotone"

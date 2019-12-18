@@ -31,6 +31,11 @@ const RadarGraph = ({
   const theme = useTheme();
 
   const radarAxisLabel = (value) => (value === 'None' ? '-' : `${value}+`);
+  const formatLegendEntry = (value) => (
+    <span style={{ color: theme.palette.getContrastText(theme.palette.background.paper) }}>
+      {value}
+    </span>
+  );
 
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
@@ -43,7 +48,7 @@ const RadarGraph = ({
         />
         <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={0} />
         <Tooltip content={<GraphTooltip />} />
-        <Legend />
+        <Legend formatter={formatLegendEntry} />
         {unitNames.map((name, index) => (
           <Radar
             type="monotone"
