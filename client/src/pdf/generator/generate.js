@@ -62,6 +62,7 @@ const generateUnits = (doc, units) => {
         startY: cursor.pos,
         head,
         body,
+        headStyles: { fillColor: [121, 134, 203] },
         columnStyles: {
           0: { cellWidth: 85 },
           1: { cellWidth: 85 },
@@ -107,6 +108,7 @@ const generateStatsTable = (doc, results, unitNames) => {
     body: data.map((row) => (
       transformRow(row)
     )),
+    headStyles: { fillColor: [121, 134, 203] },
     columnStyles: {
       1: { cellWidth: 40 },
       2: { cellWidth: 40 },
