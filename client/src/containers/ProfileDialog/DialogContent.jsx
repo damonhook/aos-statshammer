@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Typography, DialogContent as Content,
+  Typography, DialogContent as Content, TextField,
 } from '@material-ui/core';
 import ModifierList from 'components/ModifierList';
 import { makeStyles } from '@material-ui/core/styles';
@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  name: {
+    marginBottom: theme.spacing(2),
+  },
   characteristics: {
     display: 'flex',
     flexDirection: 'row',
@@ -70,6 +73,14 @@ const DialogContent = React.memo(({
       <Typography component="div">
         <form className={classes.form} onSubmit={(e) => { onSubmit(); e.preventDefault(); }}>
           <input type="submit" style={{ display: 'none' }} disabled={submitDisabled} />
+          <TextField
+            fullWidth
+            label="Profile Name"
+            variant="filled"
+            className={classes.name}
+            value={profile.name}
+            onChange={getHandler('name')}
+          />
           <div className={classes.formSection}>
             <label>Characteristics:</label>
             <div className={clsx(classes.formSection, classes.characteristics)}>
@@ -144,6 +155,7 @@ DialogContent.defaultProps = {
 
 DialogContent.propTypes = {
   profile: PropTypes.shape({
+    name: PropTypes.string,
     num_models: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     attacks: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     to_hit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,

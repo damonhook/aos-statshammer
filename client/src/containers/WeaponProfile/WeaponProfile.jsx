@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 import { getUnitByPosition } from 'utils/unitHelpers';
 import { Delete, FileCopy, Edit } from '@material-ui/icons';
 import _ from 'lodash';
+import { scrollToRef } from 'utils/scrollIntoView';
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +58,7 @@ const WeaponProfile = React.memo(({
 
   // Scroll to the component when it is first created
   useEffect(() => {
-    if (profileRef.current) profileRef.current.scrollIntoView({ behavior: 'smooth' });
+    scrollToRef(profileRef);
   }, [profile.uuid]);
 
   /** Handle open/close of the edit profile dialog */
@@ -85,11 +86,13 @@ const WeaponProfile = React.memo(({
   /** Move this profile down by one space */
   const moveProfileDown = () => { moveWeaponProfile(id, id + 1, unitId); };
 
+  const header = `Weapon Profile ${profile.name ? `(${profile.name})` : ''}`;
+
   return (
     <div ref={profileRef}>
       <ListItem
         className={clsx(classes.profile, profile.active ? '' : classes.inactive)}
-        header="Weapon Profile"
+        header={header}
         primaryItems={[
           { name: 'Edit', onClick: handleOpen, icon: <Edit /> },
           {
@@ -134,6 +137,7 @@ WeaponProfile.propTypes = {
   id: PropTypes.number.isRequired,
   profile: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
+    name: PropTypes.string,
     modifiers: PropTypes.array,
     active: PropTypes.bool,
   }).isRequired,

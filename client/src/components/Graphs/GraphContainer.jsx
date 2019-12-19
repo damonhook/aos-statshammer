@@ -3,15 +3,24 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { ResponsiveContainer } from 'recharts';
+import { Typography } from '@material-ui/core';
 
 
-const useSyles = makeStyles({
+const useSyles = makeStyles((theme) => ({
   container: {
     width: '100%',
     height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
-  responsive: {},
-});
+  responsive: {
+    display: 'flex',
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: theme.spacing(1),
+  },
+}));
 
 /**
  * A wrapper for all of the graphs
@@ -21,6 +30,7 @@ const GraphContainer = ({ className, children }) => {
 
   return (
     <div className={clsx(classes.container, className)}>
+      <Typography variant="h6" className={classes.title}>Average Damage</Typography>
       <ResponsiveContainer width="98%" className={classes.responsive}>
         {children}
       </ResponsiveContainer>

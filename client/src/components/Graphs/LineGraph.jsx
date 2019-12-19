@@ -17,18 +17,21 @@ const useStyles = makeStyles(() => ({
  * A line graph component for the average damage results
  */
 const LineGraph = ({
-  results, unitNames, className,
+  results, unitNames, className, isAnimationActive,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
 
   const xAxisLabel = (value) => (value === 'None' ? '-' : `${value}+`);
+  const formatLegendEntry = (value) => (
+    <span style={{ color: theme.palette.getContrastText(theme.palette.background.paper) }}>
+      {value}
+    </span>
+  );
 
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
-      <LineChart
-        data={results}
-      >
+      <LineChart data={results}>
         <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
         <XAxis dataKey="save" stroke={theme.palette.graphs.axis} tickFormatter={xAxisLabel} />
         <YAxis stroke={theme.palette.graphs.axis}>
@@ -40,7 +43,7 @@ const LineGraph = ({
           />
         </YAxis>
         <Tooltip content={<GraphTooltip />} />
-        <Legend />
+        <Legend formatter={formatLegendEntry} />
         {unitNames.map((name, index) => (
           <Line
             type="monotone"
@@ -49,6 +52,7 @@ const LineGraph = ({
             dot={{ fill: theme.palette.background.paper, strokeWidth: 1 }}
             activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 6 }}
             key={name}
+            isAnimationActive={isAnimationActive}
           />
         ))}
       </LineChart>
@@ -59,6 +63,7 @@ const LineGraph = ({
 LineGraph.defaultProps = {
   results: [],
   className: null,
+  isAnimationActive: true,
 };
 
 LineGraph.propTypes = {
@@ -68,6 +73,8 @@ LineGraph.propTypes = {
   unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   /** CSS classname to give the component */
   className: PropTypes.string,
+  /** Whether the play animations for the components */
+  isAnimationActive: PropTypes.bool,
 };
 
 

@@ -18,12 +18,17 @@ const useStyles = makeStyles({
  * A bar graph component for the average damage results
  */
 const BarGraph = ({
-  results, unitNames, className,
+  results, unitNames, className, isAnimationActive,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
 
   const xAxisLabel = (value) => (value === 'None' ? '-' : `${value}+`);
+  const formatLegendEntry = (value) => (
+    <span style={{ color: theme.palette.getContrastText(theme.palette.background.paper) }}>
+      {value}
+    </span>
+  );
 
   return (
     <GraphContainer className={clsx(classes.graph, className)}>
@@ -41,13 +46,14 @@ const BarGraph = ({
           />
         </YAxis>
         <Tooltip content={<GraphTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
-        <Legend />
+        <Legend formatter={formatLegendEntry} />
         {unitNames.map((name, index) => (
           <Bar
             type="monotone"
             dataKey={name}
             fill={theme.palette.graphs.series[index]}
             key={name}
+            isAnimationActive={isAnimationActive}
           />
         ))}
       </BarChart>
@@ -58,6 +64,7 @@ const BarGraph = ({
 BarGraph.defaultProps = {
   results: [],
   className: null,
+  isAnimationActive: true,
 };
 
 BarGraph.propTypes = {
@@ -67,6 +74,8 @@ BarGraph.propTypes = {
   unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   /** CSS classname to give the component */
   className: PropTypes.string,
+  /** Whether the play animations for the components */
+  isAnimationActive: PropTypes.bool,
 };
 
 export default BarGraph;

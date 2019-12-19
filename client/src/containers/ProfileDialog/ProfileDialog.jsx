@@ -47,6 +47,7 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
   }
 
   const [state, dispatchState] = useReducer(profileReducer, {
+    name: '',
     num_models: 1,
     attacks: 1,
     to_hit: 4,

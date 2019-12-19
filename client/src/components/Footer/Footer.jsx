@@ -1,9 +1,9 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  Typography, Paper, useMediaQuery, Button,
+  Typography, Paper, useMediaQuery, Button, IconButton,
 } from '@material-ui/core';
-import { GitHub } from '@material-ui/icons';
+import { GitHub, Reddit } from '@material-ui/icons';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +22,18 @@ const useStyles = makeStyles((theme) => ({
   mobileActions: {
     justifyContent: 'flex-start',
     padding: theme.spacing(1.5, 0),
+    [theme.breakpoints.down('xs')]: {
+      padding: theme.spacing(1, 0, 0),
+    },
+  },
+  footerButton: {
+    marginRight: theme.spacing(1),
+    [theme.breakpoints.down('xs')]: {
+      marginRight: theme.spacing(0.5),
+    },
+    '&:last-child': {
+      marginRight: 0,
+    },
   },
 }));
 
@@ -32,6 +44,7 @@ const Footer = () => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const xs = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
     <footer className={classes.footer}>
@@ -48,16 +61,49 @@ const Footer = () => {
           component="div"
           className={clsx(classes.Actions, mobile ? classes.mobileActions : null)}
         >
-          <Button
-            size={mobile ? 'medium' : 'small'}
-            className={classes.icon}
-            startIcon={<GitHub />}
-            variant="contained"
-            href="https://github.com/damonhook/aos-statshammer"
-            target="_blank"
-          >
-            Github
-          </Button>
+          {!xs ? (
+            <div>
+              <Button
+                size={mobile ? 'medium' : 'small'}
+                className={classes.footerButton}
+                startIcon={<GitHub />}
+                variant="contained"
+                href="https://github.com/damonhook/aos-statshammer"
+                target="_blank"
+              >
+                GitHub
+              </Button>
+              <Button
+                size={mobile ? 'medium' : 'small'}
+                className={classes.footerButton}
+                startIcon={<Reddit />}
+                variant="contained"
+                href="https://www.reddit.com/r/AoSStatshammer"
+                target="_blank"
+              >
+                Reddit
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <IconButton
+                className={classes.footerButton}
+                variant="contained"
+                href="https://github.com/damonhook/aos-statshammer"
+                target="_blank"
+              >
+                <GitHub fontSize="large" />
+              </IconButton>
+              <IconButton
+                className={classes.footerButton}
+                variant="contained"
+                href="https://www.reddit.com/r/AoSStatshammer"
+                target="_blank"
+              >
+                <Reddit fontSize="large" />
+              </IconButton>
+            </div>
+          )}
         </Typography>
       </Paper>
     </footer>

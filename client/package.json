@@ -1,6 +1,6 @@
 {
     "name": "statshammer",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "private": true,
     "proxy": "http://localhost:5000/",
     "engines": {
@@ -31,6 +31,9 @@
         "eslint-plugin-jsx-a11y": "^6.2.3",
         "eslint-plugin-react": "^7.16.0",
         "format-unicorn": "^1.1.1",
+        "html2canvas": "^1.0.0-rc.5",
+        "jspdf": "^1.5.3",
+        "jspdf-autotable": "^3.2.11",
         "lodash": "^4.17.15",
         "lorem-ipsum": "^2.0.3",
         "nanoid": "^2.1.7",

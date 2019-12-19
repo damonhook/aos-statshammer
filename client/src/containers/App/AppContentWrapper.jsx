@@ -5,6 +5,7 @@ import { useMediaQuery } from '@material-ui/core';
 import StoreSubscriber from 'components/StoreSubscriber';
 import Footer from 'components/Footer';
 import Notifications from 'components/Notifications';
+import { setAutoScrollEnabled, scrollToRef } from 'utils/scrollIntoView';
 import DesktopAppContent from './DesktopAppContent';
 import MobileAppContent from './MobileAppContent';
 
@@ -29,11 +30,13 @@ const AppContentWrapper = () => {
   const contentRef = useRef(null);
 
   useEffect(() => {
-    if (contentRef.current) {
-      setTimeout(() => {
-        contentRef.current.scrollIntoView({ behavior: 'smooth' });
-      }, 750);
-    }
+    setAutoScrollEnabled(false);
+    setTimeout(() => {
+      scrollToRef(contentRef, true);
+    }, 500);
+    setTimeout(() => {
+      setAutoScrollEnabled(true);
+    }, 1000);
   }, []);
 
   return (

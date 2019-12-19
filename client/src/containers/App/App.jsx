@@ -10,6 +10,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import PdfContainer from 'containers/PdfContainer';
 import AppContentWrapper from './AppContentWrapper';
 
 
@@ -21,6 +22,7 @@ const App = ({ config }) => (
         <Route exact path="/" component={AppContentWrapper} />
         <Redirect exact from="/units" to="/" />
         <Route path="/units" component={AppContentWrapper} />
+        <Route exact path="/pdf" component={PdfContainer} />
         <Redirect to="/" />
       </Switch>
     </ThemeProvider>

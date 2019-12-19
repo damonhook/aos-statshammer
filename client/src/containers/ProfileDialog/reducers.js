@@ -57,6 +57,7 @@ export const profileReducer = (state, action) => {
   switch (action.type) {
     case 'INIT_PROFILE':
       return {
+        name: action.profile.name,
         num_models: action.profile.num_models,
         attacks: action.profile.attacks,
         to_hit: action.profile.to_hit,
