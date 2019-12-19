@@ -2,9 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { fetchStatsCompare, fetchModifiers } from 'api';
 import { bindActionCreators } from 'redux';
-import { PDFViewer as ViewWrapper } from '@react-pdf/renderer';
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
 import PdfGenerator from 'pdf';
 
 const applyMapping = (mapping, results) => (
