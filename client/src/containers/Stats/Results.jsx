@@ -51,7 +51,7 @@ const Results = React.memo(({ stats, unitNames, className }) => {
               disabled={downloadDisabled}
             >
               Download PDF
-              <BetaTag variant={theme.palette.type === 'dark' ? 'dark' : 'default'} />
+              <BetaTag variant={theme.palette.type} />
             </Button>
           </Link>
         )}
