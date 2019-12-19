@@ -10,15 +10,20 @@ export const repeat = (results) => SAVES.map((save, index) => (
   { save, result: results[index] }
 ));
 
-const runTest = (unit, save, result) => {
-  it(`should return correct damage (${save} save, ${result} damage)`, () => {
-    const target = new Target(save);
-    assert.equal(round(unit.averageDamage(target)), result);
+export const testUnit = (unit, results) => {
+  repeat(results).forEach(({ save, result }) => {
+    it(`should return correct damage (${save} save, ${result} damage)`, () => {
+      const target = new Target(save);
+      assert.equal(round(unit.averageDamage(target)), result);
+    });
   });
 };
 
-export const testUnit = (unit, results) => {
+export const testSimulation = (unit, results) => {
   repeat(results).forEach(({ save, result }) => {
-    runTest(unit, save, result);
+    it(`should return correct damage (${save} save, ${result} damage)`, () => {
+      const target = new Target(save);
+      assert.equal(round(unit.runSimulations(target).metrics.mean), result);
+    });
   });
 };

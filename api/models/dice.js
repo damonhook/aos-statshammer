@@ -1,3 +1,5 @@
+import { getRandomInt } from '../utils';
+
 /**
  * A class used to represent a single dice (e.g: D3, D6)
  */
@@ -12,6 +14,11 @@ export class Dice {
   /** The average of this dice */
   get average() {
     return (this.sides + 1) / 2;
+  }
+
+  /** Roll the dice */
+  roll() {
+    return getRandomInt(1, this.sides);
   }
 
   /**

@@ -26,4 +26,9 @@ export default class Reroll extends BaseModifier {
       owner.getCharacteristic(this.characteristic, false),
     );
   }
+
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  allowedReroll(owner, roll) {
+    return true;
+  }
 }
