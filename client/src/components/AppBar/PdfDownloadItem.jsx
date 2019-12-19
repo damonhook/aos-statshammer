@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { MenuItem } from '@material-ui/core';
 import { GetApp } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
+import BetaTag from 'components/BetaTag';
 
 const useStyles = makeStyles((theme) => ({
   menuItemIcon: {
@@ -34,6 +35,7 @@ const PdfDownloadItem = ({ onClick, numUnits }) => {
       <MenuItem className={classes.item} disabled={disabled}>
         <GetApp className={classes.menuItemIcon} />
         Download PDF
+        <BetaTag />
       </MenuItem>
     </Link>
   );

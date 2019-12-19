@@ -7,8 +7,8 @@ import _ from 'lodash';
 import Graphs from 'containers/Graphs';
 import { Link } from 'react-router-dom';
 import { GetApp } from '@material-ui/icons';
+import BetaTag from 'components/BetaTag';
 import ResultsTable from './ResultsTable';
-
 
 const useStyles = makeStyles({
   results: {
@@ -51,6 +51,7 @@ const Results = React.memo(({ stats, unitNames, className }) => {
               disabled={downloadDisabled}
             >
               Download PDF
+              <BetaTag variant={theme.palette.type === 'dark' ? 'dark' : 'default'} />
             </Button>
           </Link>
         )}

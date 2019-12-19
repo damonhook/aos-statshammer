@@ -10,9 +10,6 @@ const useStyles = makeStyles((theme) => ({
   menuItemIcon: {
     marginRight: theme.spacing(1),
   },
-  caption: {
-    paddingBottom: theme.spacing(1),
-  },
 }));
 
 const ToggleDarkModeItem = ({ onClick, toggleDarkMode }) => {
@@ -27,9 +24,6 @@ const ToggleDarkModeItem = ({ onClick, toggleDarkMode }) => {
     <MenuItem onClick={handleClick}>
       <BrightnessMedium className={classes.menuItemIcon} />
       <span>Toggle Dark Mode&nbsp;</span>
-      <Typography variant="caption" color="secondary" className={classes.caption}>
-            Beta
-      </Typography>
     </MenuItem>
   );
 };
