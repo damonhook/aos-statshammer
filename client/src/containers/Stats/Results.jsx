@@ -26,6 +26,8 @@ const Results = React.memo(({ stats, unitNames, className }) => {
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const downloadDisabled = unitNames.length <= 0;
+
   return (
     <Typography className={clsx(classes.results, className)} component="div">
       <ListItem
@@ -39,12 +41,14 @@ const Results = React.memo(({ stats, unitNames, className }) => {
       <Graphs stats={stats} unitNames={unitNames} />
       {!mobile
         && (
-          <Link to="/pdf" style={{ textDecoration: 'none' }}>
+          // eslint-disable-next-line jsx-a11y/anchor-is-valid
+          <Link to={downloadDisabled ? '' : '/pdf'} style={{ textDecoration: 'none' }}>
             <Button
               variant="contained"
               color="primary"
               fullWidth
               startIcon={<GetApp />}
+              disabled={downloadDisabled}
             >
               Download PDF
             </Button>

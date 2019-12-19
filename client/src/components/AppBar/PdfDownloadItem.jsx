@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { MenuItem } from '@material-ui/core';
@@ -18,16 +19,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PdfDownloadItem = ({ onClick }) => {
+const PdfDownloadItem = ({ onClick, numUnits }) => {
   const classes = useStyles();
 
   const handleClick = () => {
     onClick();
   };
 
+  const disabled = numUnits <= 0;
+
   return (
-    <Link onClick={handleClick} to="/pdf" className={classes.link}>
-      <MenuItem className={classes.item}>
+    // eslint-disable-next-line jsx-a11y/anchor-is-valid
+    <Link onClick={handleClick} to={disabled ? '' : '/pdf'} className={classes.link}>
+      <MenuItem className={classes.item} disabled={disabled}>
         <GetApp className={classes.menuItemIcon} />
         Download PDF
       </MenuItem>
@@ -38,6 +42,12 @@ const PdfDownloadItem = ({ onClick }) => {
 PdfDownloadItem.propTypes = {
   /** A callback function to call when the menu item is clicked */
   onClick: PropTypes.func.isRequired,
+  /** The current number of units. Used to disable the button */
+  numUnits: PropTypes.number.isRequired,
 };
 
-export default PdfDownloadItem;
+const mapStateToProps = (state) => ({
+  numUnits: state.units.length,
+});
+
+export default connect(mapStateToProps)(PdfDownloadItem);
