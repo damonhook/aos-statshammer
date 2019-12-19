@@ -57,7 +57,7 @@ const PdfGenerator = ({ units, results, modifiers }) => {
   const refCallback = useCallback(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000); // Wait for recharts to finish drawing
+    }, 2500); // Wait for recharts to finish drawing
   }, []);
   const [ref] = useRefCallback(refCallback);
 
