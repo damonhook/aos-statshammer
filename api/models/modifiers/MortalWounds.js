@@ -46,7 +46,7 @@ export default class MortalWounds extends BaseModifier {
     return numHits;
   }
 
-  getMortalWounds() {
-    return this.mortalWounds.average;
+  getMortalWounds(roll = false) {
+    return roll ? this.mortalWounds.roll() : this.mortalWounds.average;
   }
 }

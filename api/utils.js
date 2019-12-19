@@ -14,3 +14,12 @@ export const getRandomInt = (min, max) => {
  * @param {int[]} array The array of values
  */
 export const getMean = (array) => (array.reduce((acc, n) => acc + n, 0) / array.length);
+
+
+/**
+ * Get the various stats metrics for an array of values
+ * @param {int[]} array The array of values
+ */
+export const getMetrics = (array) => ({
+  mean: getMean(array),
+});

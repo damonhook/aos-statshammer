@@ -30,9 +30,10 @@ class WeaponProfile {
   /**
    * Get the number of attacks for the profile
    * @param {bool} unmodified Whether you want the unmodified characteristic or not
+   * @param {bool} roll Whether the roll or use average
    */
-  getAttacks(unmodified = false) {
-    let attacks = this.attacks.average;
+  getAttacks(unmodified = false, roll = false) {
+    let attacks = roll ? this.attacks.roll() : this.attacks.average;
     if (!unmodified) attacks += this.resolveStackableModifier(m.BONUS, C.ATTACKS);
     return Math.max(attacks, 1);
   }
@@ -70,9 +71,10 @@ class WeaponProfile {
   /**
    * Get the damage for the profile
    * @param {bool} unmodified Whether you want the unmodified characteristic or not
+   * @param {bool} roll Whether the roll or use average
    */
-  getDamage(unmodified = false) {
-    let damage = this.damage.average;
+  getDamage(unmodified = false, roll = false) {
+    let damage = roll ? this.damage.roll() : this.damage.average;
     if (!unmodified) damage += this.resolveStackableModifier(m.BONUS, C.DAMAGE);
     return Math.max(damage, 1);
   }

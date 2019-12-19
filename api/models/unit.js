@@ -1,5 +1,6 @@
 import WeaponProfile from './weaponProfile';
 import Simulation from '../processors/simulation';
+import { getMetrics } from '../utils';
 
 /**
  * A class representing a single unit
@@ -33,10 +34,18 @@ class Unit {
     return this.weaponProfiles.reduce((acc, profile) => (acc + profile.averageDamage(target)), 0);
   }
 
-  runSimulations(target) {
-    const sim = new Simulation(this.weaponProfiles[0], target);
-    // console.log(sim.runSimulations(3));
-    return sim.runSimulations(1);
+  runSimulations(target, numSimulations = 1000) {
+    const results = [...Array(numSimulations)].map(() => (
+      this.weaponProfiles.reduce((acc, profile) => {
+        const sim = new Simulation(profile, target);
+        const simResult = sim.simulate();
+        return acc + simResult;
+      }, 0)
+    ));
+    return {
+      results,
+      metrics: getMetrics(results),
+    };
   }
 }
 
