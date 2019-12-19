@@ -42,8 +42,21 @@ class Unit {
         return acc + simResult;
       }, 0)
     ));
+
+    let buckets = results.reduce((acc, n) => {
+      acc[n] = acc[n] ? acc[n] + 1 : 1;
+      return acc;
+    }, {});
+
+    buckets = Object.keys(buckets).sort((x, y) => x - y).map((damage) => ({
+      damage,
+      count: buckets[damage],
+      probability: buckets[damage] / numSimulations,
+    }));
+
     return {
       results,
+      buckets,
       metrics: getMetrics(results),
     };
   }

@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 
 import { getModifiers } from './api/controllers/modifiersController';
-import { compareUnits } from './api/controllers/statsController';
+import { compareUnits, simulateUnits } from './api/controllers/statsController';
 
 
 const app = express();
@@ -20,6 +20,10 @@ app.get('/api/modifiers', (req, res) => {
 
 app.post('/api/compare', (req, res) => {
   res.send(compareUnits(req.body));
+});
+
+app.post('/api/simulate', (req, res) => {
+  res.send(simulateUnits(req.body));
 });
 
 if (process.env.NODE_ENV === 'production') {

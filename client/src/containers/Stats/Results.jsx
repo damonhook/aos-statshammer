@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { GetApp } from '@material-ui/icons';
 import BetaTag from 'components/BetaTag';
 import ResultsTable from './ResultsTable';
+import SimulateButton from './SimulateButton';
 
 const useStyles = makeStyles({
   results: {
@@ -55,6 +56,7 @@ const Results = React.memo(({ stats, unitNames, className }) => {
             </Button>
           </Link>
         )}
+      <SimulateButton />
     </Typography>
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));

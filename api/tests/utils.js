@@ -10,7 +10,7 @@ export const repeat = (results) => SAVES.map((save, index) => (
   { save, result: results[index] }
 ));
 
-export const assertCloseEnough = (actual, expected, deviation = 0.03) => {
+export const assertCloseEnough = (actual, expected, deviation = 0.05) => {
   const diff = Math.abs(actual - expected);
   const diffDeviation = diff / Math.max(actual, expected);
   assert.equal(
@@ -30,7 +30,7 @@ export const testUnit = (unit, results) => {
 
 export const testSimulation = (unit, results) => {
   repeat(results).forEach(({ save, result }) => {
-    it(`should return correct mean damage (${save} save, ${result} damage, 3% variance)`, () => {
+    it(`should return correct mean damage (${save} save, ${result} damage, 5% variance)`, () => {
       const target = new Target(save);
       assertCloseEnough(unit.runSimulations(target, 3000).metrics.mean, result);
     });
