@@ -39,7 +39,7 @@ const Results = React.memo(({ stats, unitNames, className }) => {
       <Graphs stats={stats} unitNames={unitNames} />
       {!mobile
         && (
-          <Link to="/pdf">
+          <Link to="/pdf" style={{ textDecoration: 'none' }}>
             <Button
               variant="contained"
               color="primary"

@@ -16,7 +16,7 @@ import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
 import { addUnitEnabled } from 'utils/unitHelpers';
 import _ from 'lodash';
-
+import { scrollToRef } from 'utils/scrollIntoView';
 
 const useStyles = makeStyles((theme) => ({
   unit: {
@@ -47,7 +47,7 @@ const Unit = React.memo(({
   const classes = useStyles();
 
   useEffect(() => {
-    if (unitRef.current) unitRef.current.scrollIntoView({ behavior: 'smooth' });
+    scrollToRef(unitRef);
   }, [unit.uuid]);
 
   const handleDeleteUnit = useCallback((id) => {

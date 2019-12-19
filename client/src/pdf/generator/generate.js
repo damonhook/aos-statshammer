@@ -8,6 +8,7 @@ import Cursor from './cursor';
 
 const margin = 20;
 const cursor = new Cursor(margin);
+const headerColor = [51, 171, 159];
 
 const getModifierItems = (modifiers) => {
   const modifierItems = modifiers.map(({ id, options }) => {
@@ -22,7 +23,11 @@ const getModifierItems = (modifiers) => {
   }).filter((item) => item);
   if (modifierItems) {
     return [
-      [{ content: 'Modifiers', colSpan: 6, styles: { halign: 'center', fontStyle: 'bold' } }],
+      [{
+        content: 'Modifiers',
+        colSpan: 6,
+        styles: { halign: 'center', fontStyle: 'bold', fillColor: [240, 240, 240] },
+      }],
       ...modifierItems,
     ];
   }
@@ -62,7 +67,7 @@ const generateUnits = (doc, units) => {
         startY: cursor.pos,
         head,
         body,
-        headStyles: { fillColor: [121, 134, 203] },
+        headStyles: { fillColor: headerColor },
         columnStyles: {
           0: { cellWidth: 85 },
           1: { cellWidth: 85 },
@@ -75,10 +80,10 @@ const generateUnits = (doc, units) => {
         theme: 'grid',
       });
       cursor.pos = doc.previousAutoTable.finalY;
-      cursor.incr(doc.internal.getLineHeight() + 20);
+      cursor.incr(doc.internal.getLineHeight() - 5);
     });
+    cursor.incr(25);
   });
-  cursor.incr(doc.internal.getLineHeight());
 };
 
 const transposeData = (unitNames, results) => unitNames.reduce((acc, name) => {
@@ -108,7 +113,7 @@ const generateStatsTable = (doc, results, unitNames) => {
     body: data.map((row) => (
       transformRow(row)
     )),
-    headStyles: { fillColor: [121, 134, 203] },
+    headStyles: { fillColor: headerColor },
     columnStyles: {
       1: { cellWidth: 40 },
       2: { cellWidth: 40 },
@@ -137,10 +142,11 @@ const generate = (graphClassName, units, results, modifiers, unitNames) => {
   doc.text('AoS Statshammer Report', doc.internal.pageSize.getWidth() / 2, cursor.pos, { align: 'center' });
   cursor.incr(20);
   doc.line(margin, cursor.pos, doc.internal.pageSize.getWidth() - (margin * 2), cursor.pos);
-  cursor.incr(doc.internal.getLineHeight() + 10);
-  doc.setFontSize(14);
-  doc.text('Units', doc.internal.pageSize.getWidth() / 2, cursor.pos, { align: 'center' });
   cursor.incr(doc.internal.getLineHeight());
+  // cursor.incr(5);
+  // doc.setFontSize(14);
+  // doc.text('Units', doc.internal.pageSize.getWidth() / 2, cursor.pos, { align: 'center' });
+  // cursor.incr(10);
   doc.setFontSize(12);
   generateUnits(doc, units);
   doc.setFontSize(9);

@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import { getModifierById } from 'utils/modifierHelpers';
+import { scrollToRef } from 'utils/scrollIntoView';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
 import { errorReducer } from './reducers';
@@ -44,7 +45,7 @@ const ModifierItem = React.memo(({
   const definition = getModifierById(id);
 
   useEffect(() => {
-    if (itemRef.current) itemRef.current.scrollIntoView({ behavior: 'smooth' });
+    scrollToRef(itemRef);
   }, [index]);
 
   useEffect(() => {
