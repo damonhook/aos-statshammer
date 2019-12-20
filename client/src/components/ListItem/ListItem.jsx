@@ -30,10 +30,10 @@ const useStyles = makeStyles(() => ({
  */
 const ListItem = ({
   children, header, primaryItems, secondaryItems, className, collapsible,
-  loading, loaderDelay, ...other
+  loading, loaderDelay, startCollapsed, ...other
 }) => {
   const classes = useStyles();
-  const [collapsed, setColapsed] = useState(false);
+  const [collapsed, setColapsed] = useState(startCollapsed);
 
   return (
     <Card className={clsx(classes.listItem, className)} {...other}>
@@ -62,6 +62,7 @@ ListItem.defaultProps = {
   collapsible: false,
   loading: false,
   loaderDelay: 500,
+  startCollapsed: false,
 };
 
 ListItem.propTypes = {
@@ -83,6 +84,7 @@ ListItem.propTypes = {
   loading: PropTypes.bool,
   /** Optionally change how long the loader will wait before rendering */
   loaderDelay: PropTypes.number,
+  startCollapsed: PropTypes.bool,
 };
 
 export default ListItem;

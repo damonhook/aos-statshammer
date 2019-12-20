@@ -1,16 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
 import { Grid } from '@material-ui/core';
 import clsx from 'clsx';
 import ListItem from 'components/ListItem';
 import { GraphSkeleton } from 'components/Skeletons';
+import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
   probabilityCurves: {},
   content: {},
-  graphContainer: {
-    height: '250px',
+  graphContainer: ({ numUnits }) => ({
+    height: numUnits >= 3 ? '350px' : '250px',
     marginBottom: theme.spacing(3),
     flexBasis: '50%',
     minWidth: '450px',
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       minWidth: '100%',
     },
-  },
+  }),
   skeleton: {
     padding: theme.spacing(2, 4, 5),
   },
@@ -38,26 +39,34 @@ const getMaxProbability = (probabilities) => (
   )))
 );
 
-const Loadable = ({ children, loading }) => {
-  const classes = useStyles();
+const Loadable = React.memo(({ children, loading, numUnits }) => {
+  const classes = useStyles({ numUnits });
+
   if (loading) {
     return (
       <Grid container spacing={2}>
         {[...Array(6)].map(() => (
           <Grid item className={classes.graphContainer}>
-            <GraphSkeleton series={5} groups={2} height={250} className={classes.skeleton} />
+            <GraphSkeleton
+              series={5}
+              groups={2}
+              height={numUnits >= 3 ? 350 : 250}
+              className={classes.skeleton}
+            />
           </Grid>
         ))}
       </Grid>
     );
   }
   return children;
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
-const ProbabilityCurves = ({
+const ProbabilityCurves = React.memo(({
   pending, probabilities, unitNames, className,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles({ numUnits: unitNames.length });
+  const [firstLoad, setFirstLoad] = useState(true);
+
   let [maxDamage, maxProbability, ticks] = [0, 0, []];
   if (probabilities && probabilities.length) {
     maxDamage = getMaxDamage(probabilities);
@@ -67,6 +76,10 @@ const ProbabilityCurves = ({
 
   const yAxisLabel = useCallback((value) => `${value}%`, []);
 
+  const onAnimationEnd = useCallback(() => {
+    setFirstLoad(false);
+  }, []);
+
   return (
     <ListItem
       className={clsx(classes.probabilityCurves, className)}
@@ -75,7 +88,7 @@ const ProbabilityCurves = ({
       loading={pending}
       loaderDelay={0}
     >
-      <Loadable loading={pending}>
+      <Loadable loading={pending} numUnits={unitNames.length}>
         <Grid container spacing={2} className={classes.content}>
           {probabilities.map(({ save, buckets }) => (
             <Grid item className={classes.graphContainer}>
@@ -83,6 +96,7 @@ const ProbabilityCurves = ({
                 title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
                 data={buckets}
                 series={unitNames}
+                isAnimationActive={firstLoad}
                 xAxis={{
                   domain: [0, maxDamage],
                   type: 'number',
@@ -97,6 +111,7 @@ const ProbabilityCurves = ({
                 yAxisLabel={{
                   value: 'Probability (%)',
                 }}
+                onAnimationEnd={onAnimationEnd}
               />
             </Grid>
           ))}
@@ -104,6 +119,6 @@ const ProbabilityCurves = ({
       </Loadable>
     </ListItem>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 export default ProbabilityCurves;

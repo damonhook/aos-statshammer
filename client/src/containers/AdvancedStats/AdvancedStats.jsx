@@ -5,8 +5,11 @@ import { fetchSimulations } from 'api';
 import { bindActionCreators } from 'redux';
 import AppBar from 'components/AppBar';
 import _ from 'lodash';
+import Footer from 'components/Footer';
+import Tabbed from 'components/Tabbed';
 import MetricsTables from './MetricsTables';
 import ProbabilityCurves from './ProbabilityCurves';
+import ProbabilityTables from './ProbabilityTables';
 
 const applyResultsMapping = (mapping, results, fixedKey = 'save') => (
   results.map((result) => Object.keys(result).reduce((acc, key) => {
@@ -24,34 +27,29 @@ const applyProbabilitiesMapping = (mapping, results) => (
 );
 
 const useStyles = makeStyles((theme) => ({
-  wrapper: {
+  app: {
+    fontFamily: '"Roboto", sans-serif',
+    minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
     background: theme.palette.background.default,
   },
-  inner: {
-    flex: 1,
-    width: '90%',
+  container: {
     display: 'flex',
-    flexDirection: 'column',
-    margin: theme.spacing(2),
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    [theme.breakpoints.down('sm')]: {
-      width: '95%',
-    },
+    flex: 1,
   },
-  item: {
-    marginBottom: '1em',
-    display: 'flex',
-    flex: 1,
-    maxWidth: '100%',
-    marginRight: theme.spacing(2),
-    '&:last-child': {
-      marginRight: 0,
-    },
+  tabs: {
+    marginTop: 0,
+    maxWidth: '100vw',
+  },
+  tab: {
+    padding: theme.spacing(2),
+    maxWidth: '1366px',
+    margin: '0 auto',
+
     [theme.breakpoints.down('sm')]: {
-      marginRight: 0,
+      maxWidth: '100%',
+      padding: theme.spacing(1),
     },
   },
 }));
@@ -74,46 +72,51 @@ const AdvancedStats = React.memo(({
 
 
   useEffect(() => {
-    if (simulations && !simulations.pending) {
+    if (!simulations.pending) {
       if (simulations.results && simulations.results.length) {
         const mappedResults = applyResultsMapping(nameMapping, simulations.results);
         setResults(mappedResults);
       }
       if (simulations.probabilities && simulations.probabilities.length) {
-        const mappedProbabilities = applyProbabilitiesMapping(nameMapping, simulations.probabilities);
+        const mappedProbabilities = applyProbabilitiesMapping(
+          nameMapping, simulations.probabilities,
+        );
         setProbabilities(mappedProbabilities);
       }
     }
-  }, [nameMapping, simulations, simulations.probabilities, simulations.results]);
-
-  // if (simulations.pending) {
-  //   return null;
-  // }
-  // if (!results || !results.length || !probabilities || !probabilities.length) {
-  //   return null;
-  // }
+  }, [nameMapping, simulations.pending, simulations.probabilities, simulations.results]);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.app}>
       <AppBar title="AoS Statshammer" />
-      <div className={classes.inner}>
-        <div className={classes.item}>
-          <ProbabilityCurves
-            pending={simulations.pending}
-            probabilities={probabilities}
-            unitNames={unitNames}
-            className={classes.item}
-          />
-        </div>
-        <div className={classes.item}>
-          <MetricsTables
-            pending={simulations.pending}
-            results={results}
-            unitNames={unitNames}
-            className={classes.item}
-          />
-        </div>
+      <div className={classes.container}>
+        <Tabbed
+          className={classes.tabs}
+          tabNames={['Probability', 'Metrics']}
+          tabContent={[
+            <div className={classes.tab}>
+              <ProbabilityCurves
+                pending={simulations.pending}
+                probabilities={probabilities}
+                unitNames={unitNames}
+              />
+              <ProbabilityTables
+                pending={simulations.pending}
+                probabilities={probabilities}
+                unitNames={unitNames}
+              />
+            </div>,
+            <div className={classes.tab}>
+              <MetricsTables
+                pending={simulations.pending}
+                results={results}
+                unitNames={unitNames}
+              />
+            </div>,
+          ]}
+        />
       </div>
+      <Footer />
     </div>
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));

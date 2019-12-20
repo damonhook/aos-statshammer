@@ -63,7 +63,7 @@ export const fetchSimulations = () => async (dispatch) => {
         name: unit.uuid,
         weapon_profiles: unit.weapon_profiles.filter((profile) => profile.active),
       })),
-      numSimulations: 3000,
+      numSimulations: 5000,
     };
     const request = await fetch('/api/simulate', {
       method: 'POST',

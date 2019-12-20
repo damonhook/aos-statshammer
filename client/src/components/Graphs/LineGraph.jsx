@@ -18,6 +18,7 @@ const useStyles = makeStyles(() => ({
  */
 const LineGraph = ({
   data, series, className, isAnimationActive, title, syncId, xAxis, yAxis, xAxisLabel, yAxisLabel,
+  onAnimationEnd,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -61,11 +62,12 @@ const LineGraph = ({
             type="monotone"
             dataKey={key}
             stroke={theme.palette.graphs.series[index]}
-            dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: 2 }}
-            activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 5 }}
+            dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: 1 }}
+            activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 4 }}
             key={key}
             isAnimationActive={isAnimationActive}
             connectNulls
+            onAnimationEnd={onAnimationEnd}
           />
         ))}
       </LineChart>

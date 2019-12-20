@@ -19,16 +19,21 @@ const useStyles = makeStyles((theme) => ({
   table: {
     background: theme.palette.background.nested,
   },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    zIndex: 11,
+    backgroundColor: theme.palette.background.nested,
+  },
 }));
 
-const MetricsTables = ({
-  pending, results, unitNames, className,
+const ProbabilityTables = ({
+  pending, probabilities, unitNames, className,
 }) => {
   const classes = useStyles();
-
   return (
     <ListItem
-      header="Metrics"
+      header="Probability Tables"
       className={className}
       collapsible
       startCollapsed
@@ -36,39 +41,34 @@ const MetricsTables = ({
       loaderDelay={0}
     >
       <Grid container spacing={2} className={classes.metricsContainer}>
-        {(results || []).map(({ save, ...unitData }) => {
+        {(probabilities || []).map(({ save, buckets }) => {
           const saveString = save !== 'None' ? `${save}+` : '-';
           return (
             <Grid item className={classes.tableContainer}>
               <Typography variant="h6" className={classes.tableTitle}>
-                {`Metrics against ${saveString} save`}
+                {`Probability against ${saveString} save`}
               </Typography>
               <Paper className={classes.table}>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Unit Name</TableCell>
-                      <TableCell>Mean</TableCell>
-                      <TableCell>Var.</TableCell>
-                      <TableCell>Std. Dev.</TableCell>
+                      <TableCell className={classes.sticky}>Damage</TableCell>
+                      {unitNames.map((name) => (
+                        <TableCell>{name}</TableCell>
+                      ))}
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {Object.keys(unitData).map((k) => {
-                      const { metrics } = unitData[k];
-                      return (
-                        <TableRow>
-                          <TableCell>{k}</TableCell>
-                          <TableCell>{metrics.mean.toFixed(2)}</TableCell>
-                          <TableCell>{Math.abs(metrics.variance).toFixed(2)}</TableCell>
-                          <TableCell>
-                            {metrics.standardDeviation ? (
-                              metrics.standardDeviation.toFixed(2)
-                            ) : '<0.01'}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                    {buckets.map(({ damage, ...unitData }) => (
+                      <TableRow>
+                        <TableCell className={classes.sticky}>{damage}</TableCell>
+                        {unitNames.map((name) => (
+                          unitData[name]
+                            ? <TableCell>{unitData[name].toFixed(2)}</TableCell>
+                            : <TableCell>0.00</TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </Paper>
@@ -80,4 +80,4 @@ const MetricsTables = ({
   );
 };
 
-export default MetricsTables;
+export default ProbabilityTables;

@@ -36,12 +36,12 @@ const buildProbabilities = (results) => results.map(({ save, ...unitResults }) =
   return { save, buckets };
 });
 
-export const simulateUnits = ({ units, numSimulations = 1000 }) => {
+export const simulateUnits = ({ units, numSimulations = 1000, includeOutcomes = false }) => {
   const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
   const results = SAVES.map((save) => {
     const target = new Target(save);
     return unitList.reduce((acc, unit) => {
-      acc[unit.name] = unit.runSimulations(target, numSimulations);
+      acc[unit.name] = unit.runSimulations(target, numSimulations, includeOutcomes);
       return acc;
     }, { save: save ? save.toString() : 'None' });
   });

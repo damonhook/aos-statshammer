@@ -64,6 +64,7 @@ const Tabbed = ({
         index={value}
         onChangeIndex={handleSwipe}
         className={classes.swiper}
+        resistance
       >
         {tabContent.map((content, index) => (
           <TabPanel

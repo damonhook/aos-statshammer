@@ -34,7 +34,7 @@ class Unit {
     return this.weaponProfiles.reduce((acc, profile) => (acc + profile.averageDamage(target)), 0);
   }
 
-  runSimulations(target, numSimulations = 1000) {
+  runSimulations(target, numSimulations = 1000, includeOutcomes = true) {
     const results = [...Array(numSimulations)].map(() => (
       this.weaponProfiles.reduce((acc, profile) => {
         const sim = new Simulation(profile, target);
@@ -54,8 +54,10 @@ class Unit {
       probability: parseFloat(((buckets[damage] * 100) / numSimulations).toFixed(2)),
     }));
 
+    const data = includeOutcomes ? { results } : {};
+
     return {
-      results,
+      ...data,
       buckets,
       metrics: getMetrics(results),
     };
