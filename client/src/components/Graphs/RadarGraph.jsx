@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   RadarChart,
@@ -13,6 +13,9 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import GraphContainer from './GraphContainer';
 import GraphTooltip from './GraphTooltip';
+import {
+  getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
+} from './graphHelpers';
 
 
 const useStyles = makeStyles({
@@ -29,13 +32,15 @@ const RadarGraph = ({
 }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const [opacity, setOpacity] = useState({});
 
-  const formatLegendEntry = (value) => (
-    <span style={{ color: theme.palette.getContrastText(theme.palette.background.paper) }}>
-      {value}
-    </span>
-  );
+  useEffect(() => {
+    setOpacity(getInitOpacity(series));
+  }, [series]);
 
+  const handleMouseEnter = getMouseEnterHandler(opacity, setOpacity);
+  const handleMouseLeave = getMouseLeaveHandler(opacity, setOpacity);
+  const formatLegendEntry = getLegendFormatter(theme, opacity);
   return (
     <GraphContainer className={clsx(classes.graph, className)} title={title}>
       <RadarChart
@@ -48,7 +53,12 @@ const RadarGraph = ({
         <PolarAngleAxis stroke={theme.palette.graphs.axis} {...xAxis} />
         <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={0} {...yAxis} />
         <Tooltip content={<GraphTooltip />} />
-        <Legend formatter={formatLegendEntry} />
+        <Legend
+          formatter={formatLegendEntry}
+          onMouseEnter={handleMouseEnter}
+          onMouseDown={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        />
         {series.map((key, index) => (
           <Radar
             type="monotone"
@@ -56,7 +66,8 @@ const RadarGraph = ({
             stroke={theme.palette.graphs.series[index]}
             fill={theme.palette.graphs.series[index]}
             activeDot={{ stroke: theme.palette.background.paper }}
-            fillOpacity={0.1}
+            fillOpacity={opacity[key] === 1 ? 0.1 : 0}
+            strokeOpacity={opacity[key]}
             key={key}
             isAnimationActive={isAnimationActive}
           />

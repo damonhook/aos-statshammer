@@ -1,33 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, ReferenceLine,
 } from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import GraphContainer from './GraphContainer';
 import GraphTooltip from './GraphTooltip';
-
+import {
+  getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
+} from './graphHelpers';
 
 const useStyles = makeStyles({
   graph: {},
 });
 
-
 /**
  * A bar graph component for the average damage results
  */
 const BarGraph = ({
-  data, series, className, isAnimationActive, title, syncId, xAxis, yAxis, xAxisLabel, yAxisLabel,
+  data, series, className, isAnimationActive, title, syncId, xAxis, yAxis,
+  xAxisLabel, yAxisLabel, referenceLines,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const [opacity, setOpacity] = useState({});
 
-  const formatLegendEntry = (value) => (
-    <span style={{ color: theme.palette.getContrastText(theme.palette.background.paper) }}>
-      {value}
-    </span>
-  );
+  useEffect(() => {
+    setOpacity(getInitOpacity(series));
+  }, [series]);
+
+  const handleMouseEnter = getMouseEnterHandler(opacity, setOpacity);
+  const handleMouseLeave = getMouseLeaveHandler(opacity, setOpacity);
+  const formatLegendEntry = getLegendFormatter(theme, opacity);
 
   return (
     <GraphContainer className={clsx(classes.graph, className)} title={title}>
@@ -56,7 +61,20 @@ const BarGraph = ({
           )}
         </YAxis>
         <Tooltip content={<GraphTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
-        <Legend formatter={formatLegendEntry} />
+        <Legend
+          formatter={formatLegendEntry}
+          onMouseEnter={handleMouseEnter}
+          onMouseDown={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        />
+        {(referenceLines || []).map(({ stroke, dataKey, ...line }) => (
+          <ReferenceLine
+            stroke={stroke || theme.palette.graphs.axis}
+            strokeDasharray="3 3"
+            strokeOpacity={(dataKey && opacity[dataKey] !== null) ? opacity[dataKey] : 1}
+            {...line}
+          />
+        ))}
         {series.map((key, index) => (
           <Bar
             type="monotone"
@@ -64,6 +82,7 @@ const BarGraph = ({
             fill={theme.palette.graphs.series[index]}
             key={key}
             isAnimationActive={isAnimationActive}
+            opacity={opacity[key]}
           />
         ))}
       </BarChart>

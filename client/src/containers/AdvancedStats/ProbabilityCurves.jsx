@@ -27,11 +27,13 @@ const useStyles = makeStyles((theme) => ({
   },
   select: {
     maxWidth: '100%',
-    minWidth: '400px',
     display: 'flex',
     width: '50%',
     margin: theme.spacing(0, 1.5, 4),
     marginLeft: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
   selectInfo: {
     margin: 'auto',
@@ -167,7 +169,7 @@ const ProbabilityCurves = React.memo(({
                     const stroke = unitIndex >= 0 ? (
                       theme.palette.graphs.series[unitIndex]
                     ) : theme.palette.graphs.axis;
-                    return { x: metrics[activeMetric][name], stroke };
+                    return { x: metrics[activeMetric][name], stroke, dataKey: name };
                   })
                   : null}
               />

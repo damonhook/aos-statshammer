@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, ReferenceLine,
@@ -7,7 +7,9 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import GraphContainer from './GraphContainer';
 import GraphTooltip from './GraphTooltip';
-
+import {
+  getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
+} from './graphHelpers';
 
 const useStyles = makeStyles(() => ({
   graph: {},
@@ -22,12 +24,15 @@ const LineGraph = ({
 }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const [opacity, setOpacity] = useState({});
 
-  const formatLegendEntry = (value) => (
-    <span style={{ color: theme.palette.getContrastText(theme.palette.background.paper) }}>
-      {value}
-    </span>
-  );
+  useEffect(() => {
+    setOpacity(getInitOpacity(series));
+  }, [series]);
+
+  const handleMouseEnter = getMouseEnterHandler(opacity, setOpacity);
+  const handleMouseLeave = getMouseLeaveHandler(opacity, setOpacity);
+  const formatLegendEntry = getLegendFormatter(theme, opacity);
 
   return (
     <GraphContainer className={clsx(classes.graph, className)} title={title}>
@@ -56,11 +61,17 @@ const LineGraph = ({
           )}
         </YAxis>
         <Tooltip content={<GraphTooltip />} />
-        <Legend formatter={formatLegendEntry} />
-        {(referenceLines || []).map(({ stroke, dashed, ...line }) => (
+        <Legend
+          formatter={formatLegendEntry}
+          onMouseEnter={handleMouseEnter}
+          onMouseDown={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        />
+        {(referenceLines || []).map(({ stroke, dataKey, ...line }) => (
           <ReferenceLine
             stroke={stroke || theme.palette.graphs.axis}
             strokeDasharray="3 3"
+            strokeOpacity={(dataKey && opacity[dataKey] !== null) ? opacity[dataKey] : 1}
             {...line}
           />
         ))}
@@ -75,6 +86,7 @@ const LineGraph = ({
             isAnimationActive={isAnimationActive}
             connectNulls
             onAnimationEnd={onAnimationEnd}
+            opacity={opacity[key]}
           />
         ))}
       </LineChart>
