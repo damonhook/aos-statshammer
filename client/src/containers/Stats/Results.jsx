@@ -6,7 +6,7 @@ import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import Graphs from 'containers/Graphs';
 import { Link } from 'react-router-dom';
-import { GetApp } from '@material-ui/icons';
+import { GetApp, BarChart } from '@material-ui/icons';
 import BetaTag from 'components/BetaTag';
 import ResultsTable from './ResultsTable';
 import SimulateButton from './SimulateButton';
@@ -56,7 +56,19 @@ const Results = React.memo(({ stats, unitNames, className }) => {
             </Button>
           </Link>
         )}
-      <SimulateButton />
+      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+      <Link to="/advanced-stats" style={{ textDecoration: 'none' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          startIcon={<BarChart />}
+          disabled={downloadDisabled}
+          style={{ marginTop: theme.spacing(1) }}
+        >
+          Advanced Stats
+        </Button>
+      </Link>
     </Typography>
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));

@@ -75,7 +75,7 @@ export const fetchSimulations = () => async (dispatch) => {
     });
 
     const res = await request.json();
-    dispatch(fetchSimulationsSuccess(res.results));
+    dispatch(fetchSimulationsSuccess(res.results, res.probabilities));
   } catch (error) {
     dispatch(fetchSimulationsError(error));
     dispatch(addNotification({ message: 'Failed to fetch simulations', variant: 'error' }));

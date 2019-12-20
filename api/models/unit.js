@@ -51,7 +51,7 @@ class Unit {
     buckets = Object.keys(buckets).sort((x, y) => x - y).map((damage) => ({
       damage,
       count: buckets[damage],
-      probability: buckets[damage] / numSimulations,
+      probability: parseFloat(((buckets[damage] * 100) / numSimulations).toFixed(2)),
     }));
 
     return {

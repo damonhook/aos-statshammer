@@ -22,6 +22,19 @@ export const compareUnits = ({ units }) => {
   };
 };
 
+const buildProbabilities = (results) => results.map(({ save, ...unitResults }) => {
+  const probabilities = {};
+  Object.keys(unitResults).forEach((name) => {
+    unitResults[name].buckets.forEach(({ damage, probability }) => {
+      if (probabilities[damage] == null) probabilities[damage] = {};
+      probabilities[damage][name] = probability;
+    });
+  });
+  const buckets = Object.keys(probabilities).sort((x, y) => x - y).map((damage) => ({
+    damage, ...probabilities[damage],
+  }));
+  return { save, buckets };
+});
 
 export const simulateUnits = ({ units, numSimulations = 1000 }) => {
   const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
@@ -32,9 +45,11 @@ export const simulateUnits = ({ units, numSimulations = 1000 }) => {
       return acc;
     }, { save: save ? save.toString() : 'None' });
   });
+  const probabilities = buildProbabilities(results);
 
   return {
     results,
+    probabilities,
     units: unitList,
   };
 };

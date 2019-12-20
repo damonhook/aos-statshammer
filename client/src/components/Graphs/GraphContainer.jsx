@@ -25,12 +25,14 @@ const useSyles = makeStyles((theme) => ({
 /**
  * A wrapper for all of the graphs
  */
-const GraphContainer = ({ className, children }) => {
+const GraphContainer = ({ className, title, children }) => {
   const classes = useSyles();
 
   return (
     <div className={clsx(classes.container, className)}>
-      <Typography variant="h6" className={classes.title}>Average Damage</Typography>
+      {title && (
+        <Typography variant="h6" className={classes.title}>{title}</Typography>
+      )}
       <ResponsiveContainer width="98%" className={classes.responsive}>
         {children}
       </ResponsiveContainer>

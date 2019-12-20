@@ -6,12 +6,13 @@ export const fetchSimulationsPending = () => ({
   type: FETCH_SIMULATIONS_PENDING,
 });
 
-export const fetchSimulationsSuccess = (payload) => ({
+export const fetchSimulationsSuccess = (results, probabilities) => ({
   type: FETCH_SIMULATIONS_SUCCESS,
-  payload,
+  results,
+  probabilities,
 });
 
 export const fetchSimulationsError = (error) => ({
   type: FETCH_SIMULATIONS_ERROR,
-  payload: { error },
+  error,
 });

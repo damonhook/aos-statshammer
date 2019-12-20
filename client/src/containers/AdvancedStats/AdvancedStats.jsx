@@ -4,15 +4,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import { fetchSimulations } from 'api';
 import { bindActionCreators } from 'redux';
 import AppBar from 'components/AppBar';
+import _ from 'lodash';
 import MetricsTables from './MetricsTables';
+import ProbabilityCurves from './ProbabilityCurves';
 
-const applyMapping = (mapping, results) => (
+const applyResultsMapping = (mapping, results, fixedKey = 'save') => (
   results.map((result) => Object.keys(result).reduce((acc, key) => {
-    if (key == null || key === 'save') return acc;
+    if (key == null || key === fixedKey) return acc;
     const name = mapping[key];
     if (name) acc[name] = result[key];
     return acc;
-  }, { save: result.save }))
+  }, { [fixedKey]: result[fixedKey] }))
+);
+
+const applyProbabilitiesMapping = (mapping, results) => (
+  results.map(({ save, buckets }) => ({
+    save, buckets: applyResultsMapping(mapping, buckets, 'damage'),
+  }))
 );
 
 const useStyles = makeStyles((theme) => ({
@@ -26,32 +34,14 @@ const useStyles = makeStyles((theme) => ({
     width: '90%',
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '1366px',
     margin: theme.spacing(2),
     marginLeft: 'auto',
     marginRight: 'auto',
-    [theme.breakpoints.down('md')]: {
-      width: '95%',
-      marginTop: '1em',
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      maxWidth: '100%',
-    },
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-      maxWidth: '2166px',
-      width: '95%',
-    },
   },
   item: {
     marginBottom: '1em',
-    flexGrow: 1,
-    flexBasis: 0,
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: '4em',
-    },
-    overflowX: 'hidden',
+    display: 'flex',
+    flex: 1,
     marginRight: theme.spacing(2),
     '&:last-child': {
       marginRight: 0,
@@ -59,11 +49,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AdvancedStats = ({
-  units, pending, payload, error, fetchSimulations,
+const AdvancedStats = React.memo(({
+  units, simulations, fetchSimulations,
 }) => {
   const classes = useStyles();
   const [results, setResults] = useState(null);
+  const [probabilities, setProbabilities] = useState(null);
 
   const nameMapping = useMemo(() => (
     units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {})
@@ -76,13 +67,22 @@ const AdvancedStats = ({
 
 
   useEffect(() => {
-    if (!pending && payload && payload.length) {
-      const mappedResults = applyMapping(nameMapping, payload);
-      setResults(mappedResults);
+    if (simulations && !simulations.pending) {
+      if (simulations.results && simulations.results.length) {
+        const mappedResults = applyResultsMapping(nameMapping, simulations.results);
+        setResults(mappedResults);
+      }
+      if (simulations.probabilities && simulations.probabilities.length) {
+        const mappedProbabilities = applyProbabilitiesMapping(nameMapping, simulations.probabilities);
+        setProbabilities(mappedProbabilities);
+      }
     }
-  }, [payload, nameMapping, pending]);
+  }, [nameMapping, simulations, simulations.probabilities, simulations.results]);
 
-  if (pending || !payload || !payload.length) {
+  if (simulations.pending) {
+    return null;
+  }
+  if (!results || !results.length || !probabilities || !probabilities.length) {
     return null;
   }
 
@@ -90,21 +90,29 @@ const AdvancedStats = ({
     <div className={classes.wrapper}>
       <AppBar title="AoS Statshammer" />
       <div className={classes.inner}>
-        <MetricsTables
-          pending={pending}
-          results={results}
-          unitNames={unitNames}
-          className={classes.item}
-        />
-        <span className={classes.item}>PLACEHOLDER</span>
+        <div className={classes.item}>
+          <ProbabilityCurves
+            probabilities={probabilities}
+            unitNames={unitNames}
+            className={classes.item}
+          />
+        </div>
+        <div className={classes.item}>
+          <MetricsTables
+            pending={simulations.pending}
+            results={results}
+            unitNames={unitNames}
+            className={classes.item}
+          />
+        </div>
       </div>
     </div>
   );
-};
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 const mapStateToProps = (state) => ({
   units: state.units,
-  ...state.simulations,
+  simulations: state.simulations,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({

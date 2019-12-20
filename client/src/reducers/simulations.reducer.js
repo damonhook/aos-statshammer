@@ -4,7 +4,8 @@ import {
 
 const INITIAL_SIMULATIONS = {
   pending: false,
-  payload: null,
+  results: null,
+  probabilities: null,
   error: null,
 };
 
@@ -20,14 +21,15 @@ const simulationsReducer = (state = INITIAL_SIMULATIONS, action) => {
       return {
         ...state,
         pending: false,
-        payload: action.payload,
+        results: action.results,
+        probabilities: action.probabilities,
         error: null,
       };
     case FETCH_SIMULATIONS_ERROR:
       return {
         ...state,
         pending: false,
-        error: action.payload.error,
+        error: action.error,
       };
     default:
       return state;
