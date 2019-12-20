@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar as Bar, Toolbar, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import AppMenu from './AppMenu';
-
 
 const useStyles = makeStyles((theme) => ({
   appBar: {},
@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     padding: theme.spacing(2, 0),
+  },
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.getContrastText(theme.palette.primary.main),
   },
 }));
 
@@ -26,9 +30,11 @@ const AppBar = ({ title }) => {
   return (
     <Bar position="static" className={classes.appBar}>
       <Toolbar variant="dense" className={classes.toolbar}>
-        <Typography variant="h5" component="h1" className={classes.title}>
-          {title}
-        </Typography>
+        <Link to="/" className={classes.link}>
+          <Typography variant="h5" component="h1" className={classes.title}>
+            {title}
+          </Typography>
+        </Link>
         <AppMenu />
       </Toolbar>
     </Bar>

@@ -37,13 +37,20 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2),
     marginLeft: 'auto',
     marginRight: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '95%',
+    },
   },
   item: {
     marginBottom: '1em',
     display: 'flex',
     flex: 1,
+    maxWidth: '100%',
     marginRight: theme.spacing(2),
     '&:last-child': {
+      marginRight: 0,
+    },
+    [theme.breakpoints.down('sm')]: {
       marginRight: 0,
     },
   },
@@ -53,8 +60,8 @@ const AdvancedStats = React.memo(({
   units, simulations, fetchSimulations,
 }) => {
   const classes = useStyles();
-  const [results, setResults] = useState(null);
-  const [probabilities, setProbabilities] = useState(null);
+  const [results, setResults] = useState([]);
+  const [probabilities, setProbabilities] = useState([]);
 
   const nameMapping = useMemo(() => (
     units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {})
@@ -79,12 +86,12 @@ const AdvancedStats = React.memo(({
     }
   }, [nameMapping, simulations, simulations.probabilities, simulations.results]);
 
-  if (simulations.pending) {
-    return null;
-  }
-  if (!results || !results.length || !probabilities || !probabilities.length) {
-    return null;
-  }
+  // if (simulations.pending) {
+  //   return null;
+  // }
+  // if (!results || !results.length || !probabilities || !probabilities.length) {
+  //   return null;
+  // }
 
   return (
     <div className={classes.wrapper}>
@@ -92,6 +99,7 @@ const AdvancedStats = React.memo(({
       <div className={classes.inner}>
         <div className={classes.item}>
           <ProbabilityCurves
+            pending={simulations.pending}
             probabilities={probabilities}
             unitNames={unitNames}
             className={classes.item}

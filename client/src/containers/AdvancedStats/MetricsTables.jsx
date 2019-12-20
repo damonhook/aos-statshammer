@@ -7,16 +7,10 @@ import ListItem from 'components/ListItem';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {},
-  metricsContainer: {
-    // display: 'flex',
-    // flexWrap: 'wrap',
-    // margin: 'auto',
-    // justifyContent: 'center',
-  },
+  metricsContainer: {},
   tableContainer: {
-    // margin: theme.spacing(0, 1, 5),
     flexGrow: 1,
-    flexBasis: '20%',
+    flexBasis: '33%',
   },
   tableTitle: {
     paddingBottom: theme.spacing(0, 0, 1),

@@ -4,6 +4,7 @@ import { LineGraph } from 'components/Graphs';
 import { Grid } from '@material-ui/core';
 import clsx from 'clsx';
 import ListItem from 'components/ListItem';
+import { GraphSkeleton } from 'components/Skeletons';
 
 const useStyles = makeStyles((theme) => ({
   probabilityCurves: {},
@@ -14,6 +15,12 @@ const useStyles = makeStyles((theme) => ({
     flexBasis: '50%',
     minWidth: '450px',
     flex: 1,
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '100%',
+    },
+  },
+  skeleton: {
+    padding: theme.spacing(2, 4, 5),
   },
 }));
 
@@ -31,10 +38,33 @@ const getMaxProbability = (probabilities) => (
   )))
 );
 
-const ProbabilityCurves = ({ probabilities, unitNames, className }) => {
+const Loadable = ({ children, loading }) => {
   const classes = useStyles();
-  const maxDamage = getMaxDamage(probabilities);
-  const maxProbability = getMaxProbability(probabilities);
+  if (loading) {
+    return (
+      <Grid container spacing={2}>
+        {[...Array(6)].map(() => (
+          <Grid item className={classes.graphContainer}>
+            <GraphSkeleton series={5} groups={2} height={250} className={classes.skeleton} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+  return children;
+};
+
+const ProbabilityCurves = ({
+  pending, probabilities, unitNames, className,
+}) => {
+  const classes = useStyles();
+  let [maxDamage, maxProbability, ticks] = [0, 0, []];
+  if (probabilities && probabilities.length) {
+    maxDamage = getMaxDamage(probabilities);
+    maxProbability = getMaxProbability(probabilities);
+    ticks = [...Array(Math.ceil(maxProbability / 10) + 1)].map((_, index) => index * 10);
+  }
+
   const yAxisLabel = useCallback((value) => `${value}%`, []);
 
   return (
@@ -42,32 +72,36 @@ const ProbabilityCurves = ({ probabilities, unitNames, className }) => {
       className={clsx(classes.probabilityCurves, className)}
       header="Probability Curves"
       collapsible
+      loading={pending}
+      loaderDelay={0}
     >
-      <Grid container spacing={2} className={classes.content}>
-        {probabilities.map(({ save, buckets }) => (
-          <Grid item className={classes.graphContainer}>
-            <LineGraph
-              title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
-              data={buckets}
-              series={unitNames}
-              xAxis={{
-                domain: [0, maxDamage],
-                type: 'number',
-                dataKey: 'damage',
-              }}
-              yAxis={{
-                tickFormatter: yAxisLabel,
-                domain: [0, Math.ceil(maxProbability / 10) * 10],
-                type: 'number',
-                ticks: [...Array(Math.ceil(maxProbability / 10) + 1)].map((_, index) => index * 10),
-              }}
-              yAxisLabel={{
-                value: 'Probability (%)',
-              }}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      <Loadable loading={pending}>
+        <Grid container spacing={2} className={classes.content}>
+          {probabilities.map(({ save, buckets }) => (
+            <Grid item className={classes.graphContainer}>
+              <LineGraph
+                title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
+                data={buckets}
+                series={unitNames}
+                xAxis={{
+                  domain: [0, maxDamage],
+                  type: 'number',
+                  dataKey: 'damage',
+                }}
+                yAxis={{
+                  tickFormatter: yAxisLabel,
+                  domain: [0, Math.ceil(maxProbability / 10) * 10],
+                  type: 'number',
+                  ticks,
+                }}
+                yAxisLabel={{
+                  value: 'Probability (%)',
+                }}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Loadable>
     </ListItem>
   );
 };

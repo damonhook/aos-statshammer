@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import { GetApp, BarChart } from '@material-ui/icons';
 import BetaTag from 'components/BetaTag';
 import ResultsTable from './ResultsTable';
-import SimulateButton from './SimulateButton';
 
 const useStyles = makeStyles({
   results: {
