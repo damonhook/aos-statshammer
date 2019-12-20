@@ -24,16 +24,19 @@ export const compareUnits = ({ units }) => {
 
 const buildProbabilities = (results) => results.map(({ save, ...unitResults }) => {
   const probabilities = {};
+  const metrics = { mean: {}, max: {} };
   Object.keys(unitResults).forEach((name) => {
     unitResults[name].buckets.forEach(({ damage, probability }) => {
       if (probabilities[damage] == null) probabilities[damage] = {};
       probabilities[damage][name] = probability;
     });
+    metrics.mean[name] = unitResults[name].metrics.mean;
+    metrics.max[name] = unitResults[name].metrics.max;
   });
   const buckets = Object.keys(probabilities).sort((x, y) => x - y).map((damage) => ({
     damage, ...probabilities[damage],
   }));
-  return { save, buckets };
+  return { save, buckets, metrics };
 });
 
 export const simulateUnits = ({ units, numSimulations = 1000, includeOutcomes = false }) => {

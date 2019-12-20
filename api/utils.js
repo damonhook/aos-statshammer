@@ -11,6 +11,8 @@ export const getRandomInt = (min, max) => {
 
 export const getSum = (array) => array.reduce((acc, n) => acc + n, 0);
 
+export const getMax = (array) => Math.max(...array);
+
 /**
  * Get the mean of an array of values
  * @param {int[]} array The array of values
@@ -30,6 +32,7 @@ export const getStandardDeviation = (array) => Math.sqrt(getSampleVariance(array
  * @param {int[]} array The array of values
  */
 export const getMetrics = (array, decimalPlaces = 3) => ({
+  max: Number(getMax(array)),
   sum: parseFloat(getSum(array).toFixed(decimalPlaces)),
   mean: parseFloat(getMean(array).toFixed(decimalPlaces)),
   variance: parseFloat(getSampleVariance(array).toFixed(decimalPlaces)),

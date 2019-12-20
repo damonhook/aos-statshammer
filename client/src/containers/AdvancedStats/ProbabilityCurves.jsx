@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
-import { Grid } from '@material-ui/core';
+import {
+  Grid, MenuItem, TextField, Typography,
+} from '@material-ui/core';
 import clsx from 'clsx';
 import ListItem from 'components/ListItem';
 import { GraphSkeleton } from 'components/Skeletons';
@@ -23,18 +25,39 @@ const useStyles = makeStyles((theme) => ({
   skeleton: {
     padding: theme.spacing(2, 4, 5),
   },
+  select: {
+    maxWidth: '100%',
+    minWidth: '400px',
+    display: 'flex',
+    width: '50%',
+    margin: theme.spacing(0, 1.5, 4),
+    marginLeft: 'auto',
+  },
+  selectInfo: {
+    margin: 'auto',
+    marginRight: theme.spacing(2),
+  },
+  field: {
+    flex: 1,
+  },
 }));
 
+const REFERENCE_LINE_OPTIONS = {
+  NONE: 'None',
+  MEAN: 'Mean',
+  MAX: 'Max',
+};
+
 const getMaxDamage = (probabilities) => (
-  Math.max(...probabilities.map(({ buckets }) => (
-    Math.max(...buckets.map(({ damage }) => Number(damage)))
+  Math.max(...probabilities.map(({ metrics }) => (
+    Math.max(...Object.values(metrics.max).map((d) => Number(d)))
   )))
 );
 
 const getMaxProbability = (probabilities) => (
   Math.max(...probabilities.map(({ buckets }) => (
     Math.max(...buckets.map(({ damage, ...other }) => (
-      Math.max(...Object.values(other).map((i) => Number(i)))
+      Math.max(...Object.values(other).map((p) => Number(p)))
     )))
   )))
 );
@@ -65,7 +88,9 @@ const ProbabilityCurves = React.memo(({
   pending, probabilities, unitNames, className,
 }) => {
   const classes = useStyles({ numUnits: unitNames.length });
+  const theme = useTheme();
   const [firstLoad, setFirstLoad] = useState(true);
+  const [activeReferenceLine, setActiveReferenceLine] = useState(REFERENCE_LINE_OPTIONS.NONE);
 
   let [maxDamage, maxProbability, ticks] = [0, 0, []];
   if (probabilities && probabilities.length) {
@@ -80,6 +105,15 @@ const ProbabilityCurves = React.memo(({
     setFirstLoad(false);
   }, []);
 
+  let activeMetric = null;
+  if (activeReferenceLine !== REFERENCE_LINE_OPTIONS.NONE) {
+    activeMetric = activeReferenceLine.toLowerCase();
+  }
+
+  const handleReferenceLineChanged = (event) => {
+    setActiveReferenceLine(event.target.value);
+  };
+
   return (
     <ListItem
       className={clsx(classes.probabilityCurves, className)}
@@ -88,9 +122,24 @@ const ProbabilityCurves = React.memo(({
       loading={pending}
       loaderDelay={0}
     >
+      <div className={classes.select}>
+        <Typography className={classes.selectInfo}>Reference Lines:</Typography>
+        <TextField
+          select
+          variant="filled"
+          label="Metric"
+          className={classes.field}
+          value={activeReferenceLine}
+          onChange={handleReferenceLineChanged}
+        >
+          {Object.values(REFERENCE_LINE_OPTIONS).map((option) => (
+            <MenuItem value={option}>{option}</MenuItem>
+          ))}
+        </TextField>
+      </div>
       <Loadable loading={pending} numUnits={unitNames.length}>
         <Grid container spacing={2} className={classes.content}>
-          {probabilities.map(({ save, buckets }) => (
+          {probabilities.map(({ save, buckets, metrics }) => (
             <Grid item className={classes.graphContainer}>
               <LineGraph
                 title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
@@ -112,6 +161,15 @@ const ProbabilityCurves = React.memo(({
                   value: 'Probability (%)',
                 }}
                 onAnimationEnd={onAnimationEnd}
+                referenceLines={activeMetric
+                  ? Object.keys(metrics[activeMetric]).map((name) => {
+                    const unitIndex = unitNames.findIndex((unitName) => unitName === name);
+                    const stroke = unitIndex >= 0 ? (
+                      theme.palette.graphs.series[unitIndex]
+                    ) : theme.palette.graphs.axis;
+                    return { x: metrics[activeMetric][name], stroke };
+                  })
+                  : null}
               />
             </Grid>
           ))}

@@ -17,12 +17,16 @@ const applyResultsMapping = (mapping, results, fixedKey = 'save') => (
     const name = mapping[key];
     if (name) acc[name] = result[key];
     return acc;
-  }, { [fixedKey]: result[fixedKey] }))
+  }, fixedKey ? { [fixedKey]: result[fixedKey] } : {}))
 );
 
 const applyProbabilitiesMapping = (mapping, results) => (
-  results.map(({ save, buckets }) => ({
-    save, buckets: applyResultsMapping(mapping, buckets, 'damage'),
+  results.map(({ save, buckets, metrics }) => ({
+    save,
+    buckets: applyResultsMapping(mapping, buckets, 'damage'),
+    metrics: Object.keys(metrics).reduce((acc, metric) => ({
+      ...acc, [metric]: applyResultsMapping(mapping, [metrics[metric]], null)[0],
+    }), {}),
   }))
 );
 
@@ -92,15 +96,10 @@ const AdvancedStats = React.memo(({
       <div className={classes.container}>
         <Tabbed
           className={classes.tabs}
-          tabNames={['Probability', 'Metrics']}
+          tabNames={['Graphs', 'Tables']}
           tabContent={[
             <div className={classes.tab}>
               <ProbabilityCurves
-                pending={simulations.pending}
-                probabilities={probabilities}
-                unitNames={unitNames}
-              />
-              <ProbabilityTables
                 pending={simulations.pending}
                 probabilities={probabilities}
                 unitNames={unitNames}
@@ -110,6 +109,11 @@ const AdvancedStats = React.memo(({
               <MetricsTables
                 pending={simulations.pending}
                 results={results}
+                unitNames={unitNames}
+              />
+              <ProbabilityTables
+                pending={simulations.pending}
+                probabilities={probabilities}
                 unitNames={unitNames}
               />
             </div>,

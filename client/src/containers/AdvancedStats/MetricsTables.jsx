@@ -28,10 +28,9 @@ const MetricsTables = ({
 
   return (
     <ListItem
-      header="Metrics"
+      header="Metric Tables"
       className={className}
       collapsible
-      startCollapsed
       loading={pending}
       loaderDelay={0}
     >
@@ -49,6 +48,7 @@ const MetricsTables = ({
                     <TableRow>
                       <TableCell>Unit Name</TableCell>
                       <TableCell>Mean</TableCell>
+                      <TableCell>Max</TableCell>
                       <TableCell>Var.</TableCell>
                       <TableCell>Std. Dev.</TableCell>
                     </TableRow>
@@ -60,6 +60,7 @@ const MetricsTables = ({
                         <TableRow>
                           <TableCell>{k}</TableCell>
                           <TableCell>{metrics.mean.toFixed(2)}</TableCell>
+                          <TableCell>{metrics.max.toFixed(0)}</TableCell>
                           <TableCell>{Math.abs(metrics.variance).toFixed(2)}</TableCell>
                           <TableCell>
                             {metrics.standardDeviation ? (

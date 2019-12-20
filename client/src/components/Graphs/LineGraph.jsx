@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label,
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, ReferenceLine,
 } from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
  */
 const LineGraph = ({
   data, series, className, isAnimationActive, title, syncId, xAxis, yAxis, xAxisLabel, yAxisLabel,
-  onAnimationEnd,
+  onAnimationEnd, referenceLines,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -57,6 +57,13 @@ const LineGraph = ({
         </YAxis>
         <Tooltip content={<GraphTooltip />} />
         <Legend formatter={formatLegendEntry} />
+        {(referenceLines || []).map(({ stroke, dashed, ...line }) => (
+          <ReferenceLine
+            stroke={stroke || theme.palette.graphs.axis}
+            strokeDasharray="3 3"
+            {...line}
+          />
+        ))}
         {series.map((key, index) => (
           <Line
             type="monotone"
@@ -76,7 +83,6 @@ const LineGraph = ({
 };
 
 LineGraph.defaultProps = {
-  // results: [],
   className: null,
   isAnimationActive: true,
   xAxis: {},
