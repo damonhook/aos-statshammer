@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const REFERENCE_LINE_OPTIONS = {
   NONE: 'None',
   MEAN: 'Mean',
+  MEDIAN: 'Median',
   MAX: 'Max',
 };
 
@@ -93,11 +94,13 @@ const ProbabilityCurves = React.memo(({
   const theme = useTheme();
   const [activeReferenceLine, setActiveReferenceLine] = useState(REFERENCE_LINE_OPTIONS.NONE);
 
-  let [maxDamage, maxProbability, ticks] = [0, 0, []];
+  let [maxDamage, maxProbability, ticks] = [0, 0, null];
   if (probabilities && probabilities.length) {
     maxDamage = getMaxDamage(probabilities);
     maxProbability = getMaxProbability(probabilities);
-    ticks = [...Array(Math.ceil(maxProbability / 10) + 1)].map((_, index) => index * 10);
+    if (maxProbability) {
+      ticks = [...Array(Math.ceil(maxProbability / 10) + 1)].map((_, index) => index * 10);
+    }
   }
 
   const yAxisLabel = useCallback((value) => `${value}%`, []);

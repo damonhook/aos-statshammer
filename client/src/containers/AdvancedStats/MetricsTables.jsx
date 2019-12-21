@@ -48,6 +48,7 @@ const MetricsTables = ({
                     <TableRow>
                       <TableCell>Unit Name</TableCell>
                       <TableCell>Mean</TableCell>
+                      <TableCell>Median</TableCell>
                       <TableCell>Max</TableCell>
                       <TableCell>Var.</TableCell>
                       <TableCell>Std. Dev.</TableCell>
@@ -60,6 +61,7 @@ const MetricsTables = ({
                         <TableRow>
                           <TableCell>{k}</TableCell>
                           <TableCell>{metrics.mean.toFixed(2)}</TableCell>
+                          <TableCell>{metrics.median.toFixed(0)}</TableCell>
                           <TableCell>{metrics.max.toFixed(0)}</TableCell>
                           <TableCell>{Math.abs(metrics.variance).toFixed(2)}</TableCell>
                           <TableCell>
