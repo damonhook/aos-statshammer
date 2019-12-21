@@ -51,7 +51,6 @@ const MetricsTables = ({
                       <TableCell>Median</TableCell>
                       <TableCell>Max</TableCell>
                       <TableCell>Var.</TableCell>
-                      <TableCell>Std. Dev.</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -64,11 +63,6 @@ const MetricsTables = ({
                           <TableCell>{metrics.median.toFixed(0)}</TableCell>
                           <TableCell>{metrics.max.toFixed(0)}</TableCell>
                           <TableCell>{Math.abs(metrics.variance).toFixed(2)}</TableCell>
-                          <TableCell>
-                            {metrics.standardDeviation ? (
-                              metrics.standardDeviation.toFixed(2)
-                            ) : '<0.01'}
-                          </TableCell>
                         </TableRow>
                       );
                     })}
