@@ -22,7 +22,7 @@ const App = ({ config }) => (
         <Route exact path="/" component={AppContentWrapper} />
         <Redirect exact from="/units" to="/" />
         <Route path="/units" component={AppContentWrapper} />
-        <Route exact path="/advanced-stats" component={AdvancedStats} />
+        <Route exact path="/advanced" component={AdvancedStats} />
         <Route exact path="/pdf" component={PdfContainer} />
         <Redirect to="/" />
       </Switch>

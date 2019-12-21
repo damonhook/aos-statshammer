@@ -33,14 +33,22 @@ const RadarGraph = ({
   const classes = useStyles();
   const theme = useTheme();
   const [opacity, setOpacity] = useState({});
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
-    setOpacity(getInitOpacity(series));
-  }, [series]);
+    if (!firstLoad) {
+      setOpacity(getInitOpacity(series));
+    }
+  }, [firstLoad, series]);
 
   const handleMouseEnter = getMouseEnterHandler(opacity, setOpacity);
   const handleMouseLeave = getMouseLeaveHandler(opacity, setOpacity);
   const formatLegendEntry = getLegendFormatter(theme, opacity);
+
+  const handleAnimationEnd = () => {
+    setFirstLoad(false);
+  };
+
   return (
     <GraphContainer className={clsx(classes.graph, className)} title={title}>
       <RadarChart
@@ -70,6 +78,7 @@ const RadarGraph = ({
             strokeOpacity={opacity[key]}
             key={key}
             isAnimationActive={isAnimationActive}
+            onAnimationEnd={handleAnimationEnd}
           />
         ))}
       </RadarChart>

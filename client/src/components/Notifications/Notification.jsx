@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     marginTop: '.5em',
     flex: '1 1 auto',
+    zIndex: theme.zIndex.snackbar,
   },
   content: {
     flexWrap: 'nowrap',

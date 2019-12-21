@@ -49,6 +49,7 @@ const PdfGenerator = ({ units, results, modifiers }) => {
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const unitNames = useMemo(() => units.map(({ name }) => name), [units]);
+  const xAxisFormatter = useCallback((value) => (value === 'None' ? '-' : `${value}+`), []);
 
   const generatePdf = useCallback(() => (
     generate('pdf-copy', units, results, modifiers, unitNames)
@@ -57,7 +58,7 @@ const PdfGenerator = ({ units, results, modifiers }) => {
   const refCallback = useCallback(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000); // Wait for recharts to finish drawing
+    }, 3000); // Wait for recharts to finish drawing
   }, []);
   const [ref] = useRefCallback(refCallback);
 
@@ -84,21 +85,52 @@ const PdfGenerator = ({ units, results, modifiers }) => {
       <ThemeProvider theme={lightTheme}>
         <div className={classes.hidden} ref={ref}>
           <GraphWrapper>
-            <BarGraph isAnimationActive={false} unitNames={unitNames} results={results} />
+            <BarGraph
+              title="Average Damage"
+              isAnimationActive={false}
+              data={results}
+              series={unitNames}
+              xAxis={{
+                dataKey: 'save',
+                tickFormatter: xAxisFormatter,
+              }}
+              yAxisLabel={{
+                value: 'Average Damage',
+                position: 'insideLeft',
+              }}
+            />
           </GraphWrapper>
           <GraphWrapper>
             <div className={classes.graphGroup}>
               <LineGraph
+                title="Average Damage"
                 className={classes.line}
                 isAnimationActive={false}
-                unitNames={unitNames}
-                results={results}
+                data={results}
+                series={unitNames}
+                xAxis={{
+                  dataKey: 'save',
+                  tickFormatter: xAxisFormatter,
+                }}
+                yAxisLabel={{
+                  value: 'Average Damage',
+                  position: 'insideLeft',
+                }}
               />
               <RadarGraph
-                className={classes.radar}
+                title="Average Damage"
+                className={classes.line}
                 isAnimationActive={false}
-                unitNames={unitNames}
-                results={results}
+                data={results}
+                series={unitNames}
+                xAxis={{
+                  dataKey: 'save',
+                  tickFormatter: xAxisFormatter,
+                }}
+                yAxisLabel={{
+                  value: 'Average Damage',
+                  position: 'insideLeft',
+                }}
               />
             </div>
           </GraphWrapper>

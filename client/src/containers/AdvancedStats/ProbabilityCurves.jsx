@@ -91,7 +91,6 @@ const ProbabilityCurves = React.memo(({
 }) => {
   const classes = useStyles({ numUnits: unitNames.length });
   const theme = useTheme();
-  const [firstLoad, setFirstLoad] = useState(true);
   const [activeReferenceLine, setActiveReferenceLine] = useState(REFERENCE_LINE_OPTIONS.NONE);
 
   let [maxDamage, maxProbability, ticks] = [0, 0, []];
@@ -102,10 +101,6 @@ const ProbabilityCurves = React.memo(({
   }
 
   const yAxisLabel = useCallback((value) => `${value}%`, []);
-
-  const onAnimationEnd = useCallback(() => {
-    setFirstLoad(false);
-  }, []);
 
   let activeMetric = null;
   if (activeReferenceLine !== REFERENCE_LINE_OPTIONS.NONE) {
@@ -147,11 +142,11 @@ const ProbabilityCurves = React.memo(({
                 title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
                 data={buckets}
                 series={unitNames}
-                isAnimationActive={firstLoad}
                 xAxis={{
                   domain: [0, maxDamage],
                   type: 'number',
                   dataKey: 'damage',
+                  tickCount: 10,
                 }}
                 yAxis={{
                   tickFormatter: yAxisLabel,
@@ -162,7 +157,6 @@ const ProbabilityCurves = React.memo(({
                 yAxisLabel={{
                   value: 'Probability (%)',
                 }}
-                onAnimationEnd={onAnimationEnd}
                 referenceLines={activeMetric
                   ? Object.keys(metrics[activeMetric]).map((name) => {
                     const unitIndex = unitNames.findIndex((unitName) => unitName === name);

@@ -33,7 +33,7 @@ const GraphContainer = ({ className, title, children }) => {
       {title && (
         <Typography variant="h6" className={classes.title}>{title}</Typography>
       )}
-      <ResponsiveContainer width="98%" className={classes.responsive}>
+      <ResponsiveContainer width="98%" height="98%" className={classes.responsive}>
         {children}
       </ResponsiveContainer>
     </div>

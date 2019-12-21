@@ -1,13 +1,13 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { Typography, Button, useMediaQuery } from '@material-ui/core';
+import {
+  Typography, Button, useMediaQuery, Tooltip,
+} from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import Graphs from 'containers/Graphs';
-import { Link } from 'react-router-dom';
 import { GetApp, BarChart } from '@material-ui/icons';
-import BetaTag from 'components/BetaTag';
 import ResultsTable from './ResultsTable';
 
 const useStyles = makeStyles({
@@ -30,6 +30,22 @@ const Results = React.memo(({ stats, unitNames, className }) => {
 
   return (
     <Typography className={clsx(classes.results, className)} component="div">
+      {!mobile && (
+        <Tooltip title="View more advanced stats (like full probability curves), calculated through simulations">
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            startIcon={<BarChart />}
+            disabled={downloadDisabled}
+            style={{ marginBottom: theme.spacing(2) }}
+            size={mobile ? 'large' : 'medium'}
+            href="/advanced"
+          >
+            Advanced Stats
+          </Button>
+        </Tooltip>
+      )}
       <ListItem
         header="Average Damage Table"
         collapsible
@@ -39,35 +55,19 @@ const Results = React.memo(({ stats, unitNames, className }) => {
         <ResultsTable stats={stats} unitNames={unitNames} />
       </ListItem>
       <Graphs stats={stats} unitNames={unitNames} />
-      {!mobile
-        && (
-          // eslint-disable-next-line jsx-a11y/anchor-is-valid
-          <Link to={downloadDisabled ? '' : '/pdf'} style={{ textDecoration: 'none' }}>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              startIcon={<GetApp />}
-              disabled={downloadDisabled}
-            >
-              Download PDF
-              <BetaTag variant={theme.palette.type} />
-            </Button>
-          </Link>
-        )}
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <Link to="/advanced-stats" style={{ textDecoration: 'none' }}>
+      {!mobile && (
         <Button
+          href="/pdf"
           variant="contained"
           color="primary"
           fullWidth
-          startIcon={<BarChart />}
+          startIcon={<GetApp />}
           disabled={downloadDisabled}
-          style={{ marginTop: theme.spacing(1) }}
+          style={{ marginBottom: theme.spacing(1) }}
         >
-          Advanced Stats
+          Download PDF
         </Button>
-      </Link>
+      )}
     </Typography>
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));

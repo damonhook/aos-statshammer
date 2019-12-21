@@ -34,7 +34,7 @@ class WeaponProfile {
    */
   getAttacks(unmodified = false, roll = false) {
     let attacks = roll ? this.attacks.roll() : this.attacks.average;
-    if (!unmodified) attacks += this.resolveStackableModifier(m.BONUS, C.ATTACKS);
+    if (!unmodified) attacks += this.resolveStackableModifier(m.BONUS, C.ATTACKS, roll);
     return Math.max(attacks, 1);
   }
 
@@ -42,9 +42,9 @@ class WeaponProfile {
    * Get the to hit target for the profile
    * @param {bool} unmodified Whether you want the unmodified characteristic or not
    */
-  getToHit(unmodified = false) {
+  getToHit(unmodified = false, roll = false) {
     let { toHit } = this;
-    if (!unmodified) toHit -= this.resolveStackableModifier(m.BONUS, C.TO_HIT);
+    if (!unmodified) toHit -= this.resolveStackableModifier(m.BONUS, C.TO_HIT, roll);
     return Math.min(Math.max(toHit, 2), 6);
   }
 
@@ -52,9 +52,9 @@ class WeaponProfile {
    * Get the to wound target for the profile
    * @param {bool} unmodified Whether you want the unmodified characteristic or not
    */
-  getToWound(unmodified = false) {
+  getToWound(unmodified = false, roll = false) {
     let { toWound } = this;
-    if (!unmodified) toWound -= this.resolveStackableModifier(m.BONUS, C.TO_WOUND);
+    if (!unmodified) toWound -= this.resolveStackableModifier(m.BONUS, C.TO_WOUND, roll);
     return Math.min(Math.max(toWound, 2), 6);
   }
 
@@ -62,9 +62,9 @@ class WeaponProfile {
    * Get the amount of rend for the profile
    * @param {bool} unmodified Whether you want the unmodified characteristic or not
    */
-  getRend(unmodified = false) {
+  getRend(unmodified = false, roll = false) {
     let { rend } = this;
-    if (!unmodified) rend += this.resolveStackableModifier(m.BONUS, C.REND);
+    if (!unmodified) rend += this.resolveStackableModifier(m.BONUS, C.REND, roll);
     return Math.max(rend, 0);
   }
 
@@ -75,7 +75,7 @@ class WeaponProfile {
    */
   getDamage(unmodified = false, roll = false) {
     let damage = roll ? this.damage.roll() : this.damage.average;
-    if (!unmodified) damage += this.resolveStackableModifier(m.BONUS, C.DAMAGE);
+    if (!unmodified) damage += this.resolveStackableModifier(m.BONUS, C.DAMAGE, roll);
     return Math.max(damage, 1);
   }
 
@@ -84,18 +84,18 @@ class WeaponProfile {
    * @param {Characteritic} characteristic The characteristic to get
    * @param {bool} unmodified Whether you want the unmodified characteristic or not
    */
-  getCharacteristic(characteristic, unmodified = false) {
+  getCharacteristic(characteristic, unmodified = false, roll = false) {
     switch (characteristic) {
       case C.ATTACKS:
-        return this.getAttacks(unmodified);
+        return this.getAttacks(unmodified, roll);
       case C.TO_HIT:
-        return this.getToHit(unmodified);
+        return this.getToHit(unmodified, roll);
       case C.TO_WOUND:
-        return this.getToWound(unmodified);
+        return this.getToWound(unmodified, roll);
       case C.REND:
-        return this.getRend(unmodified);
+        return this.getRend(unmodified, roll);
       case C.DAMAGE:
-        return this.getDamage(unmodified);
+        return this.getDamage(unmodified, roll);
       default:
         return 0;
     }
@@ -237,9 +237,11 @@ class WeaponProfile {
    * @param {BaseModifier} modifier The modifier class to attempt to resolve
    * @param {Characteristic} characteristic The characteristic the modifier must belong to
    */
-  resolveStackableModifier(modifier, characteristic) {
+  resolveStackableModifier(modifier, characteristic, roll = false) {
     const modList = this.modifiers.getStackableModifier(modifier, characteristic);
-    if (modList && modList.length) return modList.reduce((acc, mod) => acc + mod.resolve(this), 0);
+    if (modList && modList.length) {
+      return modList.reduce((acc, mod) => acc + mod.resolve(this, roll), 0);
+    }
     return 0;
   }
 

@@ -1,12 +1,16 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { fetchSimulations } from 'api';
 import { bindActionCreators } from 'redux';
 import AppBar from 'components/AppBar';
 import _ from 'lodash';
 import Footer from 'components/Footer';
 import Tabbed from 'components/Tabbed';
+import BottomNavigation from 'components/BottomNavigation';
+import { useMediaQuery, IconButton } from '@material-ui/core';
+import { Home } from '@material-ui/icons';
+import { useHistory } from 'react-router-dom';
 import MetricsTables from './MetricsTables';
 import ProbabilityCurves from './ProbabilityCurves';
 import ProbabilityTables from './ProbabilityTables';
@@ -62,8 +66,16 @@ const AdvancedStats = React.memo(({
   units, simulations, fetchSimulations,
 }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const history = useHistory();
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [results, setResults] = useState([]);
   const [probabilities, setProbabilities] = useState([]);
+
+  if (units.length <= 0) {
+    history.replace('/');
+  }
 
   const nameMapping = useMemo(() => (
     units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {})
@@ -92,7 +104,7 @@ const AdvancedStats = React.memo(({
 
   return (
     <div className={classes.app}>
-      <AppBar title="AoS Statshammer" />
+      <AppBar title="AoS Statshammer" variant="advanced" />
       <div className={classes.container}>
         <Tabbed
           className={classes.tabs}
@@ -120,6 +132,7 @@ const AdvancedStats = React.memo(({
           ]}
         />
       </div>
+      {mobile && <BottomNavigation activeIndex={1} />}
       <Footer />
     </div>
   );

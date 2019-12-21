@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: '1em',
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: theme.spacing(7),
+    },
   },
   Actions: {
     marginTop: theme.spacing(1),

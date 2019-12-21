@@ -25,14 +25,21 @@ const BarGraph = ({
   const classes = useStyles();
   const theme = useTheme();
   const [opacity, setOpacity] = useState({});
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
-    setOpacity(getInitOpacity(series));
-  }, [series]);
+    if (!firstLoad) {
+      setOpacity(getInitOpacity(series));
+    }
+  }, [firstLoad, series]);
 
   const handleMouseEnter = getMouseEnterHandler(opacity, setOpacity);
   const handleMouseLeave = getMouseLeaveHandler(opacity, setOpacity);
   const formatLegendEntry = getLegendFormatter(theme, opacity);
+
+  const handleAnimationEnd = () => {
+    setFirstLoad(false);
+  };
 
   return (
     <GraphContainer className={clsx(classes.graph, className)} title={title}>
@@ -67,7 +74,7 @@ const BarGraph = ({
           onMouseDown={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         />
-        {(referenceLines || []).map(({ stroke, dataKey, ...line }) => (
+        {referenceLines && (referenceLines || []).map(({ stroke, dataKey, ...line }) => (
           <ReferenceLine
             stroke={stroke || theme.palette.graphs.axis}
             strokeDasharray="3 3"
@@ -83,6 +90,7 @@ const BarGraph = ({
             key={key}
             isAnimationActive={isAnimationActive}
             opacity={opacity[key]}
+            onAnimationEnd={handleAnimationEnd}
           />
         ))}
       </BarChart>

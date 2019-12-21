@@ -29,6 +29,13 @@ const lightTheme = createMuiTheme({
       fontSize: '1rem',
     },
   },
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '0.8rem',
+      },
+    },
+  },
 });
 
 const darkTheme = createMuiTheme({
@@ -63,6 +70,13 @@ const darkTheme = createMuiTheme({
     htmlFontSize: 18,
     h6: {
       fontSize: '1rem',
+    },
+  },
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '0.8rem',
+      },
     },
   },
 });
