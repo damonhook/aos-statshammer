@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Drawer as AppDrawer, List, Typography, Divider, useMediaQuery,
+  SwipeableDrawer as AppDrawer, List, Typography, Divider, useMediaQuery,
 } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Link from 'components/Link';
+import { useHistory } from 'react-router-dom';
 import { grey } from '@material-ui/core/colors';
 import HomeItem from './items/HomeItem';
 import ClearUnitsItem from './items/ClearUnitsItem';
@@ -41,10 +42,16 @@ const Drawer = ({ open, onClose, page }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const history = useHistory();
+
+  const onSwipeOpen = () => {
+    history.push('#menu');
+  };
 
   return (
     <AppDrawer
       open={open}
+      onOpen={onSwipeOpen}
       variant="temporary"
       anchor="left"
       onClose={onClose}
