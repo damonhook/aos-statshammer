@@ -12,7 +12,6 @@ import generate from './generator';
 import PdfLoader from './PdfLoader';
 import GraphWrapper from './GraphWrapper';
 
-
 const useStyles = makeStyles(() => ({
   hidden: {
     width: '100%',

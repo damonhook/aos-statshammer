@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     margin: theme.spacing(0, 1),
+    color: theme.palette.getContrastText(theme.palette.primary.main),
   },
   title: {
     padding: theme.spacing(2, 0),
