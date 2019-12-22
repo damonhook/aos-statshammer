@@ -8,31 +8,12 @@ import _ from 'lodash';
 import Footer from 'components/Footer';
 import Tabbed from 'components/Tabbed';
 import BottomNavigation from 'components/BottomNavigation';
-import { useMediaQuery, IconButton } from '@material-ui/core';
-import { Home } from '@material-ui/icons';
+import { useMediaQuery } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import MetricsTables from './MetricsTables';
 import ProbabilityCurves from './ProbabilityCurves';
 import ProbabilityTables from './ProbabilityTables';
-
-const applyResultsMapping = (mapping, results, fixedKey = 'save') => (
-  results.map((result) => Object.keys(result).reduce((acc, key) => {
-    if (key == null || key === fixedKey) return acc;
-    const name = mapping[key];
-    if (name) acc[name] = result[key];
-    return acc;
-  }, fixedKey ? { [fixedKey]: result[fixedKey] } : {}))
-);
-
-const applyProbabilitiesMapping = (mapping, results) => (
-  results.map(({ save, buckets, metrics }) => ({
-    save,
-    buckets: applyResultsMapping(mapping, buckets, 'damage'),
-    metrics: Object.keys(metrics).reduce((acc, metric) => ({
-      ...acc, [metric]: applyResultsMapping(mapping, [metrics[metric]], null)[0],
-    }), {}),
-  }))
-);
+import { applyProbabilitiesMapping, applyResultsMapping } from './mapping';
 
 const useStyles = makeStyles((theme) => ({
   app: {
