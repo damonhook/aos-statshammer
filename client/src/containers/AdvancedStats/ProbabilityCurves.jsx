@@ -153,6 +153,7 @@ const ProbabilityCurves = React.memo(({
                 yAxisLabel={{
                   value: 'Probability (%)',
                 }}
+                dotSize={1}
                 referenceLines={activeMetric
                   ? Object.keys(metrics[activeMetric]).map((name) => {
                     const unitIndex = unitNames.findIndex((unitName) => unitName === name);

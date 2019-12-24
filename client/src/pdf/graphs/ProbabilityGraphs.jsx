@@ -65,6 +65,7 @@ const ProbabilityGraphs = ({ probabilities, unitNames }) => {
                     value: 'Probability (%)',
                     position: 'insideLeft',
                   }}
+                  dotSize={0}
                 />
               );
             })}
