@@ -72,8 +72,7 @@ const Tabbed = ({
             index={index}
             className={classes.content}
             dir={theme.direction}
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
+            key={tabNames[index]}
           >
             {content}
           </TabPanel>

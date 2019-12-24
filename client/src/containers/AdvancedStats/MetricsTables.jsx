@@ -69,7 +69,7 @@ const MetricsTables = ({
           {(results || []).map(({ save, ...unitData }) => {
             const saveString = save !== 'None' ? `${save}+` : '-';
             return (
-              <Grid item className={classes.tableContainer}>
+              <Grid item className={classes.tableContainer} key={save}>
                 <Typography variant="h6" className={classes.tableTitle}>
                   {`Metrics against ${saveString} save`}
                 </Typography>
@@ -88,7 +88,7 @@ const MetricsTables = ({
                       {Object.keys(unitData).map((k) => {
                         const { metrics } = unitData[k];
                         return (
-                          <TableRow>
+                          <TableRow key={k}>
                             <TableCell>{k}</TableCell>
                             <TableCell>{metrics.mean.toFixed(2)}</TableCell>
                             <TableCell>{metrics.median.toFixed(0)}</TableCell>

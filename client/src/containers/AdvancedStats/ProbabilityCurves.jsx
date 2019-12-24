@@ -126,14 +126,14 @@ const ProbabilityCurves = React.memo(({
           onChange={handleReferenceLineChanged}
         >
           {Object.values(REFERENCE_LINE_OPTIONS).map((option) => (
-            <MenuItem value={option}>{option}</MenuItem>
+            <MenuItem value={option} key={option}>{option}</MenuItem>
           ))}
         </TextField>
       </div>
       <Loadable loading={pending} numUnits={unitNames.length} error={error}>
         <Grid container spacing={2} className={classes.content}>
           {probabilities.map(({ save, buckets, metrics }) => (
-            <Grid item className={classes.graphContainer}>
+            <Grid item className={classes.graphContainer} key={save}>
               <LineGraph
                 title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
                 data={buckets}

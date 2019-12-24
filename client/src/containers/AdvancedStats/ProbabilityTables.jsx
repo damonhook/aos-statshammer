@@ -75,7 +75,7 @@ const ProbabilityTables = ({
           {(probabilities || []).map(({ save, buckets }) => {
             const saveString = save !== 'None' ? `${save}+` : '-';
             return (
-              <Grid item className={classes.tableContainer}>
+              <Grid item className={classes.tableContainer} key={save}>
                 <Typography variant="h6" className={classes.tableTitle}>
                   {`Probability against ${saveString} save`}
                 </Typography>
@@ -85,7 +85,7 @@ const ProbabilityTables = ({
                       <TableRow>
                         <TableCell className={classes.sticky}>Damage</TableCell>
                         {unitNames.map((name) => (
-                          <TableCell>{name}</TableCell>
+                          <TableCell key={name}>{name}</TableCell>
                         ))}
                       </TableRow>
                     </TableHead>
@@ -95,8 +95,8 @@ const ProbabilityTables = ({
                           <TableCell className={classes.sticky}>{damage}</TableCell>
                           {unitNames.map((name) => (
                             unitData[name]
-                              ? <TableCell>{unitData[name].toFixed(2)}</TableCell>
-                              : <TableCell>0.00</TableCell>
+                              ? <TableCell key={name}>{unitData[name].toFixed(2)}</TableCell>
+                              : <TableCell key={name}>0.00</TableCell>
                           ))}
                         </TableRow>
                       ))}
