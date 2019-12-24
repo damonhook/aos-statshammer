@@ -53,28 +53,43 @@ export const fetchModifiers = () => async (dispatch) => {
   }
 };
 
+const fetchSimulationForSave = async (units, save, numSimulations) => {
+  const data = {
+    units: units.map((unit) => ({
+      name: unit.uuid,
+      weapon_profiles: unit.weapon_profiles.filter((profile) => profile.active),
+    })),
+    numSimulations,
+    save,
+  };
+  return fetch('/api/simulate/save', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 export const fetchSimulations = () => async (dispatch) => {
   dispatch(fetchSimulationsPending());
   try {
     const units = getUnits();
     if (!units) dispatch(fetchSimulationsSuccess([]));
-    const data = {
-      units: units.map((unit) => ({
-        name: unit.uuid,
-        weapon_profiles: unit.weapon_profiles.filter((profile) => profile.active),
-      })),
-      numSimulations: 5000,
-    };
-    const request = await fetch('/api/simulate', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    const res = await request.json();
+    const responses = await Promise.all([2, 3, 4, 5, 6, 0].map((save) => (
+      fetchSimulationForSave(units, save, 5000).then((data) => data.json())
+    )));
+    const res = responses.reduce((acc, { results, probabilities }) => ({
+      results: [
+        ...acc.results,
+        results,
+      ],
+      probabilities: [
+        ...acc.probabilities,
+        probabilities,
+      ],
+    }), { results: [], probabilities: [] });
     dispatch(fetchSimulationsSuccess(res.results, res.probabilities));
   } catch (error) {
     dispatch(fetchSimulationsError(error));
