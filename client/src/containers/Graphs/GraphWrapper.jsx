@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GraphSkeleton from 'components/Skeletons/GraphSkeleton';
-import StatsErrorCard from 'components/StatsErrorCard';
+import { StatsErrorCard } from 'components/ErrorCards';
 
 const useStyles = makeStyles((theme) => ({
   loader: {

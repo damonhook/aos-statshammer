@@ -9,7 +9,6 @@ import { setAutoScrollEnabled, scrollToRef } from 'utils/scrollIntoView';
 import DesktopAppContent from './DesktopAppContent';
 import MobileAppContent from './MobileAppContent';
 
-
 const useStyles = makeStyles((theme) => ({
   app: {
     fontFamily: '"Roboto", sans-serif',

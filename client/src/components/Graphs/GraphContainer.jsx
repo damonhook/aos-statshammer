@@ -19,19 +19,22 @@ const useSyles = makeStyles((theme) => ({
   title: {
     textAlign: 'center',
     marginBottom: theme.spacing(1),
+    color: theme.palette.getContrastText(theme.palette.background.paper),
   },
 }));
 
 /**
  * A wrapper for all of the graphs
  */
-const GraphContainer = ({ className, children }) => {
+const GraphContainer = ({ className, title, children }) => {
   const classes = useSyles();
 
   return (
     <div className={clsx(classes.container, className)}>
-      <Typography variant="h6" className={classes.title}>Average Damage</Typography>
-      <ResponsiveContainer width="98%" className={classes.responsive}>
+      {title && (
+        <Typography variant="h6" className={classes.title}>{title}</Typography>
+      )}
+      <ResponsiveContainer width="98%" height="98%" className={classes.responsive}>
         {children}
       </ResponsiveContainer>
     </div>

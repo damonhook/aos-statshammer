@@ -4,6 +4,7 @@ import Units, { AddUnitsFab } from 'containers/Units';
 import Stats, { ExportPdfFab } from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabbed from 'components/Tabbed';
+import BottomNavigation from 'components/BottomNavigation';
 import clsx from 'clsx';
 
 
@@ -43,6 +44,7 @@ const MobileAppContent = ({ className }) => {
 
   return (
     <div className={clsx(classes.mobileContent, className)}>
+      <BottomNavigation activeIndex={0} />
       <Fab activeIndex={activeTab} />
       <Tabbed
         className={classes.tabs}

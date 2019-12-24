@@ -28,4 +28,8 @@ export default class RerollFailed extends BaseModifier {
     );
     return D6.getInverseProbability(activeCharacteristic);
   }
+
+  allowedReroll(owner, roll) {
+    return roll < owner.getCharacteristic(this.characteristic, true);
+  }
 }

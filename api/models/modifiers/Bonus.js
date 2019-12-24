@@ -28,7 +28,7 @@ export default class Bonus extends BaseModifier {
     };
   }
 
-  resolve() {
-    return this.bonus.average;
+  resolve(owner, roll = false) {
+    return roll ? this.bonus.roll() : this.bonus.average;
   }
 }

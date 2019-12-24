@@ -7,7 +7,7 @@ import clsx from 'clsx';
 const useStyles = makeStyles((theme) => ({
   caption: ({ variant }) => ({
     marginLeft: theme.spacing(0.5),
-    paddingBottom: theme.spacing(1),
+    verticalAlign: 'super',
     color: theme.palette.secondary[variant],
   }),
 }));
@@ -24,12 +24,12 @@ const BetaTag = ({ className, variant }) => {
 
 BetaTag.defaultProps = {
   className: null,
-  variant: 'default',
+  variant: 'main',
 };
 
 BetaTag.propTypes = {
   className: PropTypes.string,
-  variant: PropTypes.oneOf(['default', 'light', 'dark']),
+  variant: PropTypes.oneOf(['main', 'light', 'dark']),
 };
 
 export default BetaTag;

@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabbed from 'components/Tabbed';
 import { Paper } from '@material-ui/core';
 import ListItem from 'components/ListItem';
+import { SaveTooltip } from 'components/GraphTooltips';
 import GraphWrapper from './GraphWrapper';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   tabs: {
     margin: '-1em -1em 0',
   },
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const GraphTabbed = ({ stats, unitNames, graphMap }) => {
   const classes = useStyles();
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
+  const xAxisFormatter = useCallback((value) => (value === 'None' ? '-' : `${value}+`), []);
 
   return (
     <ListItem
@@ -44,9 +46,19 @@ const GraphTabbed = ({ stats, unitNames, graphMap }) => {
           >
             <Paper square className={classes.tab}>
               <Graph
+                title="Average Damage"
                 className={classes.content}
-                results={stats.payload}
-                unitNames={unitNames}
+                data={stats.payload}
+                series={unitNames}
+                xAxis={{
+                  dataKey: 'save',
+                  tickFormatter: xAxisFormatter,
+                }}
+                yAxisLabel={{
+                  value: 'Average Damage',
+                  position: 'insideLeft',
+                }}
+                tooltip={<SaveTooltip />}
               />
             </Paper>
           </GraphWrapper>

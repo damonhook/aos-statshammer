@@ -1,57 +1,57 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { fetchStatsCompare, fetchModifiers } from 'api';
+import { fetchStatsCompare, fetchModifiers, fetchSimulations } from 'api';
 import { bindActionCreators } from 'redux';
 import PdfGenerator from 'pdf';
+import { useMapping } from 'hooks';
+import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
+import _ from 'lodash';
 
-const applyMapping = (mapping, results) => (
-  results.map((result) => Object.keys(result).reduce((acc, key) => {
-    if (key == null || key === 'save') return acc;
-    const name = mapping[key];
-    if (name) acc[name] = result[key];
-    return acc;
-  }, { save: result.save }))
-);
-
-const PdfContainer = ({
-  units, statsPending, payload, modifiersPending, modifiers, fetchStatsCompare, fetchModifiers,
+const PdfContainer = React.memo(({
+  units, modifiers, stats, simulations, fetchStatsCompare, fetchModifiers, fetchSimulations,
 }) => {
-  const [results, setResults] = useState(null);
+  const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
+  const resultsMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
+  const simMapper = useCallback(getProbabilitiesMapping(nameMapping), [nameMapping]);
 
-  const nameMapping = useMemo(() => (
-    units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {})
-  ), [units]);
+  const results = useMapping(stats.payload, resultsMapper, stats.pending);
+  const probabilities = useMapping(simulations.probabilities, simMapper, simulations.pending);
 
   useEffect(() => {
     fetchStatsCompare();
     fetchModifiers();
-  }, [fetchStatsCompare, fetchModifiers]);
+    fetchSimulations();
+  }, [fetchStatsCompare, fetchModifiers, fetchSimulations]);
 
-  useEffect(() => {
-    if (!statsPending && payload && payload.length) {
-      const mappedResults = applyMapping(nameMapping, payload);
-      setResults(mappedResults);
-    }
-  }, [statsPending, payload, nameMapping]);
+  const modifiersReady = modifiers.modifiers && modifiers.modifiers.length;
+  const resultsReady = results && results.length;
+  const probabilitiesReady = probabilities && probabilities.length;
 
-  if (!modifiers || !modifiers.length || !results || !results.length) {
-    return null;
+  if (modifiersReady && resultsReady && probabilitiesReady) {
+    return (
+      <PdfGenerator
+        units={units}
+        results={results}
+        modifiers={modifiers.modifiers}
+        probabilities={probabilities}
+      />
+    );
   }
-  return <PdfGenerator units={units} results={results} modifiers={modifiers} />;
-};
+  return null;
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 
 const mapStateToProps = (state) => ({
   units: state.units,
-  statsPending: state.stats.pending,
-  payload: state.stats.payload,
-  modifiersPending: state.modifiers.pending,
-  modifiers: state.modifiers.modifiers,
+  modifiers: state.modifiers,
+  stats: state.stats,
+  simulations: state.simulations,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchStatsCompare,
   fetchModifiers,
+  fetchSimulations,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(PdfContainer);

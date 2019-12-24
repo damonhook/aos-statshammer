@@ -8,21 +8,26 @@ const useStyles = makeStyles((theme) => ({
     width: '1000px',
     height: '100%',
     background: theme.palette.background.paper,
+    // marginBottom: theme.spacing(3),
   },
-  graph: {
-    height: '400px',
-  },
+  graph: (({ height }) => ({
+    height: `${height}px`,
+  })),
 }));
 
-const GraphWrapper = ({ children }) => {
-  const classes = useStyles();
+const GraphWrapper = ({ children, className, height }) => {
+  const classes = useStyles({ height });
   return (
-    <div className={clsx(classes.container, 'pdf-copy')}>
+    <div className={clsx(classes.container, className)}>
       <div className={classes.graph}>
         {children}
       </div>
     </div>
   );
+};
+
+GraphWrapper.defaultProps = {
+  height: 400,
 };
 
 GraphWrapper.propTypes = {

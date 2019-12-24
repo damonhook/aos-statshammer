@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { MenuItem } from '@material-ui/core';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { ImportExport } from '@material-ui/icons';
 import { addUnit } from 'actions/units.action';
 import { connect } from 'react-redux';
@@ -9,26 +8,11 @@ import { addNotification } from 'actions/notifications.action';
 import Uploader from 'components/Uploader';
 import { addUnitEnabled } from 'utils/unitHelpers';
 
-const useStyles = makeStyles((theme) => ({
-  menu: {},
-  icon: {
-    color: theme.palette.primary.contrastText,
-  },
-  caption: {
-    paddingBottom: theme.spacing(1),
-  },
-  menuItemIcon: {
-    marginRight: theme.spacing(1),
-  },
-}));
-
 
 const ImportUnitItem = ({
   // eslint-disable-next-line no-unused-vars
-  numUnits, onClick, addNotification, addUnit,
+  numUnits, addNotification, addUnit, onClick,
 }) => {
-  const classes = useStyles();
-
   /** Is the upload menu item disabled or not */
   const isUploadDisabled = !addUnitEnabled();
 
@@ -38,10 +22,10 @@ const ImportUnitItem = ({
    * */
   const onUnitUpload = useCallback((data) => {
     if (data && data.name && data.weapon_profiles) {
-      onClick();
       addNotification({ message: 'Successfully imported unit', variant: 'success' });
       addUnit(data.name, data.weapon_profiles);
     }
+    if (onClick) onClick();
   }, [addNotification, addUnit, onClick]);
 
   return (
@@ -49,20 +33,24 @@ const ImportUnitItem = ({
       onUpload={onUnitUpload}
       disabled={isUploadDisabled}
       component={(
-        <MenuItem disabled={isUploadDisabled}>
-          <ImportExport className={classes.menuItemIcon} />
-          Import Unit
-        </MenuItem>
+        <ListItem button disabled={isUploadDisabled}>
+          <ListItemIcon><ImportExport /></ListItemIcon>
+          <ListItemText primary="Import Unit" />
+        </ListItem>
       )}
     />
   );
+};
+
+ImportUnitItem.defaultProps = {
+  onClick: null,
 };
 
 ImportUnitItem.propTypes = {
   /** The current number of units. Used to ensure that the item is disabled when limit is reached */
   numUnits: PropTypes.number.isRequired,
   /** A callback function to call when the menu item is clicked */
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   /** A function to call to add a notification to the stack */
   addNotification: PropTypes.func.isRequired,
   /** A function to call to add a new unit */

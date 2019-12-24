@@ -5,7 +5,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import TableSkeleton from 'components/Skeletons/TableSkeleton';
-import StatsErrorCard from 'components/StatsErrorCard';
+import { StatsErrorCard } from 'components/ErrorCards';
 
 
 const useStyles = makeStyles((theme) => ({

@@ -18,7 +18,7 @@ const lightTheme = createMuiTheme({
         '#8884d8',
         '#82ca9d',
         '#ff7300',
-        '#413ea0',
+        teal[400],
         '#f50057',
       ],
     },
@@ -27,6 +27,13 @@ const lightTheme = createMuiTheme({
     htmlFontSize: 18,
     h6: {
       fontSize: '1rem',
+    },
+  },
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '0.8rem',
+      },
     },
   },
 });
@@ -54,7 +61,7 @@ const darkTheme = createMuiTheme({
         '#8884d8',
         '#82ca9d',
         '#ff7300',
-        '#5c6bc0',
+        teal[400],
         '#ff5252',
       ],
     },
@@ -63,6 +70,13 @@ const darkTheme = createMuiTheme({
     htmlFontSize: 18,
     h6: {
       fontSize: '1rem',
+    },
+  },
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '0.8rem',
+      },
     },
   },
 });

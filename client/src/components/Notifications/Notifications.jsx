@@ -6,7 +6,7 @@ import { useMediaQuery } from '@material-ui/core';
 import clsx from 'clsx';
 import Notification from './Notification';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   notifications: {
     position: 'fixed',
     right: 'auto',
@@ -17,9 +17,9 @@ const useStyles = makeStyles({
     left: 0,
     right: 0,
     paddingLeft: 0,
-    paddingBottom: '50px',
+    paddingBottom: theme.spacing(11.5),
   },
-});
+}));
 
 /**
  * A component used to display the current notifications

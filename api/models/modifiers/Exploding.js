@@ -40,7 +40,7 @@ export default class Exploding extends BaseModifier {
     return D6.getProbability(this.on) * this.getExtra();
   }
 
-  getExtra() {
-    return this.extraHits.average;
+  getExtra(roll = false) {
+    return roll ? this.extraHits.roll() : this.extraHits.average;
   }
 }

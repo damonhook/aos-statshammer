@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import nanoid from 'nanoid';
+import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -13,6 +14,7 @@ const useStyles = makeStyles({
  */
 const Uploader = ({ onUpload, disabled, component }) => {
   const classes = useStyles();
+  const id = useMemo(() => nanoid(), []);
 
   const submitFiles = useCallback((files) => {
     if (!files) return;
@@ -31,13 +33,13 @@ const Uploader = ({ onUpload, disabled, component }) => {
       <input
         accept="application/JSON"
         className={classes.input}
-        id="upload-button"
+        id={`upload-button-${id}`}
         type="file"
         // eslint-disable-next-line no-param-reassign
         onChange={(event) => { submitFiles(event.target.files); event.target.value = null; }}
         disabled={disabled}
       />
-      <label htmlFor="upload-button">
+      <label htmlFor={`upload-button-${id}`}>
         {component}
       </label>
     </div>

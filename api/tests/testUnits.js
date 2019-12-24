@@ -7,7 +7,6 @@ import { D6 } from '../models/dice';
 import { testUnit } from './utils';
 import DiceValue from '../models/diceValue';
 
-
 describe('Units', () => {
   describe('Chainrasp Horde', () => {
     const unit = new Unit('Chainrasp Horde', [
@@ -127,7 +126,7 @@ describe('Units', () => {
     testUnit(unit, [13.000, 13.000, 11.074, 9.148, 7.222, 5.296]);
   });
 
-  describe('Plague Monks', () => {
+  describe('Plague Monks (pre Dec 2019 FAQ)', () => {
     const unit = new Unit('Plague Monks', [
       new WeaponProfile(20, 2, 4, 4, 0, 1, [
         new m.REROLL({ characteristic: C.TO_HIT }),

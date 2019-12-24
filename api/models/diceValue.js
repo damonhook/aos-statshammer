@@ -36,6 +36,17 @@ class DiceValue {
     return averageAditions - averageSubtractions;
   }
 
+  /** Roll the this dice value (combination of dice rolls summed with additions) */
+  roll() {
+    const rolledAditions = this.additions.reduce((acc, item) => (
+      (item instanceof Dice) ? acc + item.roll() : acc + Number(item)
+    ), 0);
+    const rolledSubtractions = this.subtractions.reduce((acc, item) => (
+      (item instanceof Dice) ? acc + item.roll() : acc + Number(item)
+    ), 0);
+    return rolledAditions - rolledSubtractions;
+  }
+
   /**
    * Build a `DiceValue` class by parsing a value
    * @param {string|DiceValue|int|float} val The value to parse

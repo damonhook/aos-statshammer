@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import jsPDF from 'jspdf';
+import nanoid from 'nanoid';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
 import { getModifierById } from 'utils/modifierHelpers';
@@ -129,7 +130,28 @@ const generateStatsTable = (doc, results, unitNames) => {
   cursor.incr(20);
 };
 
-const generate = (graphClassName, units, results, modifiers, unitNames) => {
+const addImage = async (doc, element) => {
+  const canvas = await html2canvas(element);
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const imgData = canvas.toDataURL('image/JPEG', 0.75);
+  const imgProps = doc.getImageProperties(imgData);
+  const imgWidth = pageWidth - (margin * 2);
+  const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+  doc.addImage(imgData, 'JPEG', margin, cursor.pos, imgWidth, imgHeight, nanoid(), 'MEDIUM');
+  cursor.incr(imgHeight + 20);
+};
+
+const addGraphs = async (doc, classname) => {
+  const elements = document.getElementsByClassName(classname);
+  for (let i = 0; i < elements.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await addImage(doc, elements[i]);
+  }
+};
+
+const generate = async (
+  units, results, modifiers, unitNames, statsClassName, probabilitiesClassName,
+) => {
   window.html2canvas = html2canvas;
   // eslint-disable-next-line new-cap
   const doc = new jsPDF('p', 'pt', 'a4');
@@ -143,10 +165,6 @@ const generate = (graphClassName, units, results, modifiers, unitNames) => {
   cursor.incr(20);
   doc.line(margin, cursor.pos, doc.internal.pageSize.getWidth() - (margin * 2), cursor.pos);
   cursor.incr(doc.internal.getLineHeight());
-  // cursor.incr(5);
-  // doc.setFontSize(14);
-  // doc.text('Units', doc.internal.pageSize.getWidth() / 2, cursor.pos, { align: 'center' });
-  // cursor.incr(10);
   doc.setFontSize(12);
   generateUnits(doc, units);
   doc.setFontSize(9);
@@ -170,20 +188,14 @@ const generate = (graphClassName, units, results, modifiers, unitNames) => {
 
   generateStatsTable(doc, results, unitNames);
 
-  const elements = document.getElementsByClassName(graphClassName);
-  const promises = [];
-  Array.from(elements).forEach((element) => {
-    promises.push(doc.addHTML(element).then((canvas) => {
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
-      const imgProps = doc.getImageProperties(imgData);
-      const imgWidth = pageWidth - (margin * 2);
-      const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-      doc.addImage(imgData, 'JPEG', margin, cursor.pos, imgWidth, imgHeight);
-      cursor.incr(imgHeight + 20);
-    }));
-  });
-  return Promise.all(promises).then(() => doc);
+  await addGraphs(doc, statsClassName);
+  doc.addPage();
+  cursor.reset();
+  cursor.incr(20);
+  doc.text('Probabilities', doc.internal.pageSize.getWidth() / 2, cursor.pos, { align: 'center' });
+  cursor.incr(10);
+  await addGraphs(doc, probabilitiesClassName);
+  return doc;
 };
 
 export default generate;

@@ -1,12 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Typography } from '@material-ui/core';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import clsx from 'clsx';
-import { fetchStatsCompare } from 'api';
-import { bindActionCreators } from 'redux';
 import { red } from '@material-ui/core/colors';
 import { ErrorOutline, Sync } from '@material-ui/icons';
 
@@ -16,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: red[100],
     backgroundColor: theme.palette.background.error,
     color: theme.palette.getContrastText(theme.palette.background.error),
     width: '100%',
@@ -28,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.short,
     }),
     '&:hover': {
-      // backgroundColor: red[200],
       backgroundColor: lighten(theme.palette.background.error, 0.3),
     },
     '&:focus, &:active': {
@@ -51,11 +46,11 @@ const useStyles = makeStyles((theme) => ({
 /**
  * A card representing that there was an error getting the stats
  */
-const StatsErrorCard = ({ fetchStatsCompare, className }) => {
+const ErrorCard = ({ retryFunc, className }) => {
   const classes = useStyles();
 
   const handleClick = () => {
-    fetchStatsCompare();
+    retryFunc();
   };
 
   return (
@@ -74,20 +69,13 @@ const StatsErrorCard = ({ fetchStatsCompare, className }) => {
   );
 };
 
-StatsErrorCard.defaultProps = {
+ErrorCard.defaultProps = {
   className: null,
 };
 
-StatsErrorCard.propTypes = {
-  /** A function used to fetch the stats */
-  fetchStatsCompare: PropTypes.func.isRequired,
-  /** CSS classname to give the component */
+ErrorCard.propTypes = {
+  retryFunc: PropTypes.func.isRequired,
   className: PropTypes.string,
 };
 
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchStatsCompare,
-}, dispatch);
-
-export default connect(null, mapDispatchToProps)(StatsErrorCard);
+export default ErrorCard;

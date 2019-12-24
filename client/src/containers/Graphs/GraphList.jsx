@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ListItem from 'components/ListItem';
+import { SaveTooltip } from 'components/GraphTooltips';
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles(() => ({
@@ -17,6 +18,7 @@ const useStyles = makeStyles(() => ({
 const GraphList = ({ stats, unitNames, graphMap }) => {
   const classes = useStyles();
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
+  const xAxisFormatter = useCallback((value) => (value === 'None' ? '-' : `${value}+`), []);
 
   return (
     <Typography component="div">
@@ -34,9 +36,19 @@ const GraphList = ({ stats, unitNames, graphMap }) => {
             error={Boolean(stats.error)}
           >
             <Graph
+              title="Average Damage"
               className={classes.content}
-              results={stats.payload}
-              unitNames={unitNames}
+              data={stats.payload}
+              series={unitNames}
+              xAxis={{
+                dataKey: 'save',
+                tickFormatter: xAxisFormatter,
+              }}
+              yAxisLabel={{
+                value: 'Average Damage',
+                position: 'insideLeft',
+              }}
+              tooltip={<SaveTooltip />}
             />
           </GraphWrapper>
         </ListItem>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   RadarChart,
@@ -12,7 +12,9 @@ import {
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import GraphContainer from './GraphContainer';
-import GraphTooltip from './GraphTooltip';
+import {
+  getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
+} from './graphHelpers';
 
 
 const useStyles = makeStyles({
@@ -25,66 +27,110 @@ const useStyles = makeStyles({
  * A radar graph component for the average damage results
  */
 const RadarGraph = ({
-  results, unitNames, className, outerRadius, isAnimationActive,
+  data, series, className, isAnimationActive, outerRadius, title, syncId, xAxis, yAxis, tooltip,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const [opacity, setOpacity] = useState({});
 
-  const radarAxisLabel = (value) => (value === 'None' ? '-' : `${value}+`);
-  const formatLegendEntry = (value) => (
-    <span style={{ color: theme.palette.getContrastText(theme.palette.background.paper) }}>
-      {value}
-    </span>
-  );
+  const handleMouseEnter = getMouseEnterHandler(opacity, setOpacity);
+  const handleMouseLeave = getMouseLeaveHandler(opacity, setOpacity);
+  const formatLegendEntry = getLegendFormatter(theme, opacity);
+
+  useEffect(() => {
+    setOpacity(getInitOpacity(series));
+  }, [series]);
+
+  const handleAnimationEnd = () => {
+    setOpacity(getInitOpacity(series));
+  };
 
   return (
-    <GraphContainer className={clsx(classes.graph, className)}>
-      <RadarChart data={results} outerRadius={outerRadius} cy={outerRadius > 100 ? '40%' : '45%'}>
+    <GraphContainer className={clsx(classes.graph, className)} title={title}>
+      <RadarChart
+        data={data}
+        outerRadius={outerRadius}
+        cy={outerRadius > 100 ? '40%' : '45%'}
+        syncId={syncId}
+      >
         <PolarGrid stroke={theme.palette.graphs.grid} />
-        <PolarAngleAxis
-          dataKey="save"
-          stroke={theme.palette.graphs.axis}
-          tickFormatter={radarAxisLabel}
+        <PolarAngleAxis stroke={theme.palette.graphs.axis} {...xAxis} />
+        <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={0} {...yAxis} />
+        <Tooltip content={tooltip} />
+        <Legend
+          formatter={formatLegendEntry}
+          onMouseEnter={handleMouseEnter}
+          onMouseDown={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         />
-        <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={0} />
-        <Tooltip content={<GraphTooltip />} />
-        <Legend formatter={formatLegendEntry} />
-        {unitNames.map((name, index) => (
+        {series.map((key, index) => (
           <Radar
             type="monotone"
-            dataKey={name}
+            dataKey={key}
             stroke={theme.palette.graphs.series[index]}
             fill={theme.palette.graphs.series[index]}
             activeDot={{ stroke: theme.palette.background.paper }}
-            fillOpacity={0.1}
-            key={name}
+            fillOpacity={opacity[key] === 1 ? 0.1 : 0}
+            strokeOpacity={opacity[key]}
+            key={key}
             isAnimationActive={isAnimationActive}
+            onAnimationEnd={handleAnimationEnd}
           />
         ))}
       </RadarChart>
-
     </GraphContainer>
   );
 };
 
 RadarGraph.defaultProps = {
-  results: [],
   className: null,
-  outerRadius: 120,
   isAnimationActive: true,
+  syncId: null,
+  xAxis: {},
+  yAxis: {},
+  xAxisLabel: null,
+  yAxisLabel: null,
+  referenceLines: null,
+  outerRadius: 120,
+  tooltip: null,
 };
 
 RadarGraph.propTypes = {
-  /** The array of results to display in the graph */
-  results: PropTypes.arrayOf(PropTypes.object),
-  /** An array containing the Unit names, used for the data key */
-  unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-  /** CSS classname to give the component */
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  series: PropTypes.arrayOf(PropTypes.string).isRequired,
   className: PropTypes.string,
-  outerRadius: PropTypes.number,
-  /** Whether the play animations for the components */
   isAnimationActive: PropTypes.bool,
+  title: PropTypes.string.isRequired,
+  syncId: PropTypes.string,
+  xAxis: PropTypes.shape({
+    tickFormatter: PropTypes.func,
+    domain: PropTypes.array,
+    type: PropTypes.string,
+    ticks: PropTypes.array,
+    dataKey: PropTypes.string,
+    tickCount: PropTypes.number,
+  }),
+  yAxis: PropTypes.shape({
+    tickFormatter: PropTypes.func,
+    domain: PropTypes.array,
+    type: PropTypes.string,
+    ticks: PropTypes.array,
+    dataKey: PropTypes.string,
+    tickCount: PropTypes.number,
+  }),
+  xAxisLabel: PropTypes.shape({
+    value: PropTypes.string,
+    position: PropTypes.string,
+    offset: PropTypes.number,
+  }),
+  yAxisLabel: PropTypes.shape({
+    value: PropTypes.string,
+    position: PropTypes.string,
+    offset: PropTypes.number,
+  }),
+  referenceLines: PropTypes.arrayOf(PropTypes.object),
+  outerRadius: PropTypes.number,
+  tooltip: PropTypes.node,
 };
-
 
 export default RadarGraph;

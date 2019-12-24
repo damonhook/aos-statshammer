@@ -64,6 +64,7 @@ const Tabbed = ({
         index={value}
         onChangeIndex={handleSwipe}
         className={classes.swiper}
+        resistance
       >
         {tabContent.map((content, index) => (
           <TabPanel
@@ -71,8 +72,7 @@ const Tabbed = ({
             index={index}
             className={classes.content}
             dir={theme.direction}
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
+            key={tabNames[index]}
           >
             {content}
           </TabPanel>

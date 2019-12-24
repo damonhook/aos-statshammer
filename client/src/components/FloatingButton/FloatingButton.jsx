@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(2),
     right: theme.spacing(2),
     zIndex: theme.zIndex.appBar,
+    [theme.breakpoints.down('sm')]: {
+      bottom: theme.spacing(7.5),
+    },
   },
 }));
 
