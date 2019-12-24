@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
 import { useMapping } from 'hooks';
-import { applyResultsMapping } from 'utils/mappers';
+import { getResultsMapping, applyUnitNameMapping } from 'utils/mappers';
 import Results from './Results';
 
 const Stats = ({ units, stats, className }) => {
   const [unitNames, setUnitNames] = useState(units.map(({ name }) => name));
   const [unitMapping, setUnitMapping] = useState({});
 
-  const mapper = useCallback((data) => applyResultsMapping(unitMapping, data), [unitMapping]);
+  const mapper = useCallback(getResultsMapping(unitMapping), [unitMapping]);
   const results = useMapping(stats.payload, mapper, stats.pending);
 
   const [setUnitMappingDebounced] = useDebouncedCallback(
@@ -19,7 +19,7 @@ const Stats = ({ units, stats, className }) => {
   );
 
   useEffect(() => {
-    const newMapping = units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {});
+    const newMapping = applyUnitNameMapping(units);
     setUnitMappingDebounced(newMapping);
   }, [units, setUnitMappingDebounced]);
 

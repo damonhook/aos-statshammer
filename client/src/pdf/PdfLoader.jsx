@@ -28,7 +28,7 @@ const PdfLoader = () => {
   return (
     <div className={classes.loader}>
       <Paper className={classes.loaderInner}>
-        <CircularProgress size="6em" className={classes.loaderIcon} />
+        <CircularProgress size="6em" className={classes.loaderIcon} disableShrink />
         <Typography variant="h5">Generating</Typography>
       </Paper>
     </div>

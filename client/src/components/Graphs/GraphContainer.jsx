@@ -19,6 +19,7 @@ const useSyles = makeStyles((theme) => ({
   title: {
     textAlign: 'center',
     marginBottom: theme.spacing(1),
+    color: theme.palette.getContrastText(theme.palette.background.paper),
   },
 }));
 

@@ -13,7 +13,7 @@ import BottomNavigation from 'components/BottomNavigation';
 import { useMediaQuery } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useMapping } from 'hooks';
-import { applyResultsMapping, applyProbabilitiesMapping } from 'utils/mappers';
+import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
 import MetricsTables from './MetricsTables';
 import ProbabilityCurves from './ProbabilityCurves';
 import ProbabilityTables from './ProbabilityTables';
@@ -58,18 +58,11 @@ const AdvancedStats = React.memo(({
     history.replace('/');
   }
 
-  const nameMapping = useMemo(() => (
-    units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {})
-  ), [units]);
+  const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
   const unitNames = Object.values(nameMapping);
 
-  const resultMapper = useCallback((data) => (
-    applyResultsMapping(nameMapping, data)
-  ), [nameMapping]);
-
-  const simMapper = useCallback((data) => (
-    applyProbabilitiesMapping(nameMapping, data)
-  ), [nameMapping]);
+  const resultMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
+  const simMapper = useCallback(getProbabilitiesMapping(nameMapping), [nameMapping]);
 
   const results = useMapping(simulations.results, resultMapper, simulations.pending);
   const probabilities = useMapping(simulations.probabilities, simMapper, simulations.pending);

@@ -9,6 +9,7 @@ import ListItem from 'components/ListItem';
 import { GraphSkeleton } from 'components/Skeletons';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import _ from 'lodash';
+import { getMaxDamage, getMaxProbability, getTicks } from './probabilityUtils';
 
 const useStyles = makeStyles((theme) => ({
   probabilityCurves: {},
@@ -52,20 +53,6 @@ const REFERENCE_LINE_OPTIONS = {
   MAX: 'Max',
 };
 
-const getMaxDamage = (probabilities) => (
-  Math.max(...probabilities.map(({ metrics }) => (
-    Math.max(...Object.values(metrics.max).map((d) => Number(d)))
-  )))
-);
-
-const getMaxProbability = (probabilities) => (
-  Math.max(...probabilities.map(({ buckets }) => (
-    Math.max(...buckets.map(({ damage, ...other }) => (
-      Math.max(...Object.values(other).map((p) => Number(p)))
-    )))
-  )))
-);
-
 const Loadable = React.memo(({
   children, loading, numUnits, error,
 }) => {
@@ -105,7 +92,7 @@ const ProbabilityCurves = React.memo(({
     maxDamage = getMaxDamage(probabilities);
     maxProbability = getMaxProbability(probabilities);
     if (maxProbability) {
-      ticks = [...Array(Math.ceil(maxProbability / 10) + 1)].map((_, index) => index * 10);
+      ticks = getTicks(maxProbability);
     }
   }
 
