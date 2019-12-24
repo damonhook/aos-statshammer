@@ -81,14 +81,8 @@ export const fetchSimulations = () => async (dispatch) => {
       fetchSimulationForSave(units, save, 5000).then((data) => data.json())
     )));
     const res = responses.reduce((acc, { results, probabilities }) => ({
-      results: [
-        ...acc.results,
-        results,
-      ],
-      probabilities: [
-        ...acc.probabilities,
-        probabilities,
-      ],
+      results: [...acc.results, results],
+      probabilities: [...acc.probabilities, probabilities],
     }), { results: [], probabilities: [] });
     dispatch(fetchSimulationsSuccess(res.results, res.probabilities));
   } catch (error) {
