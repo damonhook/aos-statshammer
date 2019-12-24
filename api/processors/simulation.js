@@ -118,7 +118,7 @@ class Simulation {
   performReroll(characteristic, roll) {
     if (roll < this.profile.getCharacteristic(characteristic)) {
       const rerollModifier = this.profile.modifiers.getRerollModifier(characteristic);
-      if (rerollModifier && rerollModifier.allowedReroll(roll)) {
+      if (rerollModifier && rerollModifier.allowedReroll(this.profile, roll)) {
         return D6.roll();
       }
     }
