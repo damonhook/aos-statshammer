@@ -12,7 +12,6 @@ import {
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import GraphContainer from './GraphContainer';
-import GraphTooltip from './GraphTooltip';
 import {
   getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
 } from './graphHelpers';
@@ -28,7 +27,7 @@ const useStyles = makeStyles({
  * A radar graph component for the average damage results
  */
 const RadarGraph = ({
-  data, series, className, isAnimationActive, outerRadius, title, syncId, xAxis, yAxis,
+  data, series, className, isAnimationActive, outerRadius, title, syncId, xAxis, yAxis, tooltip,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -57,7 +56,7 @@ const RadarGraph = ({
         <PolarGrid stroke={theme.palette.graphs.grid} />
         <PolarAngleAxis stroke={theme.palette.graphs.axis} {...xAxis} />
         <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={0} {...yAxis} />
-        <Tooltip content={<GraphTooltip />} />
+        <Tooltip content={tooltip} />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}
@@ -93,6 +92,7 @@ RadarGraph.defaultProps = {
   yAxisLabel: null,
   referenceLines: null,
   outerRadius: 120,
+  tooltip: null,
 };
 
 RadarGraph.propTypes = {
@@ -130,6 +130,7 @@ RadarGraph.propTypes = {
   }),
   referenceLines: PropTypes.arrayOf(PropTypes.object),
   outerRadius: PropTypes.number,
+  tooltip: PropTypes.node,
 };
 
 export default RadarGraph;

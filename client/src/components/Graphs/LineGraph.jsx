@@ -6,7 +6,6 @@ import {
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import GraphContainer from './GraphContainer';
-import GraphTooltip from './GraphTooltip';
 import {
   getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
 } from './graphHelpers';
@@ -20,7 +19,7 @@ const useStyles = makeStyles(() => ({
  */
 const LineGraph = ({
   data, series, className, isAnimationActive, title, syncId, xAxis, yAxis, xAxisLabel, yAxisLabel,
-  referenceLines, dotSize,
+  referenceLines, dotSize, tooltip,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -64,7 +63,7 @@ const LineGraph = ({
             />
           )}
         </YAxis>
-        <Tooltip content={<GraphTooltip />} />
+        <Tooltip content={tooltip} />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}
@@ -108,6 +107,7 @@ LineGraph.defaultProps = {
   yAxisLabel: null,
   referenceLines: null,
   dotSize: 2,
+  tooltip: null,
 };
 
 LineGraph.propTypes = {
@@ -145,6 +145,7 @@ LineGraph.propTypes = {
   }),
   referenceLines: PropTypes.arrayOf(PropTypes.object),
   dotSize: PropTypes.number,
+  tooltip: PropTypes.node,
 };
 
 export default LineGraph;

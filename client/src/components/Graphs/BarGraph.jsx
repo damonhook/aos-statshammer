@@ -6,7 +6,6 @@ import {
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import GraphContainer from './GraphContainer';
-import GraphTooltip from './GraphTooltip';
 import {
   getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
 } from './graphHelpers';
@@ -20,7 +19,7 @@ const useStyles = makeStyles({
  */
 const BarGraph = ({
   data, series, className, isAnimationActive, title, syncId, xAxis, yAxis,
-  xAxisLabel, yAxisLabel, referenceLines,
+  xAxisLabel, yAxisLabel, referenceLines, tooltip,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -64,7 +63,7 @@ const BarGraph = ({
             />
           )}
         </YAxis>
-        <Tooltip content={<GraphTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
+        <Tooltip content={tooltip} cursor={{ fill: theme.palette.graphs.grid }} />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}
@@ -104,6 +103,7 @@ BarGraph.defaultProps = {
   xAxisLabel: null,
   yAxisLabel: null,
   referenceLines: null,
+  tooltip: null,
 };
 
 BarGraph.propTypes = {
@@ -140,6 +140,7 @@ BarGraph.propTypes = {
     offset: PropTypes.number,
   }),
   referenceLines: PropTypes.arrayOf(PropTypes.object),
+  tooltip: PropTypes.node,
 };
 
 // BarGraph.propTypes = {

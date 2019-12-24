@@ -4,9 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tabbed from 'components/Tabbed';
 import { Paper } from '@material-ui/core';
 import ListItem from 'components/ListItem';
+import { SaveTooltip } from 'components/GraphTooltips';
 import GraphWrapper from './GraphWrapper';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   tabs: {
     margin: '-1em -1em 0',
   },
@@ -57,6 +58,7 @@ const GraphTabbed = ({ stats, unitNames, graphMap }) => {
                   value: 'Average Damage',
                   position: 'insideLeft',
                 }}
+                tooltip={<SaveTooltip />}
               />
             </Paper>
           </GraphWrapper>

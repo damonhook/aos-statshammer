@@ -9,6 +9,7 @@ import ListItem from 'components/ListItem';
 import { GraphSkeleton } from 'components/Skeletons';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import _ from 'lodash';
+import { ProbabilityTooltip } from 'components/GraphTooltips';
 import { getMaxDamage, getMaxProbability, getTicks } from './probabilityUtils';
 
 const useStyles = makeStyles((theme) => ({
@@ -163,6 +164,7 @@ const ProbabilityCurves = React.memo(({
                     return { x: metrics[activeMetric][name], stroke, dataKey: name };
                   })
                   : null}
+                tooltip={<ProbabilityTooltip />}
               />
             </Grid>
           ))}

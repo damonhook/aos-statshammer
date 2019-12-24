@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ListItem from 'components/ListItem';
+import { SaveTooltip } from 'components/GraphTooltips';
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles(() => ({
@@ -47,6 +48,7 @@ const GraphList = ({ stats, unitNames, graphMap }) => {
                 value: 'Average Damage',
                 position: 'insideLeft',
               }}
+              tooltip={<SaveTooltip />}
             />
           </GraphWrapper>
         </ListItem>
