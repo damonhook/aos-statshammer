@@ -66,6 +66,7 @@ const Drawer = ({ open, onClose, page }) => {
       <List className={classes.list}>
         <HomeItem />
         <AdvancedStatsItem />
+        <PdfDownloadItem />
         <Divider className={classes.divider} variant="middle" />
         <ToggleDarkModeItem />
         {page === 'home' && !mobile && <ToggleGraphListItem />}
@@ -75,7 +76,6 @@ const Drawer = ({ open, onClose, page }) => {
             <ImportUnitItem onClick={onClose} />
           </>
         )}
-        <PdfDownloadItem />
         <Divider className={classes.divider} variant="middle" />
         <SocialItems />
         <Divider className={classes.divider} variant="middle" />

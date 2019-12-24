@@ -96,11 +96,50 @@ const BarGraph = ({
 };
 
 BarGraph.defaultProps = {
-  data: [],
   className: null,
   isAnimationActive: true,
+  syncId: null,
   xAxis: {},
   yAxis: {},
+  xAxisLabel: null,
+  yAxisLabel: null,
+  referenceLines: null,
+};
+
+BarGraph.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  series: PropTypes.arrayOf(PropTypes.string).isRequired,
+  className: PropTypes.string,
+  isAnimationActive: PropTypes.bool,
+  title: PropTypes.string.isRequired,
+  syncId: PropTypes.string,
+  xAxis: PropTypes.shape({
+    tickFormatter: PropTypes.func,
+    domain: PropTypes.array,
+    type: PropTypes.string,
+    ticks: PropTypes.array,
+    dataKey: PropTypes.string,
+    tickCount: PropTypes.number,
+  }),
+  yAxis: PropTypes.shape({
+    tickFormatter: PropTypes.func,
+    domain: PropTypes.array,
+    type: PropTypes.string,
+    ticks: PropTypes.array,
+    dataKey: PropTypes.string,
+    tickCount: PropTypes.number,
+  }),
+  xAxisLabel: PropTypes.shape({
+    value: PropTypes.string,
+    position: PropTypes.string,
+    offset: PropTypes.number,
+  }),
+  yAxisLabel: PropTypes.shape({
+    value: PropTypes.string,
+    position: PropTypes.string,
+    offset: PropTypes.number,
+  }),
+  referenceLines: PropTypes.arrayOf(PropTypes.object),
 };
 
 // BarGraph.propTypes = {

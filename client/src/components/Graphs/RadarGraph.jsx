@@ -84,25 +84,52 @@ const RadarGraph = ({
 };
 
 RadarGraph.defaultProps = {
-  data: [],
   className: null,
-  outerRadius: 120,
   isAnimationActive: true,
+  syncId: null,
   xAxis: {},
   yAxis: {},
+  xAxisLabel: null,
+  yAxisLabel: null,
+  referenceLines: null,
+  outerRadius: 120,
 };
 
 RadarGraph.propTypes = {
-  /** The array of results to display in the graph */
-  // results: PropTypes.arrayOf(PropTypes.object),
-  /** An array containing the Unit names, used for the data key */
-  // unitNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-  /** CSS classname to give the component */
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  series: PropTypes.arrayOf(PropTypes.string).isRequired,
   className: PropTypes.string,
-  outerRadius: PropTypes.number,
-  /** Whether the play animations for the components */
   isAnimationActive: PropTypes.bool,
+  title: PropTypes.string.isRequired,
+  syncId: PropTypes.string,
+  xAxis: PropTypes.shape({
+    tickFormatter: PropTypes.func,
+    domain: PropTypes.array,
+    type: PropTypes.string,
+    ticks: PropTypes.array,
+    dataKey: PropTypes.string,
+    tickCount: PropTypes.number,
+  }),
+  yAxis: PropTypes.shape({
+    tickFormatter: PropTypes.func,
+    domain: PropTypes.array,
+    type: PropTypes.string,
+    ticks: PropTypes.array,
+    dataKey: PropTypes.string,
+    tickCount: PropTypes.number,
+  }),
+  xAxisLabel: PropTypes.shape({
+    value: PropTypes.string,
+    position: PropTypes.string,
+    offset: PropTypes.number,
+  }),
+  yAxisLabel: PropTypes.shape({
+    value: PropTypes.string,
+    position: PropTypes.string,
+    offset: PropTypes.number,
+  }),
+  referenceLines: PropTypes.arrayOf(PropTypes.object),
+  outerRadius: PropTypes.number,
 };
-
 
 export default RadarGraph;
