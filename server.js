@@ -5,15 +5,18 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import cluster from 'cluster';
 import os from 'os';
+import compression from 'compression';
 
 import { getModifiers } from './api/controllers/modifiersController';
 import { compareUnits, simulateUnits } from './api/controllers/statsController';
 
+const MAX_WORKERS = 3;
+
 if (cluster.isMaster) {
   const cpuCount = os.cpus().length;
-  const numWorkers = Math.min(cpuCount, 5);
-  console.log(`Spawning ${numWorkers} workers`);
-
+  const numWorkers = Math.min(cpuCount, MAX_WORKERS);
+  const prod = process.env.NODE_ENV === 'production';
+  console.log(`Spawning ${numWorkers} workers ${prod ? 'in production mode' : ''}`);
   // Create a worker for each CPU
   for (let i = 0; i < numWorkers; i += 1) {
     cluster.fork();
@@ -24,6 +27,7 @@ if (cluster.isMaster) {
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(compression());
 
   app.get('/status', (req, res) => {
     res.set('X-Worker-ID', cluster.worker.id);

@@ -7,6 +7,7 @@ import {
 import clsx from 'clsx';
 import ListItem from 'components/ListItem';
 import { GraphSkeleton } from 'components/Skeletons';
+import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
@@ -65,9 +66,14 @@ const getMaxProbability = (probabilities) => (
   )))
 );
 
-const Loadable = React.memo(({ children, loading, numUnits }) => {
+const Loadable = React.memo(({
+  children, loading, numUnits, error,
+}) => {
   const classes = useStyles({ numUnits });
 
+  if (error) {
+    return <AdvancedStatsErrorCard />;
+  }
   if (loading) {
     return (
       <Grid container spacing={2}>
@@ -88,7 +94,7 @@ const Loadable = React.memo(({ children, loading, numUnits }) => {
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 const ProbabilityCurves = React.memo(({
-  pending, probabilities, unitNames, className,
+  pending, probabilities, unitNames, className, error,
 }) => {
   const classes = useStyles({ numUnits: unitNames.length });
   const theme = useTheme();
@@ -137,7 +143,7 @@ const ProbabilityCurves = React.memo(({
           ))}
         </TextField>
       </div>
-      <Loadable loading={pending} numUnits={unitNames.length}>
+      <Loadable loading={pending} numUnits={unitNames.length} error={error}>
         <Grid container spacing={2} className={classes.content}>
           {probabilities.map(({ save, buckets, metrics }) => (
             <Grid item className={classes.graphContainer}>

@@ -4,6 +4,9 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
+import { AdvancedStatsErrorCard } from 'components/ErrorCards';
+import { TableSkeleton } from 'components/Skeletons';
+import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {},
@@ -27,8 +30,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const Loadable = React.memo(({
+  children, loading, numUnits, error,
+}) => {
+  const classes = useStyles({ numUnits });
+
+  if (error) {
+    return <AdvancedStatsErrorCard />;
+  }
+  if (loading) {
+    return (
+      <Grid container spacing={2}>
+        {[...Array(6)].map(() => (
+          <Grid item className={classes.tableContainer}>
+            <TableSkeleton
+              rows={15}
+              cols={numUnits + 1}
+              dense
+              className={classes.skeleton}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+  return children;
+}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
+
 const ProbabilityTables = ({
-  pending, probabilities, unitNames, className,
+  pending, probabilities, unitNames, className, error,
 }) => {
   const classes = useStyles();
   return (
@@ -40,42 +70,44 @@ const ProbabilityTables = ({
       loading={pending}
       loaderDelay={0}
     >
-      <Grid container spacing={2} className={classes.metricsContainer}>
-        {(probabilities || []).map(({ save, buckets }) => {
-          const saveString = save !== 'None' ? `${save}+` : '-';
-          return (
-            <Grid item className={classes.tableContainer}>
-              <Typography variant="h6" className={classes.tableTitle}>
-                {`Probability against ${saveString} save`}
-              </Typography>
-              <Paper className={classes.table}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell className={classes.sticky}>Damage</TableCell>
-                      {unitNames.map((name) => (
-                        <TableCell>{name}</TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {buckets.map(({ damage, ...unitData }) => (
+      <Loadable numUnits={unitNames.length} loading={pending} error={error}>
+        <Grid container spacing={2} className={classes.metricsContainer}>
+          {(probabilities || []).map(({ save, buckets }) => {
+            const saveString = save !== 'None' ? `${save}+` : '-';
+            return (
+              <Grid item className={classes.tableContainer}>
+                <Typography variant="h6" className={classes.tableTitle}>
+                  {`Probability against ${saveString} save`}
+                </Typography>
+                <Paper className={classes.table}>
+                  <Table size="small">
+                    <TableHead>
                       <TableRow>
-                        <TableCell className={classes.sticky}>{damage}</TableCell>
+                        <TableCell className={classes.sticky}>Damage</TableCell>
                         {unitNames.map((name) => (
-                          unitData[name]
-                            ? <TableCell>{unitData[name].toFixed(2)}</TableCell>
-                            : <TableCell>0.00</TableCell>
+                          <TableCell>{name}</TableCell>
                         ))}
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Paper>
-            </Grid>
-          );
-        })}
-      </Grid>
+                    </TableHead>
+                    <TableBody>
+                      {buckets.map(({ damage, ...unitData }) => (
+                        <TableRow>
+                          <TableCell className={classes.sticky}>{damage}</TableCell>
+                          {unitNames.map((name) => (
+                            unitData[name]
+                              ? <TableCell>{unitData[name].toFixed(2)}</TableCell>
+                              : <TableCell>0.00</TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Paper>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Loadable>
     </ListItem>
   );
 };

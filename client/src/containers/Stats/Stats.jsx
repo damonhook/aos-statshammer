@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
+import { useMapping } from 'hooks';
+import { applyResultsMapping } from 'utils/mappers';
 import Results from './Results';
-
-const applyMapping = (mapping, results) => (
-  results.map((result) => Object.keys(result).reduce((acc, key) => {
-    if (key == null || key === 'save') return acc;
-    const name = mapping[key];
-    if (name) acc[name] = result[key];
-    return acc;
-  }, { save: result.save }))
-);
 
 const Stats = ({ units, stats, className }) => {
   const [unitNames, setUnitNames] = useState(units.map(({ name }) => name));
   const [unitMapping, setUnitMapping] = useState({});
-  const [results, setResults] = useState(null);
+
+  const mapper = useCallback((data) => applyResultsMapping(unitMapping, data), [unitMapping]);
+  const results = useMapping(stats.payload, mapper, stats.pending);
 
   const [setUnitMappingDebounced] = useDebouncedCallback(
     (newValue) => { setUnitMapping(newValue); },
@@ -29,13 +24,11 @@ const Stats = ({ units, stats, className }) => {
   }, [units, setUnitMappingDebounced]);
 
   useEffect(() => {
-    if (stats && stats.payload) {
-      const newResults = applyMapping(unitMapping, stats.payload);
-      const newUnitNames = Object.keys(newResults[0]).filter((n) => n != null && n !== 'save');
-      setResults(newResults);
+    if (results && results.length) {
+      const newUnitNames = Object.keys(results[0]).filter((n) => n != null && n !== 'save');
       setUnitNames(newUnitNames);
     }
-  }, [unitMapping, stats]);
+  }, [results]);
 
   return (
     <Results stats={{ ...stats, payload: results }} unitNames={unitNames} className={className} />

@@ -1,12 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Typography } from '@material-ui/core';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import clsx from 'clsx';
-import { fetchStatsCompare } from 'api';
-import { bindActionCreators } from 'redux';
 import { red } from '@material-ui/core/colors';
 import { ErrorOutline, Sync } from '@material-ui/icons';
 
@@ -70,6 +67,15 @@ const ErrorCard = ({ retryFunc, className }) => {
       <Typography>If the issue persists, ensure that the unit data is valid</Typography>
     </Paper>
   );
+};
+
+ErrorCard.defaultProps = {
+  className: null,
+};
+
+ErrorCard.propTypes = {
+  retryFunc: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 export default ErrorCard;

@@ -1,38 +1,28 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { fetchStatsCompare, fetchModifiers } from 'api';
 import { bindActionCreators } from 'redux';
 import PdfGenerator from 'pdf';
-
-const applyMapping = (mapping, results) => (
-  results.map((result) => Object.keys(result).reduce((acc, key) => {
-    if (key == null || key === 'save') return acc;
-    const name = mapping[key];
-    if (name) acc[name] = result[key];
-    return acc;
-  }, { save: result.save }))
-);
+import { useMapping } from 'hooks';
+import { applyResultsMapping } from 'utils/mappers';
 
 const PdfContainer = ({
   units, statsPending, payload, modifiersPending, modifiers, fetchStatsCompare, fetchModifiers,
 }) => {
-  const [results, setResults] = useState(null);
-
   const nameMapping = useMemo(() => (
     units.reduce((acc, { uuid, name }) => { acc[uuid] = name; return acc; }, {})
   ), [units]);
+
+  const resultsMapper = useCallback((data) => (
+    applyResultsMapping(nameMapping, data)
+  ), [nameMapping]);
+
+  const results = useMapping(payload, resultsMapper, statsPending);
 
   useEffect(() => {
     fetchStatsCompare();
     fetchModifiers();
   }, [fetchStatsCompare, fetchModifiers]);
-
-  useEffect(() => {
-    if (!statsPending && payload && payload.length) {
-      const mappedResults = applyMapping(nameMapping, payload);
-      setResults(mappedResults);
-    }
-  }, [statsPending, payload, nameMapping]);
 
   if (!modifiers || !modifiers.length || !results || !results.length) {
     return null;

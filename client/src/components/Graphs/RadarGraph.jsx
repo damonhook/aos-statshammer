@@ -33,20 +33,17 @@ const RadarGraph = ({
   const classes = useStyles();
   const theme = useTheme();
   const [opacity, setOpacity] = useState({});
-  const [firstLoad, setFirstLoad] = useState(true);
-
-  useEffect(() => {
-    if (!firstLoad) {
-      setOpacity(getInitOpacity(series));
-    }
-  }, [firstLoad, series]);
 
   const handleMouseEnter = getMouseEnterHandler(opacity, setOpacity);
   const handleMouseLeave = getMouseLeaveHandler(opacity, setOpacity);
   const formatLegendEntry = getLegendFormatter(theme, opacity);
 
+  useEffect(() => {
+    setOpacity(getInitOpacity(series));
+  }, [series]);
+
   const handleAnimationEnd = () => {
-    setFirstLoad(false);
+    setOpacity(getInitOpacity(series));
   };
 
   return (

@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, {
+  useEffect, useMemo, useCallback,
+} from 'react';
 import { connect } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { fetchSimulations } from 'api';
@@ -10,10 +12,11 @@ import Tabbed from 'components/Tabbed';
 import BottomNavigation from 'components/BottomNavigation';
 import { useMediaQuery } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { useMapping } from 'hooks';
+import { applyResultsMapping, applyProbabilitiesMapping } from 'utils/mappers';
 import MetricsTables from './MetricsTables';
 import ProbabilityCurves from './ProbabilityCurves';
 import ProbabilityTables from './ProbabilityTables';
-import { applyProbabilitiesMapping, applyResultsMapping } from './mapping';
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -51,9 +54,6 @@ const AdvancedStats = React.memo(({
   const history = useHistory();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [results, setResults] = useState([]);
-  const [probabilities, setProbabilities] = useState([]);
-
   if (units.length <= 0) {
     history.replace('/');
   }
@@ -63,25 +63,20 @@ const AdvancedStats = React.memo(({
   ), [units]);
   const unitNames = Object.values(nameMapping);
 
+  const resultMapper = useCallback((data) => (
+    applyResultsMapping(nameMapping, data)
+  ), [nameMapping]);
+
+  const simMapper = useCallback((data) => (
+    applyProbabilitiesMapping(nameMapping, data)
+  ), [nameMapping]);
+
+  const results = useMapping(simulations.results, resultMapper, simulations.pending);
+  const probabilities = useMapping(simulations.probabilities, simMapper, simulations.pending);
+
   useEffect(() => {
     fetchSimulations();
   }, [fetchSimulations]);
-
-
-  useEffect(() => {
-    if (!simulations.pending) {
-      if (simulations.results && simulations.results.length) {
-        const mappedResults = applyResultsMapping(nameMapping, simulations.results);
-        setResults(mappedResults);
-      }
-      if (simulations.probabilities && simulations.probabilities.length) {
-        const mappedProbabilities = applyProbabilitiesMapping(
-          nameMapping, simulations.probabilities,
-        );
-        setProbabilities(mappedProbabilities);
-      }
-    }
-  }, [nameMapping, simulations.pending, simulations.probabilities, simulations.results]);
 
   return (
     <div className={classes.app}>
@@ -94,6 +89,7 @@ const AdvancedStats = React.memo(({
             <div className={classes.tab}>
               <ProbabilityCurves
                 pending={simulations.pending}
+                error={simulations.error}
                 probabilities={probabilities}
                 unitNames={unitNames}
               />
@@ -101,11 +97,13 @@ const AdvancedStats = React.memo(({
             <div className={classes.tab}>
               <MetricsTables
                 pending={simulations.pending}
+                error={simulations.error}
                 results={results}
                 unitNames={unitNames}
               />
               <ProbabilityTables
                 pending={simulations.pending}
+                error={simulations.error}
                 probabilities={probabilities}
                 unitNames={unitNames}
               />
