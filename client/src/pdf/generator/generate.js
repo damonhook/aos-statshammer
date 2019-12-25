@@ -193,7 +193,7 @@ const generate = async (
   cursor.reset();
   cursor.incr(20);
   doc.text('Probabilities', doc.internal.pageSize.getWidth() / 2, cursor.pos, { align: 'center' });
-  cursor.incr(10);
+  cursor.incr(20);
   await addGraphs(doc, probabilitiesClassName);
   return doc;
 };

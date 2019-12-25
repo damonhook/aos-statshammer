@@ -3,11 +3,9 @@
  * @param {int} min The minimum value (inclusive)
  * @param {int} max The maximum value (inclusive)
  */
-export const getRandomInt = (min, max) => {
-  const minVal = Math.ceil(min);
-  const maxVal = Math.floor(max);
-  return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
-};
+export const getRandomInt = (min, max) => (
+  min + Math.floor(Math.random() * (max - min + 1))
+);
 
 export const getSum = (array) => array.reduce((acc, n) => acc + n, 0);
 

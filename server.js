@@ -8,13 +8,10 @@ import os from 'os';
 import compression from 'compression';
 
 import { getModifiers } from './api/controllers/modifiersController';
-import { compareUnits, simulateUnits } from './api/controllers/statsController';
-
-const MAX_WORKERS = 3;
+import { compareUnits, simulateUnits, simulateUnitsForSave } from './api/controllers/statsController';
 
 if (cluster.isMaster) {
-  const cpuCount = os.cpus().length;
-  const numWorkers = Math.min(cpuCount, MAX_WORKERS);
+  const numWorkers = os.cpus().length;
   const prod = process.env.NODE_ENV === 'production';
   console.log(`Spawning ${numWorkers} workers ${prod ? 'in production mode' : ''}`);
   // Create a worker for each CPU
@@ -49,6 +46,11 @@ if (cluster.isMaster) {
     res.send(simulateUnits(req.body));
   });
 
+  app.post('/api/simulate/save', (req, res) => {
+    res.set('X-Worker-ID', cluster.worker.id);
+    res.send(simulateUnitsForSave(req.body));
+  });
+
   if (process.env.NODE_ENV === 'production') {
     // Serve any static files
     app.use(express.static(path.join(__dirname, 'client/build')));
@@ -59,6 +61,12 @@ if (cluster.isMaster) {
     });
   }
 
-  // app.listen(port, () => console.log(`Listening on port ${port}`));
   app.listen(port, () => console.log(`Worker ${cluster.worker.id}, Listening on port ${port}`));
 }
+
+cluster.on('exit', (worker) => {
+  // Replace the dead worker,
+  // we're not sentimental
+  console.log(`Worker ${worker.id} died :(`);
+  cluster.fork();
+});

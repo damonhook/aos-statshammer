@@ -79,7 +79,7 @@ const Drawer = ({ open, onClose, page }) => {
         <Divider className={classes.divider} variant="middle" />
         <SocialItems />
         <Divider className={classes.divider} variant="middle" />
-        <Typography variant="caption" className={classes.version}>v0.6.0</Typography>
+        <Typography variant="caption" className={classes.version}>v0.6.2</Typography>
       </List>
     </AppDrawer>
   );

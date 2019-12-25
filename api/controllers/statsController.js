@@ -22,7 +22,7 @@ export const compareUnits = ({ units }) => {
   };
 };
 
-const buildProbabilities = (results) => results.map(({ save, ...unitResults }) => {
+const buildProbability = ({ save, ...unitResults }) => {
   const probabilities = {};
   const metrics = { mean: {}, median: {}, max: {} };
   Object.keys(unitResults).forEach((name) => {
@@ -38,22 +38,40 @@ const buildProbabilities = (results) => results.map(({ save, ...unitResults }) =
     damage, ...probabilities[damage],
   }));
   return { save, buckets, metrics };
-});
+};
 
-export const simulateUnits = ({ units, numSimulations = 1000, includeOutcomes = false }) => {
+export const simulateUnitsForSave = ({
+  units, save, numSimulations = 1000, includeOutcomes = false,
+}) => {
   const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
-  const results = SAVES.map((save) => {
-    const target = new Target(save);
-    return unitList.reduce((acc, unit) => {
-      acc[unit.name] = unit.runSimulations(target, numSimulations, includeOutcomes);
-      return acc;
-    }, { save: save ? save.toString() : 'None' });
-  });
-  const probabilities = buildProbabilities(results);
+  const target = new Target(save);
+  const results = unitList.reduce((acc, unit) => {
+    acc[unit.name] = unit.runSimulations(target, numSimulations, includeOutcomes);
+    return acc;
+  }, { save: save ? save.toString() : 'None' });
+  const probabilities = buildProbability(results);
 
   return {
     results,
     probabilities,
+    units: unitList,
+  };
+};
+
+export const simulateUnits = ({ units, numSimulations = 1000, includeOutcomes = false }) => {
+  const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
+  const data = SAVES.reduce((acc, save) => {
+    const saveData = simulateUnitsForSave({
+      units, save, numSimulations, includeOutcomes,
+    });
+    return {
+      results: [...acc.results, saveData.results],
+      probabilities: [...acc.probabilities, saveData.probabilities],
+    };
+  }, { results: [], probabilities: [] });
+
+  return {
+    ...data,
     units: unitList,
   };
 };

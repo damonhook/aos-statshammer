@@ -42,7 +42,7 @@ class Simulation {
 
   resolveHitRoll() {
     const hitRoll = this.performReroll(C.TO_HIT, D6.roll());
-    if (hitRoll >= this.profile.getToHit()) {
+    if (hitRoll >= this.profile.getToHit(false, true)) {
       const explodingModifier = this.profile.modifiers.getModifier(m.EXPLODING, C.TO_HIT);
       if (explodingModifier && hitRoll >= explodingModifier.on) {
         return [...Array(explodingModifier.getExtra(true) + 1)].reduce((acc) => (
@@ -73,7 +73,7 @@ class Simulation {
 
   resolveWoundRoll() {
     const woundRoll = this.performReroll(C.TO_WOUND, D6.roll());
-    if (woundRoll >= this.profile.getToWound()) {
+    if (woundRoll >= this.profile.getToWound(false, true)) {
       const explodingModifier = this.profile.modifiers.getModifier(m.EXPLODING, C.TO_WOUND);
       if (explodingModifier && woundRoll >= explodingModifier.on) {
         return [...Array(explodingModifier.getExtra(true) + 1)].reduce((acc) => (
@@ -104,7 +104,7 @@ class Simulation {
 
   resolveSaveRoll() {
     const saveRoll = D6.roll();
-    const save = this.target.getSaveAfterRend(this.profile.getRend());
+    const save = this.target.getSaveAfterRend(this.profile.getRend(false, true));
     if (!save || saveRoll < save) {
       return this.resolveDamage();
     }
@@ -112,7 +112,7 @@ class Simulation {
   }
 
   resolveDamage() {
-    return this.profile.getDamage();
+    return this.profile.getDamage(false, true);
   }
 
   performReroll(characteristic, roll) {
