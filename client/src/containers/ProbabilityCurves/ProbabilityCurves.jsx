@@ -1,16 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { LineGraph } from 'components/Graphs';
 import {
-  Grid, MenuItem, TextField, Typography,
+  MenuItem, TextField, Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import ListItem from 'components/ListItem';
-import { GraphSkeleton } from 'components/Skeletons';
-import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import _ from 'lodash';
-import { ProbabilityTooltip } from 'components/GraphTooltips';
-import { getMaxDamage, getMaxProbability, getTicks } from './probabilityUtils';
+import {
+  getMaxDamage, getMaxProbability, getTicks,
+} from 'containers/AdvancedStats/probabilityUtils';
+import Loadable from './Loadable';
+import BasicCurves from './BasicCurves';
+import CumulativeCurves from './CumulativeCurves';
 
 const useStyles = makeStyles((theme) => ({
   probabilityCurves: {},
@@ -25,9 +26,6 @@ const useStyles = makeStyles((theme) => ({
       minWidth: '100%',
     },
   }),
-  skeleton: {
-    padding: theme.spacing(2, 4, 5),
-  },
   select: {
     maxWidth: '100%',
     display: 'flex',
@@ -53,33 +51,6 @@ const REFERENCE_LINE_OPTIONS = {
   MEDIAN: 'Median',
   MAX: 'Max',
 };
-
-const Loadable = React.memo(({
-  children, loading, numUnits, error,
-}) => {
-  const classes = useStyles({ numUnits });
-
-  if (error) {
-    return <AdvancedStatsErrorCard />;
-  }
-  if (loading) {
-    return (
-      <Grid container spacing={2}>
-        {[...Array(6)].map(() => (
-          <Grid item className={classes.graphContainer}>
-            <GraphSkeleton
-              series={5}
-              groups={2}
-              height={numUnits >= 3 ? 350 : 250}
-              className={classes.skeleton}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    );
-  }
-  return children;
-}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 const ProbabilityCurves = React.memo(({
   pending, probabilities, unitNames, className, error,
@@ -132,43 +103,17 @@ const ProbabilityCurves = React.memo(({
         </TextField>
       </div>
       <Loadable loading={pending} numUnits={unitNames.length} error={error}>
-        <Grid container spacing={2} className={classes.content}>
-          {probabilities.map(({ save, buckets, metrics }) => (
-            <Grid item className={classes.graphContainer} key={save}>
-              <LineGraph
-                title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
-                data={buckets}
-                series={unitNames}
-                xAxis={{
-                  domain: [0, maxDamage],
-                  type: 'number',
-                  dataKey: 'damage',
-                  tickCount: 10,
-                }}
-                yAxis={{
-                  tickFormatter: yAxisLabel,
-                  domain: [0, Math.ceil(maxProbability / 10) * 10],
-                  type: 'number',
-                  ticks,
-                }}
-                yAxisLabel={{
-                  value: 'Probability (%)',
-                }}
-                dotSize={1}
-                referenceLines={activeMetric
-                  ? Object.keys(metrics[activeMetric]).map((name) => {
-                    const unitIndex = unitNames.findIndex((unitName) => unitName === name);
-                    const stroke = unitIndex >= 0 ? (
-                      theme.palette.graphs.series[unitIndex]
-                    ) : theme.palette.graphs.axis;
-                    return { x: metrics[activeMetric][name], stroke, dataKey: name };
-                  })
-                  : null}
-                tooltip={<ProbabilityTooltip />}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        {/* <BasicCurves
+          probabilities={probabilities}
+          unitNames={unitNames}
+          activeMetric={activeMetric}
+        /> */}
+        <CumulativeCurves
+          probabilities={probabilities}
+          unitNames={unitNames}
+          activeMetric={activeMetric}
+          matchXAxis
+        />
       </Loadable>
     </ListItem>
   );

@@ -8,9 +8,12 @@ export const applyResultsMapping = (mapping, data, fixedKey = 'save') => (
 );
 
 export const applyProbabilitiesMapping = (mapping, data) => (
-  data.map(({ save, buckets, metrics }) => ({
+  data.map(({
+    save, buckets, cumulative, metrics,
+  }) => ({
     save,
     buckets: applyResultsMapping(mapping, buckets, 'damage'),
+    cumulative: applyResultsMapping(mapping, cumulative, 'damage'),
     metrics: Object.keys(metrics).reduce((acc, metric) => ({
       ...acc, [metric]: applyResultsMapping(mapping, [metrics[metric]], null)[0],
     }), {}),

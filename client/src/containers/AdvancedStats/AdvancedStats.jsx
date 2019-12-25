@@ -14,8 +14,8 @@ import { useMediaQuery } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useMapping } from 'hooks';
 import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
+import ProbabilityCurves from 'containers/ProbabilityCurves';
 import MetricsTables from './MetricsTables';
-import ProbabilityCurves from './ProbabilityCurves';
 import ProbabilityTables from './ProbabilityTables';
 
 const useStyles = makeStyles((theme) => ({
