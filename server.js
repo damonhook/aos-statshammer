@@ -11,8 +11,11 @@ import { getModifiers } from './api/controllers/modifiersController';
 import { compareUnits, simulateUnits, simulateUnitsForSave } from './api/controllers/statsController';
 
 if (cluster.isMaster) {
-  const numWorkers = os.cpus().length;
+  let numWorkers = 3;
   const prod = process.env.NODE_ENV === 'production';
+  if (prod) {
+    numWorkers = os.cpus().length;
+  }
   console.log(`Spawning ${numWorkers} workers ${prod ? 'in production mode' : ''}`);
   // Create a worker for each CPU
   for (let i = 0; i < numWorkers; i += 1) {
