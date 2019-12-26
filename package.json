@@ -1,5 +1,6 @@
 {
     "name": "statshammer-express",
+    "private": true,
     "version": "0.6.2",
     "engines": {
         "node": "12.13.1",
@@ -35,6 +36,7 @@
         "regenerator-runtime": "^0.13.3"
     },
     "devDependencies": {
-        "concurrently": "^4.0.1"
+        "concurrently": "^4.0.1",
+        "lerna": "^3.19.0"
     }
 }

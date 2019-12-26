@@ -1,9 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
-import {
-  Grid, MenuItem, TextField, Typography,
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import _ from 'lodash';
 import { ProbabilityTooltip } from 'components/GraphTooltips';
 import clsx from 'clsx';
