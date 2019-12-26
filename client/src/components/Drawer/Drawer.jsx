@@ -79,7 +79,11 @@ const Drawer = ({ open, onClose, page }) => {
         <Divider className={classes.divider} variant="middle" />
         <SocialItems />
         <Divider className={classes.divider} variant="middle" />
-        <Typography variant="caption" className={classes.version}>v0.7.0</Typography>
+        {process.env.REACT_APP_VERSION && (
+          <Typography variant="caption" className={classes.version}>
+            {`v${process.env.REACT_APP_VERSION}`}
+          </Typography>
+        )}
       </List>
     </AppDrawer>
   );

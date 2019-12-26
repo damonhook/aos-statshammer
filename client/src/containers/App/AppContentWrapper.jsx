@@ -27,7 +27,6 @@ const AppContentWrapper = () => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const contentRef = useRef(null);
-  console.log(process.env.npm_package_version);
 
   useEffect(() => {
     setAutoScrollEnabled(false);
