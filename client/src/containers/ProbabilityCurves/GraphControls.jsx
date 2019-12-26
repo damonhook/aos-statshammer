@@ -10,15 +10,22 @@ import { REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 const useStyles = makeStyles((theme) => ({
   controls: {
     display: 'flex',
-    padding: theme.spacing(2, 2, 2, 0),
+    padding: theme.spacing(2),
     marginBottom: theme.spacing(2),
     border: '1px solid',
     borderColor: theme.palette.grey[700],
     borderRadius: theme.shape.borderRadius,
     marginTop: '-0.7rem',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+  switch: {
+    marginLeft: 0,
   },
   select: {
     flex: 1,
+    minWidth: 150,
+    maxWidth: 350,
   },
   label: {
     position: 'relative',
@@ -56,7 +63,7 @@ const GraphControls = React.memo(({
         <FormControlLabel
           label="Match X Axis"
           labelPlacement="start"
-          className={classes.field}
+          className={clsx(classes.field, classes.switch)}
           control={
             <Switch checked={matchXAxis} onChange={handleSetMatchXAxisChanged} />
           }
