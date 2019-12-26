@@ -9,7 +9,7 @@ import { useRefCallback } from 'hooks';
 import { lightTheme } from 'themes';
 import generate from './generator';
 import PdfLoader from './PdfLoader';
-import { StatsGraphs, ProbabilityGraphs } from './graphs';
+import { StatsGraphs, ProbabilityGraphs, CumulativeProbabilityGraphs } from './graphs';
 
 const useStyles = makeStyles(() => ({
   hidden: {
@@ -40,7 +40,7 @@ const PdfGenerator = ({
   const unitNames = useMemo(() => units.map(({ name }) => name), [units]);
 
   const generatePdf = useCallback(() => (
-    generate(units, results, modifiers, unitNames, 'pdf-copy', 'pdf-prob')
+    generate(units, results, modifiers, unitNames, 'pdf-copy', 'pdf-cumulative', 'pdf-prob')
   ), [modifiers, results, unitNames, units]);
 
   const refCallback = useCallback(() => {
@@ -73,6 +73,7 @@ const PdfGenerator = ({
       <ThemeProvider theme={lightTheme}>
         <div className={classes.hidden} ref={ref}>
           <StatsGraphs results={results} unitNames={unitNames} />
+          <CumulativeProbabilityGraphs probabilities={probabilities} unitNames={unitNames} />
           <ProbabilityGraphs probabilities={probabilities} unitNames={unitNames} />
         </div>
       </ThemeProvider>

@@ -22,6 +22,26 @@ export const compareUnits = ({ units }) => {
   };
 };
 
+const buildCumulative = (probabilities, unitNames, metrics) => {
+  const maxDamage = Math.max(...Object.keys(probabilities));
+  const sums = unitNames.reduce((acc, name) => ({ ...acc, [name]: 0 }), {});
+  const cumulative = [...Array(maxDamage + 1)].map((_, damage) => {
+    const map = probabilities[damage] || {};
+    return unitNames.reduce((acc, name) => {
+      const val = map[name] || 0;
+      sums[name] += val;
+      if (sums[name] >= 100 || damage > metrics.max[name]) {
+        sums[name] = 100;
+      }
+      return { ...acc, [name]: Number(sums[name].toFixed(2)) };
+    }, { damage });
+  });
+  return [
+    ...cumulative,
+    unitNames.reduce((acc, name) => ({ ...acc, [name]: 100 }), { damage: maxDamage + 1 }),
+  ];
+};
+
 const buildProbability = ({ save, ...unitResults }) => {
   const probabilities = {};
   const metrics = { mean: {}, median: {}, max: {} };
@@ -35,9 +55,12 @@ const buildProbability = ({ save, ...unitResults }) => {
     metrics.max[name] = unitResults[name].metrics.max;
   });
   const buckets = Object.keys(probabilities).sort((x, y) => x - y).map((damage) => ({
-    damage, ...probabilities[damage],
+    damage: Number(damage), ...probabilities[damage],
   }));
-  return { save, buckets, metrics };
+  const cumulative = buildCumulative(probabilities, Object.keys(unitResults), metrics);
+  return {
+    save, buckets, cumulative, metrics,
+  };
 };
 
 export const simulateUnitsForSave = ({

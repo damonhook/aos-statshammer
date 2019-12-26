@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
-import {
-  getMaxDamage, getMaxProbability, getTicks,
-} from 'containers/ProbabilityCurves/probabilityUtils';
+import { getMaxDamage, getTicks } from 'containers/ProbabilityCurves/probabilityUtils';
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles({
@@ -17,35 +15,32 @@ const useStyles = makeStyles({
   },
 });
 
-const ProbabilityGraphs = ({ probabilities, unitNames }) => {
+const CumulativeProbabilityGraphs = ({ probabilities, unitNames }) => {
   const classes = useStyles();
   const yAxisFormatter = useCallback((value) => `${value}%`, []);
   const cols = 2;
   const rows = Math.ceil(probabilities.length / cols);
 
-  let [maxDamage, maxProbability, ticks] = [0, 0, null];
+  let maxDamage = 0;
+  const ticks = getTicks(100);
   if (probabilities && probabilities.length) {
     maxDamage = getMaxDamage(probabilities);
-    maxProbability = getMaxProbability(probabilities);
-    if (maxProbability) {
-      ticks = getTicks(maxProbability);
-    }
   }
 
   return (
     <div>
       {[...Array(rows)].map((_, rowIndex) => (
-        <GraphWrapper className="pdf-prob" height={380}>
+        <GraphWrapper className="pdf-cumulative" height={380}>
           <div className={classes.graphGroup}>
             {[...Array(cols)].map((_, colIndex) => {
               const index = rowIndex * cols + colIndex;
               const item = probabilities[index];
-              const { save, buckets } = item;
+              const { save, cumulative } = item;
               return (
                 <LineGraph
-                  title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
+                  title={`Cumulative Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
                   key={save}
-                  data={buckets}
+                  data={cumulative}
                   isAnimationActive={false}
                   series={unitNames}
                   className={classes.line}
@@ -57,7 +52,7 @@ const ProbabilityGraphs = ({ probabilities, unitNames }) => {
                   }}
                   yAxis={{
                     tickFormatter: yAxisFormatter,
-                    domain: [0, Math.ceil(maxProbability / 10) * 10],
+                    domain: [0, 100],
                     type: 'number',
                     ticks,
                   }}
@@ -76,4 +71,4 @@ const ProbabilityGraphs = ({ probabilities, unitNames }) => {
   );
 };
 
-export default ProbabilityGraphs;
+export default CumulativeProbabilityGraphs;

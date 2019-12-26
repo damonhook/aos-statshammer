@@ -15,12 +15,16 @@ const useStyles = makeStyles((theme) => ({
 /**
  * A tooltip to display when you hover over a value in a graph
  */
-const ProbabilityTooltip = ({ active, payload, label }) => {
+const ProbabilityTooltip = ({
+  active, payload, label, cumulative,
+}) => {
   const classes = useStyles();
   if (active) {
     return (
       <Paper className={classes.tooltip}>
-        <Typography variant="h6">{`Damage: ${label}`}</Typography>
+        <Typography variant="h6">
+          {`Damage: ${cumulative ? '<= ' : ''}${label}`}
+        </Typography>
         {(payload || []).map(({ color, name, value }) => (
           <Typography style={{ color }} key={name}>{`${name}: ${value}%`}</Typography>
         ))}
@@ -34,6 +38,7 @@ ProbabilityTooltip.defaultProps = {
   active: false,
   payload: [],
   label: '',
+  cumulative: false,
 };
 
 ProbabilityTooltip.propTypes = {
@@ -43,6 +48,7 @@ ProbabilityTooltip.propTypes = {
   payload: PropTypes.arrayOf(PropTypes.object),
   /** The series label */
   label: PropTypes.string,
+  cumulative: PropTypes.bool,
 };
 
 export default ProbabilityTooltip;

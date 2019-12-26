@@ -1,22 +1,22 @@
 import React, { useCallback, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
-import {
-  Grid, MenuItem, TextField, Typography,
-} from '@material-ui/core';
-import clsx from 'clsx';
-import ListItem from 'components/ListItem';
-import { GraphSkeleton } from 'components/Skeletons';
-import { AdvancedStatsErrorCard } from 'components/ErrorCards';
+import { Grid } from '@material-ui/core';
 import _ from 'lodash';
 import { ProbabilityTooltip } from 'components/GraphTooltips';
-import { getMaxDamage, getMaxProbability, getTicks } from './probabilityUtils';
+import clsx from 'clsx';
+import ListItem from 'components/ListItem';
+import {
+  getMaxDamage, getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS,
+} from './probabilityUtils';
+import GraphControls from './GraphControls';
+import Loadable from './Loadable';
 
 const useStyles = makeStyles((theme) => ({
   probabilityCurves: {},
   content: {},
   graphContainer: ({ numUnits }) => ({
-    height: numUnits >= 3 ? '350px' : '250px',
+    height: numUnits >= 3 ? '350px' : '300px',
     marginBottom: theme.spacing(3),
     flexBasis: '50%',
     minWidth: '450px',
@@ -25,9 +25,6 @@ const useStyles = makeStyles((theme) => ({
       minWidth: '100%',
     },
   }),
-  skeleton: {
-    padding: theme.spacing(2, 4, 5),
-  },
   select: {
     maxWidth: '100%',
     display: 'flex',
@@ -47,50 +44,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const REFERENCE_LINE_OPTIONS = {
-  NONE: 'None',
-  MEAN: 'Mean',
-  MEDIAN: 'Median',
-  MAX: 'Max',
-};
-
-const Loadable = React.memo(({
-  children, loading, numUnits, error,
-}) => {
-  const classes = useStyles({ numUnits });
-
-  if (error) {
-    return <AdvancedStatsErrorCard />;
-  }
-  if (loading) {
-    return (
-      <Grid container spacing={2}>
-        {[...Array(6)].map(() => (
-          <Grid item className={classes.graphContainer}>
-            <GraphSkeleton
-              series={5}
-              groups={2}
-              height={numUnits >= 3 ? 350 : 250}
-              className={classes.skeleton}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    );
-  }
-  return children;
-}, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
-
-const ProbabilityCurves = React.memo(({
-  pending, probabilities, unitNames, className, error,
+const BasicCurves = React.memo(({
+  probabilities, unitNames, className, error, pending,
 }) => {
   const classes = useStyles({ numUnits: unitNames.length });
   const theme = useTheme();
   const [activeReferenceLine, setActiveReferenceLine] = useState(REFERENCE_LINE_OPTIONS.NONE);
+  const [matchXAxis, setMatchXAxis] = useState(true);
 
-  let [maxDamage, maxProbability, ticks] = [0, 0, null];
+  let maxDamage = matchXAxis ? 0 : 'dataMax';
+  let [maxProbability, ticks] = [0, null];
   if (probabilities && probabilities.length) {
-    maxDamage = getMaxDamage(probabilities);
+    if (matchXAxis) {
+      maxDamage = getMaxDamage(probabilities);
+    }
     maxProbability = getMaxProbability(probabilities);
     if (maxProbability) {
       ticks = getTicks(maxProbability);
@@ -98,39 +65,33 @@ const ProbabilityCurves = React.memo(({
   }
 
   const yAxisLabel = useCallback((value) => `${value}%`, []);
-
   let activeMetric = null;
   if (activeReferenceLine !== REFERENCE_LINE_OPTIONS.NONE) {
     activeMetric = activeReferenceLine.toLowerCase();
   }
 
-  const handleReferenceLineChanged = (event) => {
-    setActiveReferenceLine(event.target.value);
+  const handleReferenceLineChanged = (value) => {
+    setActiveReferenceLine(value);
+  };
+
+  const handleSetMatchXAxisChanged = (value) => {
+    setMatchXAxis(value);
   };
 
   return (
     <ListItem
       className={clsx(classes.probabilityCurves, className)}
-      header="Probability Curves"
+      header="Base Probability Curves"
       collapsible
       loading={pending}
       loaderDelay={0}
     >
-      <div className={classes.select}>
-        <Typography className={classes.selectInfo}>Reference Lines:</Typography>
-        <TextField
-          select
-          variant="filled"
-          label="Metric"
-          className={classes.field}
-          value={activeReferenceLine}
-          onChange={handleReferenceLineChanged}
-        >
-          {Object.values(REFERENCE_LINE_OPTIONS).map((option) => (
-            <MenuItem value={option} key={option}>{option}</MenuItem>
-          ))}
-        </TextField>
-      </div>
+      <GraphControls
+        matchXAxis={matchXAxis}
+        setMatchXAxis={handleSetMatchXAxisChanged}
+        activeReferenceLine={activeReferenceLine}
+        setActiveReferenceLine={handleReferenceLineChanged}
+      />
       <Loadable loading={pending} numUnits={unitNames.length} error={error}>
         <Grid container spacing={2} className={classes.content}>
           {probabilities.map(({ save, buckets, metrics }) => (
@@ -174,4 +135,4 @@ const ProbabilityCurves = React.memo(({
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
-export default ProbabilityCurves;
+export default BasicCurves;
