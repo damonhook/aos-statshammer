@@ -1,3 +1,10 @@
+export const REFERENCE_LINE_OPTIONS = {
+  NONE: 'None',
+  MEAN: 'Mean',
+  MEDIAN: 'Median',
+  MAX: 'Max',
+};
+
 export const getMaxDamage = (probabilities) => (
   Math.max(...probabilities.map(({ metrics }) => (
     Math.max(...Object.values(metrics.max).map((d) => Number(d)))

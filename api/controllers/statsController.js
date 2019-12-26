@@ -55,7 +55,7 @@ const buildProbability = ({ save, ...unitResults }) => {
     metrics.max[name] = unitResults[name].metrics.max;
   });
   const buckets = Object.keys(probabilities).sort((x, y) => x - y).map((damage) => ({
-    damage, ...probabilities[damage],
+    damage: Number(damage), ...probabilities[damage],
   }));
   const cumulative = buildCumulative(probabilities, Object.keys(unitResults), metrics);
   return {

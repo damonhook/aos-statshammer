@@ -150,7 +150,7 @@ const addGraphs = async (doc, classname) => {
 };
 
 const generate = async (
-  units, results, modifiers, unitNames, statsClassName, probabilitiesClassName,
+  units, results, modifiers, unitNames, statsClassName, cumulativeClassName, probabilitiesClassName,
 ) => {
   window.html2canvas = html2canvas;
   // eslint-disable-next-line new-cap
@@ -189,6 +189,17 @@ const generate = async (
   generateStatsTable(doc, results, unitNames);
 
   await addGraphs(doc, statsClassName);
+  doc.addPage();
+  cursor.reset();
+  cursor.incr(20);
+  doc.text(
+    'Cumulative Probabilities',
+    doc.internal.pageSize.getWidth() / 2,
+    cursor.pos,
+    { align: 'center' },
+  );
+  cursor.incr(20);
+  await addGraphs(doc, cumulativeClassName);
   doc.addPage();
   cursor.reset();
   cursor.incr(20);

@@ -15,6 +15,8 @@ import { useHistory } from 'react-router-dom';
 import { useMapping } from 'hooks';
 import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
 import ProbabilityCurves from 'containers/ProbabilityCurves';
+import BasicCurves from 'containers/ProbabilityCurves/BasicCurves';
+import CumulativeCurves from 'containers/ProbabilityCurves/CumulativeCurves';
 import MetricsTables from './MetricsTables';
 import ProbabilityTables from './ProbabilityTables';
 
@@ -77,10 +79,18 @@ const AdvancedStats = React.memo(({
       <div className={classes.container}>
         <Tabbed
           className={classes.tabs}
-          tabNames={['Graphs', 'Tables']}
+          tabNames={['Cumulative', 'Single', 'Tables']}
           tabContent={[
             <div className={classes.tab}>
-              <ProbabilityCurves
+              <CumulativeCurves
+                pending={simulations.pending}
+                error={simulations.error}
+                probabilities={probabilities}
+                unitNames={unitNames}
+              />
+            </div>,
+            <div className={classes.tab}>
+              <BasicCurves
                 pending={simulations.pending}
                 error={simulations.error}
                 probabilities={probabilities}
