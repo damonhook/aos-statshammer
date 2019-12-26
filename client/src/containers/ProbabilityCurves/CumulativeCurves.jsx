@@ -126,7 +126,7 @@ const CumulativeCurves = React.memo(({
                     return { x: metrics[activeMetric][name], stroke, dataKey: name };
                   })
                   : null}
-                tooltip={<ProbabilityTooltip />}
+                tooltip={<ProbabilityTooltip cumulative />}
               />
             </Grid>
           ))}
