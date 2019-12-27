@@ -7,7 +7,7 @@ import cluster from 'cluster';
 import os from 'os';
 import compression from 'compression';
 
-import { getModifiers } from './api/controllers/modifiersController';
+import { getModifiers, getTargetModifiers } from './api/controllers/modifiersController';
 import { compareUnits, simulateUnits, simulateUnitsForSave } from './api/controllers/statsController';
 
 if (cluster.isMaster) {
@@ -37,6 +37,11 @@ if (cluster.isMaster) {
   app.get('/api/modifiers', (req, res) => {
     res.set('X-Worker-ID', cluster.worker.id);
     res.send({ modifiers: getModifiers() });
+  });
+
+  app.get('/api/target/modifiers', (req, res) => {
+    res.set('X-Worker-ID', cluster.worker.id);
+    res.send({ modifiers: getTargetModifiers() });
   });
 
   app.post('/api/compare', (req, res) => {

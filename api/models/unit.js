@@ -1,6 +1,6 @@
 import WeaponProfile from './weaponProfile';
 import Simulation from '../processors/simulation';
-import { getMetrics } from '../utils';
+import { getMetrics } from '../utils/StatsUtils';
 
 /**
  * A class representing a single unit

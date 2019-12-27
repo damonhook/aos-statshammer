@@ -1,5 +1,5 @@
 import { Characteristics as C } from '../../constants';
-import { numberOption } from './ModifierOptions';
+import { numberOption } from '../../utils/ModifierOptions';
 import DiceValue from '../diceValue';
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';

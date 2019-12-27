@@ -1,6 +1,6 @@
 import { D6 } from '../models/dice';
 import { Characteristics as C } from '../constants';
-import { getMetrics } from '../utils';
+import { getMetrics } from '../utils/StatsUtils';
 import { MODIFIERS as m } from '../models/modifiers';
 import { TARGET_MODIFIERS as t } from '../models/targetModifiers';
 

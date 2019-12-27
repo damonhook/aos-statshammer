@@ -1,5 +1,6 @@
 import { D6 } from '../dice';
 import BaseTargetModifier from './BaseTargetModifier';
+import { rollOption } from '../../utils/ModifierOptions';
 
 export default class TargetFeelNoPain extends BaseTargetModifier {
   constructor({ on = 6 }) {
@@ -13,6 +14,12 @@ export default class TargetFeelNoPain extends BaseTargetModifier {
 
   static get description() {
     return 'Ignore wounds and mortal wounds on a roll of {on}+';
+  }
+
+  static get options() {
+    return {
+      on: rollOption({ defaultVal: 6 }),
+    };
   }
 
   // eslint-disable-next-line no-unused-vars

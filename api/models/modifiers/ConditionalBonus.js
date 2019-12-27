@@ -2,7 +2,7 @@ import { Characteristics as C, getCharacteristic } from '../../constants';
 import { D6 } from '../dice';
 import {
   numberOption, booleanOption, rollOption, choiceOption,
-} from './ModifierOptions';
+} from '../../utils/ModifierOptions';
 import DiceValue from '../diceValue';
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';

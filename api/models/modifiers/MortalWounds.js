@@ -2,7 +2,7 @@ import { Characteristics as C } from '../../constants';
 import { D6 } from '../dice';
 import DiceValue from '../diceValue';
 import BaseModifier from './BaseModifier';
-import { numberOption, booleanOption, rollOption } from './ModifierOptions';
+import { numberOption, booleanOption, rollOption } from '../../utils/ModifierOptions';
 
 export default class MortalWounds extends BaseModifier {
   constructor({

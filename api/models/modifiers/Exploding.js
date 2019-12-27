@@ -1,7 +1,7 @@
 import { Characteristics as C } from '../../constants';
 import { D6 } from '../dice';
 import DiceValue from '../diceValue';
-import { numberOption, booleanOption, rollOption } from './ModifierOptions';
+import { numberOption, booleanOption, rollOption } from '../../utils/ModifierOptions';
 import BaseModifier from './BaseModifier';
 
 export default class Exploding extends BaseModifier {
