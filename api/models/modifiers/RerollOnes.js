@@ -21,12 +21,12 @@ export default class RerollOnes extends BaseModifier {
     );
   }
 
-  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   numRerolls(owner) {
     return 1 / D6.sides;
   }
 
-  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   allowedReroll(owner, roll) {
     return roll === 1;
   }

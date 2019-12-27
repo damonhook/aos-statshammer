@@ -51,7 +51,7 @@ export default class ConditionalBonus extends BaseModifier {
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   resolve(owner) {
     let numHits = D6.getProbability(this.on);
     const rerollModifier = owner.modifiers.getRerollModifier(this.characteristic);

@@ -1,17 +1,4 @@
-import { getCharacteristic } from '../../constants';
-import { choiceOption } from './ModifierOptions';
-
-export default class BaseModifier {
-  constructor({ characteristic }) {
-    const c = getCharacteristic(characteristic);
-    if (!this.constructor.availableCharacteristics.includes(c)) {
-      throw new Error(
-        `Invalid characteristic provided to ${this.constructor.name} (${characteristic})`,
-      );
-    }
-    this.characteristic = c;
-  }
-
+export default class BaseTargetModifier {
   static get name() {
     return null;
   }
@@ -25,9 +12,7 @@ export default class BaseModifier {
   }
 
   static get options() {
-    return {
-      characteristic: choiceOption({ items: this.availableCharacteristics }),
-    };
+    return {};
   }
 
   static get metadata() {

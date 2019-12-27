@@ -20,7 +20,7 @@ export default class MortalWounds extends BaseModifier {
   }
 
   static get description() {
-    return '{unmodified} rolls of {on} for {characteristic} result in {mortalWounds} mortal wounds {inAddition}';
+    return '{unmodified} rolls of {on}+ for {characteristic} result in {mortalWounds} mortal wounds {inAddition}';
   }
 
   static get availableCharacteristics() {

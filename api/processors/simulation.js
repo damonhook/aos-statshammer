@@ -2,6 +2,7 @@ import { D6 } from '../models/dice';
 import { Characteristics as C } from '../constants';
 import { getMetrics } from '../utils';
 import { MODIFIERS as m } from '../models/modifiers';
+import { TARGET_MODIFIERS as t } from '../models/targetModifiers';
 
 class Simulation {
   constructor(profile, target) {
@@ -103,16 +104,18 @@ class Simulation {
   }
 
   resolveSaveRoll() {
-    const saveRoll = D6.roll();
-    const save = this.target.getSaveAfterRend(this.profile.getRend(false, true));
-    if (!save || saveRoll < save) {
-      return this.resolveDamage();
+    const rend = this.profile.getRend(false, true);
+    const save = this.target.getSave(rend);
+    if (save) {
+      const saveRoll = this.performRerollSaves(D6.roll(), rend);
+      if (saveRoll >= save) return 0;
     }
-    return 0;
+    return this.resolveDamage();
   }
 
   resolveDamage() {
-    return this.profile.getDamage(false, true);
+    const damage = this.profile.getDamage(false, true);
+    return this.performFNPRolls(damage);
   }
 
   performReroll(characteristic, roll) {
@@ -123,6 +126,26 @@ class Simulation {
       }
     }
     return roll;
+  }
+
+  performRerollSaves(roll, rend) {
+    if (roll < this.target.getSave(rend)) {
+      const rerollModifier = this.target.modifiers.getRerollModifier();
+      if (rerollModifier && rerollModifier.allowedReroll(this.profile, this.target, roll)) {
+        return D6.roll();
+      }
+    }
+    return roll;
+  }
+
+  performFNPRolls(damage) {
+    const fnpModifier = this.target.modifiers.getModifier(t.TARGET_FNP);
+    if (fnpModifier) {
+      return [...Array(damage)].reduce((acc) => (
+        (D6.roll() >= fnpModifier.on) ? acc : acc + damage
+      ), 0);
+    }
+    return damage;
   }
 }
 
