@@ -37,11 +37,12 @@ const FloatingButton = ({
 FloatingButton.defaultProps = {
   disabled: false,
   className: null,
+  onClick: null,
 };
 
 FloatingButton.propTypes = {
   /** The function to call when the button is clicked */
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   /** Whether the button is disabled or not */
   disabled: PropTypes.bool,
   /** The icon component to render in the button */

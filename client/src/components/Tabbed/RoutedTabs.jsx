@@ -79,13 +79,12 @@ const RoutedTabs = ({
         resistance
       >
         {tabContent.map((content, index) => (
-          <Route path={tabRoutes[index]}>
+          <Route path={tabRoutes[index]} key={tabNames[index]}>
             <TabPanel
               value={value}
               index={index}
               className={classes.content}
               dir={theme.direction}
-              key={tabNames[index]}
             >
               {content}
             </TabPanel>

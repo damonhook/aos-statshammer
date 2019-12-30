@@ -40,7 +40,7 @@ GraphWrapper.propTypes = {
   /** Whether the child components are busy loading */
   loading: PropTypes.bool,
   /** Whether there was an error or not */
-  error: PropTypes.string,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   /** The child components to render */
   children: PropTypes.node.isRequired,
   /** The number of units (used to generate the appropriate skeleton) */
