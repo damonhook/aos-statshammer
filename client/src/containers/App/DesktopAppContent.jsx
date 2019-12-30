@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Units from 'containers/Units';
 import Stats from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
+import { Divider } from '@material-ui/core';
 import clsx from 'clsx';
 import Target from 'containers/Target';
 import { RoutedTabs } from 'components/Tabbed';
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
   },
   content: {
-    margin: theme.spacing(0, 3, 2, 1),
+    margin: theme.spacing(0, 3, 2, 2),
     flex: 1,
     flexBasis: '50%',
     width: '45%',
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   tabs: {
-    margin: theme.spacing(0, 1, 2, 0),
+    margin: theme.spacing(0, 2, 2, 0),
   },
   tab: {
     padding: theme.spacing(2, 0, 2, 3),
@@ -49,6 +50,9 @@ const DesktopAppContent = ({ className }) => {
         tabContent={[<Units className={classes.tab} />, <Target className={classes.tab} />]}
         tabRoutes={['/', '/target']}
       />
+      <div>
+        <Divider orientation="vertical" light />
+      </div>
       <div className={classes.content}>
         <Stats className={classes.statsContent} />
       </div>

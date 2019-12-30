@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { useMediaQuery } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-// import NoItemsCard from 'components/NoItemsCard';
+import NoItemsCard from 'components/NoItemsCard';
 import _ from 'lodash';
 import TargetModifierList from 'components/TargetModifierList';
 
@@ -21,11 +20,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Target = React.memo(({ target, className }) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <div className={clsx(classes.target, className)}>
+      {(!target.modifiers || !target.modifiers.length) && (
+        <NoItemsCard header="No modifiers" body="No target modifiers are present (Basic target)" />
+      )}
       <TargetModifierList />
     </div>
   );

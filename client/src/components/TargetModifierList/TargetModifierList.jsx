@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
     flex: '1 1 auto',
     width: '100%',
   },
-  activeModifiers: { marginTop: '1em' },
+  activeModifiers: {},
   activeModifierCard: {},
 }));
 
