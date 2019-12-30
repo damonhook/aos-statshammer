@@ -31,7 +31,7 @@ const ModifierList = React.memo(({
   pending, definitions, error, modifiers, errorCallback, dispatchModifiers,
 }) => {
   const classes = useStyles();
-  const [errors, dispatchErrors] = useReducer(errorReducer, []);
+  const [errors, dispatchErrors] = useReducer(errorReducer, modifiers.map(() => false));
 
   useEffect(() => {
     if (errorCallback) {
@@ -68,7 +68,7 @@ const ModifierList = React.memo(({
 
   const getErrorCallback = useCallback(_.memoize((index) => (error) => {
     dispatchErrors({ type: 'SET_ERROR', index, error });
-  }), []);
+  }), [dispatchErrors]);
 
   const moveUpEnabled = (index) => index > 0;
   const moveDownEnabled = (index) => index < (modifiers || []).length - 1;
