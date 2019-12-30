@@ -5,8 +5,7 @@ import {
 } from '@material-ui/core';
 import { Add, Remove, Sync } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { useHistory, Route } from 'react-router-dom';
-import HashRoute from 'components/HashRoute';
+import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import { useHashMatch } from 'hooks';
 import ModifierOption from './ModifierOption';

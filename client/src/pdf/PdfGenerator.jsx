@@ -69,7 +69,6 @@ const PdfGenerator = ({
 
   return (
     <div>
-      <PdfLoader />
       <ThemeProvider theme={lightTheme}>
         <div className={classes.hidden} ref={ref}>
           <StatsGraphs results={results} unitNames={unitNames} />
@@ -77,6 +76,7 @@ const PdfGenerator = ({
           <ProbabilityGraphs probabilities={probabilities} unitNames={unitNames} />
         </div>
       </ThemeProvider>
+      <PdfLoader />
     </div>
   );
 };

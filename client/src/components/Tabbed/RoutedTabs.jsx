@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Tab, Paper, Tabs } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -41,11 +41,9 @@ const RoutedTabs = ({
 
   const handleChange = (event, newValue) => {
     history.replace(tabRoutes[newValue]);
-    if (onTabChange) onTabChange(newValue);
   };
   const handleSwipe = (index) => {
     history.replace(tabRoutes[index]);
-    if (onTabChange) onTabChange(index);
   };
 
   let value = 0;
@@ -56,6 +54,12 @@ const RoutedTabs = ({
     }
     return false;
   });
+
+  useEffect(() => {
+    if (onTabChange) {
+      onTabChange(value);
+    }
+  }, [onTabChange, value]);
 
   return (
     <div className={clsx(classes.tabs, className)}>

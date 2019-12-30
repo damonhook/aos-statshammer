@@ -38,7 +38,7 @@ export const addImage = async (doc, element) => {
   const imgProps = doc.getImageProperties(imgData);
   const imgWidth = pageWidth - (margin * 2);
   const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-  doc.addImage(imgData, 'JPEG', margin, cursor.pos, imgWidth, imgHeight, nanoid(), 'MEDIUM');
+  doc.addImage(imgData, 'JPEG', margin, cursor.pos, imgWidth, imgHeight, nanoid());
   cursor.incr(imgHeight + 20);
 };
 
