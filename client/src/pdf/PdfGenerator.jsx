@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const PdfGenerator = ({
-  units, results, modifiers, probabilities,
+  units, target, results, modifiers, probabilities,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -40,8 +40,8 @@ const PdfGenerator = ({
   const unitNames = useMemo(() => units.map(({ name }) => name), [units]);
 
   const generatePdf = useCallback(() => (
-    generate(units, results, modifiers, unitNames, 'pdf-copy', 'pdf-cumulative', 'pdf-prob')
-  ), [modifiers, results, unitNames, units]);
+    generate(units, target, results, modifiers, unitNames, 'pdf-copy', 'pdf-cumulative', 'pdf-prob')
+  ), [modifiers, results, target, unitNames, units]);
 
   const refCallback = useCallback(() => {
     setTimeout(() => {
@@ -83,6 +83,7 @@ const PdfGenerator = ({
 
 PdfGenerator.propTypes = {
   units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  target: PropTypes.arrayOf(PropTypes.object).isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
   modifiers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

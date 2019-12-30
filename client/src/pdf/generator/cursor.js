@@ -22,4 +22,6 @@ class Cursor {
   }
 }
 
-export default Cursor;
+const cursor = new Cursor(20);
+
+export { Cursor, cursor as default };

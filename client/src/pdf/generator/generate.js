@@ -1,19 +1,18 @@
 /* eslint-disable no-underscore-dangle */
 import jsPDF from 'jspdf';
-import nanoid from 'nanoid';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
 import { getModifierById } from 'utils/modifierHelpers';
+import { getTargetModifierById } from 'utils/targetModifierHelpers';
 import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
-import Cursor from './cursor';
+import cursor from './cursor';
+import {
+  margin, headerColor, addHeader, addSubHeader, addHR, addPage, addGraphs,
+} from './pdfUtils';
 
-const margin = 20;
-const cursor = new Cursor(margin);
-const headerColor = [51, 171, 159];
-
-const getModifierItems = (modifiers) => {
+const getModifierItems = (modifiers, isTarget = false) => {
   const modifierItems = modifiers.map(({ id, options }) => {
-    const definition = getModifierById(id);
+    const definition = isTarget ? getTargetModifierById(id) : getModifierById(id);
     if (definition) {
       const content = (
         `${definition.name}:\n\t${getFormattedDescription(definition, options, false)}`
@@ -36,6 +35,7 @@ const getModifierItems = (modifiers) => {
 };
 
 const generateUnits = (doc, units) => {
+  addSubHeader(doc, 'Units');
   units.forEach(({ name, weapon_profiles }) => {
     weapon_profiles.forEach((profile, index) => {
       const profileName = profile.name || 'Weapon Profile';
@@ -83,8 +83,41 @@ const generateUnits = (doc, units) => {
       cursor.pos = doc.previousAutoTable.finalY;
       cursor.incr(doc.internal.getLineHeight() - 5);
     });
-    cursor.incr(25);
+    cursor.incr(20);
   });
+  addHR(doc);
+  cursor.incr(10);
+};
+
+const generateTarget = (doc, target) => {
+  addSubHeader(doc, 'Target');
+  const head = [
+    [{ content: 'Target', colSpan: 6, styles: { halign: 'center' } }],
+  ];
+  const body = [
+    ...getModifierItems(target.modifiers, true),
+  ];
+  doc.autoTable({
+    startY: cursor.pos,
+    head,
+    body,
+    headStyles: { fillColor: headerColor },
+    columnStyles: {
+      0: { cellWidth: 85 },
+      1: { cellWidth: 85 },
+      2: { cellWidth: 85 },
+      3: { cellWidth: 85 },
+      4: { cellWidth: 85 },
+      5: { cellWidth: 85 },
+    },
+    pageBreak: 'avoid',
+    theme: 'grid',
+  });
+  cursor.pos = doc.previousAutoTable.finalY;
+  cursor.incr(doc.internal.getLineHeight() - 5);
+  cursor.incr(20);
+  addHR(doc);
+  cursor.incr(10);
 };
 
 const transposeData = (unitNames, results) => unitNames.reduce((acc, name) => {
@@ -130,27 +163,9 @@ const generateStatsTable = (doc, results, unitNames) => {
   cursor.incr(20);
 };
 
-const addImage = async (doc, element) => {
-  const canvas = await html2canvas(element);
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const imgData = canvas.toDataURL('image/JPEG', 0.75);
-  const imgProps = doc.getImageProperties(imgData);
-  const imgWidth = pageWidth - (margin * 2);
-  const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-  doc.addImage(imgData, 'JPEG', margin, cursor.pos, imgWidth, imgHeight, nanoid(), 'MEDIUM');
-  cursor.incr(imgHeight + 20);
-};
-
-const addGraphs = async (doc, classname) => {
-  const elements = document.getElementsByClassName(classname);
-  for (let i = 0; i < elements.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await addImage(doc, elements[i]);
-  }
-};
-
 const generate = async (
-  units, results, modifiers, unitNames, statsClassName, cumulativeClassName, probabilitiesClassName,
+  units, target, results, modifiers, unitNames,
+  statsClassName, cumulativeClassName, probabilitiesClassName,
 ) => {
   window.html2canvas = html2canvas;
   // eslint-disable-next-line new-cap
@@ -160,13 +175,11 @@ const generate = async (
   });
   cursor.reset();
   cursor.incr(20);
-  doc.setFontSize(18);
-  doc.text('AoS Statshammer Report', doc.internal.pageSize.getWidth() / 2, cursor.pos, { align: 'center' });
-  cursor.incr(20);
-  doc.line(margin, cursor.pos, doc.internal.pageSize.getWidth() - (margin * 2), cursor.pos);
-  cursor.incr(doc.internal.getLineHeight());
-  doc.setFontSize(12);
+  addHeader(doc, 'AoS Statshammer Report');
   generateUnits(doc, units);
+  if (target && target.modifiers && target.modifiers.length) {
+    generateTarget(doc, target);
+  }
   doc.setFontSize(9);
   doc.setFontType('italic');
   doc.text(
@@ -178,33 +191,23 @@ const generate = async (
   doc.setFontType('normal');
   doc.setFontSize(12);
 
-  doc.setFontSize(14);
-  doc.addPage();
-  cursor.reset();
+  addPage(doc);
   cursor.incr(20);
-  doc.text('Results', doc.internal.pageSize.getWidth() / 2, cursor.pos, { align: 'center' });
-  doc.setFontSize(12);
-  cursor.incr(10);
+  addSubHeader(doc, 'Results');
 
   generateStatsTable(doc, results, unitNames);
 
   await addGraphs(doc, statsClassName);
-  doc.addPage();
-  cursor.reset();
+  addPage(doc);
   cursor.incr(20);
-  doc.text(
-    'Cumulative Probabilities',
-    doc.internal.pageSize.getWidth() / 2,
-    cursor.pos,
-    { align: 'center' },
-  );
-  cursor.incr(20);
+  doc.setFontSize(14);
+  addSubHeader(doc, 'Cumulative Probabilities');
+  cursor.incr(10);
   await addGraphs(doc, cumulativeClassName);
-  doc.addPage();
-  cursor.reset();
+  addPage(doc);
   cursor.incr(20);
-  doc.text('Probabilities', doc.internal.pageSize.getWidth() / 2, cursor.pos, { align: 'center' });
-  cursor.incr(20);
+  addSubHeader(doc, 'Probabilities');
+  cursor.incr(10);
   await addGraphs(doc, probabilitiesClassName);
   return doc;
 };
