@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import {
   Button, Collapse, useMediaQuery, Paper,
 } from '@material-ui/core';
 import { Add, Remove, Sync } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { useHistory, useLocation, Route } from 'react-router-dom';
+import { useHistory, Route } from 'react-router-dom';
+import HashRoute from 'components/HashRoute';
 import _ from 'lodash';
+import { useHashMatch } from 'hooks';
 import ModifierOption from './ModifierOption';
 import SelectorDialog from './SelectorDialog';
 
@@ -21,36 +22,24 @@ const useStyles = makeStyles(() => ({
  * A component used to select new modifiers to apply
  */
 const ModifierSelector = React.memo(({
-  modifiers, pending, error, onClick, disabled,
+  modifiers, pending, error, onClick, disabled, nested,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const history = useHistory();
-  const location = useLocation();
+  const editPath = '#modifiers';
+  const open = useHashMatch(editPath);
 
-  const [open, setOpen] = useState(false);
-  const [editPath, setEditPath] = useState('');
-
-  useEffect(() => {
-    if (location.pathname.match(/^.*\/modifiers$/)) {
-      setOpen(true);
-    } else {
-      setEditPath(`${location.pathname}/modifiers`);
-      setOpen(false);
-    }
-  }, [location]);
-
-  const handleOpen = useCallback(() => {
+  const handleOpen = () => {
     history.push(editPath);
-  }, [editPath, history]);
+  };
 
   const handleClose = useCallback(() => {
     history.goBack();
   }, [history]);
 
   const addModifier = useCallback((modifier) => {
-    setOpen(false); // Close early to avoid 'jumping'
     handleClose();
     onClick(modifier);
   }, [handleClose, onClick]);
@@ -106,15 +95,18 @@ const ModifierSelector = React.memo(({
         )}
       {mobile
         ? (
-          <Route path={editPath}>
-            <SelectorDialog open modifiers={modifiers} addModifier={addModifier} />
-          </Route>
+          <SelectorDialog modifiers={modifiers} addModifier={addModifier} hash={editPath} />
         )
         : (
           <Collapse in={open} timeout={{ enter: 200, exit: 0 }}>
             <Paper className={classes.list} square>
               {modifiers.map((modifier) => (
-                <ModifierOption modifier={modifier} onClick={addModifier} key={modifier.id} />
+                <ModifierOption
+                  modifier={modifier}
+                  onClick={addModifier}
+                  key={modifier.id}
+                  nested={nested}
+                />
               ))}
             </Paper>
           </Collapse>
@@ -126,6 +118,7 @@ const ModifierSelector = React.memo(({
 ModifierSelector.defaultProps = {
   error: null,
   disabled: false,
+  nested: false,
 };
 
 ModifierSelector.propTypes = {
@@ -139,11 +132,7 @@ ModifierSelector.propTypes = {
   onClick: PropTypes.func.isRequired,
   /** Whether the selector is disabled or not */
   disabled: PropTypes.bool,
+  nested: PropTypes.bool,
 };
 
-
-const mapStateToProps = (state) => ({
-  ...state.modifiers,
-});
-
-export default connect(mapStateToProps)(ModifierSelector);
+export default ModifierSelector;

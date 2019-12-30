@@ -1,18 +1,16 @@
-import React, {
-  useEffect, useCallback, useReducer,
-} from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
 import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
-import { MAX_MODIFIERS } from 'appConstants';
 import _ from 'lodash';
-import { getModifierById } from 'utils/modifierHelpers';
+import {
+  addTargetModifier, removeTargetModifier, moveTargetModifier, editTargetModifierOption,
+  editTargetModifierError,
+} from 'actions/target.action';
 import PendingModifiers from './PendingModifiers';
-import { errorReducer } from './reducers';
 
 const useStyles = makeStyles(() => ({
   modifierList: {
@@ -23,21 +21,13 @@ const useStyles = makeStyles(() => ({
   activeModifierCard: {},
 }));
 
-/**
- * A component in charge of displaying the list of currently applied modifiers, as well as,
- * display the modifier selector
- */
-const ModifierList = React.memo(({
-  pending, definitions, error, modifiers, errorCallback, dispatchModifiers,
+const TargetModifierList = React.memo(({
+  pending, definitions, error, activeModifiers, addTargetModifier, removeTargetModifier,
+  moveTargetModifier, editTargetModifierOption, editTargetModifierError,
 }) => {
   const classes = useStyles();
-  const [errors, dispatchErrors] = useReducer(errorReducer, []);
 
-  useEffect(() => {
-    if (errorCallback) {
-      errorCallback(errors.some((e) => e));
-    }
-  }, [errors, errorCallback]);
+  const getModifierById = (id) => definitions.find((mod) => mod.id === id);
 
   const addModifier = useCallback((modifier) => {
     const newModifier = { id: modifier.id, options: {} };
@@ -47,40 +37,35 @@ const ModifierList = React.memo(({
         newModifier.options[k] = modifier.options[k].default;
       }
     });
-    dispatchModifiers({ type: 'ADD_MODIFIER', modifier: newModifier });
-    dispatchErrors({ type: 'ADD_ERROR', error: false });
-  }, [dispatchModifiers]);
+    addTargetModifier(newModifier);
+  }, [addTargetModifier]);
 
   const removeModifier = useCallback((index) => {
-    dispatchModifiers({ type: 'REMOVE_MODIFIER', index });
-    dispatchErrors({ type: 'REMOVE_ERROR', index });
-  }, [dispatchModifiers]);
+    removeTargetModifier(index);
+  }, [removeTargetModifier]);
 
   const moveModifier = useCallback((index, newIndex) => {
-    dispatchModifiers({ type: 'MOVE_MODIFIER', index, newIndex });
-  }, [dispatchModifiers]);
+    moveTargetModifier(index, newIndex);
+  }, [moveTargetModifier]);
 
   const onOptionChange = useCallback((index, name, value) => {
-    dispatchModifiers({
-      type: 'EDIT_MODIFIER_OPTION', index, name, value,
-    });
-  }, [dispatchModifiers]);
+    editTargetModifierOption(index, name, value);
+  }, [editTargetModifierOption]);
 
   const getErrorCallback = useCallback(_.memoize((index) => (error) => {
-    dispatchErrors({ type: 'SET_ERROR', index, error });
+    editTargetModifierError(index, error);
   }), []);
 
   const moveUpEnabled = (index) => index > 0;
-  const moveDownEnabled = (index) => index < (modifiers || []).length - 1;
+  const moveDownEnabled = (index) => index < (activeModifiers || []).length - 1;
 
   return (
     <Typography component="div" className={classes.modifierList}>
-      <label>Modifiers:</label>
       {pending
         ? <PendingModifiers />
         : (
           <div className={classes.activeModifiers}>
-            {(modifiers || []).map((modifier, index) => (
+            {(activeModifiers || []).map((modifier, index) => (
               <ModifierItem
                 definition={getModifierById(modifier.id)}
                 options={modifier.options}
@@ -103,7 +88,7 @@ const ModifierList = React.memo(({
                 key={modifier.uuid}
                 onOptionChange={onOptionChange}
                 errorCallback={getErrorCallback(index)}
-                nested
+                scrollEnabled={false}
               />
             ))}
           </div>
@@ -113,36 +98,22 @@ const ModifierList = React.memo(({
         pending={pending}
         error={error}
         onClick={addModifier}
-        disabled={modifiers && modifiers.length >= MAX_MODIFIERS}
-        nested
       />
     </Typography>
   );
 }, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
-ModifierList.defaultProps = {
-  modifiers: [],
-  errorCallback: null,
-};
-
-ModifierList.propTypes = {
-  /** Whether the modifiers state is pending */
-  pending: PropTypes.bool.isRequired,
-  /** A list of the currently applied modifiers */
-  modifiers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.isRequired,
-    options: PropTypes.object.isRequired,
-  })),
-  /** A callback function to pass back the error state of the list of modifiers */
-  errorCallback: PropTypes.func,
-  /** A callback function used to dispatch changes to the modifier list/item */
-  dispatchModifiers: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = (state) => ({
-  pending: state.modifiers.pending,
-  definitions: state.modifiers.modifiers,
-  error: state.modifiers.error,
+  pending: state.targetModifiers.pending,
+  definitions: state.targetModifiers.modifiers,
+  error: state.targetModifiers.error,
+  activeModifiers: state.target.modifiers,
 });
 
-export default connect(mapStateToProps)(ModifierList);
+export default connect(mapStateToProps, {
+  addTargetModifier,
+  removeTargetModifier,
+  moveTargetModifier,
+  editTargetModifierOption,
+  editTargetModifierError,
+})(TargetModifierList);

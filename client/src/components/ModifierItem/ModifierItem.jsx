@@ -5,14 +5,17 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
-import { getModifierById } from 'utils/modifierHelpers';
 import { scrollToRef } from 'utils/scrollIntoView';
+import clsx from 'clsx';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
 import { errorReducer } from './reducers';
 
 const useStyles = makeStyles((theme) => ({
   modifier: {
+    background: theme.palette.background.paper,
+  },
+  nested: {
     background: theme.palette.background.nested,
   },
   modifierContent: {
@@ -37,16 +40,15 @@ const useStyles = makeStyles((theme) => ({
  * A component representing a single modifier in the Profile Dialog
  */
 const ModifierItem = React.memo(({
-  index, id, options, actions, onOptionChange, errorCallback,
+  index, definition, options, actions, onOptionChange, errorCallback, nested, scrollEnabled,
 }) => {
   const classes = useStyles();
   const itemRef = useRef(null);
   const [errors, dispatchErrors] = useReducer(errorReducer, {});
-  const definition = getModifierById(id);
 
   useEffect(() => {
-    scrollToRef(itemRef);
-  }, [index]);
+    if (scrollEnabled) scrollToRef(itemRef);
+  }, [index, scrollEnabled]);
 
   useEffect(() => {
     if (errorCallback) {
@@ -63,7 +65,7 @@ const ModifierItem = React.memo(({
   return (
     <div ref={itemRef}>
       <ListItem
-        className={classes.modifier}
+        className={clsx(classes.modifier, { [classes.nested]: nested })}
         primaryItems={actions}
         header={definition.name}
         collapsible
@@ -96,13 +98,13 @@ const ModifierItem = React.memo(({
 ModifierItem.defaultProps = {
   actions: null,
   errorCallback: null,
+  nested: false,
+  scrollEnabled: true,
 };
 
 ModifierItem.propTypes = {
   /** The index of the modifier item in the list of modifiers */
   index: PropTypes.number.isRequired,
-  /** The ID that corresponds with the modifier definition */
-  id: PropTypes.string.isRequired,
   /** An object containing all of the option values */
   options: PropTypes.shape({ value: PropTypes.any }).isRequired,
   /** A list of actions that can be performed on the item (displayed in the header) */
@@ -111,6 +113,8 @@ ModifierItem.propTypes = {
   onOptionChange: PropTypes.func.isRequired,
   /** An optional callback function used to pass back the error state of the modifier item */
   errorCallback: PropTypes.func,
+  nested: PropTypes.bool,
+  scrollEnabled: PropTypes.bool,
 };
 
 export default ModifierItem;

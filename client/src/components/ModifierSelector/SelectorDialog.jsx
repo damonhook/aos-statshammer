@@ -6,6 +6,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
+import { useHashMatch } from 'hooks';
 import ModifierOption from './ModifierOption';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,9 +32,10 @@ const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={r
 /**
  * The modifier selector in the form of a dialog (for mobile)
  */
-const SelectorDialog = ({ open, modifiers, addModifier }) => {
+const SelectorDialog = ({ modifiers, addModifier, hash }) => {
   const classes = useStyles();
   const history = useHistory();
+  const open = useHashMatch(hash);
 
   const handleClose = useCallback(() => {
     history.goBack();
@@ -61,13 +63,7 @@ const SelectorDialog = ({ open, modifiers, addModifier }) => {
   );
 };
 
-SelectorDialog.defaultProps = {
-  open: true,
-};
-
 SelectorDialog.propTypes = {
-  /** Whether the dialog is open. If it is controlled through a Route, then leave as `true` */
-  open: PropTypes.bool,
   /** The list of modifier definitions */
   modifiers: PropTypes.arrayOf(PropTypes.object).isRequired,
   /** A callback function to all when a new modifier is added */

@@ -17,12 +17,9 @@ export default class TargetReroll extends BaseTargetModifier {
   }
 
   numRerolls(profile, target) {
-    if (target.getSave(profile.getRend()) === null) {
-      return 0;
-    }
-    return D6.getInverseProbability(
-      target.getCharacteristic(this.characteristic, false),
-    );
+    const save = target.getSave(profile.getRend());
+    if (save === null) return 0;
+    return D6.getInverseProbability(save);
   }
 
   // eslint-disable-next-line no-unused-vars

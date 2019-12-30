@@ -144,6 +144,7 @@ class WeaponProfile {
     if (mwModifier) {
       const mortalHits = attacks * mwModifier.resolve(this);
       mortalDamage += mortalHits * mwModifier.getMortalWounds();
+      mortalDamage -= mortalDamage * target.resolveMortalSave(this);
       mortalDamage -= mortalDamage * target.resolveFNP(this);
       hits -= !mwModifier.inAddition ? mortalHits : 0;
     }
@@ -175,6 +176,7 @@ class WeaponProfile {
     if (mwModifier) {
       const mortalToWounds = hits * mwModifier.resolve(this);
       mortalDamage += mortalToWounds * mwModifier.getMortalWounds();
+      mortalDamage -= mortalDamage * target.resolveMortalSave(this);
       mortalDamage -= mortalDamage * target.resolveFNP(this);
       wounds -= !mwModifier.inAddition ? mortalToWounds : 0;
     }

@@ -6,12 +6,12 @@ import { SAVES } from '../constants';
  * Compare the average damage of these units
  * @param {object} param0 An object containing the units to fetch
  */
-export const compareUnits = ({ units }) => {
+export const compareUnits = ({ units, target }) => {
   const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
   const results = SAVES.map((save) => {
-    const target = new Target(save);
+    const targetClass = new Target(save, target ? target.modifiers : []);
     return unitList.reduce((acc, unit) => {
-      acc[unit.name] = parseFloat(unit.averageDamage(target).toFixed(2));
+      acc[unit.name] = parseFloat(unit.averageDamage(targetClass).toFixed(2));
       return acc;
     }, { save: save ? save.toString() : 'None' });
   });
@@ -64,12 +64,12 @@ const buildProbability = ({ save, ...unitResults }) => {
 };
 
 export const simulateUnitsForSave = ({
-  units, save, numSimulations = 1000, includeOutcomes = false,
+  units, save, target, numSimulations = 1000, includeOutcomes = false,
 }) => {
   const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
-  const target = new Target(save);
+  const targetClass = new Target(save, target ? target.modifiers : []);
   const results = unitList.reduce((acc, unit) => {
-    acc[unit.name] = unit.runSimulations(target, numSimulations, includeOutcomes);
+    acc[unit.name] = unit.runSimulations(targetClass, numSimulations, includeOutcomes);
     return acc;
   }, { save: save ? save.toString() : 'None' });
   const probabilities = buildProbability(results);
@@ -81,11 +81,13 @@ export const simulateUnitsForSave = ({
   };
 };
 
-export const simulateUnits = ({ units, numSimulations = 1000, includeOutcomes = false }) => {
+export const simulateUnits = ({
+  units, target, numSimulations = 1000, includeOutcomes = false,
+}) => {
   const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
   const data = SAVES.reduce((acc, save) => {
     const saveData = simulateUnitsForSave({
-      units, save, numSimulations, includeOutcomes,
+      units, save, target, numSimulations, includeOutcomes,
     });
     return {
       results: [...acc.results, saveData.results],

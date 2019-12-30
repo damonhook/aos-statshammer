@@ -138,11 +138,21 @@ class Simulation {
     return roll;
   }
 
-  performFNPRolls(damage) {
-    const fnpModifier = this.target.modifiers.getModifier(t.TARGET_FNP);
-    if (fnpModifier) {
+  performMortalSaveRolls(damage) {
+    const mortalModifiers = this.target.modifiers.getStackableModifier(t.TARGET_MORTAL_NEGATE);
+    if (mortalModifiers && mortalModifiers.length) {
       return [...Array(damage)].reduce((acc) => (
-        (D6.roll() >= fnpModifier.on) ? acc : acc + damage
+        (mortalModifiers.some((mod) => (D6.roll() >= mod.on)) ? acc : acc + damage)
+      ), 0);
+    }
+    return damage;
+  }
+
+  performFNPRolls(damage) {
+    const fnpModifiers = this.target.modifiers.getStackableModifier(t.TARGET_FNP);
+    if (fnpModifiers && fnpModifiers.length) {
+      return [...Array(damage)].reduce((acc) => (
+        (fnpModifiers.some((mod) => (D6.roll() >= mod.on)) ? acc : acc + damage)
       ), 0);
     }
     return damage;

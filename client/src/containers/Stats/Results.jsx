@@ -11,13 +11,7 @@ import { GetApp, BarChart } from '@material-ui/icons';
 import ResultsTable from './ResultsTable';
 
 const useStyles = makeStyles({
-  results: {
-    flexDirection: 'column',
-    flexGrow: 1,
-    flexBasis: 0,
-    height: '100%',
-    maxWidth: '100vw',
-  },
+  results: {},
 });
 
 const Results = React.memo(({ stats, unitNames, className }) => {

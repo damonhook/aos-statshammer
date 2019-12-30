@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { BottomNavigation as Navigation, BottomNavigationAction as NavigationItem } from '@material-ui/core';
@@ -46,6 +47,11 @@ const BottomNavigation = ({ activeIndex, numUnits }) => {
       />
     </Navigation>
   );
+};
+
+BottomNavigation.propTypes = {
+  activeIndex: PropTypes.number.isRequired,
+  numUnits: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({

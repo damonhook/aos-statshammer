@@ -3,6 +3,7 @@ import TargetReroll from './TargetReroll';
 import TargetRerollFailed from './TargetRerollFailed';
 import TargetRerollOnes from './TargetRerollOnes';
 import TargetFeelNoPain from './TargetFeelNoPain';
+import TargetMortalNegate from './TargetMortalNegate';
 
 /**
  * The list of possible target modifiers
@@ -12,6 +13,7 @@ export const TARGET_MODIFIERS = {
   TARGET_REROLL_FAILED: TargetRerollFailed,
   TARGET_REROLL_ONES: TargetRerollOnes,
   TARGET_FNP: TargetFeelNoPain,
+  TARGET_MORTAL_NEGATE: TargetMortalNegate,
 };
 
 /**

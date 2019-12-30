@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   units: {
     marginBottom: '1em',
     flexGrow: 1,
-    flexBasis: 0,
+    flexBasis: '50%',
     [theme.breakpoints.down('sm')]: {
       marginBottom: '4em',
     },

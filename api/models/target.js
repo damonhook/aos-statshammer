@@ -36,9 +36,12 @@ class Target {
     return Math.min(saved, 1);
   }
 
+  resolveMortalSave(profile) {
+    return this.resolveChainedModifier(profile, m.TARGET_MORTAL_NEGATE);
+  }
+
   resolveFNP(profile) {
-    const saved = this.resolveModifier(profile, m.TARGET_FNP);
-    return saved;
+    return this.resolveChainedModifier(profile, m.TARGET_FNP);
   }
 
   resolveModifier(profile, modifier) {
@@ -57,6 +60,17 @@ class Target {
     const modList = this.modifiers.getStackableModifier(modifier);
     if (modList && modList.length) {
       return modList.reduce((acc, mod) => acc + mod.resolve(profile, this), 0);
+    }
+    return 0;
+  }
+
+  resolveChainedModifier(profile, modifier) {
+    const mods = this.modifiers.getStackableModifier(modifier);
+    if (mods && mods.length) {
+      const result = mods.reduce((acc, mod) => (
+        acc + ((1 - acc) * mod.resolve(profile, this))
+      ), 0);
+      return Math.min(result, 1);
     }
     return 0;
   }
