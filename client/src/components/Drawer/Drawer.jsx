@@ -15,6 +15,7 @@ import ToggleDarkModeItem from './items/ToggleDarkModeItem';
 import SocialItems from './items/SocialItems';
 import ToggleGraphListItem from './items/ToggleGraphListItem';
 import PdfDownloadItem from './items/PdfDownloadItem';
+import ClearTargetItem from './items/ClearTargetItem';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -74,6 +75,7 @@ const Drawer = ({ open, onClose, page }) => {
           <>
             <ClearUnitsItem />
             <ImportUnitItem onClick={onClose} />
+            <ClearTargetItem />
           </>
         )}
         <Divider className={classes.divider} variant="middle" />

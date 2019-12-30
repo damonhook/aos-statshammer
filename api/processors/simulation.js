@@ -1,7 +1,8 @@
 import { D6 } from '../models/dice';
 import { Characteristics as C } from '../constants';
-import { getMetrics } from '../utils';
+import { getMetrics } from '../utils/StatsUtils';
 import { MODIFIERS as m } from '../models/modifiers';
+import { TARGET_MODIFIERS as t } from '../models/targetModifiers';
 
 class Simulation {
   constructor(profile, target) {
@@ -54,6 +55,8 @@ class Simulation {
       let mortalDamage = 0;
       if (mwModifier && hitRoll >= mwModifier.on) {
         mortalDamage = mwModifier.getMortalWounds(true);
+        mortalDamage = this.performMortalSaveRolls(mortalDamage);
+        mortalDamage = this.performFNPRolls(mortalDamage);
         if (!mwModifier.inAddition) return mortalDamage;
       }
 
@@ -85,6 +88,8 @@ class Simulation {
       let mortalDamage = 0;
       if (mwModifier && woundRoll >= mwModifier.on) {
         mortalDamage = mwModifier.getMortalWounds(true);
+        mortalDamage = this.performMortalSaveRolls(mortalDamage);
+        mortalDamage = this.performFNPRolls(mortalDamage);
         if (!mwModifier.inAddition) return mortalDamage;
       }
 
@@ -103,16 +108,18 @@ class Simulation {
   }
 
   resolveSaveRoll() {
-    const saveRoll = D6.roll();
-    const save = this.target.getSaveAfterRend(this.profile.getRend(false, true));
-    if (!save || saveRoll < save) {
-      return this.resolveDamage();
+    const rend = this.profile.getRend(false, true);
+    const save = this.target.getSave(rend);
+    if (save) {
+      const saveRoll = this.performRerollSaves(D6.roll(), rend);
+      if (saveRoll >= save) return 0;
     }
-    return 0;
+    return this.resolveDamage();
   }
 
   resolveDamage() {
-    return this.profile.getDamage(false, true);
+    const damage = this.profile.getDamage(false, true);
+    return this.performFNPRolls(damage);
   }
 
   performReroll(characteristic, roll) {
@@ -123,6 +130,36 @@ class Simulation {
       }
     }
     return roll;
+  }
+
+  performRerollSaves(roll, rend) {
+    if (roll < this.target.getSave(rend)) {
+      const rerollModifier = this.target.modifiers.getRerollModifier();
+      if (rerollModifier && rerollModifier.allowedReroll(this.profile, this.target, roll)) {
+        return D6.roll();
+      }
+    }
+    return roll;
+  }
+
+  performMortalSaveRolls(damage) {
+    const mortalModifiers = this.target.modifiers.getStackableModifier(t.TARGET_MORTAL_NEGATE);
+    if (mortalModifiers && mortalModifiers.length) {
+      return [...Array(damage)].reduce((acc) => (
+        (mortalModifiers.some((mod) => (D6.roll() >= mod.on)) ? acc : acc + 1)
+      ), 0);
+    }
+    return damage;
+  }
+
+  performFNPRolls(damage) {
+    const fnpModifiers = this.target.modifiers.getStackableModifier(t.TARGET_FNP);
+    if (fnpModifiers && fnpModifiers.length) {
+      return [...Array(damage)].reduce((acc) => (
+        (fnpModifiers.some((mod) => (D6.roll() >= mod.on)) ? acc : acc + 1)
+      ), 0);
+    }
+    return damage;
   }
 }
 

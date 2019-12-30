@@ -10,6 +10,7 @@ import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
 import { MAX_MODIFIERS } from 'appConstants';
 import _ from 'lodash';
+import { getModifierById } from 'utils/modifierHelpers';
 import PendingModifiers from './PendingModifiers';
 import { errorReducer } from './reducers';
 
@@ -27,10 +28,10 @@ const useStyles = makeStyles(() => ({
  * display the modifier selector
  */
 const ModifierList = React.memo(({
-  pending, modifiers, errorCallback, dispatchModifiers,
+  pending, definitions, error, modifiers, errorCallback, dispatchModifiers,
 }) => {
   const classes = useStyles();
-  const [errors, dispatchErrors] = useReducer(errorReducer, []);
+  const [errors, dispatchErrors] = useReducer(errorReducer, modifiers.map(() => false));
 
   useEffect(() => {
     if (errorCallback) {
@@ -67,7 +68,7 @@ const ModifierList = React.memo(({
 
   const getErrorCallback = useCallback(_.memoize((index) => (error) => {
     dispatchErrors({ type: 'SET_ERROR', index, error });
-  }), []);
+  }), [dispatchErrors]);
 
   const moveUpEnabled = (index) => index > 0;
   const moveDownEnabled = (index) => index < (modifiers || []).length - 1;
@@ -81,7 +82,8 @@ const ModifierList = React.memo(({
           <div className={classes.activeModifiers}>
             {(modifiers || []).map((modifier, index) => (
               <ModifierItem
-                {...modifier}
+                definition={getModifierById(modifier.id)}
+                options={modifier.options}
                 actions={[
                   {
                     name: 'Move Up',
@@ -101,13 +103,18 @@ const ModifierList = React.memo(({
                 key={modifier.uuid}
                 onOptionChange={onOptionChange}
                 errorCallback={getErrorCallback(index)}
+                nested
               />
             ))}
           </div>
         )}
       <ModifierSelector
+        modifiers={definitions}
+        pending={pending}
+        error={error}
         onClick={addModifier}
         disabled={modifiers && modifiers.length >= MAX_MODIFIERS}
+        nested
       />
     </Typography>
   );
@@ -134,6 +141,8 @@ ModifierList.propTypes = {
 
 const mapStateToProps = (state) => ({
   pending: state.modifiers.pending,
+  definitions: state.modifiers.modifiers,
+  error: state.modifiers.error,
 });
 
 export default connect(mapStateToProps)(ModifierList);

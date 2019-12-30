@@ -2,11 +2,11 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Units, { AddUnitsFab } from 'containers/Units';
 import Stats, { ExportPdfFab } from 'containers/Stats';
+import Target, { AddModifiersFab } from 'containers/Target';
 import { makeStyles } from '@material-ui/core/styles';
-import Tabbed from 'components/Tabbed';
+import { RoutedTabs } from 'components/Tabbed';
 import BottomNavigation from 'components/BottomNavigation';
 import clsx from 'clsx';
-
 
 const useStyles = makeStyles(() => ({
   mobileContent: {
@@ -27,6 +27,8 @@ const Fab = ({ activeIndex }) => {
     case 0:
       return <AddUnitsFab />;
     case 1:
+      return <AddModifiersFab />;
+    case 2:
       return <ExportPdfFab />;
     default:
       return null;
@@ -46,10 +48,15 @@ const MobileAppContent = ({ className }) => {
     <div className={clsx(classes.mobileContent, className)}>
       <BottomNavigation activeIndex={0} />
       <Fab activeIndex={activeTab} />
-      <Tabbed
+      <RoutedTabs
         className={classes.tabs}
-        tabNames={['Units', 'Stats']}
-        tabContent={[<Units className={classes.tab} />, <Stats className={classes.tab} />]}
+        tabNames={['Units', 'Target', 'Stats']}
+        tabContent={[
+          <Units className={classes.tab} />,
+          <Target className={classes.tab} />,
+          <Stats className={classes.tab} />,
+        ]}
+        tabRoutes={['/', '/target', '/stats']}
         onTabChange={onTabChange}
       />
     </div>

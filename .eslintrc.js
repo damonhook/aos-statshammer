@@ -14,7 +14,9 @@ module.exports = {
     'function-paren-newline': ['error', 'consistent'],
     'jsx-a11y/click-events-have-key-events': ['off'],
     'jsx-a11y/interactive-supports-focus': ['off'],
-    'react-hooks/exhaustive-deps': [2]
+    'react-hooks/exhaustive-deps': [2],
+    'class-methods-use-this': ['off'],
+    'react/prop-types': ['off']
   },
   settings: {
     "import/resolver": {

@@ -7,7 +7,6 @@ import {
   List, ListItem as Item, Tooltip, useMediaQuery,
 } from '@material-ui/core';
 import { ChevronRight, HelpOutline } from '@material-ui/icons';
-import { getModifierById } from 'utils/modifierHelpers';
 import clsx from 'clsx';
 import SummaryLoading from './SummaryLoading';
 
@@ -44,14 +43,18 @@ const useStyles = makeStyles((theme) => ({
 /**
  * A brief summary of the applied modifiers, used for the main page
  */
-const ModifierSummary = ({ modifiers, modifierState, active }) => {
+const ModifierSummary = ({
+  modifiers, modifierState, active, className,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const large = useMediaQuery(theme.breakpoints.up('lg'));
 
+  const getModifierById = (id) => modifierState.modifiers.find((mod) => mod.id === id);
+
   return (modifiers && modifiers.length
     ? (
-      <div className={classes.modifiers}>
+      <div className={clsx(classes.modifiers, className)}>
         <b>Modifiers: </b>
         {modifierState.pending ? <SummaryLoading /> : null}
         <List dense disablePadding>
@@ -99,6 +102,8 @@ const ModifierSummary = ({ modifiers, modifierState, active }) => {
 ModifierSummary.defaultProps = {
   modifiers: [],
   active: true,
+  isTarget: false,
+  className: null,
 };
 
 ModifierSummary.propTypes = {
@@ -115,10 +120,13 @@ ModifierSummary.propTypes = {
   }).isRequired,
   /** Whether the profile the summary belongs to is active */
   active: PropTypes.bool,
+  // eslint-disable-next-line react/no-unused-prop-types
+  isTarget: PropTypes.bool,
+  className: PropTypes.string,
 };
 
-const mapStateToProps = (state) => ({
-  modifierState: state.modifiers,
+const mapStateToProps = (state, ownProps) => ({
+  modifierState: ownProps.isTarget ? state.targetModifiers : state.modifiers,
 });
 
 export default connect(mapStateToProps)(ModifierSummary);

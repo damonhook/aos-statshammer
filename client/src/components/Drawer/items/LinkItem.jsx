@@ -7,7 +7,7 @@ const LinkItem = ({ to, children, disabled }) => (
     <ListItem button disabled>{children}</ListItem>
   ) : (
     <Link to={to} replace>
-      <ListItem button disa>
+      <ListItem button>
         {children}
       </ListItem>
     </Link>

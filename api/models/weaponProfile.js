@@ -144,6 +144,8 @@ class WeaponProfile {
     if (mwModifier) {
       const mortalHits = attacks * mwModifier.resolve(this);
       mortalDamage += mortalHits * mwModifier.getMortalWounds();
+      mortalDamage -= mortalDamage * target.resolveMortalSave(this);
+      mortalDamage -= mortalDamage * target.resolveFNP(this);
       hits -= !mwModifier.inAddition ? mortalHits : 0;
     }
 
@@ -174,6 +176,8 @@ class WeaponProfile {
     if (mwModifier) {
       const mortalToWounds = hits * mwModifier.resolve(this);
       mortalDamage += mortalToWounds * mwModifier.getMortalWounds();
+      mortalDamage -= mortalDamage * target.resolveMortalSave(this);
+      mortalDamage -= mortalDamage * target.resolveFNP(this);
       wounds -= !mwModifier.inAddition ? mortalToWounds : 0;
     }
 
@@ -195,8 +199,7 @@ class WeaponProfile {
    * @param {float} wounds The number of wounds that have been done so far
    */
   resolveSaves(target, wounds) {
-    const save = target.getSaveAfterRend(this.getRend());
-    const saves = save ? (wounds * D6.getProbability(save)) : 0;
+    const saves = wounds * target.resolveSave(this);
     const successful = wounds - saves;
     return this.resolveDamage(target, successful);
   }
@@ -207,8 +210,9 @@ class WeaponProfile {
    * @param {float} successful The number of successful wounds that have been done so far
    */
   resolveDamage(target, successful) {
-    const damagePerSuccessful = this.getDamage();
-    return successful * damagePerSuccessful;
+    const damage = successful * this.getDamage();
+    const saves = damage * target.resolveFNP(this);
+    return damage - saves;
   }
 
   /**

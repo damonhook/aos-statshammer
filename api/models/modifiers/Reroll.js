@@ -27,7 +27,7 @@ export default class Reroll extends BaseModifier {
     );
   }
 
-  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   allowedReroll(owner, roll) {
     return true;
   }

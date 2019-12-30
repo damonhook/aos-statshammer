@@ -1,6 +1,6 @@
 import { Characteristics as C } from '../../constants';
 import DiceValue from '../diceValue';
-import { numberOption } from './ModifierOptions';
+import { numberOption } from '../../utils/ModifierOptions';
 import BaseModifier from './BaseModifier';
 
 export default class Bonus extends BaseModifier {

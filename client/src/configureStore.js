@@ -13,7 +13,7 @@ const configureSampleStore = (initialState = {}) => (
 const persistConfig = {
   key: 'aos-statshammer-12-12-19',
   storage,
-  whitelist: ['units', 'config'],
+  whitelist: ['units', 'config', 'target'],
 };
 
 const persistedReducer = persistReducer(persistConfig, appReducer);

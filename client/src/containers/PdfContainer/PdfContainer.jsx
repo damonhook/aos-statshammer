@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { fetchStatsCompare, fetchModifiers, fetchSimulations } from 'api';
+import {
+  fetchStatsCompare, fetchModifiers, fetchTargetModifiers, fetchSimulations,
+} from 'api';
 import { bindActionCreators } from 'redux';
 import PdfGenerator from 'pdf';
 import { useMapping } from 'hooks';
@@ -8,7 +10,8 @@ import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from
 import _ from 'lodash';
 
 const PdfContainer = React.memo(({
-  units, modifiers, stats, simulations, fetchStatsCompare, fetchModifiers, fetchSimulations,
+  units, target, modifiers, targetModifiers, stats, simulations, fetchStatsCompare,
+  fetchModifiers, fetchTargetModifiers, fetchSimulations,
 }) => {
   const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
   const resultsMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
@@ -20,17 +23,20 @@ const PdfContainer = React.memo(({
   useEffect(() => {
     fetchStatsCompare();
     fetchModifiers();
+    fetchTargetModifiers();
     fetchSimulations();
-  }, [fetchStatsCompare, fetchModifiers, fetchSimulations]);
+  }, [fetchStatsCompare, fetchModifiers, fetchSimulations, fetchTargetModifiers]);
 
   const modifiersReady = modifiers.modifiers && modifiers.modifiers.length;
+  const targetModifiersReady = targetModifiers.modifiers && targetModifiers.modifiers.length;
   const resultsReady = results && results.length;
   const probabilitiesReady = probabilities && probabilities.length;
 
-  if (modifiersReady && resultsReady && probabilitiesReady) {
+  if (modifiersReady && targetModifiersReady && resultsReady && probabilitiesReady) {
     return (
       <PdfGenerator
         units={units}
+        target={target}
         results={results}
         modifiers={modifiers.modifiers}
         probabilities={probabilities}
@@ -43,7 +49,9 @@ const PdfContainer = React.memo(({
 
 const mapStateToProps = (state) => ({
   units: state.units,
+  target: state.target,
   modifiers: state.modifiers,
+  targetModifiers: state.targetModifiers,
   stats: state.stats,
   simulations: state.simulations,
 });
@@ -51,6 +59,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchStatsCompare,
   fetchModifiers,
+  fetchTargetModifiers,
   fetchSimulations,
 }, dispatch);
 

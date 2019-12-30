@@ -3,35 +3,37 @@ import PropTypes from 'prop-types';
 import Units from 'containers/Units';
 import Stats from 'containers/Stats';
 import { makeStyles } from '@material-ui/core/styles';
+import { Divider } from '@material-ui/core';
 import clsx from 'clsx';
-
+import Target from 'containers/Target';
+import { RoutedTabs } from 'components/Tabbed';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    width: '90%',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  content: {
+    margin: theme.spacing(0, 3, 2, 2),
+    flex: 1,
+    flexBasis: '50%',
+    width: '45%',
+    maxWidth: '1024px',
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '1366px',
-    margin: theme.spacing(2),
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    [theme.breakpoints.down('md')]: {
-      width: '95%',
-      marginTop: '1em',
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      maxWidth: '100%',
-    },
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-      maxWidth: '2166px',
-      width: '95%',
-    },
   },
-  separator: {
-    height: theme.spacing(2),
-    width: theme.spacing(2),
+  tabs: {
+    margin: theme.spacing(0, 2, 2, 0),
+  },
+  tab: {
+    padding: theme.spacing(2, 0, 2, 3),
+    marginLeft: 'auto',
+  },
+  statsContent: {
+    paddingTop: theme.spacing(2),
+  },
+  margin: {
+    flex: 1,
   },
 }));
 
@@ -40,9 +42,20 @@ const DesktopAppContent = ({ className }) => {
 
   return (
     <div className={clsx(classes.container, className)}>
-      <Units />
-      <div className={classes.separator} />
-      <Stats />
+      <div className={classes.margin} />
+      <RoutedTabs
+        className={clsx(classes.content, classes.tabs)}
+        tabNames={['Units', 'Target']}
+        tabContent={[<Units className={classes.tab} />, <Target className={classes.tab} />]}
+        tabRoutes={['/', '/target']}
+      />
+      <div>
+        <Divider orientation="vertical" light />
+      </div>
+      <div className={classes.content}>
+        <Stats className={classes.statsContent} />
+      </div>
+      <div className={classes.margin} />
     </div>
   );
 };

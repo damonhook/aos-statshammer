@@ -1,5 +1,5 @@
 import { getCharacteristic } from '../../constants';
-import { choiceOption } from './ModifierOptions';
+import { choiceOption } from '../../utils/ModifierOptions';
 
 export default class BaseModifier {
   constructor({ characteristic }) {
@@ -48,7 +48,7 @@ export default class BaseModifier {
     return new this(cleanData);
   }
 
-  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   resolve(owner) {
     throw new Error('Resolve method not implemented');
   }

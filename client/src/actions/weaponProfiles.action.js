@@ -40,8 +40,8 @@ export const deleteWeaponProfile = (id, unitId = 0) => ({
 });
 
 export const moveWeaponProfile = (index, newIndex, unitId = 0) => ({
-    type: MOVE_WEAPON_PROFILE,
-    index,
-    newIndex,
-    unitId,
-  });
+  type: MOVE_WEAPON_PROFILE,
+  index,
+  newIndex,
+  unitId,
+});
