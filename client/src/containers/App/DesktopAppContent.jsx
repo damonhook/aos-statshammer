@@ -7,7 +7,6 @@ import { Divider } from '@material-ui/core';
 import clsx from 'clsx';
 import Target from 'containers/Target';
 import { RoutedTabs } from 'components/Tabbed';
-import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -57,7 +56,6 @@ const DesktopAppContent = ({ className }) => {
         <Stats className={classes.statsContent} />
       </div>
       <div className={classes.margin} />
-      <Redirect to="/" />
     </div>
   );
 };

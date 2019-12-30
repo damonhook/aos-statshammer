@@ -1,6 +1,7 @@
 export const ADD_TARGET_MODIFIER = 'ADD_TARGET_MODIFIER';
 export const REMOVE_TARGET_MODIFIER = 'REMOVE_TARGET_MODIFIER';
 export const MOVE_TARGET_MODIFIER = 'MOVE_TARGET_MODIFIER';
+export const CLEAR_ALL_TARGET_MODIFIERS = 'CLEAR_ALL_TARGET_MODIFIERS';
 export const EDIT_TARGET_MODIFIER_OPTION = 'EDIT_TARGET_MODIFIER_OPTION';
 export const EDIT_TARGET_MODIFIER_ERROR = 'EDIT_TARGET_MODIFIER_ERROR';
 
@@ -18,6 +19,10 @@ export const moveTargetModifier = (index, newIndex) => ({
   type: MOVE_TARGET_MODIFIER,
   index,
   newIndex,
+});
+
+export const clearAllTargetModifiers = () => ({
+  type: CLEAR_ALL_TARGET_MODIFIERS,
 });
 
 export const editTargetModifierOption = (index, name, value) => ({

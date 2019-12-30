@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { RoutedTabs } from 'components/Tabbed';
 import BottomNavigation from 'components/BottomNavigation';
 import clsx from 'clsx';
-import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   mobileContent: {
@@ -60,7 +59,6 @@ const MobileAppContent = ({ className }) => {
         tabRoutes={['/', '/target', '/stats']}
         onTabChange={onTabChange}
       />
-      <Redirect to="/" />
     </div>
   );
 };

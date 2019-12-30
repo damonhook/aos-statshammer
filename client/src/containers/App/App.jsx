@@ -22,8 +22,6 @@ const App = ({ config }) => (
         <Route exact path="/" component={AppContentWrapper} />
         <Redirect exact from="/units" to="/" />
         <Route path={['/units', '/target', '/stats']} component={AppContentWrapper} />
-        <Route path="/target" component={AppContentWrapper} />
-        <Route path="/stats" component={AppContentWrapper} />
         <Route exact path="/advanced" component={AdvancedStats} />
         <Route exact path="/pdf" component={PdfContainer} />
         <Redirect to="/" />
