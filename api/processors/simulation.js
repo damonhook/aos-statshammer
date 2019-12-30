@@ -55,6 +55,8 @@ class Simulation {
       let mortalDamage = 0;
       if (mwModifier && hitRoll >= mwModifier.on) {
         mortalDamage = mwModifier.getMortalWounds(true);
+        mortalDamage = this.performMortalSaveRolls(mortalDamage);
+        mortalDamage = this.performFNPRolls(mortalDamage);
         if (!mwModifier.inAddition) return mortalDamage;
       }
 
@@ -86,6 +88,8 @@ class Simulation {
       let mortalDamage = 0;
       if (mwModifier && woundRoll >= mwModifier.on) {
         mortalDamage = mwModifier.getMortalWounds(true);
+        mortalDamage = this.performMortalSaveRolls(mortalDamage);
+        mortalDamage = this.performFNPRolls(mortalDamage);
         if (!mwModifier.inAddition) return mortalDamage;
       }
 
@@ -142,7 +146,7 @@ class Simulation {
     const mortalModifiers = this.target.modifiers.getStackableModifier(t.TARGET_MORTAL_NEGATE);
     if (mortalModifiers && mortalModifiers.length) {
       return [...Array(damage)].reduce((acc) => (
-        (mortalModifiers.some((mod) => (D6.roll() >= mod.on)) ? acc : acc + damage)
+        (mortalModifiers.some((mod) => (D6.roll() >= mod.on)) ? acc : acc + 1)
       ), 0);
     }
     return damage;
@@ -152,7 +156,7 @@ class Simulation {
     const fnpModifiers = this.target.modifiers.getStackableModifier(t.TARGET_FNP);
     if (fnpModifiers && fnpModifiers.length) {
       return [...Array(damage)].reduce((acc) => (
-        (fnpModifiers.some((mod) => (D6.roll() >= mod.on)) ? acc : acc + damage)
+        (fnpModifiers.some((mod) => (D6.roll() >= mod.on)) ? acc : acc + 1)
       ), 0);
     }
     return damage;
