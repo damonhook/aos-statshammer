@@ -113,7 +113,7 @@ const AdvancedStats = React.memo(({
           ]}
         />
       </div>
-      {mobile && <BottomNavigation activeIndex={1} />}
+      {mobile && <BottomNavigation />}
       <Footer />
     </div>
   );
