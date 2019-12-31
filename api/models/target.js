@@ -1,4 +1,4 @@
-import { TargetModifierManager, TARGET_MODIFIERS as m } from './targetModifiers';
+import { TargetModifierManager, TARGET_MODIFIERS as t } from './targetModifiers';
 import { D6 } from './dice';
 
 /**
@@ -21,7 +21,9 @@ class Target {
   getSave(rend = null) {
     if (this.save) {
       let { save } = this;
-      if (rend) save += rend;
+      if (!this.modifiers.getModifier(t.TARGET_ETHEREAL)) {
+        if (rend) save += rend;
+      }
       if (save > 6) return null;
       return Math.max(save, 2);
     }
@@ -37,11 +39,11 @@ class Target {
   }
 
   resolveMortalSave(profile) {
-    return this.resolveChainedModifier(profile, m.TARGET_MORTAL_NEGATE);
+    return this.resolveChainedModifier(profile, t.TARGET_MORTAL_NEGATE);
   }
 
   resolveFNP(profile) {
-    return this.resolveChainedModifier(profile, m.TARGET_FNP);
+    return this.resolveChainedModifier(profile, t.TARGET_FNP);
   }
 
   resolveModifier(profile, modifier) {
