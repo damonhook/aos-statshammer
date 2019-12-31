@@ -15,12 +15,12 @@ a number of modifiers (abilities)
 - Dark theme
 - Persisitent data between refreshes
 - Import/Export of unit data
+- Ability to export results as PDF
+- Ability to add modifiers to the target (e.g: Reroll saves, ethereal, FNP, etc.)
 
 ## Roadmap Features
 
 - Ability to add modifiers to the unit as a whole, and not just to each profile
-- Ability to export results as PDF
-- Ability to add modifiers to the target (e.g: Reroll saves, ethereal, FNP, etc.)
 - Ability to provide points costs to provide stats for average damage / 100 points
 
 ## Installation
@@ -48,8 +48,9 @@ Runs the api tests. Please make sure you run this whenever you make any changes 
 
 ### `yarn storybook`
 
-**Coming soon**
+Runs a storybook (https://storybook.js.org/)
 
+Open http://localhost:9009 to view it in the browser
 
 ### Contributing
 
