@@ -4,9 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   scroll: {
-    height: '2000px',
+    minHeight: 2000,
     overflowY: 'scroll',
-    background: theme.palette.grey.A100,
+    background: theme.palette.background.default,
+    margin: '-8px',
   },
 }));
 

@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { ProbabilityTooltip } from 'components/GraphTooltips';
 import { lightTheme } from 'themes';
 import { number, boolean } from '@storybook/addon-knobs';
+import Container from 'utils/Container';
 import { generatePayload } from './graphTooltipStoryUtils';
 
 storiesOf('Components/GraphTooltips', module)
@@ -11,11 +12,13 @@ storiesOf('Components/GraphTooltips', module)
     const payload = generatePayload(lightTheme, numSeries);
 
     return (
-      <ProbabilityTooltip
-        active
-        payload={payload}
-        label={number('Damage', 3, { min: 0, max: 100 })}
-        cumulative={boolean('Cumulative', false)}
-      />
+      <Container variant="paper">
+        <ProbabilityTooltip
+          active
+          payload={payload}
+          label={number('Damage', 3, { min: 0, max: 100 })}
+          cumulative={boolean('Cumulative', false)}
+        />
+      </Container>
     );
   });

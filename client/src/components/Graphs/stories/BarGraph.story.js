@@ -2,6 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { BarGraph } from 'components/Graphs';
 import { number, text, boolean } from '@storybook/addon-knobs';
+import Container from 'utils/Container';
 import { getSeriesNames, generateData } from './graphStoryUtils';
 
 storiesOf('Components/Graphs', module)
@@ -11,16 +12,18 @@ storiesOf('Components/Graphs', module)
     const seriesNames = getSeriesNames(numSeries);
     const data = generateData(seriesNames, numX);
     return (
-      <div style={{ height: '400px' }}>
-        <BarGraph
-          data={data}
-          title={text('Title', 'Graph Title')}
-          series={seriesNames}
-          xAxis={{
-            dataKey: 'name',
-          }}
-          isAnimationActive={boolean('Animated', true)}
-        />
-      </div>
+      <Container variant="paper">
+        <div style={{ height: '400px' }}>
+          <BarGraph
+            data={data}
+            title={text('Title', 'Graph Title')}
+            series={seriesNames}
+            xAxis={{
+              dataKey: 'name',
+            }}
+            isAnimationActive={boolean('Animated', true)}
+          />
+        </div>
+      </Container>
     );
   });

@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { DefaultTooltip } from 'components/GraphTooltips';
 import { lightTheme } from 'themes';
 import { number, text } from '@storybook/addon-knobs';
+import Container from 'utils/Container';
 import { generatePayload } from './graphTooltipStoryUtils';
 
 storiesOf('Components/GraphTooltips', module)
@@ -11,10 +12,12 @@ storiesOf('Components/GraphTooltips', module)
     const payload = generatePayload(lightTheme, numSeries);
 
     return (
-      <DefaultTooltip
-        active
-        payload={payload}
-        label={text('Label', 'Label')}
-      />
+      <Container variant="paper">
+        <DefaultTooltip
+          active
+          payload={payload}
+          label={text('Label', 'Label')}
+        />
+      </Container>
     );
   });

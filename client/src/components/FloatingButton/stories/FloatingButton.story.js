@@ -5,6 +5,7 @@ import { Add as AddIcon, GetApp as DownloadIcon, Delete as DeleteIcon } from '@m
 import { boolean, select } from '@storybook/addon-knobs';
 import ScrollContainer from 'utils/ScrollContainer';
 import { action } from '@storybook/addon-actions';
+import Container from 'utils/Container';
 
 const ICONS = {
   Add: AddIcon,
@@ -17,11 +18,13 @@ storiesOf('Components/FloatingButton', module)
     const icon = select('Icon', Object.keys(ICONS), 'Add');
     const IconComponent = ICONS[icon];
     return (
-      <FloatingButton
-        onClick={action('fab-clicked')}
-        icon={<IconComponent />}
-        disabled={boolean('Disabled', false)}
-      />
+      <Container>
+        <FloatingButton
+          onClick={action('fab-clicked')}
+          icon={<IconComponent />}
+          disabled={boolean('Disabled', false)}
+        />
+      </Container>
     );
   })
 

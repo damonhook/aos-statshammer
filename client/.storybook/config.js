@@ -6,13 +6,15 @@ import StoryRouter from 'storybook-react-router';
 import { withProvider } from "utils/exampleStore";
 import { lightTheme, darkTheme } from "themes";
 import { ThemeProvider } from '@material-ui/core/styles';
-import { muiTheme } from 'storybook-addon-material-ui';
+import { withThemesProvider } from 'storybook-addon-styled-component-theme';
+
+const themes = [lightTheme, darkTheme]
 
 addParameters(options)
 addDecorator(withKnobs)
 addDecorator(withProvider)
-addDecorator(muiTheme([lightTheme, darkTheme]))
 addDecorator(StoryRouter())
+addDecorator(withThemesProvider(themes, ThemeProvider))
 
 const containers = require.context('../src/containers', true, /\.story\.js$/);
 const components = require.context('../src/components', true, /\.story\.js$/);
