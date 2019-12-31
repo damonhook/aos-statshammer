@@ -15,14 +15,12 @@ const useStyles = makeStyles((theme) => ({
 /**
  * A tooltip to display when you hover over a value in a graph
  */
-const SaveTooltip = ({ active, payload, label }) => {
+const DefaultTooltip = ({ active, payload, label }) => {
   const classes = useStyles();
   if (active) {
     return (
       <Paper className={classes.tooltip}>
-        <Typography variant="h6">
-          {`Save: ${(Number(label) !== 0 && label !== 'None') ? `${label}+` : '-'}`}
-        </Typography>
+        <Typography variant="h6">{label}</Typography>
         {(payload || []).map(({ color, name, value }) => (
           <Typography style={{ color }} key={name}>{`${name}: ${value}`}</Typography>
         ))}
@@ -32,13 +30,13 @@ const SaveTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-SaveTooltip.defaultProps = {
+DefaultTooltip.defaultProps = {
   active: false,
   payload: [],
   label: '',
 };
 
-SaveTooltip.propTypes = {
+DefaultTooltip.propTypes = {
   /** Whether the tooltip is active (being hovered) */
   active: PropTypes.bool,
   /** The data payload */
@@ -47,4 +45,4 @@ SaveTooltip.propTypes = {
   label: PropTypes.string,
 };
 
-export default SaveTooltip;
+export default DefaultTooltip;

@@ -11,11 +11,11 @@ import {
 } from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import { DefaultTooltip } from 'components/GraphTooltips';
 import GraphContainer from './GraphContainer';
 import {
   getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
 } from './graphHelpers';
-
 
 const useStyles = makeStyles({
   graph: {
@@ -56,7 +56,10 @@ const RadarGraph = ({
         <PolarGrid stroke={theme.palette.graphs.grid} />
         <PolarAngleAxis stroke={theme.palette.graphs.axis} {...xAxis} />
         <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={0} {...yAxis} />
-        <Tooltip content={tooltip} />
+        <Tooltip
+          content={tooltip || <DefaultTooltip />}
+          cursor={{ fill: theme.palette.graphs.grid }}
+        />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}

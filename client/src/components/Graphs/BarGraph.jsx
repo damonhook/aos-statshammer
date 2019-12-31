@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import { DefaultTooltip } from 'components/GraphTooltips';
 import GraphContainer from './GraphContainer';
 import {
   getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
@@ -63,7 +64,10 @@ const BarGraph = ({
             />
           )}
         </YAxis>
-        <Tooltip content={tooltip} cursor={{ fill: theme.palette.graphs.grid }} />
+        <Tooltip
+          content={tooltip || <DefaultTooltip />}
+          cursor={{ fill: theme.palette.graphs.grid }}
+        />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}
