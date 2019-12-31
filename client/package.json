@@ -49,6 +49,7 @@
         "redux-persist": "^6.0.0",
         "redux-thunk": "^2.3.0",
         "regenerator-runtime": "^0.13.3",
+        "storybook-addon-material-ui": "^0.9.0-alpha.20",
         "storybook-react-router": "^1.0.8",
         "typeface-roboto": "^0.0.75",
         "use-debounce": "^3.2.0",

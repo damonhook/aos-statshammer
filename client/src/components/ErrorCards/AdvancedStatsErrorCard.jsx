@@ -35,4 +35,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchSimulations,
 }, dispatch);
 
-export default connect(null, mapDispatchToProps)(AdvancedStatsErrorCard);
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps, ...dispatchProps, ...ownProps,
+});
+
+export default connect(null, mapDispatchToProps, mergeProps)(AdvancedStatsErrorCard);

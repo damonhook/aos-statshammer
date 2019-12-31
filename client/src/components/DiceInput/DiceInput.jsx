@@ -45,7 +45,7 @@ const DiceInput = React.memo(({
 
   useEffect(() => {
     if (value !== undefined) validate(value);
-  }, [value, validate]);
+  }, [value, required, validate]);
 
   useEffect(() => {
     if (errorCallback) {
@@ -55,9 +55,9 @@ const DiceInput = React.memo(({
 
   const handleChange = useCallback((event) => {
     const val = event.target.value;
-    if (value === undefined) validate(val); // If uncontrolled
+    validate(val);
     if (onChange) onChange(event);
-  }, [value, validate, onChange]);
+  }, [validate, onChange]);
 
   return (
     <TextField

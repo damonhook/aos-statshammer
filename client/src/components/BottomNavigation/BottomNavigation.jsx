@@ -61,8 +61,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...ownProps,
+  ...stateProps, ...dispatchProps, ...ownProps,
 });
 
 export default connect(mapStateToProps, null, mergeProps)(BottomNavigation);

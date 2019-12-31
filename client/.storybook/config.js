@@ -4,10 +4,14 @@ import { withKnobs } from '@storybook/addon-knobs';
 import options from './options';
 import StoryRouter from 'storybook-react-router';
 import { withProvider } from "utils/exampleStore";
+import { lightTheme, darkTheme } from "themes";
+import { ThemeProvider } from '@material-ui/core/styles';
+import { muiTheme } from 'storybook-addon-material-ui';
 
 addParameters(options)
 addDecorator(withKnobs)
 addDecorator(withProvider)
+addDecorator(muiTheme([lightTheme, darkTheme]))
 addDecorator(StoryRouter())
 
 const containers = require.context('../src/containers', true, /\.story\.js$/);
