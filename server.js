@@ -72,9 +72,11 @@ if (cluster.isMaster) {
   app.listen(port, () => console.log(`Worker ${cluster.worker.id}, Listening on port ${port}`));
 }
 
-cluster.on('exit', (worker) => {
-  // Replace the dead worker,
-  // we're not sentimental
-  console.log(`Worker ${worker.id} died :(`);
-  cluster.fork();
-});
+if (process.env.NODE_ENV === 'production') {
+  cluster.on('exit', (worker) => {
+    // Replace the dead worker,
+    // we're not sentimental
+    console.log(`Worker ${worker.id} died :(`);
+    cluster.fork();
+  });
+}
