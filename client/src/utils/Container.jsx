@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(disablePadding ? 0 : 2),
     minHeight: fullHeight ? `Calc(100vh - ${disablePadding ? '16px' : '40px'})` : 300,
     margin: '-8px',
+    color: theme.palette.text.primary,
   }),
 }));
 
