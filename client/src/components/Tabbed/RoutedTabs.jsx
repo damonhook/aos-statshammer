@@ -46,7 +46,7 @@ const RoutedTabs = ({
     history.replace(tabRoutes[index]);
   };
 
-  let value = 0;
+  let value = null;
   [...tabRoutes].reverse().some((path, index) => {
     if (matchPath(location.pathname, { path })) {
       value = tabRoutes.length - (index + 1);
@@ -54,6 +54,10 @@ const RoutedTabs = ({
     }
     return false;
   });
+  if (value === null) {
+    value = 0;
+    history.replace(tabRoutes[0]);
+  }
 
   useEffect(() => {
     if (onTabChange) {

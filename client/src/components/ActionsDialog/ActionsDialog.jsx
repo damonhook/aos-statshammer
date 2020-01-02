@@ -1,13 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography,
 } from '@material-ui/core';
-
-const useStyles = makeStyles({
-  dialog: {},
-});
 
 /**
  * A dialog box containing various possible actions that can be performed
@@ -15,13 +10,11 @@ const useStyles = makeStyles({
 const ActionsDialog = ({
   open, actions, target, onClose,
 }) => {
-  const classes = useStyles();
   if (!actions || !actions.length) return null;
 
   return (
     <Dialog
       open={open}
-      className={classes.dialog}
       onClose={onClose}
       fullWidth
       maxWidth="sm"

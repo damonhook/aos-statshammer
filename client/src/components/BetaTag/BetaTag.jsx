@@ -28,7 +28,9 @@ BetaTag.defaultProps = {
 };
 
 BetaTag.propTypes = {
+  /** Any additional classnames to apply to the component */
   className: PropTypes.string,
+  /** The color variant to use */
   variant: PropTypes.oneOf(['main', 'light', 'dark']),
 };
 

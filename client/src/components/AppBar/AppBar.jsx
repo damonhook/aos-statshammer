@@ -49,13 +49,17 @@ const AppBar = ({ title, variant }) => {
     history.goBack();
   };
 
+  const handleDrawerOpen = () => {
+    history.push('#menu');
+  };
+
   return (
     <div className={classes.appBar}>
       <Slide appear={false} direction="down" in={!trigger}>
         <Bar>
           <Toolbar variant="dense" className={classes.toolbar} disableGutters>
             <div className={classes.leftContent}>
-              <IconButton href="#menu" className={classes.menuButton}>
+              <IconButton onClick={handleDrawerOpen} className={classes.menuButton}>
                 <MenuIcon />
               </IconButton>
               <Link to="/" className={classes.link}>
@@ -79,6 +83,7 @@ AppBar.defaultProps = {
 AppBar.propTypes = {
   /** The title to display in the App Bar */
   title: PropTypes.string.isRequired,
+  /** The variant of App Bar (what type of page we are on) */
   variant: PropTypes.oneOf(['home', 'advanced']),
 };
 

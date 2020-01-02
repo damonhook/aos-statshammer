@@ -20,7 +20,9 @@ const SaveTooltip = ({ active, payload, label }) => {
   if (active) {
     return (
       <Paper className={classes.tooltip}>
-        <Typography variant="h6">{`Save: ${label !== 'None' ? `${label}+` : '-'}`}</Typography>
+        <Typography variant="h6">
+          {`Save: ${(Number(label) !== 0 && label !== 'None') ? `${label}+` : '-'}`}
+        </Typography>
         {(payload || []).map(({ color, name, value }) => (
           <Typography style={{ color }} key={name}>{`${name}: ${value}`}</Typography>
         ))}

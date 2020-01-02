@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { BottomNavigation as Navigation, BottomNavigationAction as NavigationItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Home, BarChart } from '@material-ui/icons';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, matchPath } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   nav: {
@@ -22,9 +22,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BottomNavigation = ({ activeIndex, numUnits }) => {
+const BottomNavigation = ({ numUnits }) => {
   const classes = useStyles();
   const history = useHistory();
+  const location = useLocation();
   const advancedDisabled = numUnits <= 0;
 
   const handleMainClick = () => {
@@ -34,6 +35,8 @@ const BottomNavigation = ({ activeIndex, numUnits }) => {
   const handleAdvancedClick = () => {
     history.push('/advanced');
   };
+
+  const activeIndex = matchPath(location.pathname, { path: '/advanced' }) ? 1 : 0;
 
   return (
     <Navigation showLabels className={classes.nav} value={activeIndex}>
@@ -50,7 +53,6 @@ const BottomNavigation = ({ activeIndex, numUnits }) => {
 };
 
 BottomNavigation.propTypes = {
-  activeIndex: PropTypes.number.isRequired,
   numUnits: PropTypes.number.isRequired,
 };
 
@@ -58,4 +60,8 @@ const mapStateToProps = (state) => ({
   numUnits: state.units.length,
 });
 
-export default connect(mapStateToProps)(BottomNavigation);
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps, ...dispatchProps, ...ownProps,
+});
+
+export default connect(mapStateToProps, null, mergeProps)(BottomNavigation);

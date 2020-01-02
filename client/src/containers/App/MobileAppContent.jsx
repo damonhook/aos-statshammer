@@ -46,7 +46,7 @@ const MobileAppContent = ({ className }) => {
 
   return (
     <div className={clsx(classes.mobileContent, className)}>
-      <BottomNavigation activeIndex={0} />
+      <BottomNavigation />
       <Fab activeIndex={activeTab} />
       <RoutedTabs
         className={classes.tabs}

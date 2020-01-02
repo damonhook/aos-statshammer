@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Snackbar, IconButton, SnackbarContent } from '@material-ui/core';
@@ -83,6 +83,10 @@ const Notification = ({
   const [open, setOpen] = useState(true);
   const Icon = variantIcon[variant];
 
+  useEffect(() => {
+    setOpen(true);
+  }, [notificationId]);
+
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') return;
     if (reason === 'swipeaway') {
@@ -148,4 +152,8 @@ Notification.propTypes = {
   timeout: PropTypes.number,
 };
 
-export default connect(null, { dismissNotification })(Notification);
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps, ...dispatchProps, ...ownProps,
+});
+
+export default connect(null, { dismissNotification }, mergeProps)(Notification);
