@@ -4,7 +4,7 @@ import { Fab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   fab: {
     position: 'fixed',
     bottom: theme.spacing(2),
@@ -16,10 +16,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface FloatingButtonProps {
+  onClick?: () => void;
+  disabled?: boolean;
+  icon: React.ReactNode;
+  className?: string;
+}
+
 /** A floating button component that is used for the mobile interface */
-const FloatingButton = ({
-  onClick, disabled, icon, className,
-}) => {
+const FloatingButton: React.FC<FloatingButtonProps> = ({ onClick, disabled, icon, className }) => {
   const classes = useStyles();
   return (
     <Fab
@@ -36,19 +41,6 @@ const FloatingButton = ({
 
 FloatingButton.defaultProps = {
   disabled: false,
-  className: null,
-  onClick: null,
-};
-
-FloatingButton.propTypes = {
-  /** The function to call when the button is clicked */
-  onClick: PropTypes.func,
-  /** Whether the button is disabled or not */
-  disabled: PropTypes.bool,
-  /** The icon component to render in the button */
-  icon: PropTypes.node.isRequired,
-  /** CSS classname to give the component */
-  className: PropTypes.string,
 };
 
 export default FloatingButton;

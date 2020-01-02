@@ -1,6 +1,10 @@
 import nanoid from 'nanoid';
 import {
-  ADD_UNIT, DELETE_UNIT, EDIT_UNIT_NAME, CLEAR_ALL_UNITS, MOVE_UNIT,
+  ADD_UNIT,
+  DELETE_UNIT,
+  EDIT_UNIT_NAME,
+  CLEAR_ALL_UNITS,
+  MOVE_UNIT,
 } from '../actions/units.action';
 import { DEFAULT_WEAPON_PROFILE } from '../actions/weaponProfiles.action';
 import weaponProfilesReducer from './weaponProfiles.reducer';
@@ -8,10 +12,12 @@ import { updateItemInArray, moveItemInArray } from './helpers';
 
 const DEFAULT_UNIT = {
   name: 'Unit 1',
-  weapon_profiles: [{
-    ...DEFAULT_WEAPON_PROFILE,
-    uuid: nanoid(),
-  }],
+  weapon_profiles: [
+    {
+      ...DEFAULT_WEAPON_PROFILE,
+      uuid: nanoid(),
+    },
+  ],
 };
 
 const INITIAL_STATE = [{ ...DEFAULT_UNIT, uuid: nanoid() }];
@@ -21,7 +27,7 @@ const addUnit = (state, action) => [
   {
     ...action.unit,
     uuid: nanoid(),
-    weapon_profiles: action.unit.weapon_profiles.map((profile) => ({
+    weapon_profiles: action.unit.weapon_profiles.map(profile => ({
       ...profile,
       uuid: nanoid(),
     })),
@@ -30,16 +36,16 @@ const addUnit = (state, action) => [
 
 const deleteUnit = (state, action) => state.filter((_, index) => index !== action.unitId);
 
-const editUnitName = (state, action) => updateItemInArray(state, action.unitId, (unit) => ({
-  ...unit,
-  name: action.name,
-}));
+const editUnitName = (state, action) =>
+  updateItemInArray(state, action.unitId, unit => ({
+    ...unit,
+    name: action.name,
+  }));
 
 const clearAllUnits = () => [];
 
-const moveUnit = (state, action) => (
-  moveItemInArray(state, action.index, action.newIndex, (newState) => newState)
-);
+const moveUnit = (state, action) =>
+  moveItemInArray(state, action.index, action.newIndex, newState => newState);
 
 const unitReducer = (state, action) => {
   switch (action.type) {

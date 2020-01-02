@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
   RadarChart,
   Radar,
@@ -14,7 +13,11 @@ import clsx from 'clsx';
 import { DefaultTooltip } from 'components/GraphTooltips';
 import GraphContainer from './GraphContainer';
 import {
-  getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
+  getLegendFormatter,
+  getMouseEnterHandler,
+  getMouseLeaveHandler,
+  getInitOpacity,
+  GraphProps,
 } from './graphHelpers';
 
 const useStyles = makeStyles({
@@ -23,11 +26,24 @@ const useStyles = makeStyles({
   },
 });
 
+interface RadarGraphProps extends GraphProps {
+  outerRadius?: number;
+}
+
 /**
  * A radar graph component for the average damage results
  */
-const RadarGraph = ({
-  data, series, className, isAnimationActive, outerRadius, title, syncId, xAxis, yAxis, tooltip,
+const RadarGraph: React.FC<RadarGraphProps> = ({
+  data,
+  series,
+  className,
+  isAnimationActive,
+  outerRadius,
+  title,
+  syncId,
+  xAxis,
+  yAxis,
+  tooltip,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -50,7 +66,7 @@ const RadarGraph = ({
       <RadarChart
         data={data}
         outerRadius={outerRadius}
-        cy={outerRadius > 100 ? '40%' : '45%'}
+        cy={outerRadius && outerRadius > 100 ? '40%' : '45%'}
         syncId={syncId}
       >
         <PolarGrid stroke={theme.palette.graphs.grid} />
@@ -86,54 +102,9 @@ const RadarGraph = ({
 };
 
 RadarGraph.defaultProps = {
-  className: null,
   isAnimationActive: true,
-  syncId: null,
-  xAxis: {},
   yAxis: {},
-  xAxisLabel: null,
-  yAxisLabel: null,
-  referenceLines: null,
   outerRadius: 120,
-  tooltip: null,
-};
-
-RadarGraph.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  series: PropTypes.arrayOf(PropTypes.string).isRequired,
-  className: PropTypes.string,
-  isAnimationActive: PropTypes.bool,
-  title: PropTypes.string.isRequired,
-  syncId: PropTypes.string,
-  xAxis: PropTypes.shape({
-    tickFormatter: PropTypes.func,
-    domain: PropTypes.array,
-    type: PropTypes.string,
-    ticks: PropTypes.array,
-    dataKey: PropTypes.string,
-    tickCount: PropTypes.number,
-  }),
-  yAxis: PropTypes.shape({
-    tickFormatter: PropTypes.func,
-    domain: PropTypes.array,
-    type: PropTypes.string,
-    ticks: PropTypes.array,
-    dataKey: PropTypes.string,
-    tickCount: PropTypes.number,
-  }),
-  xAxisLabel: PropTypes.shape({
-    value: PropTypes.string,
-    position: PropTypes.string,
-    offset: PropTypes.number,
-  }),
-  yAxisLabel: PropTypes.shape({
-    value: PropTypes.string,
-    position: PropTypes.string,
-    offset: PropTypes.number,
-  }),
-  referenceLines: PropTypes.arrayOf(PropTypes.object),
-  outerRadius: PropTypes.number,
-  tooltip: PropTypes.node,
 };
 
 export default RadarGraph;

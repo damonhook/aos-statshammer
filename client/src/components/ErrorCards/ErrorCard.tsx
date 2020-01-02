@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
 import { ErrorOutline, Sync } from '@material-ui/icons';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   errorCard: {
     display: 'flex',
     flexDirection: 'column',
@@ -43,10 +43,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface ErrorCardProps {
+  retryFunc: any;
+  className?: string;
+}
+
 /**
  * A card representing that there was an error getting the stats
  */
-const ErrorCard = ({ retryFunc, className }) => {
+const ErrorCard: React.FC<ErrorCardProps> = ({ retryFunc, className }) => {
   const classes = useStyles();
 
   const handleClick = () => {
@@ -57,7 +62,9 @@ const ErrorCard = ({ retryFunc, className }) => {
     <Paper className={clsx(classes.errorCard, className)} onClick={handleClick} role="button">
       <Typography variant="h4" component="div" className={classes.errorHeader}>
         <ErrorOutline className={classes.errorIcon} fontSize="inherit" />
-        <Typography variant="h4" component="span">Error Fetching Stats</Typography>
+        <Typography variant="h4" component="span">
+          Error Fetching Stats
+        </Typography>
       </Typography>
       <Typography>There was an error fetching stats from the server</Typography>
       <Typography variant="h1" component="div" className={classes.retryIcon}>
@@ -67,15 +74,6 @@ const ErrorCard = ({ retryFunc, className }) => {
       <Typography>If the issue persists, ensure that the unit data is valid</Typography>
     </Paper>
   );
-};
-
-ErrorCard.defaultProps = {
-  className: null,
-};
-
-ErrorCard.propTypes = {
-  retryFunc: PropTypes.func.isRequired,
-  className: PropTypes.string,
 };
 
 export default ErrorCard;

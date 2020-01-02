@@ -12,7 +12,7 @@ export const fetchSimulationsSuccess = (results, probabilities) => ({
   probabilities,
 });
 
-export const fetchSimulationsError = (error) => ({
+export const fetchSimulationsError = error => ({
   type: FETCH_SIMULATIONS_ERROR,
   error,
 });

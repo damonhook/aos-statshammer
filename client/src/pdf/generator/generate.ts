@@ -7,27 +7,39 @@ import { getTargetModifierById } from 'utils/targetModifierHelpers';
 import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
 import cursor from './cursor';
 import {
-  margin, headerColor, addHeader, addSubHeader, addHR, addPage, addGraphs,
+  margin,
+  headerColor,
+  addHeader,
+  addSubHeader,
+  addHR,
+  addPage,
+  addGraphs,
 } from './pdfUtils';
 
 const getModifierItems = (modifiers, isTarget = false) => {
-  const modifierItems = modifiers.map(({ id, options }) => {
-    const definition = isTarget ? getTargetModifierById(id) : getModifierById(id);
-    if (definition) {
-      const content = (
-        `${definition.name}:\n\t${getFormattedDescription(definition, options, false)}`
-      );
-      return [{ content, colSpan: 6 }];
-    }
-    return null;
-  }).filter((item) => item);
+  const modifierItems = modifiers
+    .map(({ id, options }) => {
+      const definition = isTarget ? getTargetModifierById(id) : getModifierById(id);
+      if (definition) {
+        const content = `${definition.name}:\n\t${getFormattedDescription(
+          definition,
+          options,
+          false,
+        )}`;
+        return [{ content, colSpan: 6 }];
+      }
+      return null;
+    })
+    .filter(item => item);
   if (modifierItems) {
     return [
-      [{
-        content: 'Modifiers',
-        colSpan: 6,
-        styles: { halign: 'center', fontStyle: 'bold', fillColor: [240, 240, 240] },
-      }],
+      [
+        {
+          content: 'Modifiers',
+          colSpan: 6,
+          styles: { halign: 'center', fontStyle: 'bold', fillColor: [240, 240, 240] },
+        },
+      ],
       ...modifierItems,
     ];
   }
@@ -39,9 +51,7 @@ const generateUnits = (doc, units) => {
   units.forEach(({ name, weapon_profiles }) => {
     weapon_profiles.forEach((profile, index) => {
       const profileName = profile.name || 'Weapon Profile';
-      const {
-        num_models, attacks, to_hit, to_wound, rend, damage,
-      } = profile;
+      const { num_models, attacks, to_hit, to_wound, rend, damage } = profile;
       let body = [[num_models, attacks, `${to_hit}+`, `${to_wound}+`, rend, damage]];
 
       if (profile.modifiers && profile.modifiers.length) {
@@ -91,12 +101,8 @@ const generateUnits = (doc, units) => {
 
 const generateTarget = (doc, target) => {
   addSubHeader(doc, 'Target');
-  const head = [
-    [{ content: 'Target', colSpan: 6, styles: { halign: 'center' } }],
-  ];
-  const body = [
-    ...getModifierItems(target.modifiers, true),
-  ];
+  const head = [[{ content: 'Target', colSpan: 6, styles: { halign: 'center' } }]];
+  const body = [...getModifierItems(target.modifiers, true)];
   doc.autoTable({
     startY: cursor.pos,
     head,
@@ -120,22 +126,21 @@ const generateTarget = (doc, target) => {
   cursor.incr(10);
 };
 
-const transposeData = (unitNames, results) => unitNames.reduce((acc, name) => {
-  const item = { name };
-  results.forEach(({ save, ...results }) => {
-    item[save] = results[name];
-  });
-  acc.push(item);
-  return acc;
-}, []);
+const transposeData = (unitNames, results) =>
+  unitNames.reduce((acc, name) => {
+    const item = { name };
+    results.forEach(({ save, ...results }) => {
+      item[save] = results[name];
+    });
+    acc.push(item);
+    return acc;
+  }, []);
 
 const generateStatsTable = (doc, results, unitNames) => {
   const data = transposeData(unitNames, results);
   const transformRow = ({ name, ...results }) => [
     name,
-    ...Object.keys(results).map((k) => (
-      results[k]
-    )),
+    ...Object.keys(results).map(k => results[k]),
   ];
 
   doc.autoTable({
@@ -144,9 +149,7 @@ const generateStatsTable = (doc, results, unitNames) => {
       [{ content: 'Average Damage', colSpan: 7, styles: { halign: 'center' } }],
       ['Unit Name', ...results.map(({ save }) => (save !== 'None' ? `${save}+` : '-'))],
     ],
-    body: data.map((row) => (
-      transformRow(row)
-    )),
+    body: data.map(row => transformRow(row)),
     headStyles: { fillColor: headerColor },
     columnStyles: {
       1: { cellWidth: 40 },
@@ -164,8 +167,14 @@ const generateStatsTable = (doc, results, unitNames) => {
 };
 
 const generate = async (
-  units, target, results, modifiers, unitNames,
-  statsClassName, cumulativeClassName, probabilitiesClassName,
+  units,
+  target,
+  results,
+  modifiers,
+  unitNames,
+  statsClassName,
+  cumulativeClassName,
+  probabilitiesClassName,
 ) => {
   window.html2canvas = html2canvas;
   // eslint-disable-next-line new-cap
@@ -184,7 +193,7 @@ const generate = async (
   doc.setFontType('italic');
   doc.text(
     'Turn to next page for results',
-    doc.internal.pageSize.getWidth() - (margin * 2),
+    doc.internal.pageSize.getWidth() - margin * 2,
     cursor.pos,
     { align: 'right' },
   );

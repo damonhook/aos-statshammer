@@ -1,12 +1,10 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  Typography, Paper, useMediaQuery, Button, IconButton,
-} from '@material-ui/core';
+import { Typography, Paper, useMediaQuery, Button, IconButton } from '@material-ui/core';
 import { GitHub, Reddit } from '@material-ui/icons';
 import clsx from 'clsx';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   footer: {
     textAlign: 'center',
     width: '100%',
@@ -43,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * The footer that appears at the bottom of the page
  */
-const Footer = () => {
+const Footer: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -57,8 +55,8 @@ const Footer = () => {
         </Typography>
         <Typography variant="body2" component="p">
           Disclaimer: This tool is in no way endorsed or sanctioned by Games Workshop - it is
-          unofficial and fan-made. I take absolutely no credit for any of the Games Workshop
-          content displayed above.
+          unofficial and fan-made. I take absolutely no credit for any of the Games Workshop content
+          displayed above.
         </Typography>
         <Typography
           component="div"
@@ -91,7 +89,6 @@ const Footer = () => {
             <div>
               <IconButton
                 className={classes.footerButton}
-                variant="contained"
                 href="https://github.com/damonhook/aos-statshammer"
                 target="_blank"
               >
@@ -99,7 +96,6 @@ const Footer = () => {
               </IconButton>
               <IconButton
                 className={classes.footerButton}
-                variant="contained"
                 href="https://www.reddit.com/r/AoSStatshammer"
                 target="_blank"
               >

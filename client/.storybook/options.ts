@@ -1,4 +1,4 @@
-import { create } from "@storybook/theming";
+import { create } from '@storybook/theming';
 
 const options = {
   options: {
@@ -10,7 +10,7 @@ const options = {
       base: 'light',
       fontBase: '"Roboto", sans-serif',
       fontCode: 'monospace',
-    })
+    }),
   },
 };
 

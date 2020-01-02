@@ -1,6 +1,6 @@
 window.autoScrollEnabled = false;
 
-export const setAutoScrollEnabled = (enabled) => {
+export const setAutoScrollEnabled = enabled => {
   window.autoScrollEnabled = enabled;
 };
 

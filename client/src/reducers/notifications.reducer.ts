@@ -1,6 +1,9 @@
-import { ADD_NOTIFICATION, DISMISS_NOTIFICATION, DISMISS_ALL_NOTIFICATIONS } from 'actions/notifications.action';
+import {
+  ADD_NOTIFICATION,
+  DISMISS_NOTIFICATION,
+  DISMISS_ALL_NOTIFICATIONS,
+} from 'actions/notifications.action';
 import nanoid from 'nanoid';
-
 
 const DEFAULT_STATE = [];
 const MAX_NOTIFICATIONS = 1;
@@ -29,7 +32,7 @@ const notificationsReducer = (state = DEFAULT_STATE, action) => {
     case ADD_NOTIFICATION:
       return addNotification(state, action);
     case DISMISS_NOTIFICATION:
-      return state.filter((n) => n.key !== action.key);
+      return state.filter(n => n.key !== action.key);
     case DISMISS_ALL_NOTIFICATIONS:
       return [];
     default:

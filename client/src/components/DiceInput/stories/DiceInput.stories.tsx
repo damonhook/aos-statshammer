@@ -6,7 +6,7 @@ import { action } from '@storybook/addon-actions';
 import Container from 'utils/Container';
 
 storiesOf('Components/DiceInput', module).add('Basic', () => {
-  const [value] = useState('');
+  const [value] = useState(undefined);
   return (
     <Container variant="paper">
       <DiceInput

@@ -1,26 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, ReferenceLine,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  Label,
+  ReferenceLine,
 } from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { DefaultTooltip } from 'components/GraphTooltips';
 import GraphContainer from './GraphContainer';
 import {
-  getLegendFormatter, getMouseEnterHandler, getMouseLeaveHandler, getInitOpacity,
+  getLegendFormatter,
+  getMouseEnterHandler,
+  getMouseLeaveHandler,
+  getInitOpacity,
+  GraphProps,
+  IReferenceLine,
+  ILabel,
 } from './graphHelpers';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   graph: {},
-}));
+});
+
+interface BarGraphProps extends GraphProps {
+  referenceLines?: IReferenceLine[];
+  xAxisLabel: ILabel;
+  yAxisLabel: ILabel;
+}
 
 /**
- * A line graph component for the average damage results
+ * A bar graph component for the average damage results
  */
-const LineGraph = ({
-  data, series, className, isAnimationActive, title, syncId, xAxis, yAxis, xAxisLabel, yAxisLabel,
-  referenceLines, dotSize, tooltip,
+const BarGraph: React.FC<BarGraphProps> = ({
+  data,
+  series,
+  className,
+  isAnimationActive,
+  title,
+  syncId,
+  xAxis,
+  yAxis,
+  xAxisLabel,
+  yAxisLabel,
+  referenceLines,
+  tooltip,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -40,7 +70,7 @@ const LineGraph = ({
 
   return (
     <GraphContainer className={clsx(classes.graph, className)} title={title}>
-      <LineChart data={data} syncId={syncId}>
+      <BarChart data={data} syncId={syncId}>
         <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
         <XAxis stroke={theme.palette.graphs.axis} {...xAxis}>
           {xAxisLabel && xAxisLabel.value && (
@@ -74,82 +104,34 @@ const LineGraph = ({
           onMouseDown={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         />
-        {referenceLines && (referenceLines || []).map(({ stroke, dataKey, ...line }) => (
-          <ReferenceLine
-            stroke={stroke || theme.palette.graphs.axis}
-            strokeDasharray="3 3"
-            strokeOpacity={(dataKey && opacity[dataKey] !== null) ? opacity[dataKey] : 1}
-            {...line}
-          />
-        ))}
+        {referenceLines &&
+          (referenceLines || []).map(({ stroke, dataKey, ...line }) => (
+            <ReferenceLine
+              stroke={stroke || theme.palette.graphs.axis}
+              strokeDasharray="3 3"
+              strokeOpacity={dataKey && opacity[dataKey] !== null ? opacity[dataKey] : 1}
+              {...line}
+            />
+          ))}
         {series.map((key, index) => (
-          <Line
+          <Bar
             type="monotone"
             dataKey={key}
-            stroke={theme.palette.graphs.series[index]}
-            dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: dotSize }}
-            activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 4 }}
+            fill={theme.palette.graphs.series[index]}
             key={key}
             isAnimationActive={isAnimationActive}
-            connectNulls
             opacity={opacity[key]}
             onAnimationEnd={handleAnimationEnd}
           />
         ))}
-      </LineChart>
+      </BarChart>
     </GraphContainer>
   );
 };
 
-LineGraph.defaultProps = {
-  className: null,
+BarGraph.defaultProps = {
   isAnimationActive: true,
-  syncId: null,
-  xAxis: {},
   yAxis: {},
-  xAxisLabel: null,
-  yAxisLabel: null,
-  referenceLines: null,
-  dotSize: 2,
-  tooltip: null,
 };
 
-LineGraph.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  series: PropTypes.arrayOf(PropTypes.string).isRequired,
-  className: PropTypes.string,
-  isAnimationActive: PropTypes.bool,
-  title: PropTypes.string.isRequired,
-  syncId: PropTypes.string,
-  xAxis: PropTypes.shape({
-    tickFormatter: PropTypes.func,
-    domain: PropTypes.array,
-    type: PropTypes.string,
-    ticks: PropTypes.array,
-    dataKey: PropTypes.string,
-    tickCount: PropTypes.number,
-  }),
-  yAxis: PropTypes.shape({
-    tickFormatter: PropTypes.func,
-    domain: PropTypes.array,
-    type: PropTypes.string,
-    ticks: PropTypes.array,
-    dataKey: PropTypes.string,
-    tickCount: PropTypes.number,
-  }),
-  xAxisLabel: PropTypes.shape({
-    value: PropTypes.string,
-    position: PropTypes.string,
-    offset: PropTypes.number,
-  }),
-  yAxisLabel: PropTypes.shape({
-    value: PropTypes.string,
-    position: PropTypes.string,
-    offset: PropTypes.number,
-  }),
-  referenceLines: PropTypes.arrayOf(PropTypes.object),
-  dotSize: PropTypes.number,
-  tooltip: PropTypes.node,
-};
-
-export default LineGraph;
+export default BarGraph;
