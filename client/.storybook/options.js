@@ -3,7 +3,7 @@ import { create } from "@storybook/theming";
 const options = {
   options: {
     isFullscreen: false,
-    // panelPosition: 'right',
+    panelPosition: 'right',
     isToolshown: true,
     sortStoriesByKind: true,
     theme: create({
