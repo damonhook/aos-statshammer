@@ -1,5 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import { grey, red, teal } from '@material-ui/core/colors';
+import { IConfigStore } from 'types/store';
 
 const lightTheme = createMuiTheme({
   name: 'Light Theme',
@@ -71,6 +72,6 @@ const darkTheme = createMuiTheme({
   },
 });
 
-const getTheme = config => (config.darkMode ? darkTheme : lightTheme);
+const getTheme = (config: IConfigStore) => (config.darkMode ? darkTheme : lightTheme);
 
 export { lightTheme, darkTheme, getTheme as default };

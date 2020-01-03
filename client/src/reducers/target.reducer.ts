@@ -23,10 +23,9 @@ const addModifier = (state, action) => [
 
 const removeModifier = (state, action) => state.filter((_, index) => index !== action.index);
 
-const moveModifier = (state, action) =>
-  moveItemInArray(state, action.index, action.newIndex, state => state);
+const moveModifier = (state, action) => moveItemInArray(state, action.index, action.newIndex, state => state);
 
-const clearAllModifiers = () => [];
+const clearAllModifiers = (state, action) => [];
 
 const editModifierOption = (state, action) =>
   updateItemInArray(state, action.index, modifier => ({

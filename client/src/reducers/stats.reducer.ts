@@ -1,8 +1,4 @@
-import {
-  FETCH_STATS_PENDING,
-  FETCH_STATS_SUCCESS,
-  FETCH_STATS_ERROR,
-} from '../actions/stats.action';
+import { FETCH_STATS_PENDING, FETCH_STATS_SUCCESS, FETCH_STATS_ERROR } from '../actions/stats.action';
 
 const INITIAL_STATS = {
   pending: false,

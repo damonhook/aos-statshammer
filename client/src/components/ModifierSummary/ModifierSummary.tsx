@@ -61,12 +61,12 @@ const ModifierSummary: React.FC<IModifierSummaryProps> = ({
   const theme = useTheme();
   const large = useMediaQuery(theme.breakpoints.up('lg'));
 
-  const getModifierById = id => modifierState.modifiers.find(mod => mod.id === id);
+  const getModifierById = id => ((modifierState || {}).modifiers || []).find(mod => mod.id === id);
 
   return modifiers && modifiers.length ? (
     <div className={clsx(classes.modifiers, className)}>
       <b>Modifiers: </b>
-      {modifierState.pending ? <SummaryLoading /> : null}
+      {!modifierState || modifierState.pending ? <SummaryLoading /> : null}
       <List dense disablePadding>
         {modifiers.map((modifier, index) => {
           const modDefinition = getModifierById(modifier.id);

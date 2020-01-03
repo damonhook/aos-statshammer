@@ -6,26 +6,14 @@ import { getModifierById } from 'utils/modifierHelpers';
 import { getTargetModifierById } from 'utils/targetModifierHelpers';
 import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
 import cursor from './cursor';
-import {
-  margin,
-  headerColor,
-  addHeader,
-  addSubHeader,
-  addHR,
-  addPage,
-  addGraphs,
-} from './pdfUtils';
+import { margin, headerColor, addHeader, addSubHeader, addHR, addPage, addGraphs } from './pdfUtils';
 
 const getModifierItems = (modifiers, isTarget = false) => {
   const modifierItems = modifiers
     .map(({ id, options }) => {
       const definition = isTarget ? getTargetModifierById(id) : getModifierById(id);
       if (definition) {
-        const content = `${definition.name}:\n\t${getFormattedDescription(
-          definition,
-          options,
-          false,
-        )}`;
+        const content = `${definition.name}:\n\t${getFormattedDescription(definition, options, false)}`;
         return [{ content, colSpan: 6 }];
       }
       return null;
@@ -138,10 +126,7 @@ const transposeData = (unitNames, results) =>
 
 const generateStatsTable = (doc, results, unitNames) => {
   const data = transposeData(unitNames, results);
-  const transformRow = ({ name, ...results }) => [
-    name,
-    ...Object.keys(results).map(k => results[k]),
-  ];
+  const transformRow = ({ name, ...results }) => [name, ...Object.keys(results).map(k => results[k])];
 
   doc.autoTable({
     startY: cursor.pos,
@@ -176,7 +161,6 @@ const generate = async (
   cumulativeClassName,
   probabilitiesClassName,
 ) => {
-  window.html2canvas = html2canvas;
   // eslint-disable-next-line new-cap
   const doc = new jsPDF('p', 'pt', 'a4');
   doc.setProperties({
@@ -191,12 +175,9 @@ const generate = async (
   }
   doc.setFontSize(9);
   doc.setFontType('italic');
-  doc.text(
-    'Turn to next page for results',
-    doc.internal.pageSize.getWidth() - margin * 2,
-    cursor.pos,
-    { align: 'right' },
-  );
+  doc.text('Turn to next page for results', doc.internal.pageSize.getWidth() - margin * 2, cursor.pos, {
+    align: 'right',
+  });
   doc.setFontType('normal');
   doc.setFontSize(12);
 

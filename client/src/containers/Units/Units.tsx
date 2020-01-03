@@ -10,7 +10,8 @@ import { Route } from 'react-router-dom';
 import ProfileDialog from 'containers/ProfileDialog';
 import _ from 'lodash';
 import AddUnitButton from './AddUnitButton';
-import { IStore, IUnitStore, IWeaponProfile } from 'types/store';
+import { IStore, IUnitStore } from 'types/store';
+import { IWeaponProfile } from 'types/unit';
 
 const useStyles = makeStyles(theme => ({
   units: {

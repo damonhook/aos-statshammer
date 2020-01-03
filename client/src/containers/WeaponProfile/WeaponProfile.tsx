@@ -19,7 +19,7 @@ import { Delete, FileCopy, Edit } from '@material-ui/icons';
 import _ from 'lodash';
 import { scrollToRef } from 'utils/scrollIntoView';
 import Characteristics from './Characteristics';
-import { IWeaponProfile } from 'types/store';
+import { IWeaponProfile } from 'types/unit';
 
 const useStyles = makeStyles(theme => ({
   profile: {

@@ -19,12 +19,7 @@ interface IProbabilityTooltipProps extends ITooltipProps {
 /**
  * A tooltip to display when you hover over a value in a graph
  */
-const ProbabilityTooltip: React.FC<IProbabilityTooltipProps> = ({
-  active,
-  payload,
-  label,
-  cumulative,
-}) => {
+const ProbabilityTooltip: React.FC<IProbabilityTooltipProps> = ({ active, payload, label, cumulative }) => {
   const classes = useStyles();
   if (active) {
     return (

@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
 interface ITargetModifierListProps {
   pending: boolean;
   definitions: IModifierDefinition[];
-  error: boolean | string;
+  error?: boolean | string;
   activeModifiers: IModifierInstance[];
   addTargetModifier: any;
   removeTargetModifier: any;

@@ -5,12 +5,12 @@ const DEFAULT_STATE = {
   desktopGraphList: false,
 };
 
-const toggleDarkMode = state => ({
+const toggleDarkMode = (state, action) => ({
   ...state,
   darkMode: !state.darkMode,
 });
 
-const toggleDesktopGraphList = state => ({
+const toggleDesktopGraphList = (state, action) => ({
   ...state,
   desktopGraphList: !state.desktopGraphList,
 });

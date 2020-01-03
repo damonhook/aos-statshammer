@@ -47,17 +47,22 @@ export const getLegendFormatter = (theme, opacity) => value => (
 interface IXAxis {
   dataKey: string;
   tickFormatter?: any;
-  domain?: (number | string)[];
-  ticks?: (number | string)[];
+  domain?: (number | string)[] | null;
+  ticks?: (number | string)[] | null;
+  type?: 'number' | 'category' | null;
+  tickCount?: number | null;
 }
 
 interface IyAxis {
   tickFormatter?: any;
-  domain?: (number | string)[];
-  ticks?: (number | string)[];
+  domain?: (number | string)[] | null;
+  ticks?: (number | string)[] | null;
+  type?: 'number' | 'category' | null;
+  tickCount?: number | null;
 }
 
 export interface IReferenceLine {
+  x: any;
   stroke?: string;
   dataKey: string;
 }

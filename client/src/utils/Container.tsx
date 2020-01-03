@@ -2,16 +2,25 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+// const useStyles = makeStyles(theme => ({
+//   container: ({ fullHeight, variant, disablePadding }) => ({
+//     display: 'flex',
+//     flexDirection: 'column',
+//     background: theme.palette.background[variant],
+//     padding: theme.spacing(disablePadding ? 0 : 2),
+//     minHeight: fullHeight ? `Calc(100vh - ${disablePadding ? '16px' : '40px'})` : 300,
+//     margin: '-8px',
+//     color: theme.palette.text.primary,
+//   }),
+// }));
+
 const useStyles = makeStyles(theme => ({
-  container: ({ fullHeight, variant, disablePadding }) => ({
+  container: {
     display: 'flex',
     flexDirection: 'column',
-    background: theme.palette.background[variant],
-    padding: theme.spacing(disablePadding ? 0 : 2),
-    minHeight: fullHeight ? `Calc(100vh - ${disablePadding ? '16px' : '40px'})` : 300,
     margin: '-8px',
     color: theme.palette.text.primary,
-  }),
+  },
 }));
 
 const Container = ({ children, fullHeight, variant, disablePadding }) => {

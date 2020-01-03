@@ -63,7 +63,7 @@ const AdvancedStats: React.FC<AdvancedStatsProps> = React.memo(
     }
 
     const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
-    const unitNames = Object.values(nameMapping);
+    const unitNames: string[] = Object.values(nameMapping);
 
     const resultMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
     const simMapper = useCallback(getProbabilitiesMapping(nameMapping), [nameMapping]);

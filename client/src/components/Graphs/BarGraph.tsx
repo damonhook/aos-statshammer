@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Label,
-  ReferenceLine,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, ReferenceLine } from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { DefaultTooltip } from 'components/GraphTooltips';
@@ -31,8 +21,8 @@ const useStyles = makeStyles({
 
 interface BarGraphProps extends GraphProps {
   referenceLines?: IReferenceLine[];
-  xAxisLabel: ILabel;
-  yAxisLabel: ILabel;
+  xAxisLabel?: ILabel;
+  yAxisLabel?: ILabel;
 }
 
 /**
@@ -42,11 +32,11 @@ const BarGraph: React.FC<BarGraphProps> = ({
   data,
   series,
   className,
-  isAnimationActive,
+  isAnimationActive = true,
   title,
   syncId,
   xAxis,
-  yAxis,
+  yAxis = {},
   xAxisLabel,
   yAxisLabel,
   referenceLines,
@@ -94,10 +84,7 @@ const BarGraph: React.FC<BarGraphProps> = ({
             />
           )}
         </YAxis>
-        <Tooltip
-          content={tooltip || <DefaultTooltip />}
-          cursor={{ fill: theme.palette.graphs.grid }}
-        />
+        <Tooltip content={tooltip || <DefaultTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}
@@ -127,11 +114,6 @@ const BarGraph: React.FC<BarGraphProps> = ({
       </BarChart>
     </GraphContainer>
   );
-};
-
-BarGraph.defaultProps = {
-  isAnimationActive: true,
-  yAxis: {},
 };
 
 export default BarGraph;

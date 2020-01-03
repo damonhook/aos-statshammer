@@ -8,18 +8,12 @@ import Container from 'utils/Container';
 storiesOf('Components/AppBar', module)
   .add('Basic', () => (
     <Container fullHeight>
-      <AppBar
-        title={text('Title', 'Title')}
-        variant={select('Variant', ['home', 'advanced'], 'home')}
-      />
+      <AppBar title={text('Title', 'Title')} variant={select('Variant', ['home', 'advanced'], 'home')} />
     </Container>
   ))
 
   .add('With Scroll', () => (
     <ScrollContainer>
-      <AppBar
-        title={text('Title', 'Title')}
-        variant={select('Variant', ['home', 'advanced'], 'home')}
-      />
+      <AppBar title={text('Title', 'Title')} variant={select('Variant', ['home', 'advanced'], 'home')} />
     </ScrollContainer>
   ));

@@ -6,12 +6,7 @@ import _ from 'lodash';
 import { ProbabilityTooltip } from 'components/GraphTooltips';
 import clsx from 'clsx';
 import ListItem from 'components/ListItem';
-import {
-  getMaxDamage,
-  getMaxProbability,
-  getTicks,
-  REFERENCE_LINE_OPTIONS,
-} from './probabilityUtils';
+import { getMaxDamage, getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 import GraphControls from './GraphControls';
 import Loadable from './Loadable';
 
@@ -48,11 +43,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface BasicCurvesProps {
-  probabilities?: any[];
+  probabilities: any[];
   unitNames: string[];
   className?: string[];
   error?: boolean | string;
-  pending: Boolean;
+  pending: boolean;
 }
 
 const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
@@ -85,7 +80,7 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
       setActiveReferenceLine(value);
     };
 
-    const handleSetMatchXAxisChanged = (value: string) => {
+    const handleSetMatchXAxisChanged = (value: boolean) => {
       setMatchXAxis(value);
     };
 
@@ -128,13 +123,14 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
                   }}
                   dotSize={1}
                   referenceLines={
-                    activeMetric
+                    activeMetric && activeMetric !== null
                       ? Object.keys(metrics[activeMetric]).map(name => {
                           const unitIndex = unitNames.findIndex(unitName => unitName === name);
                           const stroke =
                             unitIndex >= 0
                               ? theme.palette.graphs.series[unitIndex]
                               : theme.palette.graphs.axis;
+                          // @ts-ignore
                           return { x: metrics[activeMetric][name], stroke, dataKey: name };
                         })
                       : null

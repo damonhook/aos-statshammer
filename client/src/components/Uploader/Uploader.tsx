@@ -2,6 +2,8 @@ import nanoid from 'nanoid';
 import React, { useMemo, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+const globalAny: any = global;
+
 const useStyles = makeStyles({
   input: {
     display: 'none',
@@ -9,7 +11,7 @@ const useStyles = makeStyles({
 });
 
 interface IUploaderProps {
-  onUpload: (data: string) => void;
+  onUpload: (data: any) => void;
   disabled?: boolean;
   component: React.ReactNode;
 }
@@ -25,7 +27,7 @@ const Uploader: React.FC<IUploaderProps> = ({ onUpload, disabled = false, compon
     files => {
       if (!files) return;
       Array.from(files).forEach(file => {
-        const reader = new global.FileReader();
+        const reader = new globalAny.FileReader();
         reader.onload = () => {
           const data = JSON.parse(reader.result);
           onUpload(data);

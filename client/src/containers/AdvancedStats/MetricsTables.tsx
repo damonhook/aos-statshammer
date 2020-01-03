@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Typography,
-  Paper,
-  Grid,
-} from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableBody, Typography, Paper, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
@@ -31,15 +22,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface LoadableProps {
-  loading: boolean;
+interface ILoadableProps {
+  loading?: boolean;
   numUnits: number;
   error?: boolean | string;
 }
 
-const Loadable: React.FC<LoadableProps> = React.memo(
+const Loadable: React.FC<ILoadableProps> = React.memo(
   ({ children, loading, numUnits, error }) => {
-    const classes = useStyles({ numUnits });
+    const classes = useStyles();
 
     if (error) {
       return <AdvancedStatsErrorCard />;
@@ -49,13 +40,13 @@ const Loadable: React.FC<LoadableProps> = React.memo(
         <Grid container spacing={2}>
           {[...Array(6)].map(() => (
             <Grid item className={classes.tableContainer}>
-              <TableSkeleton rows={numUnits} cols={5} dense className={classes.skeleton} />
+              <TableSkeleton rows={numUnits} cols={5} dense />
             </Grid>
           ))}
         </Grid>
       );
     }
-    return children;
+    return <>{children}</>;
   },
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
@@ -68,23 +59,11 @@ interface MetricsTablesProps {
   error?: boolean | string;
 }
 
-const MetricsTables: React.FC<MetricsTablesProps> = ({
-  pending,
-  results,
-  unitNames,
-  className,
-  error,
-}) => {
+const MetricsTables: React.FC<MetricsTablesProps> = ({ pending, results, unitNames, className, error }) => {
   const classes = useStyles();
 
   return (
-    <ListItem
-      header="Metric Tables"
-      className={className}
-      collapsible
-      loading={pending}
-      loaderDelay={0}
-    >
+    <ListItem header="Metric Tables" className={className} collapsible loading={pending} loaderDelay={0}>
       <Loadable loading={pending} error={error} numUnits={unitNames.length}>
         <Grid container spacing={2} className={classes.metricsContainer}>
           {(results || []).map(({ save, ...unitData }) => {

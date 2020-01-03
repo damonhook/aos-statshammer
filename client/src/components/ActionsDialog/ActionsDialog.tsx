@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Typography,
-} from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@material-ui/core';
 
 interface ActionsType {
   name: string;

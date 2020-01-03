@@ -14,9 +14,9 @@ interface IFormFieldProps {
   value: any;
   onChange: (event: any) => void;
   className?: string;
-  startAdornment?: React.ReactNode;
-  endAdornment?: React.ReactNode;
-  type: 'number' | 'dice' | 'roll';
+  startAdornment?: string;
+  endAdornment?: string;
+  type?: 'number' | 'dice' | 'roll';
   errorCallback?: (error: boolean) => void;
 }
 
@@ -52,7 +52,7 @@ const FormField: React.FC<IFormFieldProps> = React.memo(
       <TextField
         className={clsx(classes.field, className)}
         variant="filled"
-        type="number"
+        type={type}
         label={label}
         value={value}
         error={error}

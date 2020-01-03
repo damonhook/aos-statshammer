@@ -14,11 +14,7 @@ interface ClearUnitsItemProps {
   onClick?: () => void;
 }
 
-const ClearUnitsItem: React.FC<ClearUnitsItemProps> = ({
-  clearAllUnits,
-  addNotification,
-  onClick,
-}) => {
+const ClearUnitsItem: React.FC<ClearUnitsItemProps> = ({ clearAllUnits, addNotification, onClick }) => {
   const handleConfirm = () => {
     addNotification({ message: 'All units cleared', variant: 'info' });
     clearAllUnits();

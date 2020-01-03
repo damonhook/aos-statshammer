@@ -54,14 +54,10 @@ const Footer: React.FC = () => {
           Built by: Damon Hook
         </Typography>
         <Typography variant="body2" component="p">
-          Disclaimer: This tool is in no way endorsed or sanctioned by Games Workshop - it is
-          unofficial and fan-made. I take absolutely no credit for any of the Games Workshop content
-          displayed above.
+          Disclaimer: This tool is in no way endorsed or sanctioned by Games Workshop - it is unofficial and
+          fan-made. I take absolutely no credit for any of the Games Workshop content displayed above.
         </Typography>
-        <Typography
-          component="div"
-          className={clsx(classes.Actions, mobile ? classes.mobileActions : null)}
-        >
+        <Typography component="div" className={clsx(classes.Actions, mobile ? classes.mobileActions : null)}>
           {!xs ? (
             <div>
               <Button

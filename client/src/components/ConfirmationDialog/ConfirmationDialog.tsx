@@ -20,12 +20,7 @@ interface ConfirmationDialogProps {
 /**
  * A simple dialog box with a confirm and cancel action
  */
-const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
-  open,
-  onConfirm,
-  onClose,
-  description,
-}) => {
+const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ open, onConfirm, onClose, description }) => {
   const history = useHistory();
 
   const handleClose = () => {

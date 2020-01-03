@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 
 const CumulativeProbabilityGraphs = ({ probabilities, unitNames }) => {
   const classes = useStyles();
-  const yAxisFormatter = useCallback((value) => `${value}%`, []);
+  const yAxisFormatter = useCallback(value => `${value}%`, []);
   const cols = 2;
   const rows = Math.ceil(probabilities.length / cols);
 

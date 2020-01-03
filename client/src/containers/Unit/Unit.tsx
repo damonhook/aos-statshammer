@@ -14,7 +14,8 @@ import NoItemsCard from 'components/NoItemsCard';
 import { addUnitEnabled } from 'utils/unitHelpers';
 import _ from 'lodash';
 import { scrollToRef } from 'utils/scrollIntoView';
-import { IStore, IUnit } from 'types/store';
+import { IStore } from 'types/store';
+import { IUnit } from 'types/unit';
 
 const useStyles = makeStyles(theme => ({
   unit: {
@@ -46,7 +47,7 @@ interface UnitProps {
   addUnit: any;
   className?: string;
   addNotification: any;
-  moveUnits: any;
+  moveUnit: any;
   numUnits: number;
 }
 

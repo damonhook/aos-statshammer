@@ -7,5 +7,5 @@ export interface IPayload {
 export interface ITooltipProps {
   active?: boolean;
   payload?: IPayload[];
-  label?: string;
+  label?: string | number;
 }

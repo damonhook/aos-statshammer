@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { TextField, Checkbox, MenuItem, FormControlLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RollInput from 'components/RollInput';
@@ -21,7 +20,7 @@ interface IModifierInputProps {
   name: string;
   option: TOptionTypes;
   val?: TOptionValue;
-  onOptionChange: (index: number, name: string, value: TOptionValue) => void;
+  onOptionChange?: (index: number, name: string, value: TOptionValue) => void;
   errorCallback: (error: boolean) => void;
 }
 
@@ -44,14 +43,14 @@ const ModifierInput: React.FC<IModifierInputProps> = React.memo(
       event => {
         const { value } = event.target;
         setError(!value);
-        onOptionChange(index, name, value);
+        if (onOptionChange) onOptionChange(index, name, value);
       },
       [index, name, onOptionChange],
     );
 
     const handleChecked = useCallback(
       event => {
-        onOptionChange(index, name, event.target.checked);
+        if (onOptionChange) onOptionChange(index, name, event.target.checked);
       },
       [index, name, onOptionChange],
     );
@@ -104,14 +103,12 @@ const ModifierInput: React.FC<IModifierInputProps> = React.memo(
         return (
           <RollInput
             label={name}
-            name={name}
             className={classes.modifierInput}
             fullWidth
-            value={val}
-            onChange={event => onOptionChange(index, name, event.target.value)}
+            value={Number(val)}
+            onChange={handleChange}
             allowOnes={option.allowOnes}
             errorCallback={childErrorCallback}
-            variant="outlined"
             required
           />
         );
@@ -120,13 +117,11 @@ const ModifierInput: React.FC<IModifierInputProps> = React.memo(
         return option.allowDice ? (
           <DiceInput
             label={name}
-            name={name}
             className={classes.modifierInput}
             fullWidth
-            value={val}
-            onChange={event => onOptionChange(index, name, event.target.value)}
+            value={String(val)}
+            onChange={handleChange}
             errorCallback={childErrorCallback}
-            variant="outlined"
             required
           />
         ) : (

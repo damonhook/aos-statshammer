@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    autoScrollEnabled: boolean;
+  }
+}
+
 window.autoScrollEnabled = false;
 
 export const setAutoScrollEnabled = enabled => {

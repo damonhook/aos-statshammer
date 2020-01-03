@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GraphSkeleton from 'components/Skeletons/GraphSkeleton';
 import { StatsErrorCard } from 'components/ErrorCards';

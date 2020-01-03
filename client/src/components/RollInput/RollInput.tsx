@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, InputAdornment } from '@material-ui/core';
 import clsx from 'clsx';
@@ -11,14 +10,15 @@ const useStyles = makeStyles({
 
 interface IRollInputProps {
   label: string;
-  value?: number;
-  onChange?: (value: number) => void;
+  value?: number | null;
+  onChange?: (event: any) => void;
   className?: string;
   required?: boolean;
   allowOnes?: boolean;
   startAdornment?: React.ReactNode;
   endAdornment?: React.ReactNode;
   errorCallback?: (error: boolean) => void;
+  fullWidth?: boolean;
 }
 
 const RollInput: React.FC<IRollInputProps> = React.memo(
@@ -32,7 +32,7 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
     startAdornment,
     endAdornment,
     errorCallback,
-    ...other
+    fullWidth = false,
   }) => {
     const classes = useStyles();
     const [error, setError] = useState(false);
@@ -100,7 +100,7 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
         helperText={error ? errorMessage : null}
         onChange={handleChange}
         InputProps={inputProps}
-        {...other}
+        fullWidth={fullWidth}
       />
     );
   },

@@ -34,7 +34,7 @@ interface ITabbedProps {
 /**
  * A simple tabbed interface
  */
-const Tabbed = ({ tabNames, tabContent, className, onTabChange }) => {
+const Tabbed: React.FC<ITabbedProps> = ({ tabNames, tabContent, className, onTabChange }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
@@ -65,13 +65,7 @@ const Tabbed = ({ tabNames, tabContent, className, onTabChange }) => {
         resistance
       >
         {tabContent.map((content, index) => (
-          <TabPanel
-            value={value}
-            index={index}
-            className={classes.content}
-            dir={theme.direction}
-            key={tabNames[index]}
-          >
+          <TabPanel value={value} index={index} className={classes.content} key={tabNames[index]}>
             {content}
           </TabPanel>
         ))}

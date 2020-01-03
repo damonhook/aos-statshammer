@@ -32,6 +32,7 @@ const notificationsReducer = (state = DEFAULT_STATE, action) => {
     case ADD_NOTIFICATION:
       return addNotification(state, action);
     case DISMISS_NOTIFICATION:
+      //@ts-ignore
       return state.filter(n => n.key !== action.key);
     case DISMISS_ALL_NOTIFICATIONS:
       return [];

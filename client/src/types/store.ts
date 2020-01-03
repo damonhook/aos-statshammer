@@ -1,4 +1,6 @@
 import { IModifierDefinition, IModifierInstance } from './modifiers';
+import { IUnit } from './unit';
+import { INotification } from './notification';
 
 export interface IModifiersStore {
   pending: boolean;
@@ -10,25 +12,6 @@ export interface ITargetModifiersStore {
   pending: boolean;
   modifiers: IModifierDefinition[];
   error?: boolean | string;
-}
-
-export interface IWeaponProfile {
-  name?: string;
-  uuid: string;
-  active: boolean;
-  num_models: number;
-  attacks: number | string;
-  to_hit: number;
-  to_wound: number;
-  rend: number;
-  damage: number | string;
-  modifiers: IModifierInstance[];
-}
-
-export interface IUnit {
-  name: string;
-  uuid: string;
-  weapon_profiles: IWeaponProfile[];
 }
 
 export type IUnitStore = IUnit[];
@@ -48,12 +31,6 @@ export interface ISimulationsStore {
   results?: any[];
   probabilities?: any[];
   error?: boolean | string;
-}
-
-export interface INotification {
-  message: string;
-  key: string;
-  variant: 'info' | 'warning' | 'error' | 'success';
 }
 
 export type INotificationsStore = INotification[];

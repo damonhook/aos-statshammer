@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Typography, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { IWeaponProfile } from 'types/store';
+import { IWeaponProfile } from 'types/unit';
 
 const useStyles = makeStyles({
   characteristics: {
@@ -15,6 +15,7 @@ const useStyles = makeStyles({
   characteristic: {
     marginRight: '1em',
     padding: '0.25em 0',
+    fontSize: 10,
 
     '&:last-child': {
       marginRight: 0,
@@ -51,7 +52,7 @@ const Characteristics: React.FC<ICharacteristicsProps> = ({ profile, className, 
   const classes = useStyles();
 
   return (
-    <Typography component="div" fontSize={10} className={clsx(classes.characteristics, className)} {...other}>
+    <Typography component="div" className={clsx(classes.characteristics, className)} {...other}>
       <Characteristic name="Models" text={`${profile.num_models}`} />
       <Characteristic name="Attacks" text={`${profile.attacks}`} />
       <Characteristic name="To Hit" text={`${profile.to_hit}+`} />

@@ -1,9 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  BottomNavigation as Navigation,
-  BottomNavigationAction as NavigationItem,
-} from '@material-ui/core';
+import { BottomNavigation as Navigation, BottomNavigationAction as NavigationItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Home, BarChart } from '@material-ui/icons';
 import { useHistory, useLocation, matchPath } from 'react-router-dom';

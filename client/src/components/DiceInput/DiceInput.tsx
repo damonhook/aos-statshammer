@@ -10,11 +10,12 @@ const useStyles = makeStyles({
 
 interface DiceInputProps {
   label: string;
-  value?: number | string;
-  onChange?: (value: any) => void;
+  value?: number | string | null;
+  onChange?: (event: any) => void;
   className?: string;
   required: boolean;
   errorCallback?: (error: boolean) => void;
+  fullWidth?: boolean;
 }
 
 /**
@@ -22,7 +23,7 @@ interface DiceInputProps {
  * This input component contains validation for correct dice inputs (e.g: D3, or 3)
  */
 const DiceInput: React.FC<DiceInputProps> = React.memo(
-  ({ label, value, onChange, className, required, errorCallback, ...other }) => {
+  ({ label, value, onChange, className, required, errorCallback, fullWidth = false }) => {
     const classes = useStyles();
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -86,7 +87,7 @@ const DiceInput: React.FC<DiceInputProps> = React.memo(
         error={Boolean(error)}
         helperText={error ? errorMessage : null}
         onChange={handleChange}
-        {...other}
+        fullWidth={fullWidth}
       />
     );
   },

@@ -1,10 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  CircularProgress, Typography, Paper,
-} from '@material-ui/core';
+import { CircularProgress, Typography, Paper } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   loader: {
     width: '100%',
     height: '100vh',
@@ -20,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
   },
 }));
-
 
 const PdfLoader = () => {
   const classes = useStyles();

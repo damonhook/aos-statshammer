@@ -2,14 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  AppBar as Bar,
-  Toolbar,
-  Typography,
-  IconButton,
-  useScrollTrigger,
-  Slide,
-} from '@material-ui/core';
+import { AppBar as Bar, Toolbar, Typography, IconButton, useScrollTrigger, Slide } from '@material-ui/core';
 import { Menu as MenuIcon } from '@material-ui/icons';
 import Drawer from 'components/Drawer';
 import Link from 'components/Link';
@@ -41,15 +34,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface AppBarProps {
+interface IAppBarProps {
   title: string;
-  variant: 'home' | 'advanced';
+  variant?: 'home' | 'advanced';
 }
 
 /**
  * The app bar that appears on top of the page
  */
-const AppBar: React.FC<AppBarProps> = ({ title, variant }) => {
+const AppBar: React.FC<IAppBarProps> = ({ title, variant = 'home' }) => {
   const classes = useStyles();
   const history = useHistory();
   const drawerOpen = useHashMatch('#menu');
@@ -84,10 +77,6 @@ const AppBar: React.FC<AppBarProps> = ({ title, variant }) => {
       <Drawer open={drawerOpen} onClose={handleDrawerClose} page={variant} />
     </div>
   );
-};
-
-AppBar.defaultProps = {
-  variant: 'home',
 };
 
 export default AppBar;

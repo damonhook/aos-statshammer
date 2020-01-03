@@ -12,6 +12,7 @@ const appReducer = combineReducers({
   units: unitsReducer,
   stats: statsReducer,
   modifiers: modifiersReducer,
+  //@ts-ignore
   notifications: notificationsReducer,
   config: configReducer,
   simulations: simulationsReducer,

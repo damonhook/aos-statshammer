@@ -8,20 +8,12 @@ import Container from 'utils/Container';
 storiesOf('Components/Skeletons', module)
   .add('Table', () => (
     <Container variant="paper">
-      <TableSkeleton
-        rows={number('Rows', 7)}
-        cols={number('Columns', 3)}
-        dense={boolean('Dense', false)}
-      />
+      <TableSkeleton rows={number('Rows', 7)} cols={number('Columns', 3)} dense={boolean('Dense', false)} />
     </Container>
   ))
 
   .add('Graph', () => (
     <Container variant="paper">
-      <GraphSkeleton
-        height={300}
-        series={number('Series', 7)}
-        groups={number('Groups', 2)}
-      />
+      <GraphSkeleton height={300} series={number('Series', 7)} groups={number('Groups', 2)} />
     </Container>
   ));

@@ -92,7 +92,8 @@ const RoutedTabs: React.FC<IRoutedTabsProps> = ({
       >
         {tabContent.map((content, index) => (
           <Route path={tabRoutes[index]} key={tabNames[index]}>
-            <TabPanel value={value} index={index} className={classes.content} dir={theme.direction}>
+            {/* <TabPanel value={value} index={index} className={classes.content} dir={theme.direction}> */}
+            <TabPanel value={value} index={index} className={classes.content}>
               {content}
             </TabPanel>
           </Route>

@@ -8,7 +8,7 @@ import DiceInput from 'components/DiceInput';
 import RollInput from 'components/RollInput';
 import _ from 'lodash';
 import FormField from './FormField';
-import { IWeaponProfile } from 'types/store';
+import { IWeaponProfile } from 'types/unit';
 
 const useStyles = makeStyles(theme => ({
   form: {

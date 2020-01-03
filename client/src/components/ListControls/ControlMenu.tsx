@@ -20,12 +20,7 @@ interface IControlMenuProps {
 /**
  * A menu component with the various options
  */
-const ControlMenu: React.FC<IControlMenuProps> = ({
-  primaryItems,
-  secondaryItems,
-  size,
-  className,
-}) => {
+const ControlMenu: React.FC<IControlMenuProps> = ({ primaryItems, secondaryItems, size, className }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -51,13 +46,7 @@ const ControlMenu: React.FC<IControlMenuProps> = ({
       <IconButton onClick={handleClick} size={size}>
         <MoreVert />
       </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
+      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         {primaryItems &&
           primaryItems.map(({ name, onClick, disabled }) => (
             <MenuItem onClick={() => menuItemClick(onClick)} key={name} disabled={disabled}>

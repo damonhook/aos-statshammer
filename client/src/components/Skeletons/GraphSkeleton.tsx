@@ -4,14 +4,12 @@ import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
-//@ts-ignore
 const useStyles = makeStyles(theme => ({
-  root: ({ height: number }) => ({
-    height: `${height}px`,
+  root: {
     display: 'flex',
     flexDirection: 'row',
     verticalAlign: 'bottom',
-  }),
+  },
   bar: {
     flex: 1,
     height: '100%',
@@ -49,13 +47,13 @@ interface IGraphSkeletonProps {
  * A skeleton component used to indicate that there is graph loading in its place
  */
 const GraphSkeleton: React.FC<IGraphSkeletonProps> = ({ series, groups, className, height }) => {
-  const classes = useStyles({ height });
+  const classes = useStyles();
 
   const randomIntFromInterval = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min + 1) + min);
 
   return (
-    <div className={clsx(className, classes.root)}>
+    <div className={clsx(className, classes.root)} style={{ height: `${height}px` }}>
       {[...Array(series)].map((_, seriesKey) => (
         // eslint-disable-next-line react/no-array-index-key
         <div className={classes.series} key={seriesKey}>

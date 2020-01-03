@@ -1,6 +1,7 @@
 import store from 'store';
 import { MAX_UNITS } from 'appConstants';
 
+//@ts-ignore
 export const getUnits = () => store.getState().units;
 
 export const getNumUnits = () => getUnits().length;

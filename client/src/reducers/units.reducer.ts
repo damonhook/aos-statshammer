@@ -1,11 +1,5 @@
 import nanoid from 'nanoid';
-import {
-  ADD_UNIT,
-  DELETE_UNIT,
-  EDIT_UNIT_NAME,
-  CLEAR_ALL_UNITS,
-  MOVE_UNIT,
-} from '../actions/units.action';
+import { ADD_UNIT, DELETE_UNIT, EDIT_UNIT_NAME, CLEAR_ALL_UNITS, MOVE_UNIT } from '../actions/units.action';
 import { DEFAULT_WEAPON_PROFILE } from '../actions/weaponProfiles.action';
 import weaponProfilesReducer from './weaponProfiles.reducer';
 import { updateItemInArray, moveItemInArray } from './helpers';
@@ -42,7 +36,7 @@ const editUnitName = (state, action) =>
     name: action.name,
   }));
 
-const clearAllUnits = () => [];
+const clearAllUnits = (state, action) => [];
 
 const moveUnit = (state, action) =>
   moveItemInArray(state, action.index, action.newIndex, newState => newState);

@@ -13,10 +13,7 @@ interface AdvancedStatsErrorCardProps {
 /**
  * A card representing that there was an error getting the stats
  */
-const AdvancedStatsErrorCard: React.FC<AdvancedStatsErrorCardProps> = ({
-  fetchSimulations,
-  className,
-}) => {
+const AdvancedStatsErrorCard: React.FC<AdvancedStatsErrorCardProps> = ({ fetchSimulations, className }) => {
   const handleClick = () => {
     fetchSimulations();
   };

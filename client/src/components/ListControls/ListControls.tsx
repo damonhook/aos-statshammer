@@ -15,27 +15,15 @@ interface IListControlsProps {
 /**
  * A list of buttons to display for the list item
  * */
-const ListControls: React.FC<IListControlsProps> = ({
-  primaryItems,
-  secondaryItems,
-  className,
-}) => {
+const ListControls: React.FC<IListControlsProps> = ({ primaryItems, secondaryItems, className }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (!primaryItems && !secondaryItems) return null;
   return mobile ? (
-    <ControlMenu
-      primaryItems={primaryItems}
-      secondaryItems={secondaryItems}
-      className={className}
-    />
+    <ControlMenu primaryItems={primaryItems} secondaryItems={secondaryItems} className={className} />
   ) : (
-    <ControlHeader
-      className={className}
-      primaryItems={primaryItems}
-      secondaryItems={secondaryItems}
-    />
+    <ControlHeader className={className} primaryItems={primaryItems} secondaryItems={secondaryItems} />
   );
 };
 

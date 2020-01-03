@@ -7,18 +7,14 @@ export const REFERENCE_LINE_OPTIONS = {
 
 export const getMaxDamage = (probabilities: any[]) =>
   Math.max(
-    ...probabilities.map(({ metrics }) =>
-      Math.max(...Object.values(metrics.max).map(d => Number(d))),
-    ),
+    ...probabilities.map(({ metrics }) => Math.max(...Object.values(metrics.max).map(d => Number(d)))),
   );
 
 export const getMaxProbability = (probabilities: any[]) =>
   Math.max(
     ...probabilities.map(({ buckets }) =>
       Math.max(
-        ...buckets.map(({ damage, ...other }) =>
-          Math.max(...Object.values(other).map(p => Number(p))),
-        ),
+        ...buckets.map(({ damage, ...other }) => Math.max(...Object.values(other).map(p => Number(p)))),
       ),
     ),
   );

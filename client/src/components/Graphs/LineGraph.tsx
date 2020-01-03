@@ -30,9 +30,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface LineGraphProps extends GraphProps {
-  referenceLines?: IReferenceLine[];
-  xAxisLabel: ILabel;
-  yAxisLabel: ILabel;
+  referenceLines?: IReferenceLine[] | null;
+  xAxisLabel?: ILabel;
+  yAxisLabel?: ILabel;
   dotSize?: number;
 }
 
@@ -96,10 +96,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
             />
           )}
         </YAxis>
-        <Tooltip
-          content={tooltip || <DefaultTooltip />}
-          cursor={{ fill: theme.palette.graphs.grid }}
-        />
+        <Tooltip content={tooltip || <DefaultTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}

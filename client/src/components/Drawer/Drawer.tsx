@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  SwipeableDrawer as AppDrawer,
-  List,
-  Typography,
-  Divider,
-  useMediaQuery,
-} from '@material-ui/core';
+import { SwipeableDrawer as AppDrawer, List, Typography, Divider, useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Link from 'components/Link';
 import { useHistory } from 'react-router-dom';
@@ -44,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 
 interface DrawerProps {
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   page?: 'home' | 'advanced';
 }
 
@@ -58,13 +52,17 @@ const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
     history.push('#menu');
   };
 
+  const handleClose = () => {
+    if (onClose) onClose();
+  };
+
   return (
     <AppDrawer
       open={open}
       onOpen={onSwipeOpen}
       variant="temporary"
       anchor="left"
-      onClose={onClose}
+      onClose={handleClose}
       ModalProps={{
         keepMounted: true, // Better open performance on mobile.
       }}

@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
-import {
-  getMaxDamage, getMaxProbability, getTicks,
-} from 'containers/ProbabilityCurves/probabilityUtils';
+import { getMaxDamage, getMaxProbability, getTicks } from 'containers/ProbabilityCurves/probabilityUtils';
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles({
@@ -19,11 +17,13 @@ const useStyles = makeStyles({
 
 const ProbabilityGraphs = ({ probabilities, unitNames }) => {
   const classes = useStyles();
-  const yAxisFormatter = useCallback((value) => `${value}%`, []);
+  const yAxisFormatter = useCallback(value => `${value}%`, []);
   const cols = 2;
   const rows = Math.ceil(probabilities.length / cols);
 
-  let [maxDamage, maxProbability, ticks] = [0, 0, null];
+  let maxDamage = 0;
+  let maxProbability = 0;
+  let ticks: number[] | null = null;
   if (probabilities && probabilities.length) {
     maxDamage = getMaxDamage(probabilities);
     maxProbability = getMaxProbability(probabilities);

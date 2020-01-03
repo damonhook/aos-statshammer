@@ -1,4 +1,4 @@
-export const applyResultsMapping = (mapping, data, fixedKey = 'save') =>
+export const applyResultsMapping = (mapping, data, fixedKey: string | null = 'save') =>
   data.map(result =>
     Object.keys(result).reduce(
       (acc, key) => {

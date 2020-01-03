@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 
 const StatsGraphs = ({ results, unitNames }) => {
   const classes = useStyles();
-  const xAxisFormatter = useCallback((value) => (value === 'None' ? '-' : `${value}+`), []);
+  const xAxisFormatter = useCallback(value => (value === 'None' ? '-' : `${value}+`), []);
 
   return (
     <>
@@ -65,10 +65,6 @@ const StatsGraphs = ({ results, unitNames }) => {
             xAxis={{
               dataKey: 'save',
               tickFormatter: xAxisFormatter,
-            }}
-            yAxisLabel={{
-              value: 'Average Damage',
-              position: 'insideLeft',
             }}
           />
         </div>

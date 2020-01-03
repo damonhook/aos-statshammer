@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
 
 interface IModifierListProps {
   pending: boolean;
-  definitions?: IModifierDefinition[];
+  definitions: IModifierDefinition[];
   error?: boolean | string;
   modifiers: IModifierInstance[];
   errorCallback: (error: boolean) => void;

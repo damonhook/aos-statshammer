@@ -28,22 +28,12 @@ interface IControlHeaderProps {
   className?: string;
 }
 
-const ControlHeader: React.FC<IControlHeaderProps> = ({
-  primaryItems,
-  secondaryItems,
-  className,
-}) => (
+const ControlHeader: React.FC<IControlHeaderProps> = ({ primaryItems, secondaryItems, className }) => (
   <div>
     <ButtonGroup className={`list-controls ${className}`}>
       {primaryItems &&
         primaryItems.map(({ name, onClick, disabled, icon }) => (
-          <HeaderButton
-            key={name}
-            onClick={onClick}
-            icon={icon}
-            tooltip={name}
-            disabled={disabled}
-          />
+          <HeaderButton key={name} onClick={onClick} icon={icon} tooltip={name} disabled={disabled} />
         ))}
       {secondaryItems && <ControlMenu secondaryItems={secondaryItems} size="small" />}
     </ButtonGroup>

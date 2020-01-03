@@ -1,5 +1,7 @@
-/* eslint-disable no-underscore-dangle */
 class Cursor {
+  _pos: number;
+  _margin: number;
+
   constructor(margin = 0) {
     this._pos = margin;
     this._margin = margin;
@@ -9,11 +11,11 @@ class Cursor {
     return this._pos;
   }
 
-  set pos(newPos) {
+  set pos(newPos: number) {
     this._pos = newPos;
   }
 
-  incr(amt) {
+  incr(amt: number) {
     this._pos += amt;
   }
 

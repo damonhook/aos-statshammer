@@ -6,7 +6,8 @@ import { ImportExport, Add } from '@material-ui/icons';
 import { addUnitEnabled } from 'utils/unitHelpers';
 import { addNotification } from 'actions/notifications.action';
 import Uploader from 'components/Uploader';
-import { IUnitStore, IUnit } from 'types/store';
+import { IUnitStore } from 'types/store';
+import { IUnit } from 'types/unit';
 
 const useStyles = makeStyles({
   group: {

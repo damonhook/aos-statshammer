@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Typography,
-  Paper,
-  Grid,
-} from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableBody, Typography, Paper, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
@@ -40,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 interface LoadableProps {
   loading: boolean;
   numUnits: number;
-  error: boolean | string;
+  error?: boolean | string;
 }
 
 const Loadable: React.FC<LoadableProps> = React.memo(
@@ -55,13 +46,13 @@ const Loadable: React.FC<LoadableProps> = React.memo(
         <Grid container spacing={2}>
           {[...Array(6)].map(() => (
             <Grid item className={classes.tableContainer}>
-              <TableSkeleton rows={15} cols={numUnits + 1} dense className={classes.skeleton} />
+              <TableSkeleton rows={15} cols={numUnits + 1} dense />
             </Grid>
           ))}
         </Grid>
       );
     }
-    return children;
+    return <>{children}</>;
   },
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );

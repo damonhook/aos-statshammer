@@ -37,11 +37,11 @@ const useStyles = makeStyles(theme => ({
 
 interface IModifierItemProps {
   index: number;
-  definition: IModifierDefinition;
+  definition?: IModifierDefinition;
   options?: any;
   actions?: IPrimaryItem[];
   onOptionChange?: (index: number, name: string, value: any) => void;
-  errorCallback?: (error: boolean | string) => void;
+  errorCallback?: (error: boolean) => void;
   nested?: boolean;
   scrollEnabled?: boolean;
 }

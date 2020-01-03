@@ -21,7 +21,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Loadable = React.memo(
+interface ILoadableProps {
+  loading: boolean;
+  numUnits: number;
+  error?: string | boolean;
+}
+
+const Loadable: React.FC<ILoadableProps> = React.memo(
   ({ children, loading, numUnits, error }) => {
     const classes = useStyles({ numUnits });
 
@@ -44,7 +50,7 @@ const Loadable = React.memo(
         </Grid>
       );
     }
-    return children;
+    return <>{children}</>;
   },
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );

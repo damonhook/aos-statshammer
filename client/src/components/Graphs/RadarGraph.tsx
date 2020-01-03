@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  RadarChart,
-  Radar,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Tooltip,
-  Legend,
-  PolarGrid,
-} from 'recharts';
+import { RadarChart, Radar, PolarAngleAxis, PolarRadiusAxis, Tooltip, Legend, PolarGrid } from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { DefaultTooltip } from 'components/GraphTooltips';
@@ -72,10 +64,7 @@ const RadarGraph: React.FC<RadarGraphProps> = ({
         <PolarGrid stroke={theme.palette.graphs.grid} />
         <PolarAngleAxis stroke={theme.palette.graphs.axis} {...xAxis} />
         <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={0} {...yAxis} />
-        <Tooltip
-          content={tooltip || <DefaultTooltip />}
-          cursor={{ fill: theme.palette.graphs.grid }}
-        />
+        <Tooltip content={tooltip || <DefaultTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}

@@ -45,11 +45,7 @@ const ModifierOption: React.FC<IModifierOptionProps> = React.memo(
   ({ modifier, onClick, nested }) => {
     const classes = useStyles();
     return (
-      <ListItem
-        className={clsx(classes.modifierOption, { [classes.nested]: nested })}
-        onClick={() => onClick(modifier)}
-        button
-      >
+      <ListItem className={clsx({ [classes.nested]: nested })} onClick={() => onClick(modifier)} button>
         <div className={classes.body}>
           <div className={classes.content}>
             <Typography variant="body1" className={classes.name}>

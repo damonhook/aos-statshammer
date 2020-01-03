@@ -51,11 +51,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface CumulativeCurvesProps {
-  probabilities?: any[];
+  probabilities: any[];
   unitNames: string[];
   className?: string[];
   error?: boolean | string;
-  pending: Boolean;
+  pending: boolean;
 }
 
 const CumulativeCurves: React.FC<CumulativeCurvesProps> = React.memo(
@@ -72,7 +72,7 @@ const CumulativeCurves: React.FC<CumulativeCurvesProps> = React.memo(
     }
 
     const yAxisLabel = useCallback(value => `${value}%`, []);
-    let activeMetric = null;
+    let activeMetric: string | null = null;
     if (activeReferenceLine !== REFERENCE_LINE_OPTIONS.NONE) {
       activeMetric = activeReferenceLine.toLowerCase();
     }
@@ -131,6 +131,7 @@ const CumulativeCurves: React.FC<CumulativeCurvesProps> = React.memo(
                             unitIndex >= 0
                               ? theme.palette.graphs.series[unitIndex]
                               : theme.palette.graphs.axis;
+                          // @ts-ignore
                           return { x: metrics[activeMetric][name], stroke, dataKey: name };
                         })
                       : null

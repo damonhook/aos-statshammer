@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core';
 import { SaveTooltip } from 'components/GraphTooltips';
 import GraphWrapper from './GraphWrapper';
 import { IStatsStore } from 'types/store';
+import ListItem from 'components/ListItem';
 
 const useStyles = makeStyles(() => ({
   content: {

@@ -77,7 +77,7 @@ interface INotificationProps {
   notificationId: string;
   dismissNotification?: (id: string) => void;
   variant: 'info' | 'warning' | 'error' | 'success';
-  timeout?: number;
+  timeout?: number | null;
 }
 
 /**
