@@ -13,6 +13,7 @@ export interface ITargetModifiersStore {
 }
 
 export interface IWeaponProfile {
+  name?: string;
   uuid: string;
   active: boolean;
   num_models: number;

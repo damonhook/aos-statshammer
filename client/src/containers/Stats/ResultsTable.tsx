@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  Table, TableHead, TableBody, TableRow, TableCell, Paper,
-} from '@material-ui/core';
+import { Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import TableSkeleton from 'components/Skeletons/TableSkeleton';
 import { StatsErrorCard } from 'components/ErrorCards';
+import { IStatsStore } from 'types/store';
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   table: {
     background: theme.palette.background.nested,
   },
@@ -34,12 +32,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ResultsTable = ({ stats, unitNames, className }) => {
+interface IResultsTableProps {
+  stats: IStatsStore;
+  unitNames: string[];
+  className?: string;
+}
+
+const ResultsTable: React.FC<IResultsTableProps> = ({ stats, unitNames, className }) => {
   const classes = useStyles();
   if (stats.error) {
     return <StatsErrorCard className={classes.error} />;
   }
-  if ((!stats.payload || !stats.payload.length)) {
+  if (!stats.payload || !stats.payload.length) {
     return (
       <TableSkeleton
         dense
@@ -55,22 +59,26 @@ const ResultsTable = ({ stats, unitNames, className }) => {
         <TableHead>
           <TableRow className={classes.header}>
             <TableCell className={clsx(classes.sticky, classes.header)}>Save</TableCell>
-            {unitNames.map((name) => (
-              <TableCell align="right" key={name} className={classes.header}>{name}</TableCell>
+            {unitNames.map(name => (
+              <TableCell align="right" key={name} className={classes.header}>
+                {name}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {stats.payload.map((result) => {
+          {stats.payload.map(result => {
             const { save, ...unitResults } = result;
             return (
-            // eslint-disable-next-line react/no-array-index-key
+              // eslint-disable-next-line react/no-array-index-key
               <TableRow key={save}>
                 <TableCell className={clsx(classes.sticky, classes.cell)}>
                   {save && save !== 'None' ? `${save}+` : '-'}
                 </TableCell>
-                {unitNames.map((name) => (
-                  <TableCell key={name} align="right">{unitResults[name]}</TableCell>
+                {unitNames.map(name => (
+                  <TableCell key={name} align="right">
+                    {unitResults[name]}
+                  </TableCell>
                 ))}
               </TableRow>
             );

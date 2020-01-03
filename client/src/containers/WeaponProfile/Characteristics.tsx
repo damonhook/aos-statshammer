@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Typography, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import { IWeaponProfile } from 'types/store';
 
 const useStyles = makeStyles({
   characteristics: {
@@ -21,39 +22,36 @@ const useStyles = makeStyles({
   },
 });
 
+interface ICharacteristicProps {
+  name: string;
+  text: string;
+  className?: string;
+}
 
-const Characteristic = ({
-  name, text, className, tooltip,
-}) => {
+const Characteristic: React.FC<ICharacteristicProps> = ({ name, text, className }) => {
   const classes = useStyles();
 
   const item = (
     <Typography component="span" className={clsx(classes.characteristic, className)}>
       <Typography component="span">{`${name}: `}</Typography>
-      <Typography variant="h6" component="span">{text}</Typography>
+      <Typography variant="h6" component="span">
+        {text}
+      </Typography>
     </Typography>
   );
-  if (tooltip) {
-    return (
-      <Tooltip>
-        {item}
-      </Tooltip>
-    );
-  }
   return item;
 };
 
+interface ICharacteristicsProps {
+  profile: IWeaponProfile;
+  className?: string;
+}
 
-const Characteristics = ({ profile, className, ...other }) => {
+const Characteristics: React.FC<ICharacteristicsProps> = ({ profile, className, ...other }) => {
   const classes = useStyles();
 
   return (
-    <Typography
-      component="div"
-      fontSize={10}
-      className={clsx(classes.characteristics, className)}
-      {...other}
-    >
+    <Typography component="div" fontSize={10} className={clsx(classes.characteristics, className)} {...other}>
       <Characteristic name="Models" text={`${profile.num_models}`} />
       <Characteristic name="Attacks" text={`${profile.attacks}`} />
       <Characteristic name="To Hit" text={`${profile.to_hit}+`} />
@@ -62,23 +60,6 @@ const Characteristics = ({ profile, className, ...other }) => {
       <Characteristic name="Damage" text={`${profile.damage}`} />
     </Typography>
   );
-};
-
-Characteristics.defaultProps = {
-  className: null,
-};
-
-Characteristics.propTypes = {
-  profile: PropTypes.shape({
-    num_models: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    attacks: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    to_hit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    to_wound: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    rend: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    damage: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    modifiers: PropTypes.arrayOf(PropTypes.object),
-  }).isRequired,
-  className: PropTypes.string,
 };
 
 export default Characteristics;

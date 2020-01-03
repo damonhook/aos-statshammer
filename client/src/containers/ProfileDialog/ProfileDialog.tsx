@@ -1,9 +1,5 @@
-import React, {
-  useEffect, useCallback, useMemo, useReducer,
-} from 'react';
-import {
-  Button, Dialog, useMediaQuery, DialogActions, Slide,
-} from '@material-ui/core';
+import React, { useEffect, useCallback, useMemo, useReducer } from 'react';
+import { Button, Dialog, useMediaQuery, DialogActions, Slide } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { editWeaponProfile } from 'actions/weaponProfiles.action';
 import { bindActionCreators } from 'redux';
@@ -13,9 +9,9 @@ import { getUnitByUuid, getUnitIndexByUuid } from 'utils/unitHelpers';
 import DialogTitle from './DialogTitle';
 import DialogContent from './DialogContent';
 import { errorReducer, profileReducer } from './reducers';
+import { TransitionProps } from '@material-ui/core/transitions';
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   dialog: {},
   actions: {
     [theme.breakpoints.down('sm')]: {
@@ -24,9 +20,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
 
-const ProfileDialog = ({ editWeaponProfile, open }) => {
+interface IProfileDialogProps {
+  editWeaponProfile: any;
+  open: boolean;
+}
+
+const ProfileDialog: React.FC<IProfileDialogProps> = ({ editWeaponProfile, open }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -90,7 +93,7 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
     handleClose();
   }, [editWeaponProfile, handleClose, id, state, unitId]);
 
-  const submitDisabled = useMemo(() => Object.keys(errors).some((k) => errors[k]), [errors]);
+  const submitDisabled = useMemo(() => Object.keys(errors).some(k => errors[k]), [errors]);
 
   if (!profile) return null;
   return (
@@ -136,9 +139,4 @@ const ProfileDialog = ({ editWeaponProfile, open }) => {
   );
 };
 
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  editWeaponProfile,
-}, dispatch);
-
-export default connect(null, mapDispatchToProps)(ProfileDialog);
+export default connect(null, { editWeaponProfile })(ProfileDialog);
