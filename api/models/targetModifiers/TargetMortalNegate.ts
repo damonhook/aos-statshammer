@@ -1,8 +1,12 @@
 import { D6 } from '../dice';
 import BaseTargetModifier from './BaseTargetModifier';
 import { rollOption } from '../../utils/ModifierOptions';
+import WeaponProfile from '../weaponProfile';
+import Target from '../target';
 
 export default class TargetMortalNegate extends BaseTargetModifier {
+  on: number;
+
   constructor({ on = 6 }) {
     super();
     this.on = Number(on);
@@ -22,8 +26,7 @@ export default class TargetMortalNegate extends BaseTargetModifier {
     };
   }
 
-  // eslint-disable-next-line no-unused-vars
-  resolve(profile, target) {
+  resolve(profile: WeaponProfile, target: Target) {
     return D6.getProbability(this.on);
   }
 }

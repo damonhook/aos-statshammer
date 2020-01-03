@@ -1,6 +1,7 @@
-import { Characteristics as C } from '../../constants';
+import { Characteristic as C } from '../../constants';
 import { D6 } from '../dice';
 import BaseModifier from './BaseModifier';
+import WeaponProfile from '../weaponProfile';
 
 export default class RerollOnes extends BaseModifier {
   ['constructor']: typeof RerollOnes;
@@ -17,17 +18,15 @@ export default class RerollOnes extends BaseModifier {
     return [C.TO_HIT, C.TO_WOUND];
   }
 
-  resolve(owner) {
+  resolve(owner: WeaponProfile) {
     return this.numRerolls(owner) * D6.getProbability(owner.getCharacteristic(this.characteristic));
   }
 
-  // eslint-disable-next-line no-unused-vars
-  numRerolls(owner) {
+  numRerolls(owner: WeaponProfile) {
     return 1 / D6.sides;
   }
 
-  // eslint-disable-next-line no-unused-vars
-  allowedReroll(owner, roll) {
+  allowedReroll(owner: WeaponProfile, roll: number) {
     return roll === 1;
   }
 }

@@ -1,4 +1,6 @@
 import BaseTargetModifier from './BaseTargetModifier';
+import Target from '../target';
+import WeaponProfile from '../weaponProfile';
 
 export default class TargetEthereal extends BaseTargetModifier {
   static get name() {
@@ -9,7 +11,7 @@ export default class TargetEthereal extends BaseTargetModifier {
     return 'Ignore modifiers to save (positive or negative) when making save rolls';
   }
 
-  resolve(profile, target) {
+  resolve(profile: WeaponProfile, target: Target) {
     return target.getSave(null);
   }
 }

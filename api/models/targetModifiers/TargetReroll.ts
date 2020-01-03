@@ -1,5 +1,7 @@
 import { D6 } from '../dice';
 import BaseTargetModifier from './BaseTargetModifier';
+import WeaponProfile from '../weaponProfile';
+import Target from '../target';
 
 export default class TargetReroll extends BaseTargetModifier {
   static get name() {
@@ -10,18 +12,17 @@ export default class TargetReroll extends BaseTargetModifier {
     return 'Reroll Save Rolls';
   }
 
-  resolve(profile, target) {
+  resolve(profile: WeaponProfile, target: Target) {
     return this.numRerolls(profile, target) * D6.getProbability(target.getSave(profile.getRend()));
   }
 
-  numRerolls(profile, target) {
+  numRerolls(profile: WeaponProfile, target: Target) {
     const save = target.getSave(profile.getRend());
     if (save === null) return 0;
     return D6.getInverseProbability(save);
   }
 
-  // eslint-disable-next-line no-unused-vars
-  allowedReroll(profile, target, roll) {
+  allowedReroll(profile: WeaponProfile, target: Target, roll: number) {
     return true;
   }
 }

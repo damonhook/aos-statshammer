@@ -1,9 +1,9 @@
-import { getCharacteristic, Characteristics } from '../../constants';
+import { getCharacteristic, Characteristic } from '../../constants';
 import { choiceOption } from '../../utils/ModifierOptions';
 
 export default class BaseModifier {
   ['constructor']: typeof BaseModifier;
-  characteristic: Characteristics;
+  characteristic: Characteristic;
 
   constructor({ characteristic }) {
     const c = getCharacteristic(characteristic);

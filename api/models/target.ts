@@ -1,13 +1,12 @@
 import { D6 } from './dice';
 import { TARGET_MODIFIERS as t, TargetModifierManager } from './targetModifiers';
 import BaseTargetModifier from './targetModifiers/BaseTargetModifier';
-import { ITarget, IWeaponProfile } from './../types/models';
 import WeaponProfile from './weaponProfile';
 
 /**
  * A class used as a target for calculating average damage
  */
-class Target implements ITarget {
+class Target {
   save: number;
   modifiers: TargetModifierManager;
 

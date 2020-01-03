@@ -1,11 +1,15 @@
-import { Characteristics as C } from '../../constants';
+import { Characteristic as C } from '../../constants';
 import { D6 } from '../dice';
 import DiceValue from '../diceValue';
 import { numberOption, booleanOption, rollOption } from '../../utils/ModifierOptions';
 import BaseModifier from './BaseModifier';
+import WeaponProfile from '../weaponProfile';
 
 export default class Exploding extends BaseModifier {
   ['constructor']: typeof Exploding;
+  on: number;
+  extraHits: DiceValue;
+  unmodified: boolean;
 
   constructor({ characteristic, on = 6, extraHits = 1, unmodified = true }) {
     super({ characteristic });
@@ -35,8 +39,7 @@ export default class Exploding extends BaseModifier {
     };
   }
 
-  // eslint-disable-next-line no-unused-vars
-  resolve(owner) {
+  resolve(owner: WeaponProfile) {
     return D6.getProbability(this.on) * this.getExtra();
   }
 

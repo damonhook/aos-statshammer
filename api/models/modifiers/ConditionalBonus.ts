@@ -1,12 +1,17 @@
-import { Characteristics as C, getCharacteristic } from '../../constants';
+import { Characteristic as C, getCharacteristic } from '../../constants';
 import { D6 } from '../dice';
 import { numberOption, booleanOption, rollOption, choiceOption } from '../../utils/ModifierOptions';
 import DiceValue from '../diceValue';
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';
+import WeaponProfile from '../weaponProfile';
 
 export default class ConditionalBonus extends BaseModifier {
   ['constructor']: typeof ConditionalBonus;
+  on: number;
+  bonus: DiceValue;
+  unmodified: boolean;
+  bonusToCharacteristic: C;
 
   constructor({ characteristic, on = 6, bonus = 1, unmodified = true, bonusToCharacteristic }) {
     super({ characteristic });
@@ -49,8 +54,7 @@ export default class ConditionalBonus extends BaseModifier {
     };
   }
 
-  // eslint-disable-next-line no-unused-vars
-  resolve(owner) {
+  resolve(owner: WeaponProfile) {
     let numHits = D6.getProbability(this.on);
     const rerollModifier = owner.modifiers.getRerollModifier(this.characteristic);
     if (rerollModifier) {

@@ -1,11 +1,14 @@
-import { Characteristics as C } from '../../constants';
+import { Characteristic as C } from '../../constants';
 import { numberOption } from '../../utils/ModifierOptions';
 import DiceValue from '../diceValue';
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';
+import WeaponProfile from '../weaponProfile';
 
 export default class LeaderBonus extends BaseModifier {
   ['constructor']: typeof LeaderBonus;
+  numLeaders: number;
+  bonus: DiceValue;
 
   constructor({ characteristic, numLeaders = 1, bonus = 1 }) {
     super({ characteristic });
@@ -33,8 +36,7 @@ export default class LeaderBonus extends BaseModifier {
     };
   }
 
-  // eslint-disable-next-line no-unused-vars
-  resolve(owner) {
+  resolve(owner: WeaponProfile) {
     return this.numLeaders * this.getBonus();
   }
 

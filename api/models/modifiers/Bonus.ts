@@ -1,10 +1,12 @@
-import { Characteristics as C } from '../../constants';
+import { Characteristic as C } from '../../constants';
 import DiceValue from '../diceValue';
 import { numberOption } from '../../utils/ModifierOptions';
 import BaseModifier from './BaseModifier';
+import WeaponProfile from '../weaponProfile';
 
 export default class Bonus extends BaseModifier {
   ['constructor']: typeof Bonus;
+  bonus: DiceValue;
 
   constructor({ characteristic, bonus }) {
     super({ characteristic });
@@ -30,7 +32,7 @@ export default class Bonus extends BaseModifier {
     };
   }
 
-  resolve(owner, roll = false) {
+  resolve(owner: WeaponProfile, roll = false) {
     return roll ? this.bonus.roll() : this.bonus.average;
   }
 }

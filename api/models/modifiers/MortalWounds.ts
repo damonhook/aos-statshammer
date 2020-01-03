@@ -1,8 +1,9 @@
-import { Characteristics as C } from '../../constants';
+import { Characteristic as C } from '../../constants';
 import { D6 } from '../dice';
 import DiceValue from '../diceValue';
 import BaseModifier from './BaseModifier';
 import { numberOption, booleanOption, rollOption } from '../../utils/ModifierOptions';
+import WeaponProfile from '../weaponProfile';
 
 export default class MortalWounds extends BaseModifier {
   ['constructor']: typeof MortalWounds;
@@ -41,7 +42,7 @@ export default class MortalWounds extends BaseModifier {
     };
   }
 
-  resolve(owner) {
+  resolve(owner: WeaponProfile) {
     let numHits = D6.getProbability(this.on);
     const rerollModifier = owner.modifiers.getRerollModifier(this.characteristic);
     if (rerollModifier) {

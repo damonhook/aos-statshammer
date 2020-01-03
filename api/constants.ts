@@ -1,4 +1,4 @@
-export enum Characteristics {
+export enum Characteristic {
   ATTACKS = 'attacks',
   TO_HIT = 'to_hit',
   TO_WOUND = 'to_wound',
@@ -7,10 +7,10 @@ export enum Characteristics {
   SAVE = 'save',
 }
 
-export const getCharacteristic = (val: string): Characteristics => {
-  const k = Object.keys(Characteristics).find(key => Characteristics[key] === val);
+export const getCharacteristic = (val: string): Characteristic => {
+  const k = Object.keys(Characteristic).find(key => Characteristic[key] === val);
   if (k) {
-    return Characteristics[k];
+    return Characteristic[k];
   }
   return null;
 };

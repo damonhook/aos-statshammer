@@ -2,7 +2,7 @@
 import Unit from '../models/unit';
 import WeaponProfile from '../models/weaponProfile';
 import { MODIFIERS as m } from '../models/modifiers';
-import { Characteristics as C } from '../constants';
+import { Characteristic as C } from '../constants';
 import { D6 } from '../models/dice';
 import { testSimulation } from './utils';
 import DiceValue from '../models/diceValue';

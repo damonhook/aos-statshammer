@@ -22,11 +22,13 @@ export const TARGET_MODIFIERS = {
  * A manager used to hold and manage modifiers
  */
 export class TargetModifierManager {
+  modifiers: BaseTargetModifier[];
+
   constructor(modifiers = []) {
     this.modifiers = modifiers.map(m => {
       if (m instanceof BaseTargetModifier) return m;
       if (typeof m === 'object' && 'id' in m && 'options' in m) {
-        if (TARGET_MODIFIERS[m.id]) return TARGET_MODIFIERS[m.id].parse(m);
+        if (TARGET_MODIFIERS[m.id]) return this.parseModifier(TARGET_MODIFIERS[m.id], m);
       }
       return null;
     });
@@ -35,18 +37,18 @@ export class TargetModifierManager {
 
   /**
    * Add a modifier to the list of managed modifiers
-   * @param {BaseModifier} modifier The modifier to add to the list
+   * @param modifier The modifier to add to the list
    */
-  addModifier(modifier) {
+  addModifier(modifier: BaseTargetModifier) {
     this.modifiers.push(modifier);
   }
 
   /**
    * Fetch a modifier from the list of managed modifiers based on its class definition and
    * characteristic property
-   * @param {BaseModifier} modifier The modifier class to fetch
+   * @param modifier The modifier class to fetch
    */
-  getModifier(modifier) {
+  getModifier(modifier: typeof BaseTargetModifier) {
     return this.modifiers.find(m => m instanceof modifier);
   }
 
@@ -65,9 +67,19 @@ export class TargetModifierManager {
   /**
    * Fetch a list of stackable modifiers from the list of managed modifiers based
    * on their class definition and characteristic property
-   * @param {BaseModifier} modifier The modifier class to fetch
+   * @param modifier The modifier class to fetch
    */
-  getStackableModifier(modifier) {
+  getStackableModifier(modifier: typeof BaseTargetModifier) {
     return this.modifiers.filter(m => m instanceof modifier);
+  }
+
+  parseModifier(modifierType: typeof BaseTargetModifier, data: any) {
+    const options = (data || {}).options || {};
+    const cleanData = Object.keys(options || {}).reduce((acc, key) => {
+      if (options[key] != null) acc[key] = options[key];
+      return acc;
+    }, {});
+    //@ts-ignore
+    return new modifierType(cleanData);
   }
 }

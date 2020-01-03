@@ -1,6 +1,6 @@
-import { ModifierManager, MODIFIERS as m } from './modifiers';
+import ModifierManager, { MODIFIERS as m } from './modifiers';
 import BaseModifier from './modifiers/BaseModifier';
-import { Characteristics, Characteristics as C } from '../constants';
+import { Characteristic, Characteristic as C } from '../constants';
 import DiceValue from './diceValue';
 
 /**
@@ -90,7 +90,7 @@ class WeaponProfile {
    * @param characteristic The characteristic to get
    * @param unmodified Whether you want the unmodified characteristic or not
    */
-  getCharacteristic(characteristic: Characteristics, unmodified: boolean = false, roll = false) {
+  getCharacteristic(characteristic: Characteristic, unmodified: boolean = false, roll = false) {
     switch (characteristic) {
       case C.ATTACKS:
         return this.getAttacks(unmodified, roll);
@@ -112,7 +112,7 @@ class WeaponProfile {
    * @param modifier The modifier class to attempt to resolve
    * @param characteristic The characteristic the modifier must belong to
    */
-  resolveModifier(modifier: typeof BaseModifier, characteristic: Characteristics) {
+  resolveModifier(modifier: typeof BaseModifier, characteristic: Characteristic) {
     const mod = this.modifiers.getModifier(modifier, characteristic);
     if (mod) return mod.resolve(this);
     return 0;
@@ -122,7 +122,7 @@ class WeaponProfile {
    * Attempt to resolve the reroll modifiers for a characteristic (if one exists)
    * @param characteristic The characteristic the modifier must belong to
    */
-  resolveRerolls(characteristic: Characteristics) {
+  resolveRerolls(characteristic: Characteristic) {
     const mod = this.modifiers.getRerollModifier(characteristic);
     if (mod) return mod.resolve(this);
     return 0;
@@ -133,7 +133,7 @@ class WeaponProfile {
    * @param modifier The modifier class to attempt to resolve
    * @param characteristic The characteristic the modifier must belong to
    */
-  resolveStackableModifier(modifier: typeof BaseModifier, characteristic: Characteristics, roll = false) {
+  resolveStackableModifier(modifier: typeof BaseModifier, characteristic: Characteristic, roll = false) {
     const modList = this.modifiers.getStackableModifier(modifier, characteristic);
     if (modList && modList.length) {
       return modList.reduce((acc, mod) => acc + mod.resolve(this, roll), 0);
@@ -167,7 +167,7 @@ class WeaponProfile {
    * Get the list of Leader specific modifiers (if any exist)
    */
   getLeaderModifiers() {
-    const modList = [];
+    const modList: BaseModifier[] = [];
     m.LEADER_BONUS.availableCharacteristics.forEach(c => {
       const mod = this.modifiers.getModifier(m.LEADER_BONUS, c);
       if (mod) modList.push(mod);

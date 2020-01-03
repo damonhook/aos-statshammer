@@ -1,3 +1,6 @@
+import WeaponProfile from '../weaponProfile';
+import Target from '../target';
+
 export default class BaseTargetModifier {
   static get name() {
     return null;
@@ -23,18 +26,7 @@ export default class BaseTargetModifier {
     };
   }
 
-  static parse(data) {
-    if (!this.options || this.options === {}) return new this();
-    const options = (data || {}).options || {};
-    const cleanData = Object.keys(options || {}).reduce((acc, key) => {
-      if (options[key] != null) acc[key] = options[key];
-      return acc;
-    }, {});
-    return new this(cleanData);
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  resolve(owner) {
+  resolve(profile: WeaponProfile, target: Target) {
     throw new Error('Resolve method not implemented');
   }
 }

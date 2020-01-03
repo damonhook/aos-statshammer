@@ -7,6 +7,7 @@ import RerollOnes from './RerollOnes';
 import BaseModifier from './BaseModifier';
 import ConditionalBonus from './ConditionalBonus';
 import LeaderBonus from './LeaderBonus';
+import { Characteristic } from 'api/constants';
 
 /**
  * The list of possible modifiers
@@ -22,27 +23,19 @@ export const MODIFIERS = {
   LEADER_BONUS: LeaderBonus,
 };
 
-const parseModifier = (modifierType, data) => {
-  if (!modifierType.options) return new modifierType();
-  const options = (data || {}).options || {};
-  const cleanData = Object.keys(options || {}).reduce((acc, key) => {
-    if (options[key] != null) acc[key] = options[key];
-    return acc;
-  }, {});
-  return new modifierType(cleanData);
-};
+type TRerollModifier = RerollOnes | RerollFailed | Reroll;
 
 /**
  * A manager used to hold and manage modifiers
  */
-export class ModifierManager {
-  modifiers: any;
+export default class ModifierManager {
+  modifiers: BaseModifier[];
 
   constructor(modifiers = []) {
     this.modifiers = modifiers.map(m => {
       if (m instanceof BaseModifier) return m;
       if (typeof m === 'object' && 'id' in m && 'options' in m) {
-        if (MODIFIERS[m.id]) return parseModifier(MODIFIERS[m.id], m);
+        if (MODIFIERS[m.id]) return this.parseModifier(MODIFIERS[m.id], m);
       }
       return null;
     });
@@ -51,28 +44,31 @@ export class ModifierManager {
 
   /**
    * Add a modifier to the list of managed modifiers
-   * @param {BaseModifier} modifier The modifier to add to the list
+   * @param modifier The modifier to add to the list
    */
-  addModifier(modifier) {
+  addModifier(modifier: BaseModifier) {
     this.modifiers.push(modifier);
   }
 
   /**
    * Fetch a modifier from the list of managed modifiers based on its class definition and
    * characteristic property
-   * @param {BaseModifier} modifier The modifier class to fetch
-   * @param {Characteristic} characteristic The characteristic the fetched modifier must belong to
+   * @param modifier The modifier class to fetch
+   * @param characteristic The characteristic the fetched modifier must belong to
    */
-  getModifier(modifier, characteristic) {
-    return this.modifiers.find(m => m instanceof modifier && m.characteristic === characteristic);
+  getModifier(modifier: typeof BaseModifier, characteristic: Characteristic): BaseModifier | null {
+    return this.modifiers.find(
+      (m: BaseModifier) => m instanceof modifier && m.characteristic === characteristic,
+    );
   }
 
   /**
    * Fetch the most prominent reroll modifier from the list of managed modifiers based on its
    * characteristic property
-   * @param {Characteristic} characteristic The characteristic to fetch the reroll modifiers for
+   * @param characteristic The characteristic to fetch the reroll modifiers for
    */
-  getRerollModifier(characteristic) {
+  getRerollModifier(characteristic: Characteristic): TRerollModifier | null {
+    //@ts-ignore
     return (
       this.getModifier(MODIFIERS.REROLL, characteristic) ||
       this.getModifier(MODIFIERS.REROLL_FAILED, characteristic) ||
@@ -83,10 +79,22 @@ export class ModifierManager {
   /**
    * Fetch a list of stackable modifiers from the list of managed modifiers based
    * on their class definition and characteristic property
-   * @param {BaseModifier} modifier The modifier class to fetch
-   * @param {Characteristic} characteristic The characteristic the fetched modifiers must belong to
+   * @param modifier The modifier class to fetch
+   * @param characteristic The characteristic the fetched modifiers must belong to
    */
-  getStackableModifier(modifier, characteristic) {
-    return this.modifiers.filter(m => m instanceof modifier && m.characteristic === characteristic);
+  getStackableModifier(modifier: typeof BaseModifier, characteristic: Characteristic) {
+    return this.modifiers.filter(
+      (m: BaseModifier) => m instanceof modifier && m.characteristic === characteristic,
+    );
+  }
+
+  parseModifier(modifierType: typeof BaseModifier, data: any) {
+    const options = (data || {}).options || {};
+    const cleanData = Object.keys(options || {}).reduce((acc, key) => {
+      if (options[key] != null) acc[key] = options[key];
+      return acc;
+    }, {});
+    //@ts-ignore
+    return new modifierType(cleanData);
   }
 }
