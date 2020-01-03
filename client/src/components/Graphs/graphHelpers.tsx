@@ -1,5 +1,4 @@
 import React from 'react';
-
 export const getInitOpacity = series =>
   series.reduce(
     (acc, name) => ({

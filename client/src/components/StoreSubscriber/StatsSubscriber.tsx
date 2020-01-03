@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchStatsCompare } from 'api';
 import { useDebouncedCallback } from 'use-debounce';

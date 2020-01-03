@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -33,13 +32,6 @@ Container.defaultProps = {
   fullHeight: true,
   variant: 'default',
   disablePadding: false,
-};
-
-Container.propTypes = {
-  children: PropTypes.node,
-  fullHeight: PropTypes.bool,
-  variant: PropTypes.oneOf(['default', 'paper', 'nested']),
-  disablePadding: PropTypes.bool,
 };
 
 export default Container;

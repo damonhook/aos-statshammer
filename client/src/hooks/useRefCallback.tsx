@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 const useRefCallback = callback => {
   const [node, setRef] = useState(null);
 

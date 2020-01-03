@@ -1,5 +1,4 @@
 import React from 'react';
-
 export interface IPrimaryItem {
   name: string;
   onClick: () => void;

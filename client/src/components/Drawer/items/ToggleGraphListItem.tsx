@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { BarChart } from '@material-ui/icons';
 import { toggleDesktopGraphList } from 'actions/config.action';

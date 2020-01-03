@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import Units, { AddUnitsFab } from 'containers/Units';
 import Stats, { ExportPdfFab } from 'containers/Stats';
 import Target, { AddModifiersFab } from 'containers/Target';

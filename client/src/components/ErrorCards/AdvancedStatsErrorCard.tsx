@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import { fetchSimulations } from 'api';
 import { bindActionCreators } from 'redux';
 import ErrorCard from './ErrorCard';

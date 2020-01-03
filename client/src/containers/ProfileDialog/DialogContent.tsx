@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { Typography, DialogContent as Content, TextField } from '@material-ui/core';
 import ModifierList from 'components/ModifierList';
 import { makeStyles } from '@material-ui/core/styles';

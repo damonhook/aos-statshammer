@@ -1,5 +1,4 @@
 import React, { useMemo, useLayoutEffect, useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';

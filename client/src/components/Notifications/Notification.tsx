@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Snackbar, IconButton, SnackbarContent } from '@material-ui/core';
 import { Close, CheckCircle, Warning, Error as ErrorIcon, Info } from '@material-ui/icons';

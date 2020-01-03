@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import ModifierDescription from 'components/ModifierItem/ModifierDescription';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { List, ListItem as Item, Tooltip, useMediaQuery } from '@material-ui/core';

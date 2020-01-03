@@ -1,5 +1,4 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
+import React from 'react';import { storiesOf } from '@storybook/react';
 import ListItem from 'components/ListItem';
 import { text, boolean } from '@storybook/addon-knobs';
 import { loremIpsum } from 'utils/lorem';

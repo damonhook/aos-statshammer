@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-
 /**
  * A hook used to hold the state from the previous render
  * @param {object} state The state top keep track of

@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-
 /**
  * A hook used to add long press functionality to a component
  * @param {func} callback The function to call on long press

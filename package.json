@@ -8,11 +8,11 @@
     },
     "scripts": {
         "client": "cd client && yarn start",
-        "server": "nodemon --exec babel-node server.js",
+        "server": "nodemon --exec babel-node server.ts --extensions \".ts\"",
         "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-        "start": "babel-node server.js",
+        "start": "babel-node server.ts --extensions \".ts\"",
         "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
-        "test": "mocha -r esm api/tests",
+        "test": "jest",
         "bumpversion": "lerna version --no-git-tag-version --no-push",
         "storybook": "cd client && yarn storybook"
     },
@@ -41,8 +41,11 @@
         "regenerator-runtime": "^0.13.3"
     },
     "devDependencies": {
+        "@types/mocha": "^5.2.7",
         "concurrently": "^4.0.1",
+        "jest": "^24.9.0",
         "lerna": "^3.19.0",
-        "prettier": "^1.19.1"
+        "prettier": "^1.19.1",
+        "typescript": "^3.7.4"
     }
 }

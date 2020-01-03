@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useCallback, useReducer } from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
