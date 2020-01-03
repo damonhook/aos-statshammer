@@ -10,8 +10,8 @@ storiesOf('Components/ActionsDialog', module).add('Basic', () => (
     <ActionsDialog
       open={boolean('Open', true)}
       actions={[
-        { label: 'Disabled Action', disabled: true, onClick: action('action-click') },
-        { label: 'Enabled Action', onClick: action('action-click') },
+        { name: 'Disabled Action', disabled: true, onClick: action('action-click') },
+        { name: 'Enabled Action', onClick: action('action-click') },
       ]}
       target={text('Target', 'Target')}
       onClose={action('dialog-closed')}

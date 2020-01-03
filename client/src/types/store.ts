@@ -1,22 +1,15 @@
-export interface IModifierDefinition {
-  id: string;
-}
+import { IModifierDefinition, IModifierInstance } from './modifiers';
 
 export interface IModifiersStore {
   pending: boolean;
-  modifiers?: IModifierDefinition[];
+  modifiers: IModifierDefinition[];
   error?: boolean | string;
 }
 
 export interface ITargetModifiersStore {
   pending: boolean;
-  modifiers?: IModifierDefinition[];
+  modifiers: IModifierDefinition[];
   error?: boolean | string;
-}
-
-export interface IModifierInstance {
-  id: string;
-  options: object;
 }
 
 export interface IWeaponProfile {
@@ -59,7 +52,7 @@ export interface ISimulationsStore {
 export interface INotification {
   message: string;
   key: string;
-  variant?: string;
+  variant: 'info' | 'warning' | 'error' | 'success';
 }
 
 export type INotificationsStore = INotification[];

@@ -9,8 +9,8 @@ import { addNotification } from 'actions/notifications.action';
 import LinkItem from './LinkItem';
 
 interface ClearUnitsItemProps {
-  clearAllUnits: any;
-  addNotification: any;
+  clearAllUnits: () => void;
+  addNotification: (options: any) => void;
   onClick?: () => void;
 }
 

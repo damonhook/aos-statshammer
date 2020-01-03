@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { loremIpsum } from 'utils/lorem';
-import Card from 'components/Card';
+import Card, { CardHeader, CardBody } from 'components/Card';
 import { text } from '@storybook/addon-knobs';
 import Container from 'utils/Container';
 
@@ -11,7 +11,7 @@ storiesOf('Components/Card', module)
   .add('Basic', () => (
     <Container>
       <Card>
-        <Card.Body>{text('Contents', lorem)}</Card.Body>
+        <CardBody>{text('Contents', lorem)}</CardBody>
       </Card>
     </Container>
   ))
@@ -19,8 +19,8 @@ storiesOf('Components/Card', module)
   .add('With header', () => (
     <Container>
       <Card>
-        <Card.Header>{text('Header', 'Header')}</Card.Header>
-        <Card.Body>{text('Contents', lorem)}</Card.Body>
+        <CardHeader>{text('Header', 'Header')}</CardHeader>
+        <CardBody>{text('Contents', lorem)}</CardBody>
       </Card>
     </Container>
   ));

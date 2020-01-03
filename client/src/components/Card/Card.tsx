@@ -12,14 +12,14 @@ const useStyles = makeStyles({
   },
 });
 
-interface CardProps {
+interface ICardProps {
   className?: string;
 }
 
 /**
  * A generic Card component based on the material ui Paper
  */
-const Card: React.FC<CardProps> = ({ children, className, ...other }) => {
+const Card: React.FC<ICardProps> = ({ children, className, ...other }) => {
   const classes = useStyles();
   return (
     <Paper className={`${classes.card} ${className}`} {...other}>
@@ -27,10 +27,5 @@ const Card: React.FC<CardProps> = ({ children, className, ...other }) => {
     </Paper>
   );
 };
-
-// @ts-ignore
-Card.Header = CardHeader;
-// @ts-ignore
-Card.Body = CardBody;
 
 export default Card;

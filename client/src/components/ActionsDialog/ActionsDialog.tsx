@@ -9,8 +9,8 @@ import {
 } from '@material-ui/core';
 
 interface ActionsType {
+  name: string;
   onClick: () => void;
-  label: string;
   disabled?: boolean;
 }
 
@@ -47,10 +47,10 @@ const ActionsDialog: React.FC<ActionsDialogProps> = ({ open, actions, target, on
               onClose();
             }}
             disabled={action.disabled}
-            key={action.label}
+            key={action.name}
             color="primary"
           >
-            {action.label}
+            {action.name}
           </Button>
         ))}
       </DialogActions>

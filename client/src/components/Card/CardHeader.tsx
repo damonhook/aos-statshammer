@@ -17,11 +17,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface CardHeaderProps {
+interface ICardHeaderProps {
   className?: string;
 }
 
-const CardHeader: React.FC<CardHeaderProps> = ({ children, className, ...other }) => {
+const CardHeader: React.FC<ICardHeaderProps> = ({ children, className, ...other }) => {
   const classes = useStyles();
   return (
     <Typography component="div" className={clsx(classes.header, className)} {...other}>

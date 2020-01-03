@@ -10,7 +10,7 @@ import LinkItem from './LinkItem';
 
 interface ClearTargetItemProps {
   clearAllTargetModifiers: () => void;
-  addNotification: any;
+  addNotification: (options: any) => void;
   onClick?: () => void;
 }
 

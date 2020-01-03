@@ -11,11 +11,11 @@ const useStyles = makeStyles({
   },
 });
 
-interface CardBodyProps {
+interface ICardBodyProps {
   className?: string;
 }
 
-const CardBody: React.FC<CardBodyProps> = ({ children, className, ...other }) => {
+const CardBody: React.FC<ICardBodyProps> = ({ children, className, ...other }) => {
   const classes = useStyles();
   return (
     <Typography component="div" className={clsx(classes.body, className)} {...other}>

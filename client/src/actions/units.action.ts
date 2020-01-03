@@ -6,7 +6,7 @@ export const EDIT_UNIT_NAME = 'EDIT_UNIT_NAME';
 export const CLEAR_ALL_UNITS = 'CLEAR_ALL_UNITS';
 export const MOVE_UNIT = 'MOVE_UNIT';
 
-export const addUnit = (name, weapon_profiles = [DEFAULT_WEAPON_PROFILE]) => ({
+export const addUnit = (name: string, weapon_profiles = [DEFAULT_WEAPON_PROFILE]) => ({
   type: ADD_UNIT,
   unit: {
     name,
@@ -14,12 +14,12 @@ export const addUnit = (name, weapon_profiles = [DEFAULT_WEAPON_PROFILE]) => ({
   },
 });
 
-export const deleteUnit = unitId => ({
+export const deleteUnit = (unitId: number) => ({
   type: DELETE_UNIT,
   unitId,
 });
 
-export const editUnitName = (unitId, name) => ({
+export const editUnitName = (unitId: number, name: string) => ({
   type: EDIT_UNIT_NAME,
   unitId,
   name,
@@ -29,7 +29,7 @@ export const clearAllUnits = () => ({
   type: CLEAR_ALL_UNITS,
 });
 
-export const moveUnit = (index, newIndex) => ({
+export const moveUnit = (index: number, newIndex: number) => ({
   type: MOVE_UNIT,
   index,
   newIndex,
