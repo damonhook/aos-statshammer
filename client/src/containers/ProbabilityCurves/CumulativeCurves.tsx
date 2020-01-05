@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { getMaxDamage, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 import Loadable from './Loadable';
 import GraphControls from './GraphControls';
+import { IProbability } from 'types/simulations';
 
 const useStyles = makeStyles(theme => ({
   probabilityCurves: {},
@@ -51,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface CumulativeCurvesProps {
-  probabilities: any[];
+  probabilities: IProbability[];
   unitNames: string[];
   className?: string[];
   error?: boolean | string;

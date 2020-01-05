@@ -3,6 +3,7 @@ import { addNotification } from 'actions/notifications.action';
 import { getUnits } from 'utils/unitHelpers';
 import { getTarget } from 'utils/targetHelpers';
 import { fetchStatsPending, fetchStatsSuccess, fetchStatsError } from './actions/stats.action';
+import { ISimulation } from 'types/simulations';
 import {
   fetchModifiersPending,
   fetchModifiersSuccess,
@@ -122,7 +123,7 @@ export const fetchSimulations = () => async dispatch => {
         fetchSimulationForSave(units, target, save, 5000).then(data => data.json()),
       ),
     );
-    const res = responses.reduce(
+    const res: ISimulation = responses.reduce(
       (acc, { results, probabilities }) => ({
         results: [...acc.results, results],
         probabilities: [...acc.probabilities, probabilities],

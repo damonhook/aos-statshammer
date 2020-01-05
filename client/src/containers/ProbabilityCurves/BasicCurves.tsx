@@ -9,6 +9,7 @@ import ListItem from 'components/ListItem';
 import { getMaxDamage, getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 import GraphControls from './GraphControls';
 import Loadable from './Loadable';
+import { IProbability } from 'types/simulations';
 
 const useStyles = makeStyles(theme => ({
   probabilityCurves: {},
@@ -43,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface BasicCurvesProps {
-  probabilities: any[];
+  probabilities: IProbability[];
   unitNames: string[];
   className?: string[];
   error?: boolean | string;

@@ -1,17 +1,19 @@
 import { IModifierDefinition, IModifierInstance } from './modifiers';
 import { IUnit } from './unit';
 import { INotification } from './notification';
+import { TResults } from './stats';
+import { IProbability, TResult, ISimulation } from './simulations';
 
 export interface IModifiersStore {
   pending: boolean;
   modifiers: IModifierDefinition[];
-  error?: boolean | string;
+  error?: boolean | string | null;
 }
 
 export interface ITargetModifiersStore {
   pending: boolean;
   modifiers: IModifierDefinition[];
-  error?: boolean | string;
+  error?: boolean | string | null;
 }
 
 export type IUnitStore = IUnit[];
@@ -22,15 +24,15 @@ export interface ITargetStore {
 
 export interface IStatsStore {
   pending: boolean;
-  payload?: any[];
-  error?: boolean | string;
+  payload?: TResults;
+  error?: boolean | string | null;
 }
 
 export interface ISimulationsStore {
   pending: boolean;
-  results?: any[];
-  probabilities?: any[];
-  error?: boolean | string;
+  results?: TResult[];
+  probabilities?: IProbability[];
+  error?: boolean | string | null;
 }
 
 export type INotificationsStore = INotification[];

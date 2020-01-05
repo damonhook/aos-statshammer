@@ -3,14 +3,15 @@ import {
   FETCH_MODIFIERS_SUCCESS,
   FETCH_MODIFIERS_ERROR,
 } from '../actions/modifiers.action';
+import { IModifiersStore } from 'types/store';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: IModifiersStore = {
   pending: false,
   error: null,
   modifiers: [],
 };
 
-const modifiersReducer = (state = INITIAL_STATE, action) => {
+const modifiersReducer = (state = INITIAL_STATE, action): IModifiersStore => {
   switch (action.type) {
     case FETCH_MODIFIERS_PENDING:
       return {

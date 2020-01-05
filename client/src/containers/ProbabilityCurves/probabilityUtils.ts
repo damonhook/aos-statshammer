@@ -1,3 +1,5 @@
+import { IProbability } from 'types/simulations';
+
 export const REFERENCE_LINE_OPTIONS = {
   NONE: 'None',
   MEAN: 'Mean',
@@ -5,12 +7,12 @@ export const REFERENCE_LINE_OPTIONS = {
   MAX: 'Max',
 };
 
-export const getMaxDamage = (probabilities: any[]) =>
+export const getMaxDamage = (probabilities: IProbability[]) =>
   Math.max(
     ...probabilities.map(({ metrics }) => Math.max(...Object.values(metrics.max).map(d => Number(d)))),
   );
 
-export const getMaxProbability = (probabilities: any[]) =>
+export const getMaxProbability = (probabilities: IProbability[]) =>
   Math.max(
     ...probabilities.map(({ buckets }) =>
       Math.max(

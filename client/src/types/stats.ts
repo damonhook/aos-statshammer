@@ -1,3 +1,7 @@
-export type TResult = { [name: string]: number };
+export type TResult = {
+  save: string;
+} & {
+  [name: string]: number;
+};
 
-export type IResults = TResult[];
+export type TResults = TResult[];
