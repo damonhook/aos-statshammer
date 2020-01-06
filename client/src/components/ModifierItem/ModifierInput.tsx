@@ -109,6 +109,7 @@ const ModifierInput: React.FC<IModifierInputProps> = React.memo(
             onChange={handleChange}
             allowOnes={option.allowOnes}
             errorCallback={childErrorCallback}
+            variant="outlined"
             required
           />
         );
@@ -122,6 +123,7 @@ const ModifierInput: React.FC<IModifierInputProps> = React.memo(
             value={String(val)}
             onChange={handleChange}
             errorCallback={childErrorCallback}
+            variant="outlined"
             required
           />
         ) : (

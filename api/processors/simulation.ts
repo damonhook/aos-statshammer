@@ -10,7 +10,7 @@ class Simulation {
   profile: WeaponProfile;
   target: Target;
 
-  constructor(profile, target) {
+  constructor(profile: WeaponProfile, target: Target) {
     this.profile = profile;
     this.target = target;
   }

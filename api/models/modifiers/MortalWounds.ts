@@ -7,6 +7,7 @@ import WeaponProfile from '../weaponProfile';
 
 export default class MortalWounds extends BaseModifier {
   ['constructor']: typeof MortalWounds;
+  characteristic: C;
   on: number;
   mortalWounds: DiceValue;
   unmodified: boolean;

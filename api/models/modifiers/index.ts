@@ -23,7 +23,7 @@ export const MODIFIERS = {
   LEADER_BONUS: LeaderBonus,
 };
 
-type TRerollModifier = RerollOnes | RerollFailed | Reroll;
+// type TBaseModifier = { new (data: any) };
 
 /**
  * A manager used to hold and manage modifiers
@@ -56,10 +56,13 @@ export default class ModifierManager {
    * @param modifier The modifier class to fetch
    * @param characteristic The characteristic the fetched modifier must belong to
    */
-  getModifier(modifier: typeof BaseModifier, characteristic: Characteristic): BaseModifier | null {
+  getModifier<T extends typeof BaseModifier>(
+    modifier: T,
+    characteristic: Characteristic,
+  ): InstanceType<T> | null {
     return this.modifiers.find(
-      (m: BaseModifier) => m instanceof modifier && m.characteristic === characteristic,
-    );
+      m => m instanceof modifier && m.characteristic === characteristic,
+    ) as InstanceType<T> | null;
   }
 
   /**
@@ -67,8 +70,7 @@ export default class ModifierManager {
    * characteristic property
    * @param characteristic The characteristic to fetch the reroll modifiers for
    */
-  getRerollModifier(characteristic: Characteristic): TRerollModifier | null {
-    //@ts-ignore
+  getRerollModifier(characteristic: Characteristic): RerollOnes | RerollFailed | Reroll {
     return (
       this.getModifier(MODIFIERS.REROLL, characteristic) ||
       this.getModifier(MODIFIERS.REROLL_FAILED, characteristic) ||
@@ -82,19 +84,22 @@ export default class ModifierManager {
    * @param modifier The modifier class to fetch
    * @param characteristic The characteristic the fetched modifiers must belong to
    */
-  getStackableModifier(modifier: typeof BaseModifier, characteristic: Characteristic) {
+  getStackableModifier<T extends typeof BaseModifier>(
+    modifier: T,
+    characteristic: Characteristic,
+  ): InstanceType<T>[] {
+    //@ts-ignore
     return this.modifiers.filter(
       (m: BaseModifier) => m instanceof modifier && m.characteristic === characteristic,
     );
   }
 
-  parseModifier(modifierType: typeof BaseModifier, data: any) {
+  parseModifier<T extends BaseModifier>(modifierType: new (data: any) => T, data: any): T {
     const options = (data || {}).options || {};
     const cleanData = Object.keys(options || {}).reduce((acc, key) => {
       if (options[key] != null) acc[key] = options[key];
       return acc;
     }, {});
-    //@ts-ignore
     return new modifierType(cleanData);
   }
 }

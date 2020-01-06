@@ -2,6 +2,7 @@ import WeaponProfile from './weaponProfile';
 import Simulation from '../processors/simulation';
 import Average from '../processors/average';
 import { getMetrics } from '../utils/StatsUtils';
+import Target from './target';
 
 /**
  * A class representing a single unit
@@ -34,14 +35,14 @@ class Unit {
    * Calculate the average damage this unit would do against a particular target
    * @param target The target to calculate the damage against
    */
-  averageDamage(target) {
+  averageDamage(target: Target) {
     return this.weaponProfiles.reduce(
       (acc, profile) => acc + new Average(profile, target).getAverageDamage(),
       0,
     );
   }
 
-  runSimulations(target, numSimulations = 1000, includeOutcomes = true) {
+  runSimulations(target: Target, numSimulations = 1000, includeOutcomes = true) {
     const results = [...Array(numSimulations)].map(() =>
       this.weaponProfiles.reduce((acc, profile) => {
         const sim = new Simulation(profile, target);

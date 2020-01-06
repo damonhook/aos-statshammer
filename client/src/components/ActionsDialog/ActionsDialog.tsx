@@ -7,7 +7,7 @@ interface ActionsType {
   disabled?: boolean;
 }
 
-interface ActionsDialogProps {
+interface IActionsDialogProps {
   open: boolean;
   actions: ActionsType[];
   target: string;
@@ -17,7 +17,7 @@ interface ActionsDialogProps {
 /**
  * A dialog box containing various possible actions that can be performed
  */
-const ActionsDialog: React.FC<ActionsDialogProps> = ({ open, actions, target, onClose }) => {
+const ActionsDialog: React.FC<IActionsDialogProps> = ({ open, actions, target, onClose }) => {
   if (!actions || !actions.length) return null;
 
   return (

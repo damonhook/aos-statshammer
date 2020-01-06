@@ -19,6 +19,7 @@ interface IRollInputProps {
   endAdornment?: React.ReactNode;
   errorCallback?: (error: boolean) => void;
   fullWidth?: boolean;
+  variant?: 'filled' | 'outlined';
 }
 
 const RollInput: React.FC<IRollInputProps> = React.memo(
@@ -27,12 +28,13 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
     value,
     onChange,
     className,
-    required = false,
-    allowOnes = false,
+    required,
+    allowOnes,
     startAdornment,
     endAdornment,
     errorCallback,
-    fullWidth = false,
+    fullWidth,
+    variant,
   }) => {
     const classes = useStyles();
     const [error, setError] = useState(false);
@@ -90,12 +92,13 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
     );
 
     return (
+      // @ts-ignore
       <TextField
         label={label}
         value={value}
         type="number"
         className={clsx(classes.rollInput, className)}
-        variant="filled"
+        variant={variant}
         error={Boolean(error)}
         helperText={error ? errorMessage : null}
         onChange={handleChange}
@@ -106,5 +109,12 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
   },
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
+
+RollInput.defaultProps = {
+  required: false,
+  allowOnes: false,
+  fullWidth: false,
+  variant: 'filled',
+};
 
 export default RollInput;

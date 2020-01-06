@@ -18,6 +18,8 @@ export const TARGET_MODIFIERS = {
   TARGET_ETHEREAL: TargetEthereal,
 };
 
+// type TBaseTargetModifier = { new (data: any) };
+
 /**
  * A manager used to hold and manage modifiers
  */
@@ -48,8 +50,8 @@ export class TargetModifierManager {
    * characteristic property
    * @param modifier The modifier class to fetch
    */
-  getModifier(modifier: typeof BaseTargetModifier) {
-    return this.modifiers.find(m => m instanceof modifier);
+  getModifier<T extends typeof BaseTargetModifier>(modifier: T): InstanceType<T> | null {
+    return this.modifiers.find(m => m instanceof modifier) as InstanceType<T> | null;
   }
 
   /**
@@ -69,17 +71,16 @@ export class TargetModifierManager {
    * on their class definition and characteristic property
    * @param modifier The modifier class to fetch
    */
-  getStackableModifier(modifier: typeof BaseTargetModifier) {
-    return this.modifiers.filter(m => m instanceof modifier);
+  getStackableModifier<T extends typeof BaseTargetModifier>(modifier: T): InstanceType<T>[] {
+    return this.modifiers.filter(m => m instanceof modifier) as InstanceType<T>[];
   }
 
-  parseModifier(modifierType: typeof BaseTargetModifier, data: any) {
+  parseModifier<T extends BaseTargetModifier>(modifierType: new (data: any) => T, data: any): T {
     const options = (data || {}).options || {};
     const cleanData = Object.keys(options || {}).reduce((acc, key) => {
       if (options[key] != null) acc[key] = options[key];
       return acc;
     }, {});
-    //@ts-ignore
     return new modifierType(cleanData);
   }
 }

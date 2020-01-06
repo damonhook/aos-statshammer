@@ -1,4 +1,4 @@
-export const updateItemInArray = (array, index, callback) =>
+export const updateItemInArray = (array: any[], index: number, callback: (data: any) => void) =>
   array.map((item, i) => {
     if (i === index) {
       return callback(item);

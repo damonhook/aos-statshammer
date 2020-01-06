@@ -40,7 +40,9 @@ export interface ISimulationsStore {
 export type INotificationsStore = INotification[];
 
 export interface IConfigStore {
+  /** Whether the app is in dark mode or not */
   darkMode: boolean;
+  /** Whether to display the desktop graphs as tabbed, or a list */
   desktopGraphList: boolean;
 }
 

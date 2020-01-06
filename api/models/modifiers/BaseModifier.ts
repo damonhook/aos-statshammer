@@ -40,7 +40,7 @@ export default class BaseModifier {
   }
 
   // eslint-disable-next-line no-unused-vars
-  resolve(owner) {
+  resolve(owner): number {
     throw new Error('Resolve method not implemented');
   }
 }

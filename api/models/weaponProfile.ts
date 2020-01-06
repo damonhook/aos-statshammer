@@ -2,6 +2,7 @@ import ModifierManager, { MODIFIERS as m } from './modifiers';
 import BaseModifier from './modifiers/BaseModifier';
 import { Characteristic, Characteristic as C } from '../constants';
 import DiceValue from './diceValue';
+import LeaderBonus from './modifiers/LeaderBonus';
 
 /**
  * A class representing a single weapon profile belonging to a unit
@@ -112,7 +113,7 @@ class WeaponProfile {
    * @param modifier The modifier class to attempt to resolve
    * @param characteristic The characteristic the modifier must belong to
    */
-  resolveModifier(modifier: typeof BaseModifier, characteristic: Characteristic) {
+  resolveModifier(modifier: typeof BaseModifier, characteristic: Characteristic): number {
     const mod = this.modifiers.getModifier(modifier, characteristic);
     if (mod) return mod.resolve(this);
     return 0;
@@ -136,6 +137,7 @@ class WeaponProfile {
   resolveStackableModifier(modifier: typeof BaseModifier, characteristic: Characteristic, roll = false) {
     const modList = this.modifiers.getStackableModifier(modifier, characteristic);
     if (modList && modList.length) {
+      //@ts-ignore
       return modList.reduce((acc, mod) => acc + mod.resolve(this, roll), 0);
     }
     return 0;
@@ -167,7 +169,7 @@ class WeaponProfile {
    * Get the list of Leader specific modifiers (if any exist)
    */
   getLeaderModifiers() {
-    const modList: BaseModifier[] = [];
+    const modList: LeaderBonus[] = [];
     m.LEADER_BONUS.availableCharacteristics.forEach(c => {
       const mod = this.modifiers.getModifier(m.LEADER_BONUS, c);
       if (mod) modList.push(mod);

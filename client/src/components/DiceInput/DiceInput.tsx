@@ -16,6 +16,7 @@ interface DiceInputProps {
   required: boolean;
   errorCallback?: (error: boolean) => void;
   fullWidth?: boolean;
+  variant?: 'filled' | 'outlined';
 }
 
 /**
@@ -23,7 +24,7 @@ interface DiceInputProps {
  * This input component contains validation for correct dice inputs (e.g: D3, or 3)
  */
 const DiceInput: React.FC<DiceInputProps> = React.memo(
-  ({ label, value, onChange, className, required, errorCallback, fullWidth = false }) => {
+  ({ label, value, onChange, className, required, errorCallback, fullWidth, variant }) => {
     const classes = useStyles();
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -78,12 +79,13 @@ const DiceInput: React.FC<DiceInputProps> = React.memo(
     );
 
     return (
+      // @ts-ignore
       <TextField
         label={label}
         value={value}
         className={clsx(classes.diceInput, className)}
         inputProps={{ inputMode: 'numeric' }}
-        variant="filled"
+        variant={variant}
         error={Boolean(error)}
         helperText={error ? errorMessage : null}
         onChange={handleChange}
@@ -96,6 +98,8 @@ const DiceInput: React.FC<DiceInputProps> = React.memo(
 
 DiceInput.defaultProps = {
   required: false,
+  fullWidth: false,
+  variant: 'filled',
 };
 
 export default DiceInput;

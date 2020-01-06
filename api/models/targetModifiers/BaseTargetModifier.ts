@@ -2,6 +2,8 @@ import WeaponProfile from '../weaponProfile';
 import Target from '../target';
 
 export default class BaseTargetModifier {
+  constructor({}: any) {}
+
   static get name() {
     return null;
   }

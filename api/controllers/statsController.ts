@@ -26,7 +26,7 @@ export const compareUnits = ({ units, target }) => {
 };
 
 const buildCumulative = (probabilities, unitNames, metrics) => {
-  const maxDamage = Math.max(...Object.keys(probabilities));
+  const maxDamage = Math.max(...Object.keys(probabilities).map(n => Number(n)));
   const sums = unitNames.reduce((acc, name) => ({ ...acc, [name]: 0 }), {});
   const cumulative = [...Array(maxDamage + 1)].map((_, damage) => {
     const map = probabilities[damage] || {};
