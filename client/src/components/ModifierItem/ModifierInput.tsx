@@ -105,7 +105,7 @@ const ModifierInput: React.FC<IModifierInputProps> = React.memo(
             label={name}
             className={classes.modifierInput}
             fullWidth
-            value={Number(val)}
+            value={String(val)}
             onChange={handleChange}
             allowOnes={option.allowOnes}
             errorCallback={childErrorCallback}

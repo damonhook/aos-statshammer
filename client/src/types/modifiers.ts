@@ -31,10 +31,11 @@ export interface IModifierDefinition {
 }
 
 export type TOptionValue = number | string | boolean;
+export type TModifierInstanceOptions = { [name: string]: TOptionValue };
 
 export interface IModifierInstanceParameter {
   id: string;
-  options: { [name: string]: TOptionValue };
+  options: TModifierInstanceOptions;
 }
 
 export interface IModifierInstance extends IModifierInstanceParameter {

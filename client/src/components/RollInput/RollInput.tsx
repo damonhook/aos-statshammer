@@ -10,7 +10,7 @@ const useStyles = makeStyles({
 
 interface IRollInputProps {
   label: string;
-  value?: number | null;
+  value?: number | string | null;
   onChange?: (event: any) => void;
   className?: string;
   required?: boolean;

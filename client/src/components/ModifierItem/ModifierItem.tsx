@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
 import { errorReducer } from './reducers';
-import { IModifierDefinition } from 'types/modifiers';
+import { IModifierDefinition, TModifierInstanceOptions, TOptionValue } from 'types/modifiers';
 import { IPrimaryItem } from 'components/ListControls/types';
 
 const useStyles = makeStyles(theme => ({
@@ -37,9 +37,9 @@ const useStyles = makeStyles(theme => ({
 interface IModifierItemProps {
   index: number;
   definition?: IModifierDefinition;
-  options?: any;
+  options: TModifierInstanceOptions;
   actions?: IPrimaryItem[];
-  onOptionChange?: (index: number, name: string, value: any) => void;
+  onOptionChange?: (index: number, name: string, value: TOptionValue) => void;
   errorCallback?: (error: boolean) => void;
   nested?: boolean;
   scrollEnabled?: boolean;
