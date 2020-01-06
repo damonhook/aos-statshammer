@@ -39,7 +39,6 @@ storiesOf('Components/Notifications', module).add('Basic', () => {
         notificationId={forceRefresh}
         message={text('Message', 'Message')}
         variant={select('Variant', ['info', 'warning', 'error', 'success'], 'info')}
-        dismissNotification={handleDismiss}
         timeout={null}
       />
     </Container>

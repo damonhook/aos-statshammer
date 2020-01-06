@@ -9,6 +9,7 @@ import PdfLoader from './PdfLoader';
 import { StatsGraphs, ProbabilityGraphs, CumulativeProbabilityGraphs } from './graphs';
 import { IUnitStore, ITargetStore } from 'types/store';
 import { IModifierDefinition } from 'types/modifiers';
+import jsPDF from 'jspdf';
 
 const useStyles = makeStyles(() => ({
   hidden: {
@@ -38,7 +39,7 @@ const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, mo
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
-  const [doc, setDoc] = useState(null);
+  const [doc, setDoc] = useState<jsPDF | null>(null);
   const [loading, setLoading] = useState(true);
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -70,14 +71,13 @@ const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, mo
 
   if (doc !== null && doc) {
     // eslint-disable-next-line jsx-a11y/iframe-has-title
-    //@ts-ignore
     return <iframe src={doc.output('datauristring')} className={classes.iframe} />;
   }
 
   return (
     <div>
       <ThemeProvider theme={lightTheme}>
-        <div className={classes.hidden}>
+        <div className={classes.hidden} ref={ref}>
           <StatsGraphs results={results} unitNames={unitNames} />
           <CumulativeProbabilityGraphs probabilities={probabilities} unitNames={unitNames} />
           <ProbabilityGraphs probabilities={probabilities} unitNames={unitNames} />

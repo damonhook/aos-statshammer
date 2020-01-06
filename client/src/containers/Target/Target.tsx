@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
 import _ from 'lodash';
 import TargetModifierList from 'components/TargetModifierList';
-import { ITargetStore, IStore } from 'types/store';
+import { IStore } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   target: {

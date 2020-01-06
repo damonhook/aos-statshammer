@@ -45,7 +45,7 @@ const Units: React.FC<UnitsProps> = React.memo(
         {units.map((unit, index) => (
           <Unit unit={unit} id={index} key={unit.uuid} />
         ))}
-        {!mobile && <AddUnitButton units={units} addUnit={addUnit} />}
+        {!mobile && <AddUnitButton units={units} />}
         <Route path="/units/:unitUuid/:profileIndex">
           <ProfileDialog open />
         </Route>

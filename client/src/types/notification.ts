@@ -8,4 +8,5 @@ export interface INotificationParameters {
 
 export interface INotification extends INotificationParameters {
   key: string;
+  variant: TNotificationVariants;
 }

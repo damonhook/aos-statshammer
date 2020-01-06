@@ -7,7 +7,7 @@ import { ChevronRight, HelpOutline } from '@material-ui/icons';
 import clsx from 'clsx';
 import SummaryLoading from './SummaryLoading';
 import { IModifierInstance } from 'types/modifiers';
-import { IModifiersStore, IStore } from 'types/store';
+import { IStore } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   modifiers: {

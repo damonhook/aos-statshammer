@@ -1,7 +1,9 @@
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
 
-import { configureStore as createStore, combineReducers } from '@reduxjs/toolkit';
+import { configureStore as createStore, combineReducers, Middleware } from '@reduxjs/toolkit';
 
 import {
   config,
@@ -21,14 +23,20 @@ export const appReducer = combineReducers({
   simulations: simulations.reducer,
   stats: stats.reducer,
   target: target.reducer,
-  targetModifies: targetModifiers.reducer,
+  targetModifiers: targetModifiers.reducer,
   units: units.reducer,
 });
+
+const middleware: Middleware[] = [thunk];
+if (process.env.NODE_ENV !== 'production') {
+  middleware.push(logger);
+}
 
 export const configureSampleStore = (initialState = {}) => {
   const store = createStore({
     reducer: appReducer,
     preloadedState: initialState,
+    middleware,
   });
   return store;
 };
@@ -44,6 +52,7 @@ const persistedReducer = persistReducer(persistConfig, appReducer);
 export const configureStore = () => {
   const store = createStore({
     reducer: persistedReducer,
+    middleware,
   });
   const persistor = persistStore(store);
   return { store, persistor };

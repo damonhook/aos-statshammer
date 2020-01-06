@@ -16,7 +16,7 @@ storiesOf('Components/ErrorCard', module)
   .add('Stats', () => (
     <Container variant="paper">
       <div style={{ height: '20rem', padding: '2em 5em 2em 2em' }}>
-        <StatsErrorCard fetchStatsCompare={action('retry-stats-clicked')} />
+        <StatsErrorCard />
       </div>
     </Container>
   ))
@@ -24,7 +24,7 @@ storiesOf('Components/ErrorCard', module)
   .add('Advanced Stats', () => (
     <Container variant="paper">
       <div style={{ height: '20rem', padding: '2em 5em 2em 2em' }}>
-        <AdvancedStatsErrorCard fetchSimulations={action('retry-simulations-clicked')} />
+        <AdvancedStatsErrorCard />
       </div>
     </Container>
   ));

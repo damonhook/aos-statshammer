@@ -7,6 +7,7 @@ import { notifications } from 'store/slices';
 import clsx from 'clsx';
 import { amber, green } from '@material-ui/core/colors';
 import { SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
+import { TNotificationVariants } from 'types/notification';
 
 const variantIcon = {
   success: CheckCircle,
@@ -76,7 +77,7 @@ const connector = connect(null, {
 interface INotificationProps extends ConnectedProps<typeof connector> {
   message: string;
   notificationId: string;
-  variant: 'info' | 'warning' | 'error' | 'success';
+  variant: TNotificationVariants;
   timeout?: number | null;
 }
 

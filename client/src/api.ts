@@ -48,7 +48,7 @@ export const fetchModifiers = () => async dispatch => {
     });
 
     const res = await request.json();
-    dispatch(modifiers.actions.fetchModifiersSuccess(res.modifiers));
+    dispatch(modifiers.actions.fetchModifiersSuccess({ modifiers: res.modifiers }));
   } catch (error) {
     dispatch(modifiers.actions.fetchModifiersError({ error }));
     dispatch(
@@ -68,9 +68,9 @@ export const fetchTargetModifiers = () => async dispatch => {
     });
 
     const res = await request.json();
-    dispatch(targetModifiers.actions.fetchTargetModifiersSuccess(res.modifiers));
+    dispatch(targetModifiers.actions.fetchTargetModifiersSuccess({ modifiers: res.modifiers }));
   } catch (error) {
-    dispatch(targetModifiers.actions.fetchTargetModifiersError(error));
+    dispatch(targetModifiers.actions.fetchTargetModifiersError({ error }));
     dispatch(
       notifications.actions.addNotification({ message: 'Failed to fetch modifiers', variant: 'error' }),
     );

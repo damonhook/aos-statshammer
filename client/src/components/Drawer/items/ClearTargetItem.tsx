@@ -8,7 +8,7 @@ import { notifications, target } from 'store/slices';
 import LinkItem from './LinkItem';
 
 const mapDispatchToProps = {
-  clearAllTargetModifiers: target.actions.clearAllModifiers,
+  clearAllTargetModifiers: target.actions.clearAllTargetModifiers,
   addNotification: notifications.actions.addNotification,
 };
 

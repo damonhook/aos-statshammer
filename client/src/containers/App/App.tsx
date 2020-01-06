@@ -7,7 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import PdfContainer from 'containers/PdfContainer';
 import AdvancedStats from 'containers/AdvancedStats';
 import AppContentWrapper from './AppContentWrapper';
-import { IConfigStore, IStore } from 'types/store';
+import { IStore } from 'types/store';
 
 const mapStateToProps = (state: IStore) => ({
   config: state.config,

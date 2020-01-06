@@ -5,6 +5,7 @@ import ListItem from 'components/ListItem';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import { TableSkeleton } from 'components/Skeletons';
 import _ from 'lodash';
+import { TError } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {},
@@ -25,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 interface ILoadableProps {
   loading?: boolean;
   numUnits: number;
-  error?: boolean | string;
+  error?: TError;
 }
 
 const Loadable: React.FC<ILoadableProps> = React.memo(
@@ -56,7 +57,7 @@ interface MetricsTablesProps {
   results?: any[];
   unitNames: string[];
   className?: string;
-  error?: boolean | string;
+  error?: TError;
 }
 
 const MetricsTables: React.FC<MetricsTablesProps> = ({ pending, results, unitNames, className, error }) => {

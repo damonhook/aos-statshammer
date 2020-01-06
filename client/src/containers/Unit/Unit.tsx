@@ -48,13 +48,13 @@ const connector = connect(mapStateToProps, {
   moveUnit: units.actions.moveUnit,
   addNotification: notifications.actions.addNotification,
 });
-interface UnitProps extends ConnectedProps<typeof connector> {
+interface IUnitProps extends ConnectedProps<typeof connector> {
   id: number;
   unit: IUnit;
   className?: string;
 }
 
-const Unit: React.FC<UnitProps> = React.memo(
+const Unit: React.FC<IUnitProps> = React.memo(
   ({
     id,
     unit,
@@ -74,13 +74,10 @@ const Unit: React.FC<UnitProps> = React.memo(
       scrollToRef(unitRef);
     }, [unit.uuid]);
 
-    const handleDeleteUnit = useCallback(
-      id => {
-        addNotification({ message: 'Deleted Unit' });
-        deleteUnit(id);
-      },
-      [addNotification, deleteUnit],
-    );
+    const handleDeleteUnit = useCallback(() => {
+      addNotification({ message: 'Deleted Unit' });
+      deleteUnit({ index: id });
+    }, [id, addNotification, deleteUnit]);
 
     const exportUnit = useCallback(() => {
       downloadUnit(unit);
@@ -115,7 +112,7 @@ const Unit: React.FC<UnitProps> = React.memo(
               icon: <FileCopy />,
               disabled: !addUnitEnabled(),
             },
-            { name: 'Delete', onClick: () => handleDeleteUnit(id), icon: <Delete /> },
+            { name: 'Delete', onClick: handleDeleteUnit, icon: <Delete /> },
           ]}
           secondaryItems={[
             { name: 'Export', onClick: exportUnit },

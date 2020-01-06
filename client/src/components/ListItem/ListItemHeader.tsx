@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { CardHeader } from 'components/Card';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import ListControls from 'components/ListControls';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import { useMediaQuery, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import useLongPress from 'hooks/useLongPress';
 import ActionsDialog from 'components/ActionsDialog';
@@ -63,8 +63,6 @@ const ListItemHeader: React.FC<IListItemHeaderProps> = ({
   setColapsed,
 }) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const longPress = useLongPress(() => setDialogOpen(true), LONG_PRESS_DELAY);

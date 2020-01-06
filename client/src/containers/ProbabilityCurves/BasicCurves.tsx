@@ -10,6 +10,7 @@ import { getMaxDamage, getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS } fro
 import GraphControls from './GraphControls';
 import Loadable from './Loadable';
 import { IProbability } from 'types/simulations';
+import { TError } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   probabilityCurves: {},
@@ -47,7 +48,7 @@ interface BasicCurvesProps {
   probabilities: IProbability[];
   unitNames: string[];
   className?: string[];
-  error?: boolean | string;
+  error?: TError;
   pending: boolean;
 }
 

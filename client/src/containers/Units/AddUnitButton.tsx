@@ -8,6 +8,7 @@ import { notifications } from 'store/slices';
 import Uploader from 'components/Uploader';
 import { IUnitStore } from 'types/store';
 import { IUnit } from 'types/unit';
+import { units } from 'store/slices';
 
 const useStyles = makeStyles({
   group: {
@@ -22,10 +23,12 @@ const useStyles = makeStyles({
   },
 });
 
-const connector = connect(null, { addNotification: notifications.actions.addNotification });
+const connector = connect(null, {
+  addNotification: notifications.actions.addNotification,
+  addUnit: units.actions.addUnit,
+});
 interface AddUnitButtonProps extends ConnectedProps<typeof connector> {
   units: IUnitStore;
-  addUnit: any;
 }
 
 const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotification }) => {
@@ -34,7 +37,7 @@ const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotifi
   const onUpload = (data: IUnit) => {
     if (data && data.name && data.weapon_profiles) {
       addNotification({ message: 'Successfully imported unit', variant: 'success' });
-      addUnit(data.name, data.weapon_profiles);
+      addUnit({ name: data.name, weapon_profiles: data.weapon_profiles });
     }
   };
 
@@ -42,7 +45,7 @@ const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotifi
     <div className={classes.group}>
       <Button
         fullWidth
-        onClick={() => addUnit(`Unit ${units.length + 1}`)}
+        onClick={() => addUnit({ name: `Unit ${units.length + 1}` })}
         variant="contained"
         startIcon={<Add />}
         color="primary"

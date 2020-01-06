@@ -5,6 +5,7 @@ import ListItem from 'components/ListItem';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import { TableSkeleton } from 'components/Skeletons';
 import _ from 'lodash';
+import { TError } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {},
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 interface LoadableProps {
   loading: boolean;
   numUnits: number;
-  error?: boolean | string;
+  error?: TError;
 }
 
 const Loadable: React.FC<LoadableProps> = React.memo(
@@ -62,7 +63,7 @@ interface ProbabilityTablesProps {
   probabilities?: any[];
   unitNames: string[];
   className?: string;
-  error?: boolean | string;
+  error?: TError;
 }
 
 const ProbabilityTables: React.FC<ProbabilityTablesProps> = ({

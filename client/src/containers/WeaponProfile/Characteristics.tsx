@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Tooltip } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { IWeaponProfile } from 'types/unit';

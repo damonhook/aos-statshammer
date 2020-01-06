@@ -41,7 +41,7 @@ const ProfileDialog: React.FC<IProfileDialogProps> = ({ editWeaponProfile, open 
   const unitId = getUnitIndexByUuid(unitUuid);
   const id = Number(profileIndex);
   let profile: IWeaponProfile | null = null;
-  if (unit && id) {
+  if (unit && id != null && !Number.isNaN(id)) {
     profile = unit.weapon_profiles[id];
   }
 

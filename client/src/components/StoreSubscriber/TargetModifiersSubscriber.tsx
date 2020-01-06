@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { fetchTargetModifiers } from 'api';
 import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
-import { ITargetModifiersStore, IStore } from 'types/store';
+import { IStore } from 'types/store';
 
 const mapStateToProps = (state: IStore) => ({ modifiers: state.targetModifiers });
 

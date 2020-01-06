@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core';
 import { GraphSkeleton } from 'components/Skeletons';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import _ from 'lodash';
+import { TError } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   graphContainer: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 interface ILoadableProps {
   loading: boolean;
   numUnits: number;
-  error?: string | boolean;
+  error?: TError;
 }
 
 const Loadable: React.FC<ILoadableProps> = React.memo(

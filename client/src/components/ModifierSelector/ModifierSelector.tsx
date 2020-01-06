@@ -8,6 +8,7 @@ import { useHashMatch } from 'hooks';
 import ModifierOption from './ModifierOption';
 import SelectorDialog from './SelectorDialog';
 import { IModifierDefinition } from 'types/modifiers';
+import { TError } from 'types/store';
 
 const useStyles = makeStyles(() => ({
   selector: { marginTop: '1em', marginBottom: '1em' },
@@ -18,7 +19,7 @@ const useStyles = makeStyles(() => ({
 interface IModifierSelectorProps {
   modifiers: IModifierDefinition[];
   pending: boolean;
-  error?: boolean | string;
+  error: TError;
   onClick: (mod: IModifierDefinition) => void;
   disabled?: boolean;
   nested?: boolean;

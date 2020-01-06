@@ -67,7 +67,7 @@ const TargetModifierList: React.FC<ITargetModifierListProps> = React.memo(
 
     const removeModifier = useCallback(
       index => {
-        removeTargetModifier(index);
+        removeTargetModifier({ index });
       },
       [removeTargetModifier],
     );

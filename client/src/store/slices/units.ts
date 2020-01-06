@@ -1,6 +1,6 @@
 import nanoid from 'nanoid';
 import { IUnitStore } from 'types/store';
-import { IWeaponProfileParameter, IUnitParameter, IWeaponProfile } from 'types/unit';
+import { IWeaponProfileParameter, IUnitParameter } from 'types/unit';
 import { createSlice } from '@reduxjs/toolkit';
 import { moveItemInArray } from 'reducers/helpers';
 
@@ -39,7 +39,7 @@ export const addUnit = (state: IUnitStore, action: { payload: IUnitParameter }) 
 
 export const deleteUnit = (state: IUnitStore, action: { payload: { index: number } }) => {
   const { index } = action.payload;
-  state = state.filter((_, i) => i !== index);
+  return state.filter((_, i) => i !== index);
 };
 
 export const editUnitName = (state: IUnitStore, action: { payload: { index: number; name: string } }) => {
@@ -50,26 +50,27 @@ export const editUnitName = (state: IUnitStore, action: { payload: { index: numb
   }
 };
 
-export const clearAllUnits = (state: IUnitStore) => {
-  state = [];
+export const clearAllUnits = () => {
+  return [];
 };
 
 export const moveUnit = (state: IUnitStore, action: { payload: { index: number; newIndex: number } }) => {
   const { index, newIndex } = action.payload;
-  moveItemInArray(state, index, newIndex, (newState: IUnitStore) => {
-    state = newState;
+  return moveItemInArray(state, index, newIndex, newState => {
+    return newState;
   });
 };
 
 export const addWeaponProfile = (
   state: IUnitStore,
-  action: { payload: { index: number; weaponProfile: IWeaponProfileParameter } },
+  action: { payload: { index: number; weaponProfile?: IWeaponProfileParameter } },
 ) => {
   const { index, weaponProfile } = action.payload;
+  const profile = weaponProfile ? weaponProfile : DEFAULT_WEAPON_PROFILE;
   const unit = state.find((_, i) => i === index);
   if (unit) {
     unit.weapon_profiles.push({
-      ...weaponProfile,
+      ...profile,
       uuid: nanoid(),
     });
   }
@@ -99,6 +100,7 @@ export const editWeaponProfile = (
     let profile = unit.weapon_profiles.find((_, i) => i === profileIndex);
     if (profile) {
       profile = { ...profile, ...weaponProfile };
+      unit.weapon_profiles[profileIndex] = profile;
     }
   }
 };

@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
 import { getModifierById } from 'utils/modifierHelpers';
 import { getTargetModifierById } from 'utils/targetModifierHelpers';

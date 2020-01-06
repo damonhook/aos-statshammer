@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
-import CardHeader from './CardHeader';
-import CardBody from './CardBody';
 
 const useStyles = makeStyles({
   card: {

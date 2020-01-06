@@ -4,14 +4,14 @@ import { fetchStatsCompare } from 'api';
 import ErrorCard from './ErrorCard';
 
 const connector = connect(null, { fetchStatsCompare });
-interface StatsErrorCard extends ConnectedProps<typeof connector> {
+interface IStatsErrorCardProps extends ConnectedProps<typeof connector> {
   className?: string;
 }
 
 /**
  * A card representing that there was an error getting the stats
  */
-const StatsErrorCard = ({ fetchStatsCompare, className }) => {
+const StatsErrorCard: React.FC<IStatsErrorCardProps> = ({ fetchStatsCompare, className }) => {
   const handleClick = () => {
     fetchStatsCompare();
   };

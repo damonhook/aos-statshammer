@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { configureSampleStore } from 'configureStore';
+import { configureSampleStore } from 'store/configureStore';
 
 const units = [
   {

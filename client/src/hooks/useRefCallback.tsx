@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 const useRefCallback = callback => {
-  const [node, setRef] = useState(null);
+  const [node, setRef] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     if (node) {
