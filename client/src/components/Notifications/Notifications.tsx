@@ -1,10 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import clsx from 'clsx';
 import Notification from './Notification';
-import { INotificationsStore, IStore } from 'types/store';
+import { IStore } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   notifications: {
@@ -21,9 +21,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface INotificationsProps {
-  notifications: INotificationsStore;
-}
+const mapStateToProps = (state: IStore) => ({
+  notifications: state.notifications,
+});
+
+const connector = connect(mapStateToProps);
+interface INotificationsProps extends ConnectedProps<typeof connector> {}
 
 /**
  * A component used to display the current notifications
@@ -42,8 +45,4 @@ const Notifications: React.FC<INotificationsProps> = ({ notifications }) => {
   );
 };
 
-const mapStateToProps = (state: IStore) => ({
-  notifications: state.notifications,
-});
-
-export default connect(mapStateToProps)(Notifications);
+export default connector(Notifications);

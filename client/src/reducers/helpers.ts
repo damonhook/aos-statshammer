@@ -6,7 +6,12 @@ export const updateItemInArray = (array, index, callback) =>
     return item;
   });
 
-export const moveItemInArray = (array, index, newIndex, callback) => {
+export const moveItemInArray = (
+  array: any[],
+  index: number,
+  newIndex: number,
+  callback: (data: any[]) => void,
+) => {
   const newArray = array.slice();
   const sanitizedNewIndex = Math.min(Math.max(newIndex, 0), array.length - 1);
   newArray.splice(sanitizedNewIndex, 0, ...newArray.splice(index, 1));

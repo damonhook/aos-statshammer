@@ -1,12 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
+import { connect, ConnectedProps } from 'react-redux';
 import { fetchSimulations } from 'api';
-import { bindActionCreators } from 'redux';
 import ErrorCard from './ErrorCard';
 
-interface AdvancedStatsErrorCardProps {
-  fetchSimulations: any;
+const connector = connect(null, { fetchSimulations });
+interface AdvancedStatsErrorCardProps extends ConnectedProps<typeof connector> {
   className?: string;
 }
 
@@ -21,10 +19,4 @@ const AdvancedStatsErrorCard: React.FC<AdvancedStatsErrorCardProps> = ({ fetchSi
   return <ErrorCard className={className} retryFunc={handleClick} />;
 };
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  ...ownProps,
-});
-
-export default connect(null, { fetchSimulations }, mergeProps)(AdvancedStatsErrorCard);
+export default connector(AdvancedStatsErrorCard);

@@ -1,15 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
 import { useMapping } from 'hooks';
 import { getResultsMapping, applyUnitNameMapping } from 'utils/mappers';
 import Results from './Results';
-import { IUnitStore, IStatsStore, IStore } from 'types/store';
+import { IStore } from 'types/store';
 
-interface IStatsProps {
-  units: IUnitStore;
-  stats: IStatsStore;
+const mapStateToProps = (state: IStore) => ({
+  units: state.units,
+  stats: state.stats,
+});
+
+const connector = connect(mapStateToProps);
+interface IStatsProps extends ConnectedProps<typeof connector> {
   className?: string;
 }
 
@@ -39,9 +43,4 @@ const Stats: React.FC<IStatsProps> = ({ units, stats, className }) => {
   return <Results stats={{ ...stats, payload: results }} unitNames={unitNames} className={className} />;
 };
 
-const mapStateToProps = (state: IStore) => ({
-  units: state.units,
-  stats: state.stats,
-});
-
-export default connect(mapStateToProps)(Stats);
+export default connector(Stats);

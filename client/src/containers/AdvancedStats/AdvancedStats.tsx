@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { fetchSimulations } from 'api';
 import AppBar from 'components/AppBar';
@@ -15,7 +15,7 @@ import BasicCurves from 'containers/ProbabilityCurves/BasicCurves';
 import CumulativeCurves from 'containers/ProbabilityCurves/CumulativeCurves';
 import MetricsTables from './MetricsTables';
 import ProbabilityTables from './ProbabilityTables';
-import { ISimulationsStore, IUnitStore, IStore } from 'types/store';
+import { IStore } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   app: {
@@ -45,11 +45,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface AdvancedStatsProps {
-  units: IUnitStore;
-  simulations: ISimulationsStore;
-  fetchSimulations: any;
-}
+const mapStateToProps = (state: IStore) => ({
+  units: state.units,
+  simulations: state.simulations,
+});
+
+const connector = connect(mapStateToProps, { fetchSimulations });
+interface AdvancedStatsProps extends ConnectedProps<typeof connector> {}
 
 const AdvancedStats: React.FC<AdvancedStatsProps> = React.memo(
   ({ units, simulations, fetchSimulations }) => {
@@ -124,9 +126,4 @@ const AdvancedStats: React.FC<AdvancedStatsProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-const mapStateToProps = (state: IStore) => ({
-  units: state.units,
-  simulations: state.simulations,
-});
-
-export default connect(mapStateToProps, { fetchSimulations })(AdvancedStats);
+export default connector(AdvancedStats);

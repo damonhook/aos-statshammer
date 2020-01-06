@@ -1,12 +1,6 @@
 import React, { useRef, useEffect, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
-import {
-  toggleWeaponProfile,
-  deleteWeaponProfile,
-  addWeaponProfile,
-  moveWeaponProfile,
-} from 'actions/weaponProfiles.action';
-import { addNotification } from 'actions/notifications.action';
+import { units, notifications } from 'store/slices';
 import { Switch } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
@@ -44,6 +38,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const connector = connect(null, {
+  toggleWeaponProfile: units.actions.toggleWeaponProfile,
+  deleteWeaponProfile: units.actions.deleteWeaponProfile,
+  addWeaponProfile: units.actions.addWeaponProfile,
+  moveWeaponProfile: units.actions.moveWeaponProfile,
+  addNotification: notifications.actions.addNotification,
+});
 interface IWeaponProfileProps {
   unitId: number;
   id: number;
@@ -159,10 +160,4 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-export default connect(null, {
-  toggleWeaponProfile,
-  deleteWeaponProfile,
-  addWeaponProfile,
-  addNotification,
-  moveWeaponProfile,
-})(WeaponProfile);
+export default connector(WeaponProfile);

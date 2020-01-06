@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { fetchStatsCompare } from 'api';
 import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
@@ -16,9 +16,13 @@ const filterNameFromUnit = (unit: IUnit) => {
   return rest;
 };
 
-interface IStatsSubscriberProps {
-  fetchStatsCompare: () => void;
-}
+const mapStateToProps = (state: IStore) => ({
+  units: state.units.map((u: IUnit) => filterNameFromUnit(u)),
+  target: state.target,
+});
+
+const connector = connect(mapStateToProps, { fetchStatsCompare });
+interface IStatsSubscriberProps extends ConnectedProps<typeof connector> {}
 
 /**
  * A component that is subscribed to the redux store and will fetch the stats if the unit
@@ -39,9 +43,4 @@ const StatsSubscriber: React.FC<IStatsSubscriberProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-const mapStateToProps = (state: IStore) => ({
-  units: state.units.map((u: IUnit) => filterNameFromUnit(u)),
-  target: state.target,
-});
-
-export default connect(mapStateToProps, { fetchStatsCompare })(StatsSubscriber);
+export default connector(StatsSubscriber);

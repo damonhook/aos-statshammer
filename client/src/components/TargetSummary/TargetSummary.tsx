@@ -1,11 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { InfoOutlined } from '@material-ui/icons';
 import ModifierSummary from 'components/ModifierSummary';
-import { IModifierInstance } from 'types/modifiers';
 import { IStore } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
@@ -20,9 +19,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface ITargetSummaryProps {
-  modifiers: IModifierInstance[];
-}
+const mapStateToProps = (state: IStore) => ({
+  ...state.target,
+});
+
+const connector = connect(mapStateToProps);
+interface ITargetSummaryProps extends ConnectedProps<typeof connector> {}
 
 const TargetSummary: React.FC<ITargetSummaryProps> = ({ modifiers }) => {
   const classes = useStyles();
@@ -40,8 +42,4 @@ const TargetSummary: React.FC<ITargetSummaryProps> = ({ modifiers }) => {
   );
 };
 
-const mapStateToProps = (state: IStore) => ({
-  ...state.target,
-});
-
-export default connect(mapStateToProps)(TargetSummary);
+export default connector(TargetSummary);

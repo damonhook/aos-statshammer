@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import Unit from 'containers/Unit';
-import { addUnit } from 'actions/units.action';
+import { units } from 'store/slices';
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -10,8 +10,7 @@ import { Route } from 'react-router-dom';
 import ProfileDialog from 'containers/ProfileDialog';
 import _ from 'lodash';
 import AddUnitButton from './AddUnitButton';
-import { IStore, IUnitStore } from 'types/store';
-import { IWeaponProfile } from 'types/unit';
+import { IStore } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   units: {
@@ -25,9 +24,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface UnitsProps {
-  units: IUnitStore;
-  addUnit: any;
+const mapStateToProps = (state: IStore) => ({ units: state.units });
+
+const connector = connect(mapStateToProps, { addUnit: units.actions.addUnit });
+interface UnitsProps extends ConnectedProps<typeof connector> {
   className?: string;
 }
 
@@ -55,6 +55,4 @@ const Units: React.FC<UnitsProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-const mapStateToProps = (state: IStore) => ({ units: state.units });
-
-export default connect(mapStateToProps, { addUnit })(Units);
+export default connector(Units);

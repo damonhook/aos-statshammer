@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
 import { useMediaQuery } from '@material-ui/core';
@@ -14,13 +14,17 @@ const graphMap: Map<string, any> = new Map<string, any>([
   ['Radar Graph', RadarGraph],
 ]);
 
-interface GraphsProps {
+const mapStateToProps = (state: IStore) => ({
+  desktopGraphList: state.config.desktopGraphList,
+});
+
+const connector = connect(mapStateToProps);
+interface GraphsProps extends ConnectedProps<typeof connector> {
   stats: IStatsStore;
   unitNames: string[];
-  desktopGraphList: boolean;
 }
 
-const Graphs: React.FC<GraphsProps> = ({ stats, unitNames, desktopGraphList }) => {
+const Graphs: React.FC<GraphsProps> = ({ stats, unitNames, desktopGraphList = false }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -31,12 +35,4 @@ const Graphs: React.FC<GraphsProps> = ({ stats, unitNames, desktopGraphList }) =
   );
 };
 
-Graphs.defaultProps = {
-  desktopGraphList: false,
-};
-
-const mapStateToProps = (state: IStore) => ({
-  desktopGraphList: state.config.desktopGraphList,
-});
-
-export default connect(mapStateToProps)(Graphs);
+export default connector(Graphs);

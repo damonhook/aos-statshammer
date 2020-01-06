@@ -1,32 +1,29 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { fetchStatsCompare, fetchModifiers, fetchTargetModifiers, fetchSimulations } from 'api';
 import PdfGenerator from 'pdf';
 import { useMapping } from 'hooks';
 import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
 import _ from 'lodash';
-import {
-  ISimulationsStore,
-  IStatsStore,
-  IUnitStore,
-  ITargetStore,
-  IModifiersStore,
-  ITargetModifiersStore,
-  IStore,
-} from 'types/store';
+import { IStore } from 'types/store';
 
-interface PdfContainerProps {
-  units: IUnitStore;
-  target: ITargetStore;
-  modifiers: IModifiersStore;
-  targetModifiers: ITargetModifiersStore;
-  stats: IStatsStore;
-  simulations: ISimulationsStore;
-  fetchStatsCompare: any;
-  fetchModifiers: any;
-  fetchTargetModifiers: any;
-  fetchSimulations: any;
-}
+const mapStateToProps = (state: IStore) => ({
+  units: state.units,
+  target: state.target,
+  modifiers: state.modifiers,
+  targetModifiers: state.targetModifiers,
+  stats: state.stats,
+  simulations: state.simulations,
+});
+
+const connector = connect(mapStateToProps, {
+  fetchStatsCompare,
+  fetchModifiers,
+  fetchTargetModifiers,
+  fetchSimulations,
+});
+
+interface PdfContainerProps extends ConnectedProps<typeof connector> {}
 
 const PdfContainer: React.FC<PdfContainerProps> = React.memo(
   ({
@@ -76,18 +73,4 @@ const PdfContainer: React.FC<PdfContainerProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-const mapStateToProps = (state: IStore) => ({
-  units: state.units,
-  target: state.target,
-  modifiers: state.modifiers,
-  targetModifiers: state.targetModifiers,
-  stats: state.stats,
-  simulations: state.simulations,
-});
-
-export default connect(mapStateToProps, {
-  fetchStatsCompare,
-  fetchModifiers,
-  fetchTargetModifiers,
-  fetchSimulations,
-})(PdfContainer);
+export default connector(PdfContainer);

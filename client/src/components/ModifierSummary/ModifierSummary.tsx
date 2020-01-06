@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
+import { connect, ConnectedProps } from 'react-redux';
 import ModifierDescription from 'components/ModifierItem/ModifierDescription';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { List, ListItem as Item, Tooltip, useMediaQuery } from '@material-ui/core';
@@ -40,9 +39,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface IModifierSummaryProps {
+const mapStateToProps = (state: IStore, ownProps: { isTarget?: boolean }) => ({
+  modifierState: ownProps.isTarget ? state.targetModifiers : state.modifiers,
+});
+
+const connector = connect(mapStateToProps);
+interface IModifierSummaryProps extends ConnectedProps<typeof connector> {
   modifiers: IModifierInstance[];
-  modifierState?: IModifiersStore;
   active?: boolean;
   className?: string;
   isTarget?: boolean;
@@ -54,14 +57,15 @@ interface IModifierSummaryProps {
 const ModifierSummary: React.FC<IModifierSummaryProps> = ({
   modifiers,
   modifierState,
-  active,
+  active = true,
+  isTarget = false,
   className,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
   const large = useMediaQuery(theme.breakpoints.up('lg'));
 
-  const getModifierById = id => ((modifierState || {}).modifiers || []).find(mod => mod.id === id);
+  const getModifierById = (id: string) => ((modifierState || {}).modifiers || []).find(mod => mod.id === id);
 
   return modifiers && modifiers.length ? (
     <div className={clsx(classes.modifiers, className)}>
@@ -108,13 +112,4 @@ const ModifierSummary: React.FC<IModifierSummaryProps> = ({
   ) : null;
 };
 
-ModifierSummary.defaultProps = {
-  active: true,
-  isTarget: false,
-};
-
-const mapStateToProps = (state: IStore, ownProps: IModifierSummaryProps) => ({
-  modifierState: ownProps.isTarget ? state.targetModifiers : state.modifiers,
-});
-
-export default connect(mapStateToProps)(ModifierSummary);
+export default connector(ModifierSummary);

@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { fetchModifiers } from 'api';
 import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
-import { IModifiersStore, IStore } from 'types/store';
+import { IStore } from 'types/store';
 
-interface IModifiersSubscriberProps {
-  modifiers: IModifiersStore;
-  fetchModifiers: () => void;
-}
+const mapStateToProps = (state: IStore) => ({ modifiers: state.modifiers });
+
+const connector = connect(mapStateToProps, { fetchModifiers });
+interface IModifiersSubscriberProps extends ConnectedProps<typeof connector> {}
 
 /**
  * A component that is subscribed to the redux store and will fetch the modifier definitions
@@ -28,6 +28,4 @@ const ModifiersSubscriber: React.FC<IModifiersSubscriberProps> = ({ modifiers, f
   return <span style={{ display: 'none' }} />;
 };
 
-const mapStateToProps = (state: IStore) => ({ modifiers: state.modifiers });
-
-export default connect(mapStateToProps, { fetchModifiers })(ModifiersSubscriber);
+export default connector(ModifiersSubscriber);

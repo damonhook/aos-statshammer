@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useReducer } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { getModifierById } from 'utils/modifierHelpers';
 import PendingModifiers from './PendingModifiers';
 import { errorReducer } from './reducers';
-import { IModifierDefinition, IModifierInstance } from 'types/modifiers';
+import { IModifierInstance } from 'types/modifiers';
 import { IStore } from 'types/store';
 
 const useStyles = makeStyles(() => ({
@@ -22,10 +22,15 @@ const useStyles = makeStyles(() => ({
   activeModifierCard: {},
 }));
 
-interface IModifierListProps {
-  pending: boolean;
-  definitions: IModifierDefinition[];
-  error?: boolean | string;
+const mapStateToProps = (state: IStore) => ({
+  pending: state.modifiers.pending,
+  definitions: state.modifiers.modifiers,
+  error: state.modifiers.error,
+});
+
+const connector = connect(mapStateToProps);
+
+interface IModifierListProps extends ConnectedProps<typeof connector> {
   modifiers: IModifierInstance[];
   errorCallback: (error: boolean) => void;
   dispatchModifiers: (payload: any) => void;
@@ -154,10 +159,4 @@ ModifierList.defaultProps = {
   modifiers: [],
 };
 
-const mapStateToProps = (state: IStore) => ({
-  pending: state.modifiers.pending,
-  definitions: state.modifiers.modifiers,
-  error: state.modifiers.error,
-});
-
-export default connect(mapStateToProps)(ModifierList);
+export default connector(ModifierList);

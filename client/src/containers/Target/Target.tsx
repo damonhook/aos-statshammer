@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
@@ -19,8 +19,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface ITargetProps {
-  target: ITargetStore;
+const mapStateToProps = (state: IStore) => ({
+  target: state.target,
+});
+
+const connector = connect(mapStateToProps);
+interface ITargetProps extends ConnectedProps<typeof connector> {
   className?: string;
 }
 
@@ -40,8 +44,4 @@ const Target: React.FC<ITargetProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-const mapStateToProps = (state: IStore) => ({
-  target: state.target,
-});
-
-export default connect(mapStateToProps)(Target);
+export default connector(Target);

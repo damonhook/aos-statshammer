@@ -1,20 +1,13 @@
 import React, { useCallback } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
 import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
 import _ from 'lodash';
-import {
-  addTargetModifier,
-  removeTargetModifier,
-  moveTargetModifier,
-  editTargetModifierOption,
-  editTargetModifierError,
-} from 'actions/target.action';
+import { target } from 'store/slices';
 import PendingModifiers from './PendingModifiers';
-import { IModifierDefinition, IModifierInstance } from 'types/modifiers';
 import { IStore } from 'types/store';
 
 const useStyles = makeStyles(() => ({
@@ -26,17 +19,21 @@ const useStyles = makeStyles(() => ({
   activeModifierCard: {},
 }));
 
-interface ITargetModifierListProps {
-  pending: boolean;
-  definitions: IModifierDefinition[];
-  error?: boolean | string;
-  activeModifiers: IModifierInstance[];
-  addTargetModifier: any;
-  removeTargetModifier: any;
-  moveTargetModifier: any;
-  editTargetModifierOption: any;
-  editTargetModifierError: any;
-}
+const mapStateToProps = (state: IStore) => ({
+  pending: state.targetModifiers.pending,
+  definitions: state.targetModifiers.modifiers,
+  error: state.targetModifiers.error,
+  activeModifiers: state.target.modifiers,
+});
+
+const connector = connect(mapStateToProps, {
+  addTargetModifier: target.actions.addTargetModifier,
+  removeTargetModifier: target.actions.removeTargetModifier,
+  moveTargetModifier: target.actions.moveTargetModifier,
+  editTargetModifierOption: target.actions.editTargetModifierOption,
+  editTargetModifierError: target.actions.editTargetModifierError,
+});
+interface ITargetModifierListProps extends ConnectedProps<typeof connector> {}
 
 const TargetModifierList: React.FC<ITargetModifierListProps> = React.memo(
   ({
@@ -63,7 +60,7 @@ const TargetModifierList: React.FC<ITargetModifierListProps> = React.memo(
             newModifier.options[k] = modifier.options[k].default;
           }
         });
-        addTargetModifier(newModifier);
+        addTargetModifier({ modifier: newModifier });
       },
       [addTargetModifier],
     );
@@ -77,21 +74,21 @@ const TargetModifierList: React.FC<ITargetModifierListProps> = React.memo(
 
     const moveModifier = useCallback(
       (index, newIndex) => {
-        moveTargetModifier(index, newIndex);
+        moveTargetModifier({ index, newIndex });
       },
       [moveTargetModifier],
     );
 
     const onOptionChange = useCallback(
       (index, name, value) => {
-        editTargetModifierOption(index, name, value);
+        editTargetModifierOption({ index, name, value });
       },
       [editTargetModifierOption],
     );
 
     const getErrorCallback = useCallback(
       _.memoize((index: number) => (error: boolean) => {
-        editTargetModifierError(index, error);
+        editTargetModifierError({ index, error });
       }),
       [],
     );
@@ -140,17 +137,4 @@ const TargetModifierList: React.FC<ITargetModifierListProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-const mapStateToProps = (state: IStore) => ({
-  pending: state.targetModifiers.pending,
-  definitions: state.targetModifiers.modifiers,
-  error: state.targetModifiers.error,
-  activeModifiers: state.target.modifiers,
-});
-
-export default connect(mapStateToProps, {
-  addTargetModifier,
-  removeTargetModifier,
-  moveTargetModifier,
-  editTargetModifierOption,
-  editTargetModifierError,
-})(TargetModifierList);
+export default connector(TargetModifierList);

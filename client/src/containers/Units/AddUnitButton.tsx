@@ -1,10 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { ImportExport, Add } from '@material-ui/icons';
 import { addUnitEnabled } from 'utils/unitHelpers';
-import { addNotification } from 'actions/notifications.action';
+import { notifications } from 'store/slices';
 import Uploader from 'components/Uploader';
 import { IUnitStore } from 'types/store';
 import { IUnit } from 'types/unit';
@@ -22,10 +22,10 @@ const useStyles = makeStyles({
   },
 });
 
-interface AddUnitButtonProps {
+const connector = connect(null, { addNotification: notifications.actions.addNotification });
+interface AddUnitButtonProps extends ConnectedProps<typeof connector> {
   units: IUnitStore;
   addUnit: any;
-  addNotification: any;
 }
 
 const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotification }) => {
@@ -71,4 +71,4 @@ const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotifi
   );
 };
 
-export default connect(null, { addNotification })(AddUnitButton);
+export default connector(AddUnitButton);

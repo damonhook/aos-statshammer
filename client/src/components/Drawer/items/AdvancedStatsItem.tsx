@@ -1,12 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { Timeline as TimelineIcon } from '@material-ui/icons';
 import BetaTag from 'components/BetaTag';
 import LinkItem from './LinkItem';
 import { IStore } from 'types/store';
 
-interface AdvancedStatsItemProps {
+const mapStateToProps = (state: IStore) => ({
+  numUnits: state.units.length,
+});
+
+const connector = connect(mapStateToProps);
+interface AdvancedStatsItemProps extends ConnectedProps<typeof connector> {
   numUnits: number;
 }
 
@@ -22,8 +27,4 @@ const AdvancedStatsItem: React.FC<AdvancedStatsItemProps> = ({ numUnits }) => (
   </LinkItem>
 );
 
-const mapStateToProps = (state: IStore) => ({
-  numUnits: state.units.length,
-});
-
-export default connect(mapStateToProps)(AdvancedStatsItem);
+export default connector(AdvancedStatsItem);

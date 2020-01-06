@@ -1,11 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import FloatingButton from 'components/FloatingButton';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { useHistory } from 'react-router-dom';
 import { IStore } from 'types/store';
 
-interface IExportPdfFabProps {
+const mapStateToProps = (state: IStore) => ({
+  numUnits: state.units.length,
+});
+
+const connector = connect(mapStateToProps);
+interface IExportPdfFabProps extends ConnectedProps<typeof connector> {
   numUnits: number;
 }
 
@@ -16,8 +21,4 @@ const ExportPdfFab: React.FC<IExportPdfFabProps> = ({ numUnits }) => {
   );
 };
 
-const mapStateToProps = (state: IStore) => ({
-  numUnits: state.units.length,
-});
-
-export default connect(mapStateToProps)(ExportPdfFab);
+export default connector(ExportPdfFab);

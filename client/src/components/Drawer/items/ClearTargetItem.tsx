@@ -3,14 +3,17 @@ import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import { Route } from 'react-router-dom';
 import ConfirmationDialog from 'components/ConfirmationDialog';
-import { clearAllTargetModifiers } from 'actions/target.action';
-import { connect } from 'react-redux';
-import { addNotification } from 'actions/notifications.action';
+import { connect, ConnectedProps } from 'react-redux';
+import { notifications, target } from 'store/slices';
 import LinkItem from './LinkItem';
 
-interface ClearTargetItemProps {
-  clearAllTargetModifiers: () => void;
-  addNotification: (options: any) => void;
+const mapDispatchToProps = {
+  clearAllTargetModifiers: target.actions.clearAllModifiers,
+  addNotification: notifications.actions.addNotification,
+};
+
+const connector = connect(null, mapDispatchToProps);
+interface ClearTargetItemProps extends ConnectedProps<typeof connector> {
   onClick?: () => void;
 }
 
@@ -49,4 +52,4 @@ const ClearTargetItem: React.FC<ClearTargetItemProps> = ({
   );
 };
 
-export default connect(null, { clearAllTargetModifiers, addNotification })(ClearTargetItem);
+export default connector(ClearTargetItem);

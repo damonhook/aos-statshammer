@@ -1,30 +1,14 @@
 import fetch from 'cross-fetch';
-import { addNotification } from 'actions/notifications.action';
 import { getUnits } from 'utils/unitHelpers';
 import { getTarget } from 'utils/targetHelpers';
-import { fetchStatsPending, fetchStatsSuccess, fetchStatsError } from './actions/stats.action';
+import { stats, notifications, modifiers, targetModifiers, simulations } from 'store/slices';
 import { ISimulation } from 'types/simulations';
-import {
-  fetchModifiersPending,
-  fetchModifiersSuccess,
-  fetchModifiersError,
-} from './actions/modifiers.action';
-import {
-  fetchTargetModifiersPending,
-  fetchTargetModifiersSuccess,
-  fetchTargetModifiersError,
-} from './actions/targetModifiers.action';
-import {
-  fetchSimulationsPending,
-  fetchSimulationsSuccess,
-  fetchSimulationsError,
-} from './actions/simulations.action';
 
 export const fetchStatsCompare = () => async dispatch => {
-  dispatch(fetchStatsPending());
+  dispatch(stats.actions.fetchStatsPending());
   try {
     const units = getUnits();
-    if (!units) dispatch(fetchStatsSuccess([]));
+    if (!units) dispatch(stats.actions.fetchStatsSuccess({ results: [] }));
     const target = getTarget();
     const data = {
       units: units.map(unit => ({
@@ -46,15 +30,15 @@ export const fetchStatsCompare = () => async dispatch => {
     });
 
     const res = await request.json();
-    dispatch(fetchStatsSuccess(res.results));
+    dispatch(stats.actions.fetchStatsSuccess({ results: res.results }));
   } catch (error) {
-    dispatch(fetchStatsError(error));
-    dispatch(addNotification({ message: 'Failed to fetch stats', variant: 'error' }));
+    dispatch(stats.actions.fetchStatsError({ error }));
+    dispatch(notifications.actions.addNotification({ message: 'Failed to fetch stats', variant: 'error' }));
   }
 };
 
 export const fetchModifiers = () => async dispatch => {
-  dispatch(fetchModifiersPending());
+  dispatch(modifiers.actions.fetchModifiersPending());
   try {
     const request = await fetch('/api/modifiers', {
       headers: {
@@ -64,15 +48,17 @@ export const fetchModifiers = () => async dispatch => {
     });
 
     const res = await request.json();
-    dispatch(fetchModifiersSuccess(res.modifiers));
+    dispatch(modifiers.actions.fetchModifiersSuccess(res.modifiers));
   } catch (error) {
-    dispatch(fetchModifiersError(error));
-    dispatch(addNotification({ message: 'Failed to fetch modifiers', variant: 'error' }));
+    dispatch(modifiers.actions.fetchModifiersError({ error }));
+    dispatch(
+      notifications.actions.addNotification({ message: 'Failed to fetch modifiers', variant: 'error' }),
+    );
   }
 };
 
 export const fetchTargetModifiers = () => async dispatch => {
-  dispatch(fetchTargetModifiersPending());
+  dispatch(targetModifiers.actions.fetchTargetModifiersPending());
   try {
     const request = await fetch('/api/target/modifiers', {
       headers: {
@@ -82,10 +68,12 @@ export const fetchTargetModifiers = () => async dispatch => {
     });
 
     const res = await request.json();
-    dispatch(fetchTargetModifiersSuccess(res.modifiers));
+    dispatch(targetModifiers.actions.fetchTargetModifiersSuccess(res.modifiers));
   } catch (error) {
-    dispatch(fetchTargetModifiersError(error));
-    dispatch(addNotification({ message: 'Failed to fetch modifiers', variant: 'error' }));
+    dispatch(targetModifiers.actions.fetchTargetModifiersError(error));
+    dispatch(
+      notifications.actions.addNotification({ message: 'Failed to fetch modifiers', variant: 'error' }),
+    );
   }
 };
 
@@ -113,10 +101,10 @@ const fetchSimulationForSave = async (units, target, save, numSimulations) => {
 };
 
 export const fetchSimulations = () => async dispatch => {
-  dispatch(fetchSimulationsPending());
+  dispatch(simulations.actions.fetchSimulationsPending());
   try {
     const units = getUnits();
-    if (!units) dispatch(fetchSimulationsSuccess([], []));
+    if (!units) dispatch(simulations.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
     const target = getTarget();
     const responses = await Promise.all(
       [2, 3, 4, 5, 6, 0].map(save =>
@@ -130,9 +118,13 @@ export const fetchSimulations = () => async dispatch => {
       }),
       { results: [], probabilities: [] },
     );
-    dispatch(fetchSimulationsSuccess(res.results, res.probabilities));
+    dispatch(
+      simulations.actions.fetchSimulationsSuccess({ results: res.results, probabilities: res.probabilities }),
+    );
   } catch (error) {
-    dispatch(fetchSimulationsError(error));
-    dispatch(addNotification({ message: 'Failed to fetch simulations', variant: 'error' }));
+    dispatch(simulations.actions.fetchSimulationsError({ error }));
+    dispatch(
+      notifications.actions.addNotification({ message: 'Failed to fetch simulations', variant: 'error' }),
+    );
   }
 };

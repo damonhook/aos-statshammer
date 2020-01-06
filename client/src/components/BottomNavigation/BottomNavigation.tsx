@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { BottomNavigation as Navigation, BottomNavigationAction as NavigationItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Home, BarChart } from '@material-ui/icons';
@@ -22,9 +22,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface BottomNavigationProps {
-  numUnits: number;
-}
+const mapStateToProps = (state: IStore) => ({
+  numUnits: state.units.length,
+});
+
+const connector = connect(mapStateToProps);
+interface BottomNavigationProps extends ConnectedProps<typeof connector> {}
 
 const BottomNavigation: React.FC<BottomNavigationProps> = ({ numUnits }) => {
   const classes = useStyles();
@@ -56,14 +59,4 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ numUnits }) => {
   );
 };
 
-const mapStateToProps = (state: IStore) => ({
-  numUnits: state.units.length,
-});
-
-const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  ...ownProps,
-});
-
-export default connect(mapStateToProps, null, mergeProps)(BottomNavigation);
+export default connector(BottomNavigation);

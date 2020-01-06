@@ -1,12 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { GetApp } from '@material-ui/icons';
 import BetaTag from 'components/BetaTag';
 import LinkItem from './LinkItem';
 import { IStore } from 'types/store';
 
-interface PdfDownloadItemProps {
+const mapStateToProps = (state: IStore) => ({
+  numUnits: state.units.length,
+});
+
+const connector = connect(mapStateToProps);
+interface PdfDownloadItemProps extends ConnectedProps<typeof connector> {
   numUnits: number;
 }
 
@@ -22,8 +27,4 @@ const PdfDownloadItem: React.FC<PdfDownloadItemProps> = ({ numUnits }) => (
   </LinkItem>
 );
 
-const mapStateToProps = (state: IStore) => ({
-  numUnits: state.units.length,
-});
-
-export default connect(mapStateToProps)(PdfDownloadItem);
+export default connector(PdfDownloadItem);

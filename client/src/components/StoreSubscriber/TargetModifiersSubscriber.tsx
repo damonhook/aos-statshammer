@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { fetchTargetModifiers } from 'api';
 import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
 import { ITargetModifiersStore, IStore } from 'types/store';
 
-interface ITargetModifiersSubscriberProps {
-  modifiers: ITargetModifiersStore;
-  fetchTargetModifiers: () => void;
-}
+const mapStateToProps = (state: IStore) => ({ modifiers: state.targetModifiers });
+
+const connector = connect(mapStateToProps, { fetchTargetModifiers });
+interface ITargetModifiersSubscriberProps extends ConnectedProps<typeof connector> {}
 
 /**
  * A component that is subscribed to the redux store and will fetch the target modifier
@@ -31,6 +31,4 @@ const TargetModifiersSubscriber: React.FC<ITargetModifiersSubscriberProps> = ({
   return <span style={{ display: 'none' }} />;
 };
 
-const mapStateToProps = (state: IStore) => ({ modifiers: state.targetModifiers });
-
-export default connect(mapStateToProps, { fetchTargetModifiers })(TargetModifiersSubscriber);
+export default connector(TargetModifiersSubscriber);

@@ -1,8 +1,7 @@
 import React, { useEffect, useCallback, useMemo, useReducer } from 'react';
 import { Button, Dialog, useMediaQuery, DialogActions, Slide } from '@material-ui/core';
-import { connect } from 'react-redux';
-import { editWeaponProfile } from 'actions/weaponProfiles.action';
-import { bindActionCreators } from 'redux';
+import { connect, ConnectedProps } from 'react-redux';
+import { units } from 'store/slices';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useHistory, useParams } from 'react-router-dom';
 import { getUnitByUuid, getUnitIndexByUuid } from 'utils/unitHelpers';
@@ -10,6 +9,7 @@ import DialogTitle from './DialogTitle';
 import DialogContent from './DialogContent';
 import { errorReducer, profileReducer } from './reducers';
 import { TransitionProps } from '@material-ui/core/transitions';
+import { IWeaponProfile } from 'types/unit';
 
 const useStyles = makeStyles(theme => ({
   dialog: {},
@@ -24,8 +24,8 @@ const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
 
-interface IProfileDialogProps {
-  editWeaponProfile: any;
+const connector = connect(null, { editWeaponProfile: units.actions.editWeaponProfile });
+interface IProfileDialogProps extends ConnectedProps<typeof connector> {
   open: boolean;
 }
 
@@ -40,9 +40,9 @@ const ProfileDialog: React.FC<IProfileDialogProps> = ({ editWeaponProfile, open 
   const unit = getUnitByUuid(unitUuid);
   const unitId = getUnitIndexByUuid(unitUuid);
   const id = Number(profileIndex);
-  let profile = null;
-  if (unit) {
-    profile = unit.weapon_profiles[profileIndex];
+  let profile: IWeaponProfile | null = null;
+  if (unit && id) {
+    profile = unit.weapon_profiles[id];
   }
 
   if (!unit || !profile || unitId == null || id == null) {
@@ -89,7 +89,7 @@ const ProfileDialog: React.FC<IProfileDialogProps> = ({ editWeaponProfile, open 
   }, [history]);
 
   const submit = useCallback(() => {
-    editWeaponProfile(id, state, unitId);
+    editWeaponProfile({ index: unitId, profileIndex: id, weaponProfile: state });
     handleClose();
   }, [editWeaponProfile, handleClose, id, state, unitId]);
 
@@ -139,4 +139,4 @@ const ProfileDialog: React.FC<IProfileDialogProps> = ({ editWeaponProfile, open 
   );
 };
 
-export default connect(null, { editWeaponProfile })(ProfileDialog);
+export default connector(ProfileDialog);

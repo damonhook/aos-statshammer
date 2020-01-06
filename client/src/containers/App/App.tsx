@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import getTheme from 'themes';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
@@ -9,9 +9,12 @@ import AdvancedStats from 'containers/AdvancedStats';
 import AppContentWrapper from './AppContentWrapper';
 import { IConfigStore, IStore } from 'types/store';
 
-interface AppProps {
-  config: IConfigStore;
-}
+const mapStateToProps = (state: IStore) => ({
+  config: state.config,
+});
+
+const connector = connect(mapStateToProps);
+interface AppProps extends ConnectedProps<typeof connector> {}
 
 const App: React.FC<AppProps> = ({ config }) => (
   <Router>
@@ -29,8 +32,4 @@ const App: React.FC<AppProps> = ({ config }) => (
   </Router>
 );
 
-const mapStateToProps = (state: IStore) => ({
-  config: state.config,
-});
-
-export default connect(mapStateToProps)(App);
+export default connector(App);

@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Snackbar, IconButton, SnackbarContent } from '@material-ui/core';
 import { Close, CheckCircle, Warning, Error as ErrorIcon, Info } from '@material-ui/icons';
-import { connect } from 'react-redux';
-import { dismissNotification } from 'actions/notifications.action';
+import { connect, ConnectedProps } from 'react-redux';
+import { notifications } from 'store/slices';
 import clsx from 'clsx';
 import { amber, green } from '@material-ui/core/colors';
 import { SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
-import { IStore } from 'types/store';
 
 const variantIcon = {
   success: CheckCircle,
@@ -71,10 +70,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface INotificationProps {
+const connector = connect(null, {
+  dismissNotification: notifications.actions.dismissNotification,
+});
+interface INotificationProps extends ConnectedProps<typeof connector> {
   message: string;
   notificationId: string;
-  dismissNotification?: (id: string) => void;
   variant: 'info' | 'warning' | 'error' | 'success';
   timeout?: number | null;
 }
@@ -100,11 +101,11 @@ const Notification: React.FC<INotificationProps> = ({
   const handleClose = reason => {
     if (reason === 'clickaway') return;
     if (reason === 'swipeaway') {
-      if (dismissNotification) dismissNotification(notificationId);
+      if (dismissNotification) dismissNotification({ key: notificationId });
       return;
     }
     setOpen(false);
-    if (dismissNotification) setTimeout(() => dismissNotification(notificationId), 500);
+    if (dismissNotification) setTimeout(() => dismissNotification({ key: notificationId }), 500);
   };
 
   return (
@@ -139,10 +140,4 @@ const Notification: React.FC<INotificationProps> = ({
   );
 };
 
-const mergeProps = (stateProps: IStore, dispatchProps, ownProps: INotificationProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  ...ownProps,
-});
-
-export default connect(null, { dismissNotification }, mergeProps)(Notification);
+export default connector(Notification);

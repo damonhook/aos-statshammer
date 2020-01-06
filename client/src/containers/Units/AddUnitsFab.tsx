@@ -1,24 +1,22 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { addUnit } from 'actions/units.action';
+import { connect, ConnectedProps } from 'react-redux';
+import { units } from 'store/slices';
 import FloatingButton from 'components/FloatingButton';
 import AddIcon from '@material-ui/icons/Add';
 import { addUnitEnabled } from 'utils/unitHelpers';
 import { IStore } from 'types/store';
 
-interface AddUnitsFabProps {
-  numUnits: number;
-  addUnit: any;
-}
+const mapStateToProps = (state: IStore) => ({ numUnits: state.units.length });
+
+const connector = connect(mapStateToProps, { addUnit: units.actions.addUnit });
+interface AddUnitsFabProps extends ConnectedProps<typeof connector> {}
 
 const AddUnitsFab: React.FC<AddUnitsFabProps> = ({ numUnits, addUnit }) => (
   <FloatingButton
-    onClick={() => addUnit(`Unit ${numUnits + 1}`)}
+    onClick={() => addUnit({ name: `Unit ${numUnits + 1}` })}
     icon={<AddIcon />}
     disabled={!addUnitEnabled()}
   />
 );
 
-const mapStateToProps = (state: IStore) => ({ numUnits: state.units.length });
-
-export default connect(mapStateToProps, { addUnit })(AddUnitsFab);
+export default connector(AddUnitsFab);

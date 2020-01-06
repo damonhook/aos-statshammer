@@ -32,8 +32,12 @@ export interface IModifierDefinition {
 
 export type TOptionValue = number | string | boolean;
 
-export interface IModifierInstance {
+export interface IModifierInstanceParameter {
   id: string;
-  uuid: string;
   options: { [name: string]: TOptionValue };
+}
+
+export interface IModifierInstance extends IModifierInstanceParameter {
+  uuid: string;
+  error?: boolean;
 }

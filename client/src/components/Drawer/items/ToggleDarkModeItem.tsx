@@ -1,12 +1,14 @@
 import React from 'react';
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { BrightnessMedium as BrightnessMediumIcon } from '@material-ui/icons';
-import { toggleDarkMode } from 'actions/config.action';
-import { connect } from 'react-redux';
+import { config } from 'store/slices';
+import { connect, ConnectedProps } from 'react-redux';
 
-interface ToggleDarkModeItemProps {
+const connector = connect(null, {
+  toggleDarkMode: config.actions.toggleDarkMode,
+});
+interface ToggleDarkModeItemProps extends ConnectedProps<typeof connector> {
   onClick?: () => void;
-  toggleDarkMode: any;
 }
 
 const ToggleDarkModeItem: React.FC<ToggleDarkModeItemProps> = ({ onClick, toggleDarkMode }) => {
@@ -25,4 +27,4 @@ const ToggleDarkModeItem: React.FC<ToggleDarkModeItemProps> = ({ onClick, toggle
   );
 };
 
-export default connect(null, { toggleDarkMode })(ToggleDarkModeItem);
+export default connector(ToggleDarkModeItem);
