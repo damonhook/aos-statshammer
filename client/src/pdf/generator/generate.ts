@@ -1,5 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import jsPDF from 'jspdf';
+// eslint-disable-next-line import/no-duplicates
+import 'jspdf-autotable'; // Has to be separate import
+// eslint-disable-next-line import/no-duplicates
 import { MultipleRowType } from 'jspdf-autotable';
 import { getModifierById } from 'utils/modifierHelpers';
 import { getTargetModifierById } from 'utils/targetModifierHelpers';
@@ -117,14 +120,14 @@ const generateTarget = (doc: IJsPDF, target: ITargetStore) => {
   cursor.incr(10);
 };
 
-const transposeData = (unitNames: string[], results: TResult[]) =>
-  unitNames.reduce((acc, name) => {
+const transposeData = (unitNames: string[], results: TResult[]): any[] =>
+  unitNames.map(name => {
     const item = { name };
     results.forEach(({ save, ...results }) => {
       item[save] = results[name];
     });
-    return { ...acc, item };
-  }, []);
+    return item;
+  });
 
 const generateStatsTable = (doc: IJsPDF, results: TResult[], unitNames: string[]) => {
   const data = transposeData(unitNames, results);
