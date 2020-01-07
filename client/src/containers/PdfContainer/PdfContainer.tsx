@@ -58,15 +58,7 @@ const PdfContainer: React.FC<PdfContainerProps> = React.memo(
     const probabilitiesReady = probabilities && probabilities.length;
 
     if (modifiersReady && targetModifiersReady && resultsReady && probabilitiesReady) {
-      return (
-        <PdfGenerator
-          units={units}
-          target={target}
-          results={results}
-          modifiers={modifiers.modifiers}
-          probabilities={probabilities}
-        />
-      );
+      return <PdfGenerator units={units} target={target} results={results} probabilities={probabilities} />;
     }
     return null;
   },

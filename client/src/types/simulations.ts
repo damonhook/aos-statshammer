@@ -23,7 +23,7 @@ export interface IProbability {
   metrics: any;
 }
 
-export type TResult = {
+export type TSimResult = {
   save: string;
 } & {
   buckets: {
@@ -37,6 +37,6 @@ export type TResult = {
 };
 
 export interface ISimulation {
-  results: TResult[];
+  results: TSimResult[];
   probabilities: IProbability[];
 }

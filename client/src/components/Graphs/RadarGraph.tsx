@@ -64,7 +64,7 @@ const RadarGraph: React.FC<RadarGraphProps> = ({
         <PolarGrid stroke={theme.palette.graphs.grid} />
         <PolarAngleAxis stroke={theme.palette.graphs.axis} {...xAxis} />
         <PolarRadiusAxis stroke={theme.palette.graphs.axis} angle={0} {...yAxis} />
-        <Tooltip content={tooltip || <DefaultTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
+        <Tooltip content={tooltip ?? <DefaultTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}

@@ -24,7 +24,7 @@ const SaveTooltip: React.FC<ISaveTooltipProps> = ({ active, payload, label }) =>
         <Typography variant="h6">
           {`Save: ${Number(label) !== 0 && label !== 'None' ? `${label}+` : '-'}`}
         </Typography>
-        {(payload || []).map(({ color, name, value }) => (
+        {(payload ?? []).map(({ color, name, value }) => (
           <Typography style={{ color }} key={name}>{`${name}: ${value}`}</Typography>
         ))}
       </Paper>

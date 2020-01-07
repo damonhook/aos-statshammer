@@ -5,8 +5,9 @@ import { useHistory } from 'react-router-dom';
 import { useRefCallback } from 'hooks';
 import { lightTheme } from 'themes';
 import { IUnitStore, ITargetStore } from 'types/store';
-import { IModifierDefinition } from 'types/modifiers';
-import jsPDF from 'jspdf';
+import { IJsPDF } from 'types/pdf';
+import { TResult } from 'types/stats';
+import { IProbability } from 'types/simulations';
 import generate from './generator';
 import PdfLoader from './PdfLoader';
 import { StatsGraphs, ProbabilityGraphs, CumulativeProbabilityGraphs } from './graphs';
@@ -30,24 +31,23 @@ const useStyles = makeStyles(() => ({
 interface IPdfGeneratorProps {
   units: IUnitStore;
   target: ITargetStore;
-  results: any[];
-  modifiers: IModifierDefinition[];
-  probabilities: any[];
+  results: TResult[];
+  probabilities: IProbability[];
 }
 
-const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, modifiers, probabilities }) => {
+const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, probabilities }) => {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
-  const [doc, setDoc] = useState<jsPDF | null>(null);
+  const [doc, setDoc] = useState<IJsPDF | null>(null);
   const [loading, setLoading] = useState(true);
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const unitNames = useMemo(() => units.map(({ name }) => name), [units]);
 
   const generatePdf = useCallback(
-    () => generate(units, target, results, modifiers, unitNames, 'pdf-copy', 'pdf-cumulative', 'pdf-prob'),
-    [modifiers, results, target, unitNames, units],
+    () => generate(units, target, results, unitNames, 'pdf-copy', 'pdf-cumulative', 'pdf-prob'),
+    [results, target, unitNames, units],
   );
 
   const refCallback = useCallback(() => {

@@ -2,7 +2,7 @@ import { IModifierDefinition, IModifierInstance } from './modifiers';
 import { IUnit } from './unit';
 import { INotification } from './notification';
 import { TResults } from './stats';
-import { IProbability, TResult } from './simulations';
+import { IProbability, TSimResult } from './simulations';
 
 export type TError = boolean | string | null;
 
@@ -32,7 +32,7 @@ export interface IStatsStore {
 
 export interface ISimulationsStore {
   pending: boolean;
-  results: TResult[];
+  results: TSimResult[];
   probabilities: IProbability[];
   error: TError;
 }

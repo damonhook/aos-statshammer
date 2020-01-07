@@ -55,7 +55,7 @@ const ModifierItem: React.FC<IModifierItemProps> = React.memo(
     const [errors, dispatchErrors] = useReducer(errorReducer, {});
 
     useEffect(() => {
-      if (scrollEnabled) scrollToRef(itemRef);
+      if (scrollEnabled) scrollToRef({ ref: itemRef });
     }, [index, scrollEnabled]);
 
     useEffect(() => {

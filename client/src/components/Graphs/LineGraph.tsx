@@ -78,8 +78,8 @@ const LineGraph: React.FC<LineGraphProps> = ({
             <Label
               value={xAxisLabel.value}
               angle={0}
-              position={xAxisLabel.position || 'center'}
-              offset={xAxisLabel.offset || 10}
+              position={xAxisLabel.position ?? 'center'}
+              offset={xAxisLabel.offset ?? 10}
               fill={theme.palette.graphs.axis}
             />
           )}
@@ -89,13 +89,13 @@ const LineGraph: React.FC<LineGraphProps> = ({
             <Label
               value={yAxisLabel.value}
               angle={-90}
-              position={yAxisLabel.position || 'insideBottomLeft'}
-              offset={yAxisLabel.offset || 10}
+              position={yAxisLabel.position ?? 'insideBottomLeft'}
+              offset={yAxisLabel.offset ?? 10}
               fill={theme.palette.graphs.axis}
             />
           )}
         </YAxis>
-        <Tooltip content={tooltip || <DefaultTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
+        <Tooltip content={tooltip ?? <DefaultTooltip />} cursor={{ fill: theme.palette.graphs.grid }} />
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}
@@ -103,9 +103,9 @@ const LineGraph: React.FC<LineGraphProps> = ({
           onMouseLeave={handleMouseLeave}
         />
         {referenceLines &&
-          (referenceLines || []).map(({ stroke, dataKey, ...line }) => (
+          (referenceLines ?? []).map(({ stroke, dataKey, ...line }) => (
             <ReferenceLine
-              stroke={stroke || theme.palette.graphs.axis}
+              stroke={stroke ?? theme.palette.graphs.axis}
               strokeDasharray="3 3"
               strokeOpacity={dataKey && opacity[dataKey] !== null ? opacity[dataKey] : 1}
               {...line}

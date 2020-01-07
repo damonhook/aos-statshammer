@@ -28,10 +28,10 @@ const buildCumulative = (probabilities: any, unitNames: string[], metrics: any) 
   const maxDamage = Math.max(...Object.keys(probabilities).map(n => Number(n)));
   const sums = unitNames.reduce((acc, name) => ({ ...acc, [name]: 0 }), {});
   const cumulative = [...Array(maxDamage + 1)].map((_, damage) => {
-    const map = probabilities[damage] || {};
+    const map = probabilities[damage] ?? {};
     return unitNames.reduce(
       (acc, name) => {
-        const val = map[name] || 0;
+        const val = map[name] ?? 0;
         sums[name] += val;
         if (sums[name] >= 100 || damage > metrics.max[name]) {
           sums[name] = 100;

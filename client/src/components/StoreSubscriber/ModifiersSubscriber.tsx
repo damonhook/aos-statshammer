@@ -16,7 +16,7 @@ interface IModifiersSubscriberProps extends ConnectedProps<typeof connector> {}
  */
 const ModifiersSubscriber: React.FC<IModifiersSubscriberProps> = ({ modifiers, fetchModifiers }) => {
   const [debouncedUseEffect] = useDebouncedCallback(() => {
-    if (!modifiers.pending && (!modifiers.modifiers || !modifiers.modifiers.length)) {
+    if (!modifiers?.pending && !modifiers?.modifiers?.length) {
       fetchModifiers();
     }
   }, DEBOUNCE_TIMEOUT);

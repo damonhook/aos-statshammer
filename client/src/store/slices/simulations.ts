@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ISimulationsStore, TError } from 'types/store';
-import { IProbability, TResult } from 'types/simulations';
+import { IProbability, TSimResult } from 'types/simulations';
 
 const INITIAL_STATE: ISimulationsStore = {
   pending: false,
@@ -15,7 +15,7 @@ export const fetchSimulationsPending = (state: ISimulationsStore) => {
 
 export const fetchSimulationsSuccess = (
   state: ISimulationsStore,
-  action: { payload: { results: TResult[]; probabilities: IProbability[] } },
+  action: { payload: { results: TSimResult[]; probabilities: IProbability[] } },
 ) => {
   const { results, probabilities } = action.payload;
   state.pending = false;

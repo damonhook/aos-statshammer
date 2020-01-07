@@ -43,7 +43,7 @@ const ResultsTable: React.FC<IResultsTableProps> = ({ stats, unitNames, classNam
   if (stats.error) {
     return <StatsErrorCard className={classes.error} />;
   }
-  if (!stats.payload || !stats.payload.length) {
+  if (!stats?.payload?.length) {
     return (
       <TableSkeleton
         dense

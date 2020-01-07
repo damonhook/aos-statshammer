@@ -69,7 +69,7 @@ const ModifierSelector: React.FC<IModifierSelectorProps> = React.memo(
         </div>
       );
     }
-    if (error || !modifiers || !modifiers.length) {
+    if (error || !modifiers?.length) {
       return null;
     }
     return (

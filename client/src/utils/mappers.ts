@@ -1,4 +1,10 @@
-export const applyResultsMapping = (mapping, data, fixedKey: string | null = 'save') =>
+import { IUnit } from 'types/unit';
+
+export const applyResultsMapping = (
+  mapping: { [x: string]: any },
+  data: any[],
+  fixedKey: string | null = 'save',
+) =>
   data.map(result =>
     Object.keys(result).reduce(
       (acc, key) => {
@@ -11,7 +17,7 @@ export const applyResultsMapping = (mapping, data, fixedKey: string | null = 'sa
     ),
   );
 
-export const applyProbabilitiesMapping = (mapping, data) =>
+export const applyProbabilitiesMapping = (mapping: { [x: string]: any }, data: any[]) =>
   data.map(({ save, buckets, cumulative, metrics }) => ({
     save,
     buckets: applyResultsMapping(mapping, buckets, 'damage'),
@@ -25,12 +31,14 @@ export const applyProbabilitiesMapping = (mapping, data) =>
     ),
   }));
 
-export const getResultsMapping = mapping => data => applyResultsMapping(mapping, data);
+export const getResultsMapping = (mapping: { [x: string]: any }) => (data: any[]) =>
+  applyResultsMapping(mapping, data);
 
-export const getProbabilitiesMapping = mapping => data => applyProbabilitiesMapping(mapping, data);
+export const getProbabilitiesMapping = (mapping: { [x: string]: any }) => (data: any[]) =>
+  applyProbabilitiesMapping(mapping, data);
 
-export const applyUnitNameMapping = units =>
-  units.reduce((acc, { uuid, name }) => {
+export const applyUnitNameMapping = (units: IUnit[]) =>
+  units.reduce<{ [uuid: string]: string }>((acc, { uuid, name }) => {
     acc[uuid] = name;
     return acc;
   }, {});

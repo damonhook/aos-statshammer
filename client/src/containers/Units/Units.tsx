@@ -38,7 +38,7 @@ const Units: React.FC<UnitsProps> = React.memo(
 
     return (
       <div className={clsx(classes.units, className)}>
-        {(!units || !units.length) && (
+        {!units?.length && (
           <NoItemsCard header="It's lonely here" body="There are no units here, try adding some" />
         )}
         {units.map((unit, index) => (

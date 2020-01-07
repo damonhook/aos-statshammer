@@ -76,8 +76,8 @@ export class TargetModifierManager {
   }
 
   parseModifier<T extends BaseTargetModifier>(ModifierType: new (data: any) => T, data: any): T {
-    const options = (data || {}).options || {};
-    const cleanData = Object.keys(options || {}).reduce((acc, key) => {
+    const options = data?.options ?? {};
+    const cleanData = Object.keys(options ?? {}).reduce((acc, key) => {
       if (options[key] != null) acc[key] = options[key];
       return acc;
     }, {});

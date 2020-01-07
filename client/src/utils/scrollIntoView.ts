@@ -6,7 +6,7 @@ declare global {
 
 window.autoScrollEnabled = false;
 
-export const setAutoScrollEnabled = enabled => {
+export const setAutoScrollEnabled = (enabled: boolean) => {
   window.autoScrollEnabled = enabled;
 };
 

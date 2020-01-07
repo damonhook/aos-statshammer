@@ -103,8 +103,8 @@ const ModifierList: React.FC<IModifierListProps> = React.memo(
       [dispatchErrors],
     );
 
-    const moveUpEnabled = index => index > 0;
-    const moveDownEnabled = index => index < (modifiers || []).length - 1;
+    const moveUpEnabled = (index: number) => index > 0;
+    const moveDownEnabled = (index: number) => index < modifiers?.length - 1;
 
     return (
       <Typography component="div" className={classes.modifierList}>
@@ -113,7 +113,7 @@ const ModifierList: React.FC<IModifierListProps> = React.memo(
           <PendingModifiers />
         ) : (
           <div className={classes.activeModifiers}>
-            {(modifiers || []).map((modifier, index) => (
+            {(modifiers ?? []).map((modifier, index) => (
               <ModifierItem
                 definition={getModifierById(modifier.id)}
                 options={modifier.options}

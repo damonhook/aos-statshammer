@@ -88,15 +88,14 @@ export default class ModifierManager {
     modifier: T,
     characteristic: Characteristic,
   ): InstanceType<T>[] {
-    // @ts-ignore
     return this.modifiers.filter(
-      (m: BaseModifier) => m instanceof modifier && m.characteristic === characteristic,
-    );
+      m => m instanceof modifier && m.characteristic === characteristic,
+    ) as InstanceType<T>[];
   }
 
   parseModifier<T extends BaseModifier>(ModifierType: new (data: any) => T, data: any): T {
-    const options = (data || {}).options || {};
-    const cleanData = Object.keys(options || {}).reduce((acc, key) => {
+    const options = data?.options ?? {};
+    const cleanData = Object.keys(options ?? {}).reduce((acc, key) => {
       if (options[key] != null) acc[key] = options[key];
       return acc;
     }, {});

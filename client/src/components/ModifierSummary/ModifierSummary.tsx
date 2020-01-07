@@ -66,7 +66,7 @@ const ModifierSummary: React.FC<IModifierSummaryProps> = ({
   const theme = useTheme();
   const large = useMediaQuery(theme.breakpoints.up('lg'));
 
-  const getModifierById = (id: string) => ((modifierState || {}).modifiers || []).find(mod => mod.id === id);
+  const getModifierById = (id: string) => (modifierState?.modifiers ?? []).find(mod => mod.id === id);
 
   return modifiers && modifiers.length ? (
     <div className={clsx(classes.modifiers, className)}>
@@ -102,7 +102,7 @@ const ModifierSummary: React.FC<IModifierSummaryProps> = ({
                 <ModifierDescription
                   definition={modDefinition}
                   options={modifier.options}
-                  className={clsx(classes.descriptionFull, active ? '' : classes.inactive)}
+                  className={clsx(classes.descriptionFull, { [classes.inactive]: !active })}
                 />
               )}
             </Item>

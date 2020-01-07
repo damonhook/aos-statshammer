@@ -25,7 +25,7 @@ const INITIAL_STATE: IUnitStore = [
 
 export const addUnit = (state: IUnitStore, action: { payload: IUnitParameter }) => {
   const { name, weapon_profiles } = action.payload;
-  const profiles = weapon_profiles || [DEFAULT_WEAPON_PROFILE];
+  const profiles = weapon_profiles ?? [DEFAULT_WEAPON_PROFILE];
   const unit = {
     name,
     uuid: nanoid(),
@@ -66,7 +66,7 @@ export const addWeaponProfile = (
   action: { payload: { index: number; weaponProfile?: IWeaponProfileParameter } },
 ) => {
   const { index, weaponProfile } = action.payload;
-  const profile = weaponProfile || DEFAULT_WEAPON_PROFILE;
+  const profile = weaponProfile ?? DEFAULT_WEAPON_PROFILE;
   const unit = state.find((_, i) => i === index);
   if (unit) {
     unit.weapon_profiles.push({

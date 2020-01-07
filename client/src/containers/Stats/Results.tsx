@@ -24,7 +24,7 @@ const Results: React.FC<IResultsProps> = React.memo(
   ({ stats, unitNames, className }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
+    const firstLoad = !stats?.payload?.length && stats?.pending;
     const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const downloadDisabled = unitNames.length <= 0;

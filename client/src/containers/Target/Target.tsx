@@ -34,7 +34,7 @@ const Target: React.FC<ITargetProps> = React.memo(
 
     return (
       <div className={clsx(classes.target, className)}>
-        {(!target.modifiers || !target.modifiers.length) && (
+        {!target?.modifiers?.length && (
           <NoItemsCard header="No modifiers" body="No target modifiers are present (Basic target)" />
         )}
         <TargetModifierList />

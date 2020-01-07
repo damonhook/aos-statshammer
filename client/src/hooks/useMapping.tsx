@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-const useMapping = (data, mapper, pending = false) => {
-  const [results, setResults] = useState([]);
+const useMapping = <T,>(data: T[], mapper: any, pending = false): T[] => {
+  const [results, setResults] = useState<T[]>([]);
 
   useEffect(() => {
     if (!pending && data && data.length) {

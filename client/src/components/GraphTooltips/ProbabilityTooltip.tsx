@@ -24,7 +24,7 @@ const ProbabilityTooltip: React.FC<IProbabilityTooltipProps> = ({ active, payloa
     return (
       <Paper className={classes.tooltip}>
         <Typography variant="h6">{`Damage: ${cumulative ? '<= ' : ''}${label}`}</Typography>
-        {(payload || []).map(({ color, name, value }) => (
+        {(payload ?? []).map(({ color, name, value }) => (
           <Typography style={{ color }} key={name}>{`${name}: ${value}%`}</Typography>
         ))}
       </Paper>

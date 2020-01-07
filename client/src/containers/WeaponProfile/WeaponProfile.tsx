@@ -77,7 +77,7 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
 
     // Scroll to the component when it is first created
     useEffect(() => {
-      scrollToRef(profileRef);
+      scrollToRef({ ref: profileRef });
     }, [profile.uuid]);
 
     /** Handle open/close of the edit profile dialog */

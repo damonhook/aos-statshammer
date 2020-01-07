@@ -18,7 +18,7 @@ interface IActionsDialogProps {
  * A dialog box containing various possible actions that can be performed
  */
 const ActionsDialog: React.FC<IActionsDialogProps> = ({ open, actions, target, onClose }) => {
-  if (!actions || !actions.length) return null;
+  if (!actions?.length) return null;
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">

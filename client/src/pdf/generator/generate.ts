@@ -1,13 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { MultipleRowType } from 'jspdf-autotable';
 import { getModifierById } from 'utils/modifierHelpers';
 import { getTargetModifierById } from 'utils/targetModifierHelpers';
 import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
+import { IUnitStore, ITargetStore } from 'types/store';
+import { TResult } from 'types/stats';
+import { IJsPDF } from 'types/pdf';
+import { IModifierInstance } from 'types/modifiers';
 import cursor from './cursor';
 import { margin, headerColor, addHeader, addSubHeader, addHR, addPage, addGraphs } from './pdfUtils';
 
-const getModifierItems = (modifiers, isTarget = false) => {
+const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): MultipleRowType => {
   const modifierItems = modifiers
     .map(({ id, options }) => {
       const definition = isTarget ? getTargetModifierById(id) : getModifierById(id);
@@ -28,12 +32,12 @@ const getModifierItems = (modifiers, isTarget = false) => {
         },
       ],
       ...modifierItems,
-    ];
+    ] as MultipleRowType;
   }
   return [];
 };
 
-const generateUnits = (doc, units) => {
+const generateUnits = (doc: IJsPDF, units: IUnitStore) => {
   addSubHeader(doc, 'Units');
   units.forEach(({ name, weapon_profiles }) => {
     weapon_profiles.forEach((profile, index) => {
@@ -43,10 +47,10 @@ const generateUnits = (doc, units) => {
 
       if (profile.modifiers && profile.modifiers.length) {
         const modifierItems = getModifierItems(profile.modifiers);
-        body = [...body, ...modifierItems];
+        body = [...body, ...modifierItems] as (string | number)[][];
       }
 
-      let head = [
+      let head: MultipleRowType = [
         [{ content: profileName, colSpan: 6, styles: { halign: 'center' } }],
         ['# Models', 'Attacks', 'To Hit', 'To Wound', 'Rend', 'Damage'],
       ];
@@ -58,7 +62,7 @@ const generateUnits = (doc, units) => {
           textColor: 20,
           fontSize: 12,
         };
-        head = [[{ content: name, colSpan: 6, styles: headStyle }], ...head];
+        head = [[{ content: name, colSpan: 6, styles: headStyle }], ...head] as MultipleRowType;
       }
 
       doc.autoTable({
@@ -86,10 +90,10 @@ const generateUnits = (doc, units) => {
   cursor.incr(10);
 };
 
-const generateTarget = (doc, target) => {
+const generateTarget = (doc: IJsPDF, target: ITargetStore) => {
   addSubHeader(doc, 'Target');
-  const head = [[{ content: 'Target', colSpan: 6, styles: { halign: 'center' } }]];
-  const body = [...getModifierItems(target.modifiers, true)];
+  const head: MultipleRowType = [[{ content: 'Target', colSpan: 6, styles: { halign: 'center' } }]];
+  const body = [...getModifierItems(target.modifiers, true)] as MultipleRowType;
   doc.autoTable({
     startY: cursor.pos,
     head,
@@ -113,17 +117,16 @@ const generateTarget = (doc, target) => {
   cursor.incr(10);
 };
 
-const transposeData = (unitNames, results) =>
+const transposeData = (unitNames: string[], results: TResult[]) =>
   unitNames.reduce((acc, name) => {
     const item = { name };
     results.forEach(({ save, ...results }) => {
       item[save] = results[name];
     });
-    acc.push(item);
-    return acc;
+    return { ...acc, item };
   }, []);
 
-const generateStatsTable = (doc, results, unitNames) => {
+const generateStatsTable = (doc: IJsPDF, results: TResult[], unitNames: string[]) => {
   const data = transposeData(unitNames, results);
   const transformRow = ({ name, ...results }) => [name, ...Object.keys(results).map(k => results[k])];
 
@@ -151,17 +154,16 @@ const generateStatsTable = (doc, results, unitNames) => {
 };
 
 const generate = async (
-  units,
-  target,
-  results,
-  modifiers,
-  unitNames,
-  statsClassName,
-  cumulativeClassName,
-  probabilitiesClassName,
+  units: IUnitStore,
+  target: ITargetStore,
+  results: TResult[],
+  unitNames: string[],
+  statsClassName: string,
+  cumulativeClassName: string,
+  probabilitiesClassName: string,
 ) => {
   // eslint-disable-next-line new-cap
-  const doc = new jsPDF('p', 'pt', 'a4');
+  const doc = new jsPDF('p', 'pt', 'a4') as IJsPDF;
   doc.setProperties({
     title: 'AoS Statshammer Report',
   });

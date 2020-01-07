@@ -31,32 +31,32 @@ if (cluster.isMaster) {
   app.use(compression());
 
   app.get('/status', (req, res) => {
-    res.set('X-Worker-ID', cluster.worker.id);
+    res.set('X-Worker-ID', String(cluster.worker.id));
     res.send({ status: 'ok' });
   });
 
   app.get('/api/modifiers', (req, res) => {
-    res.set('X-Worker-ID', cluster.worker.id);
+    res.set('X-Worker-ID', String(cluster.worker.id));
     res.send({ modifiers: getModifiers() });
   });
 
   app.get('/api/target/modifiers', (req, res) => {
-    res.set('X-Worker-ID', cluster.worker.id);
+    res.set('X-Worker-ID', String(cluster.worker.id));
     res.send({ modifiers: getTargetModifiers() });
   });
 
   app.post('/api/compare', (req, res) => {
-    res.set('X-Worker-ID', cluster.worker.id);
+    res.set('X-Worker-ID', String(cluster.worker.id));
     res.send(compareUnits(req.body));
   });
 
   app.post('/api/simulate', (req, res) => {
-    res.set('X-Worker-ID', cluster.worker.id);
+    res.set('X-Worker-ID', String(cluster.worker.id));
     res.send(simulateUnits(req.body));
   });
 
   app.post('/api/simulate/save', (req, res) => {
-    res.set('X-Worker-ID', cluster.worker.id);
+    res.set('X-Worker-ID', String(cluster.worker.id));
     res.send(simulateUnitsForSave(req.body));
   });
 
@@ -75,8 +75,7 @@ if (cluster.isMaster) {
 
 if (process.env.NODE_ENV === 'production') {
   cluster.on('exit', worker => {
-    // Replace the dead worker,
-    // we're not sentimental
+    // Replace the dead worker, we're not sentimental
     console.log(`Worker ${worker.id} died :(`);
     cluster.fork();
   });
