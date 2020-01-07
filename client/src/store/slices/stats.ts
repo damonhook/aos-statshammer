@@ -10,11 +10,13 @@ const INITIAL_STATE: IStatsStore = {
 
 const fetchStatsPending = (state: IStatsStore) => {
   state.pending = true;
+  state.error = null;
 };
 
 const fetchStatsSuccess = (state: IStatsStore, action: { payload: { results: TResults } }) => {
   const { results } = action.payload;
   state.pending = false;
+  state.error = null;
   state.payload = results;
 };
 

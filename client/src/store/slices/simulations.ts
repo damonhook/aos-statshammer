@@ -11,6 +11,7 @@ const INITIAL_STATE: ISimulationsStore = {
 
 export const fetchSimulationsPending = (state: ISimulationsStore) => {
   state.pending = true;
+  state.error = null;
 };
 
 export const fetchSimulationsSuccess = (
@@ -19,6 +20,7 @@ export const fetchSimulationsSuccess = (
 ) => {
   const { results, probabilities } = action.payload;
   state.pending = false;
+  state.error = null;
   state.results = results;
   state.probabilities = probabilities;
 };

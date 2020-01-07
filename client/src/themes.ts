@@ -1,11 +1,12 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { grey, red, teal } from '@material-ui/core/colors';
+import { grey, red, teal, green, amber } from '@material-ui/core/colors';
 import { IConfigStore } from 'types/store';
 
 const lightTheme = createMuiTheme({
   name: 'Light Theme',
   palette: {
     type: 'light',
+    primary: teal,
     background: {
       nested: '#fff',
       paper: '#fff',
@@ -17,6 +18,12 @@ const lightTheme = createMuiTheme({
       axis: grey[700],
       tooltip: grey[50],
       series: ['#8884d8', '#82ca9d', '#ff7300', teal[400], '#f50057'],
+    },
+    notifications: {
+      info: grey[900],
+      success: green[600],
+      warning: amber[500],
+      error: red[500],
     },
   },
   typography: {
@@ -55,6 +62,12 @@ const darkTheme = createMuiTheme({
       axis: grey[400],
       tooltip: grey[900],
       series: ['#8884d8', '#82ca9d', '#ff7300', teal[400], '#ff5252'],
+    },
+    notifications: {
+      info: grey[900],
+      success: green[600],
+      warning: amber[500],
+      error: red[800],
     },
   },
   typography: {

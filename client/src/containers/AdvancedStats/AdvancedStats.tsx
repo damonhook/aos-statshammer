@@ -14,6 +14,7 @@ import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from
 import BasicCurves from 'containers/ProbabilityCurves/BasicCurves';
 import CumulativeCurves from 'containers/ProbabilityCurves/CumulativeCurves';
 import { IStore } from 'types/store';
+import Notifications from 'components/Notifications';
 import MetricsTables from './MetricsTables';
 import ProbabilityTables from './ProbabilityTables';
 
@@ -118,6 +119,7 @@ const AdvancedStats: React.FC<AdvancedStatsProps> = React.memo(
             ]}
           />
         </div>
+        <Notifications />
         {mobile && <BottomNavigation />}
         <Footer />
       </div>

@@ -33,7 +33,16 @@ export const fetchStatsCompare = () => async dispatch => {
     dispatch(stats.actions.fetchStatsSuccess({ results: res.results }));
   } catch (error) {
     dispatch(stats.actions.fetchStatsError({ error }));
-    dispatch(notifications.actions.addNotification({ message: 'Failed to fetch stats', variant: 'error' }));
+    dispatch(
+      notifications.actions.addNotification({
+        message: 'Failed to fetch stats',
+        variant: 'error',
+        action: {
+          label: 'Retry',
+          onClick: () => dispatch(fetchStatsCompare()),
+        },
+      }),
+    );
   }
 };
 
@@ -52,7 +61,14 @@ export const fetchModifiers = () => async dispatch => {
   } catch (error) {
     dispatch(modifiers.actions.fetchModifiersError({ error }));
     dispatch(
-      notifications.actions.addNotification({ message: 'Failed to fetch modifiers', variant: 'error' }),
+      notifications.actions.addNotification({
+        message: 'Failed to fetch modifiers',
+        variant: 'error',
+        action: {
+          label: 'Retry',
+          onClick: () => dispatch(fetchModifiers()),
+        },
+      }),
     );
   }
 };
@@ -72,7 +88,14 @@ export const fetchTargetModifiers = () => async dispatch => {
   } catch (error) {
     dispatch(targetModifiers.actions.fetchTargetModifiersError({ error }));
     dispatch(
-      notifications.actions.addNotification({ message: 'Failed to fetch modifiers', variant: 'error' }),
+      notifications.actions.addNotification({
+        message: 'Failed to fetch target modifiers',
+        variant: 'error',
+        action: {
+          label: 'Retry',
+          onClick: () => dispatch(fetchTargetModifiers()),
+        },
+      }),
     );
   }
 };
@@ -124,7 +147,14 @@ export const fetchSimulations = () => async dispatch => {
   } catch (error) {
     dispatch(simulations.actions.fetchSimulationsError({ error }));
     dispatch(
-      notifications.actions.addNotification({ message: 'Failed to fetch simulations', variant: 'error' }),
+      notifications.actions.addNotification({
+        message: 'Failed to fetch simulations',
+        variant: 'error',
+        action: {
+          label: 'Retry',
+          onClick: () => dispatch(fetchSimulations()),
+        },
+      }),
     );
   }
 };

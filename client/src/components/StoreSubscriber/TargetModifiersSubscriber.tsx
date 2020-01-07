@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { fetchTargetModifiers } from 'api';
 import { useDebouncedCallback } from 'use-debounce';
-import { DEBOUNCE_TIMEOUT } from 'appConstants';
+import { RETRY_TIMEOUT } from 'appConstants';
 import { IStore } from 'types/store';
 
 const mapStateToProps = (state: IStore) => ({ modifiers: state.targetModifiers });
@@ -18,11 +18,15 @@ const TargetModifiersSubscriber: React.FC<ITargetModifiersSubscriberProps> = ({
   modifiers,
   fetchTargetModifiers,
 }) => {
-  const [debouncedUseEffect] = useDebouncedCallback(() => {
-    if (!modifiers.pending && (!modifiers.modifiers || !modifiers.modifiers.length)) {
-      fetchTargetModifiers();
-    }
-  }, DEBOUNCE_TIMEOUT);
+  const [debouncedUseEffect] = useDebouncedCallback(
+    () => {
+      if (!modifiers.pending && (!modifiers.modifiers || !modifiers.modifiers.length)) {
+        fetchTargetModifiers();
+      }
+    },
+    RETRY_TIMEOUT,
+    { leading: true },
+  );
 
   useEffect(() => {
     debouncedUseEffect();

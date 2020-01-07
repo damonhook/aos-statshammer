@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Snackbar, IconButton, SnackbarContent, Button } from '@material-ui/core';
+import { Snackbar, IconButton, SnackbarContent, Button, Theme } from '@material-ui/core';
 import { Close, CheckCircle, Warning, Error as ErrorIcon, Info } from '@material-ui/icons';
 import { connect, ConnectedProps } from 'react-redux';
 import { notifications } from 'store/slices';
 import clsx from 'clsx';
-import { amber, green } from '@material-ui/core/colors';
 import { SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
 import { TNotificationVariants, INotificationAction } from 'types/notification';
 
@@ -16,51 +15,28 @@ const variantIcon = {
   info: Info,
 };
 
-const useStyles = makeStyles(theme => ({
+interface IStyleProps {
+  variant: TNotificationVariants;
+}
+const useStyles = makeStyles((theme: Theme) => ({
   notification: {
     position: 'relative',
     marginTop: '.5em',
     flex: '1 1 auto',
     zIndex: theme.zIndex.snackbar,
   },
-  content: {
+  content: ({ variant }: IStyleProps) => ({
     flexWrap: 'nowrap',
-  },
-  success: {
-    backgroundColor: green[600],
-    color: theme.palette.getContrastText(green[600]),
-
-    '& $icon': {
-      color: theme.palette.getContrastText(green[600]),
-    },
-  },
-  error: {
-    backgroundColor: theme.palette.error.dark,
-    color: theme.palette.getContrastText(theme.palette.error.dark),
-
-    '& $icon': {
-      color: theme.palette.getContrastText(theme.palette.error.dark),
-    },
-  },
-  info: {
-    backgroundColor: theme.palette.grey[900],
-    color: theme.palette.getContrastText(theme.palette.grey[900]),
-
-    '& $icon': {
-      color: theme.palette.getContrastText(theme.palette.grey[900]),
-    },
-  },
-  warning: {
-    backgroundColor: amber[500],
-    color: theme.palette.getContrastText(amber[500]),
-
-    '& $icon': {
-      color: theme.palette.getContrastText(amber[500]),
-    },
-  },
-  icon: {
+    backgroundColor: theme.palette.notifications[variant],
+    color: theme.palette.getContrastText(theme.palette.notifications[variant]),
+  }),
+  icon: ({ variant }: IStyleProps) => ({
+    color: theme.palette.getContrastText(theme.palette.notifications[variant]),
     fontSize: 20,
-  },
+  }),
+  action: ({ variant }: IStyleProps) => ({
+    color: theme.palette.getContrastText(theme.palette.notifications[variant]),
+  }),
   iconVariant: {
     opacity: 0.9,
     marginRight: theme.spacing(1),
@@ -93,7 +69,7 @@ const Notification: React.FC<INotificationProps> = ({
   action,
   timeout = 3000,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles({ variant });
   const [open, setOpen] = useState(true);
   const Icon = variantIcon[variant];
 
@@ -101,7 +77,7 @@ const Notification: React.FC<INotificationProps> = ({
     setOpen(true);
   }, [notificationId]);
 
-  const handleClose = (reason: any) => {
+  const handleClose = (event?: React.SyntheticEvent | null, reason?: string) => {
     if (reason === 'clickaway') return;
     const t = reason === 'swipeaway' || reason === 'actioned' ? 0 : 500;
     setOpen(false);
@@ -110,24 +86,33 @@ const Notification: React.FC<INotificationProps> = ({
 
   const handleAction = () => {
     if (action?.onClick) action.onClick();
-    handleClose('actioned');
+    handleClose(null, 'actioned');
   };
+
+  let actionElement: React.ReactNode | null = null;
+  if (action?.label && action?.onClick) {
+    actionElement = (
+      <Button onClick={handleAction} className={classes.action}>
+        {action.label}
+      </Button>
+    );
+  }
 
   return (
     <SwipeableListItem
       swipeRight={{
         content: <span />,
-        action: () => handleClose('swipeaway'),
+        action: () => handleClose(null, 'swipeaway'),
       }}
       swipeLeft={{
         content: <span />,
-        action: () => handleClose('swipeaway'),
+        action: () => handleClose(null, 'swipeaway'),
       }}
       threshold={0.3}
     >
       <Snackbar className={classes.notification} open={open} onClose={handleClose} autoHideDuration={timeout}>
         <SnackbarContent
-          className={clsx(classes.content, classes[variant])}
+          className={clsx(classes.content)}
           message={
             <span className={classes.message}>
               <Icon className={clsx(classes.icon, classes.iconVariant)} />
@@ -135,8 +120,8 @@ const Notification: React.FC<INotificationProps> = ({
             </span>
           }
           action={[
-            ...(action?.label ? [<Button onClick={handleAction}>{action.label}</Button>] : []),
-            <IconButton key="close" onClick={handleClose}>
+            ...([actionElement] ?? []),
+            <IconButton key="close" onClick={handleClose} className={classes.action}>
               <Close className={classes.icon} />
             </IconButton>,
           ]}

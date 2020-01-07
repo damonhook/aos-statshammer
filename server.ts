@@ -4,25 +4,20 @@ import 'regenerator-runtime/runtime';
 import bodyParser from 'body-parser';
 import cluster from 'cluster';
 import compression from 'compression';
-import express from 'express';
+import express, { Response } from 'express';
 import os from 'os';
 import path from 'path';
 
 import { getModifiers, getTargetModifiers } from './api/controllers/modifiersController';
 import { compareUnits, simulateUnits, simulateUnitsForSave } from './api/controllers/statsController';
 
-if (cluster.isMaster) {
-  let numWorkers = 3;
-  const prod = process.env.NODE_ENV === 'production';
-  if (prod) {
-    numWorkers = os.cpus().length;
+function addHeaders(res: Response, production = false) {
+  if (production) {
+    res.set('X-Worker-ID', String(cluster.worker.id));
   }
-  console.log(`Spawning ${numWorkers} workers ${prod ? 'in production mode' : ''}`);
-  // Create a worker for each CPU
-  for (let i = 0; i < numWorkers; i += 1) {
-    cluster.fork();
-  }
-} else {
+}
+
+function appServer(production = false) {
   const app = express();
   const port = process.env.PORT || 5000;
 
@@ -31,36 +26,38 @@ if (cluster.isMaster) {
   app.use(compression());
 
   app.get('/status', (req, res) => {
-    res.set('X-Worker-ID', String(cluster.worker.id));
+    addHeaders(res, production);
     res.send({ status: 'ok' });
   });
 
   app.get('/api/modifiers', (req, res) => {
-    res.set('X-Worker-ID', String(cluster.worker.id));
+    addHeaders(res, production);
     res.send({ modifiers: getModifiers() });
   });
 
   app.get('/api/target/modifiers', (req, res) => {
-    res.set('X-Worker-ID', String(cluster.worker.id));
+    addHeaders(res, production);
     res.send({ modifiers: getTargetModifiers() });
   });
 
   app.post('/api/compare', (req, res) => {
-    res.set('X-Worker-ID', String(cluster.worker.id));
+    addHeaders(res, production);
     res.send(compareUnits(req.body));
   });
 
   app.post('/api/simulate', (req, res) => {
-    res.set('X-Worker-ID', String(cluster.worker.id));
+    addHeaders(res, production);
     res.send(simulateUnits(req.body));
   });
 
   app.post('/api/simulate/save', (req, res) => {
-    res.set('X-Worker-ID', String(cluster.worker.id));
+    addHeaders(res, production);
     res.send(simulateUnitsForSave(req.body));
   });
 
-  if (process.env.NODE_ENV === 'production') {
+  let logMessage = `Listening on port ${port}`;
+
+  if (production) {
     // Serve any static files
     app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -68,15 +65,33 @@ if (cluster.isMaster) {
     app.get('*', (req, res) => {
       res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
     });
+
+    logMessage = `Worker ${cluster.worker.id}, ${logMessage}`;
   }
 
-  app.listen(port, () => console.log(`Worker ${cluster.worker.id}, Listening on port ${port}`));
+  app.listen(port, () => console.log(logMessage));
 }
 
-if (process.env.NODE_ENV === 'production') {
+const prod = process.env.NODE_ENV === 'production';
+if (prod) {
+  if (cluster.isMaster) {
+    let numWorkers = 3;
+    if (prod) {
+      numWorkers = os.cpus().length;
+    }
+    console.log(`Spawning ${numWorkers} workers ${prod ? 'in production mode' : ''}`);
+    // Create a worker for each CPU
+    for (let i = 0; i < numWorkers; i += 1) {
+      cluster.fork();
+    }
+  } else {
+    appServer(prod);
+  }
   cluster.on('exit', worker => {
     // Replace the dead worker, we're not sentimental
     console.log(`Worker ${worker.id} died :(`);
     cluster.fork();
   });
+} else {
+  appServer(prod);
 }
