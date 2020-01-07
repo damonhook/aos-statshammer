@@ -4,8 +4,8 @@ import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
 import { useMapping } from 'hooks';
 import { getResultsMapping, applyUnitNameMapping } from 'utils/mappers';
-import Results from './Results';
 import { IStore } from 'types/store';
+import Results from './Results';
 
 const mapStateToProps = (state: IStore) => ({
   units: state.units,

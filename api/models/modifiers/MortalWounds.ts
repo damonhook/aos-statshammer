@@ -21,12 +21,13 @@ export default class MortalWounds extends BaseModifier {
     this.inAddition = Boolean(inAddition);
   }
 
-  static get name() {
+  static get displayName() {
     return 'Mortal Wounds';
   }
 
   static get description() {
-    return '{unmodified} rolls of {on}+ for {characteristic} result in {mortalWounds} mortal wounds {inAddition}';
+    return `{unmodified} rolls of {on}+ for {characteristic} result
+    in {mortalWounds} mortal wounds {inAddition}`;
   }
 
   static get availableCharacteristics() {

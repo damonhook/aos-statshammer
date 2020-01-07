@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import Unit from 'containers/Unit';
-import { units } from 'store/slices';
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -9,8 +8,8 @@ import NoItemsCard from 'components/NoItemsCard';
 import { Route } from 'react-router-dom';
 import ProfileDialog from 'containers/ProfileDialog';
 import _ from 'lodash';
-import AddUnitButton from './AddUnitButton';
 import { IStore } from 'types/store';
+import AddUnitButton from './AddUnitButton';
 
 const useStyles = makeStyles(theme => ({
   units: {
@@ -26,13 +25,13 @@ const useStyles = makeStyles(theme => ({
 
 const mapStateToProps = (state: IStore) => ({ units: state.units });
 
-const connector = connect(mapStateToProps, { addUnit: units.actions.addUnit });
+const connector = connect(mapStateToProps);
 interface UnitsProps extends ConnectedProps<typeof connector> {
   className?: string;
 }
 
 const Units: React.FC<UnitsProps> = React.memo(
-  ({ units, addUnit, className }) => {
+  ({ units, className }) => {
     const classes = useStyles();
     const theme = useTheme();
     const mobile = useMediaQuery(theme.breakpoints.down('sm'));

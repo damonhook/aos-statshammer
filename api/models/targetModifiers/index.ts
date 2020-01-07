@@ -75,12 +75,12 @@ export class TargetModifierManager {
     return this.modifiers.filter(m => m instanceof modifier) as InstanceType<T>[];
   }
 
-  parseModifier<T extends BaseTargetModifier>(modifierType: new (data: any) => T, data: any): T {
+  parseModifier<T extends BaseTargetModifier>(ModifierType: new (data: any) => T, data: any): T {
     const options = (data || {}).options || {};
     const cleanData = Object.keys(options || {}).reduce((acc, key) => {
       if (options[key] != null) acc[key] = options[key];
       return acc;
     }, {});
-    return new modifierType(cleanData);
+    return new ModifierType(cleanData);
   }
 }

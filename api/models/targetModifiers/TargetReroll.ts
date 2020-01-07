@@ -4,7 +4,7 @@ import WeaponProfile from '../weaponProfile';
 import Target from '../target';
 
 export default class TargetReroll extends BaseTargetModifier {
-  static get name() {
+  static get displayName() {
     return 'Target Reroll';
   }
 
@@ -22,6 +22,7 @@ export default class TargetReroll extends BaseTargetModifier {
     return D6.getInverseProbability(save);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   allowedReroll(profile: WeaponProfile, target: Target, roll: number) {
     return true;
   }

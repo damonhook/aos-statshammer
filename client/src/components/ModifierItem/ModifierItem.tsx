@@ -4,11 +4,11 @@ import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import { scrollToRef } from 'utils/scrollIntoView';
 import clsx from 'clsx';
+import { IModifierDefinition, TModifierInstanceOptions, TOptionValue } from 'types/modifiers';
+import { IPrimaryItem } from 'components/ListControls/types';
 import ModifierInput from './ModifierInput';
 import ModifierDescription from './ModifierDescription';
 import { errorReducer } from './reducers';
-import { IModifierDefinition, TModifierInstanceOptions, TOptionValue } from 'types/modifiers';
-import { IPrimaryItem } from 'components/ListControls/types';
 
 const useStyles = makeStyles(theme => ({
   modifier: {

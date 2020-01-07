@@ -16,6 +16,7 @@ export const getMaxProbability = (probabilities: IProbability[]) =>
   Math.max(
     ...probabilities.map(({ buckets }) =>
       Math.max(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ...buckets.map(({ damage, ...other }) => Math.max(...Object.values(other).map(p => Number(p)))),
       ),
     ),

@@ -16,7 +16,7 @@ export default class LeaderBonus extends BaseModifier {
     this.bonus = DiceValue.parse(bonus);
   }
 
-  static get name() {
+  static get displayName() {
     return 'Leader Bonus';
   }
 
@@ -36,6 +36,7 @@ export default class LeaderBonus extends BaseModifier {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolve(owner: WeaponProfile) {
     return this.numLeaders * this.getBonus();
   }

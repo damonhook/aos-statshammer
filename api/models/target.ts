@@ -58,7 +58,7 @@ class Target {
     return 0;
   }
 
-  resolveStackableModifier(profile, modifier) {
+  resolveStackableModifier(profile: WeaponProfile, modifier: typeof BaseTargetModifier): number {
     const modList = this.modifiers.getStackableModifier(modifier);
     if (modList && modList.length) {
       return modList.reduce((acc, mod) => acc + mod.resolve(profile, this), 0);
@@ -66,7 +66,7 @@ class Target {
     return 0;
   }
 
-  resolveChainedModifier(profile, modifier) {
+  resolveChainedModifier(profile: WeaponProfile, modifier: typeof BaseTargetModifier): number {
     const mods = this.modifiers.getStackableModifier(modifier);
     if (mods && mods.length) {
       const result = mods.reduce((acc, mod) => acc + (1 - acc) * mod.resolve(profile, this), 0);

@@ -4,12 +4,12 @@ import { useMediaQuery } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useRefCallback } from 'hooks';
 import { lightTheme } from 'themes';
-import generate from './generator';
-import PdfLoader from './PdfLoader';
-import { StatsGraphs, ProbabilityGraphs, CumulativeProbabilityGraphs } from './graphs';
 import { IUnitStore, ITargetStore } from 'types/store';
 import { IModifierDefinition } from 'types/modifiers';
 import jsPDF from 'jspdf';
+import generate from './generator';
+import PdfLoader from './PdfLoader';
+import { StatsGraphs, ProbabilityGraphs, CumulativeProbabilityGraphs } from './graphs';
 
 const useStyles = makeStyles(() => ({
   hidden: {

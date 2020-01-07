@@ -1,11 +1,10 @@
-import React from 'react';import { storiesOf } from '@storybook/react';
+import React from 'react';
+import { storiesOf } from '@storybook/react';
 import ListItem from 'components/ListItem';
 import { text, boolean } from '@storybook/addon-knobs';
 import { loremIpsum } from 'utils/lorem';
 import { action } from '@storybook/addon-actions';
-import {
-  Delete, Add, FileCopy,
-} from '@material-ui/icons';
+import { Delete, Add, FileCopy } from '@material-ui/icons';
 import Container from 'utils/Container';
 
 const lorem = loremIpsum.generateSentences(5);

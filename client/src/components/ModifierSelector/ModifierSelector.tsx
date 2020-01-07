@@ -5,10 +5,10 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import { useHashMatch } from 'hooks';
-import ModifierOption from './ModifierOption';
-import SelectorDialog from './SelectorDialog';
 import { IModifierDefinition } from 'types/modifiers';
 import { TError } from 'types/store';
+import ModifierOption from './ModifierOption';
+import SelectorDialog from './SelectorDialog';
 
 const useStyles = makeStyles(() => ({
   selector: { marginTop: '1em', marginBottom: '1em' },

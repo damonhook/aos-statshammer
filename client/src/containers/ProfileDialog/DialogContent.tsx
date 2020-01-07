@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import DiceInput from 'components/DiceInput';
 import RollInput from 'components/RollInput';
 import _ from 'lodash';
-import FormField from './FormField';
 import { IWeaponProfile } from 'types/unit';
+import FormField from './FormField';
 
 const useStyles = makeStyles(theme => ({
   form: {

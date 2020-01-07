@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 import store from 'store';
 
-//@ts-ignore
+// @ts-ignore
 export const getTarget = () => store.getState().target;

@@ -18,6 +18,7 @@ const dismissNotification = (state: INotificationsStore, action: { payload: { ke
   state = state.filter(n => n.key !== action.payload.key);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dismissAllNotifications = (state: INotificationsStore) => {
   state = [];
 };

@@ -4,8 +4,8 @@ import Tabbed from 'components/Tabbed';
 import { Paper } from '@material-ui/core';
 import ListItem from 'components/ListItem';
 import { SaveTooltip } from 'components/GraphTooltips';
-import GraphWrapper from './GraphWrapper';
 import { IStatsStore } from 'types/store';
+import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles(() => ({
   tabs: {

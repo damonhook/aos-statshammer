@@ -49,7 +49,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, appReducer);
 
-export const configureStore = () => {
+const configureStore = () => {
   const store = createStore({
     reducer: persistedReducer,
     middleware,

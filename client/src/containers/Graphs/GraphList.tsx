@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { SaveTooltip } from 'components/GraphTooltips';
-import GraphWrapper from './GraphWrapper';
 import { IStatsStore } from 'types/store';
 import ListItem from 'components/ListItem';
+import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles(() => ({
   content: {

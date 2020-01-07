@@ -4,8 +4,8 @@ import { Collapse } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingBar from 'components/LoadingBar';
 import clsx from 'clsx';
-import ListItemHeader from './ListItemHeader';
 import { IPrimaryItem, ISecondaryItem } from 'components/ListControls/types';
+import ListItemHeader from './ListItemHeader';
 
 const useStyles = makeStyles(() => ({
   listItem: {

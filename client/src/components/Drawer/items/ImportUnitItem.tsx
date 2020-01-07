@@ -20,6 +20,7 @@ interface ImportUnitItemProps extends ConnectedProps<typeof connector> {
   onClick?: () => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ImportUnitItem: React.FC<ImportUnitItemProps> = ({ numUnits, addNotification, addUnit, onClick }) => {
   /** Is the upload menu item disabled or not */
   const isUploadDisabled = !addUnitEnabled();

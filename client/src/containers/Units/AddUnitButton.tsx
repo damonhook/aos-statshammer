@@ -4,11 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { ImportExport, Add } from '@material-ui/icons';
 import { addUnitEnabled } from 'utils/unitHelpers';
-import { notifications } from 'store/slices';
+import { notifications, units } from 'store/slices';
 import Uploader from 'components/Uploader';
 import { IUnitStore } from 'types/store';
 import { IUnit } from 'types/unit';
-import { units } from 'store/slices';
 
 const useStyles = makeStyles({
   group: {

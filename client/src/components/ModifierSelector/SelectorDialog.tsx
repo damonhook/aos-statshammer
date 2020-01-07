@@ -14,9 +14,9 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import { useHashMatch } from 'hooks';
-import ModifierOption from './ModifierOption';
 import { IModifierDefinition } from 'types/modifiers';
 import { TransitionProps } from '@material-ui/core/transitions';
+import ModifierOption from './ModifierOption';
 
 const useStyles = makeStyles(theme => ({
   appBar: {

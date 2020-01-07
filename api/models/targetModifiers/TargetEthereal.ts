@@ -3,7 +3,7 @@ import Target from '../target';
 import WeaponProfile from '../weaponProfile';
 
 export default class TargetEthereal extends BaseTargetModifier {
-  static get name() {
+  static get displayName() {
     return 'Target Ethereal';
   }
 

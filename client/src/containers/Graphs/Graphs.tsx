@@ -3,9 +3,9 @@ import { connect, ConnectedProps } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
 import { useMediaQuery } from '@material-ui/core';
+import { IStatsStore, IStore } from 'types/store';
 import GraphList from './GraphList';
 import GraphTabbed from './GraphTabbed';
-import { IStatsStore, IStore } from 'types/store';
 
 /** A mapping of Graph Name -> Graph Component, in render order */
 const graphMap: Map<string, any> = new Map<string, any>([

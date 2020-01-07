@@ -45,9 +45,9 @@ const Uploader: React.FC<IUploaderProps> = ({ onUpload, disabled = false, compon
         className={classes.input}
         id={`upload-button-${id}`}
         type="file"
-        // eslint-disable-next-line no-param-reassign
         onChange={event => {
           submitFiles(event.target.files);
+          // eslint-disable-next-line no-param-reassign
           event.target.value = '';
         }}
         disabled={disabled}

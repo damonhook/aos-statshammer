@@ -18,7 +18,7 @@ export default class Exploding extends BaseModifier {
     this.unmodified = Boolean(unmodified);
   }
 
-  static get name() {
+  static get displayName() {
     return 'Exploding';
   }
 
@@ -39,6 +39,7 @@ export default class Exploding extends BaseModifier {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolve(owner: WeaponProfile) {
     return D6.getProbability(this.on) * this.getExtra();
   }

@@ -3,8 +3,8 @@ import { connect, ConnectedProps } from 'react-redux';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { GetApp } from '@material-ui/icons';
 import BetaTag from 'components/BetaTag';
-import LinkItem from './LinkItem';
 import { IStore } from 'types/store';
+import LinkItem from './LinkItem';
 
 const mapStateToProps = (state: IStore) => ({
   numUnits: state.units.length,

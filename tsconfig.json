@@ -6,7 +6,7 @@
         "noImplicitAny": false,
         "moduleResolution": "node",
         "sourceMap": true,
-        "baseUrl": ".",
+        "baseUrl": "."
     },
     "include": ["."]
 }

@@ -4,7 +4,7 @@ import WeaponProfile from '../weaponProfile';
 import Target from '../target';
 
 export default class TargetReroll extends BaseTargetModifier {
-  static get name() {
+  static get displayName() {
     return 'Target Reroll Failed';
   }
 

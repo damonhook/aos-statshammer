@@ -6,11 +6,11 @@ import _ from 'lodash';
 import { ProbabilityTooltip } from 'components/GraphTooltips';
 import ListItem from 'components/ListItem';
 import clsx from 'clsx';
+import { IProbability } from 'types/simulations';
+import { TError } from 'types/store';
 import { getMaxDamage, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 import Loadable from './Loadable';
 import GraphControls from './GraphControls';
-import { IProbability } from 'types/simulations';
-import { TError } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   probabilityCurves: {},

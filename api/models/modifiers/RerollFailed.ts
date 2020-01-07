@@ -6,7 +6,7 @@ import WeaponProfile from '../weaponProfile';
 export default class RerollFailed extends BaseModifier {
   ['constructor']: typeof RerollFailed;
 
-  static get name() {
+  static get displayName() {
     return 'Reroll Failed';
   }
 

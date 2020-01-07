@@ -1,3 +1,4 @@
+import { Characteristic } from 'api/constants';
 import RerollFailed from './RerollFailed';
 import Reroll from './Reroll';
 import Exploding from './Exploding';
@@ -7,7 +8,6 @@ import RerollOnes from './RerollOnes';
 import BaseModifier from './BaseModifier';
 import ConditionalBonus from './ConditionalBonus';
 import LeaderBonus from './LeaderBonus';
-import { Characteristic } from 'api/constants';
 
 /**
  * The list of possible modifiers
@@ -88,18 +88,18 @@ export default class ModifierManager {
     modifier: T,
     characteristic: Characteristic,
   ): InstanceType<T>[] {
-    //@ts-ignore
+    // @ts-ignore
     return this.modifiers.filter(
       (m: BaseModifier) => m instanceof modifier && m.characteristic === characteristic,
     );
   }
 
-  parseModifier<T extends BaseModifier>(modifierType: new (data: any) => T, data: any): T {
+  parseModifier<T extends BaseModifier>(ModifierType: new (data: any) => T, data: any): T {
     const options = (data || {}).options || {};
     const cleanData = Object.keys(options || {}).reduce((acc, key) => {
       if (options[key] != null) acc[key] = options[key];
       return acc;
     }, {});
-    return new modifierType(cleanData);
+    return new ModifierType(cleanData);
   }
 }

@@ -13,7 +13,7 @@ export default class Bonus extends BaseModifier {
     this.bonus = DiceValue.parse(bonus);
   }
 
-  static get name() {
+  static get displayName() {
     return 'Bonus';
   }
 

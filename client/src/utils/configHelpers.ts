@@ -1,7 +1,7 @@
 import store from 'store';
 
-//@ts-ignore
+// @ts-ignore
 export const isDarkModeEnabled = () => store.getState().config.darkMode;
 
-//@ts-ignore
+// @ts-ignore
 export const isDesktopGraphListEnabled = () => store.getState().config.desktopGraphList;

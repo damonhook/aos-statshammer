@@ -5,11 +5,11 @@ import { units } from 'store/slices';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useHistory, useParams } from 'react-router-dom';
 import { getUnitByUuid, getUnitIndexByUuid } from 'utils/unitHelpers';
+import { TransitionProps } from '@material-ui/core/transitions';
+import { IWeaponProfile } from 'types/unit';
 import DialogTitle from './DialogTitle';
 import DialogContent from './DialogContent';
 import { errorReducer, profileReducer } from './reducers';
-import { TransitionProps } from '@material-ui/core/transitions';
-import { IWeaponProfile } from 'types/unit';
 
 const useStyles = makeStyles(theme => ({
   dialog: {},

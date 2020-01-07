@@ -12,6 +12,7 @@ import { IUnit } from 'types/unit';
  * @param {object} unit The unit object
  */
 const filterNameFromUnit = (unit: IUnit) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { name, ...rest } = unit;
   return rest;
 };

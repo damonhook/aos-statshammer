@@ -4,7 +4,6 @@ import { SAVES } from '../constants';
 
 /**
  * Compare the average damage of these units
- * @param {object} param0 An object containing the units to fetch
  */
 export const compareUnits = ({ units, target }) => {
   const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));

@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import CssBaseline from '@material-ui/core/CssBaseline';
 import PdfContainer from 'containers/PdfContainer';
 import AdvancedStats from 'containers/AdvancedStats';
-import AppContentWrapper from './AppContentWrapper';
 import { IStore } from 'types/store';
+import AppContentWrapper from './AppContentWrapper';
 
 const mapStateToProps = (state: IStore) => ({
   config: state.config,

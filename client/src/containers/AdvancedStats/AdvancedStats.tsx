@@ -13,9 +13,9 @@ import { useMapping } from 'hooks';
 import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
 import BasicCurves from 'containers/ProbabilityCurves/BasicCurves';
 import CumulativeCurves from 'containers/ProbabilityCurves/CumulativeCurves';
+import { IStore } from 'types/store';
 import MetricsTables from './MetricsTables';
 import ProbabilityTables from './ProbabilityTables';
-import { IStore } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   app: {

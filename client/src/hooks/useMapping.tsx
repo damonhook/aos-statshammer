@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 const useMapping = (data, mapper, pending = false) => {
   const [results, setResults] = useState([]);
 

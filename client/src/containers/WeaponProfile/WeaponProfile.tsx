@@ -11,8 +11,8 @@ import { getUnitByPosition } from 'utils/unitHelpers';
 import { Delete, FileCopy, Edit } from '@material-ui/icons';
 import _ from 'lodash';
 import { scrollToRef } from 'utils/scrollIntoView';
-import Characteristics from './Characteristics';
 import { IWeaponProfile } from 'types/unit';
+import Characteristics from './Characteristics';
 
 const useStyles = makeStyles(theme => ({
   profile: {

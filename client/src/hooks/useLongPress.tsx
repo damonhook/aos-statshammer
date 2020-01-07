@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
  * @param {func} callback The function to call on long press
  * @param {int} ms The amount of time in ms to wait before calling the functino
  */
-const useLongPress = (callback = () => {}, ms = 300) => {
+const useLongPress = (callback: () => void, ms = 300) => {
   const [startLongPress, setStartLongPress] = useState(false);
 
   useEffect(() => {

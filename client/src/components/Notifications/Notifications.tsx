@@ -3,8 +3,8 @@ import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import clsx from 'clsx';
-import Notification from './Notification';
 import { IStore } from 'types/store';
+import Notification from './Notification';
 
 const useStyles = makeStyles(theme => ({
   notifications: {

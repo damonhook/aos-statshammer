@@ -6,7 +6,7 @@ import WeaponProfile from '../weaponProfile';
 export default class Reroll extends BaseModifier {
   ['constructor']: typeof Reroll;
 
-  static get name() {
+  static get displayName() {
     return 'Reroll';
   }
 
@@ -26,7 +26,7 @@ export default class Reroll extends BaseModifier {
     return D6.getInverseProbability(owner.getCharacteristic(this.characteristic, false));
   }
 
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   allowedReroll(owner: WeaponProfile, roll: number) {
     return true;
   }

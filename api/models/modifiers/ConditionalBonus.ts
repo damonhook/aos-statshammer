@@ -28,12 +28,13 @@ export default class ConditionalBonus extends BaseModifier {
     this.bonusToCharacteristic = c;
   }
 
-  static get name() {
+  static get displayName() {
     return 'Conditional Bonus';
   }
 
   static get description() {
-    return '{unmodified} rolls of {on} for {characteristic} result in a bonus of {bonus} to {bonusToCharacteristic}';
+    return `{unmodified} rolls of {on} for {characteristic} result in a bonus
+    of {bonus} to {bonusToCharacteristic}`;
   }
 
   static get availableCharacteristics() {

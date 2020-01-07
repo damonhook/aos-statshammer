@@ -7,8 +7,8 @@ import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
 import _ from 'lodash';
 import { target } from 'store/slices';
-import PendingModifiers from './PendingModifiers';
 import { IStore } from 'types/store';
+import PendingModifiers from './PendingModifiers';
 
 const useStyles = makeStyles(() => ({
   modifierList: {

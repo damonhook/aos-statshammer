@@ -6,11 +6,11 @@ import _ from 'lodash';
 import { ProbabilityTooltip } from 'components/GraphTooltips';
 import clsx from 'clsx';
 import ListItem from 'components/ListItem';
+import { IProbability } from 'types/simulations';
+import { TError } from 'types/store';
 import { getMaxDamage, getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 import GraphControls from './GraphControls';
 import Loadable from './Loadable';
-import { IProbability } from 'types/simulations';
-import { TError } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
   probabilityCurves: {},
@@ -132,8 +132,7 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
                             unitIndex >= 0
                               ? theme.palette.graphs.series[unitIndex]
                               : theme.palette.graphs.axis;
-                          // @ts-ignore
-                          return { x: metrics[activeMetric][name], stroke, dataKey: name };
+                          return { x: metrics[String(activeMetric)][name], stroke, dataKey: name };
                         })
                       : null
                   }

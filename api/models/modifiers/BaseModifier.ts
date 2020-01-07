@@ -13,7 +13,7 @@ export default class BaseModifier {
     this.characteristic = c;
   }
 
-  static get name() {
+  static get displayName() {
     return null;
   }
 
@@ -33,13 +33,13 @@ export default class BaseModifier {
 
   static get metadata() {
     return {
-      name: this.name,
+      name: this.displayName,
       description: this.description,
       options: this.options,
     };
   }
 
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolve(owner): number {
     throw new Error('Resolve method not implemented');
   }

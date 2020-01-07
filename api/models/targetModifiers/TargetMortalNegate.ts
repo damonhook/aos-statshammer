@@ -8,11 +8,11 @@ export default class TargetMortalNegate extends BaseTargetModifier {
   on: number;
 
   constructor({ on = 6 }) {
-    super({});
+    super();
     this.on = Number(on);
   }
 
-  static get name() {
+  static get displayName() {
     return 'Target Mortal Wound Negate';
   }
 
@@ -26,6 +26,7 @@ export default class TargetMortalNegate extends BaseTargetModifier {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolve(profile: WeaponProfile, target: Target) {
     return D6.getProbability(this.on);
   }

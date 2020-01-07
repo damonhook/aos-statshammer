@@ -7,8 +7,8 @@ import _ from 'lodash';
 import Graphs from 'containers/Graphs';
 import { GetApp, BarChart } from '@material-ui/icons';
 import TargetSummary from 'components/TargetSummary';
-import ResultsTable from './ResultsTable';
 import { IStatsStore } from 'types/store';
+import ResultsTable from './ResultsTable';
 
 const useStyles = makeStyles({
   results: {},
@@ -33,7 +33,10 @@ const Results: React.FC<IResultsProps> = React.memo(
       <Typography className={clsx(classes.results, className)} component="div">
         <TargetSummary />
         {!mobile && (
-          <Tooltip title="View more advanced stats (like full probability curves), calculated through simulations">
+          <Tooltip
+            title={`View more advanced stats (like full probability curves), 
+            calculated through simulations`}
+          >
             <Button
               variant="contained"
               color="primary"

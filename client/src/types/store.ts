@@ -2,7 +2,7 @@ import { IModifierDefinition, IModifierInstance } from './modifiers';
 import { IUnit } from './unit';
 import { INotification } from './notification';
 import { TResults } from './stats';
-import { IProbability, TResult, ISimulation } from './simulations';
+import { IProbability, TResult } from './simulations';
 
 export type TError = boolean | string | null;
 
