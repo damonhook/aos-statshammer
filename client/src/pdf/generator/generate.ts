@@ -120,14 +120,10 @@ const generateTarget = (doc: IJsPDF, target: ITargetStore) => {
   cursor.incr(10);
 };
 
-const transposeData = (unitNames: string[], results: TResult[]): any[] =>
-  unitNames.map(name => {
-    const item = { name };
-    results.forEach(({ save, ...results }) => {
-      item[save] = results[name];
-    });
-    return item;
-  });
+const transposeData = (unitNames: string[], results: TResult[]) =>
+  unitNames.map(name =>
+    results.reduce((acc, { save, ...results }) => ({ ...acc, [save]: results[name] }), { name }),
+  );
 
 const generateStatsTable = (doc: IJsPDF, results: TResult[], unitNames: string[]) => {
   const data = transposeData(unitNames, results);

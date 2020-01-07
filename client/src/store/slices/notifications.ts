@@ -4,6 +4,7 @@ import { INotificationsStore } from 'types/store';
 import { INotificationParameters } from 'types/notification';
 
 const INITIAL_STATE: INotificationsStore = [];
+const MAX_NOTIFICATIONS = 1;
 
 const addNotification = (state: INotificationsStore, action: { payload: INotificationParameters }) => {
   const notification = action.payload;
@@ -12,6 +13,9 @@ const addNotification = (state: INotificationsStore, action: { payload: INotific
     variant: notification.variant || 'info',
     key: nanoid(),
   });
+  if (state.length > MAX_NOTIFICATIONS) {
+    state.shift();
+  }
 };
 
 const dismissNotification = (state: INotificationsStore, action: { payload: { key: string } }) => {

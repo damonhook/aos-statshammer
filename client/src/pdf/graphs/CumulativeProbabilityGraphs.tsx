@@ -30,7 +30,8 @@ const CumulativeProbabilityGraphs = ({ probabilities, unitNames }) => {
   return (
     <div>
       {[...Array(rows)].map((_, rowIndex) => (
-        <GraphWrapper className="pdf-cumulative" height={380}>
+        // eslint-disable-next-line react/no-array-index-key
+        <GraphWrapper className="pdf-cumulative" height={380} key={rowIndex}>
           <div className={classes.graphGroup}>
             {[...Array(cols)].map((_, colIndex) => {
               const index = rowIndex * cols + colIndex;
