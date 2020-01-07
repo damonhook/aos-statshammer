@@ -11,19 +11,19 @@ export class Dice {
   }
 
   /** The average of this dice */
-  get average() {
+  get average(): number {
     return (this.sides + 1) / 2;
   }
 
   /** Roll the dice */
-  roll() {
+  roll(): number {
     return getRandomInt(1, this.sides);
   }
 
   /**
    * Get the probability of rolling a value >= to the `target`
    */
-  getProbability(target: number) {
+  getProbability(target: number): number {
     let numerator = this.sides - target + 1;
     numerator = Math.min(Math.max(numerator, 0), this.sides);
     return numerator / this.sides;
@@ -32,18 +32,18 @@ export class Dice {
   /**
    * Get the probability of rolling a value < than the `target`
    */
-  getInverseProbability(target: number) {
+  getInverseProbability(target: number): number {
     return 1 - this.getProbability(target);
   }
 
-  toString() {
+  toString(): string {
     return `D${this.sides}`;
   }
 
   /**
    * Build a `Dice` class or `Number` by parsing a value
    */
-  static parse(val: string | Dice | number) {
+  static parse(val: string | Dice | number): Dice | number {
     if (val instanceof Dice) {
       return val;
     }

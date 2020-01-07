@@ -2,6 +2,9 @@ import WeaponProfile from '../weaponProfile';
 import Target from '../target';
 
 export default class BaseTargetModifier {
+  // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  constructor(data: any) {}
+
   static get displayName(): string {
     return null;
   }

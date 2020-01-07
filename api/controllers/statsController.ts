@@ -6,7 +6,7 @@ import { SAVES } from '../constants';
  * Compare the average damage of these units
  */
 export const compareUnits = ({ units, target }) => {
-  const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
+  const unitList: Unit[] = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
   const results = SAVES.map(save => {
     const targetClass = new Target(save, target ? target.modifiers : []);
     return unitList.reduce(
@@ -24,7 +24,7 @@ export const compareUnits = ({ units, target }) => {
   };
 };
 
-const buildCumulative = (probabilities, unitNames, metrics) => {
+const buildCumulative = (probabilities: any, unitNames: string[], metrics: any) => {
   const maxDamage = Math.max(...Object.keys(probabilities).map(n => Number(n)));
   const sums = unitNames.reduce((acc, name) => ({ ...acc, [name]: 0 }), {});
   const cumulative = [...Array(maxDamage + 1)].map((_, damage) => {
@@ -60,7 +60,7 @@ const buildProbability = ({ save, ...unitResults }) => {
     metrics.max[name] = unitResults[name].metrics.max;
   });
   const buckets = Object.keys(probabilities)
-    .sort((x, y) => x - y)
+    .sort((x, y) => Number(x) - Number(y))
     .map(damage => ({
       damage: Number(damage),
       ...probabilities[damage],
@@ -81,7 +81,7 @@ export const simulateUnitsForSave = ({
   numSimulations = 1000,
   includeOutcomes = false,
 }) => {
-  const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
+  const unitList: Unit[] = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
   const targetClass = new Target(save, target ? target.modifiers : []);
   const results = unitList.reduce(
     (acc, unit) => {

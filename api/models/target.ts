@@ -18,7 +18,7 @@ class Target {
   /**
    * Get the targets save after rend has been applied
    */
-  getSave(rend: number = null) {
+  getSave(rend: number = null): number | null {
     if (this.save) {
       let { save } = this;
       if (!this.modifiers.getModifier(t.TARGET_ETHEREAL)) {
@@ -30,7 +30,7 @@ class Target {
     return null;
   }
 
-  resolveSave(profile: WeaponProfile) {
+  resolveSave(profile: WeaponProfile): number {
     const save = this.getSave(profile.getRend());
     if (save === null) return 0;
     let saved = D6.getProbability(save);
@@ -38,21 +38,21 @@ class Target {
     return Math.min(saved, 1);
   }
 
-  resolveMortalSave(profile: WeaponProfile) {
+  resolveMortalSave(profile: WeaponProfile): number {
     return this.resolveChainedModifier(profile, t.TARGET_MORTAL_NEGATE);
   }
 
-  resolveFNP(profile: WeaponProfile) {
+  resolveFNP(profile: WeaponProfile): number {
     return this.resolveChainedModifier(profile, t.TARGET_FNP);
   }
 
-  resolveModifier(profile: WeaponProfile, modifier) {
+  resolveModifier(profile: WeaponProfile, modifier: typeof BaseTargetModifier): number {
     const mod = this.modifiers.getModifier(modifier);
     if (mod) return mod.resolve(profile, this);
     return 0;
   }
 
-  resolveRerolls(profile: WeaponProfile) {
+  resolveRerolls(profile: WeaponProfile): number {
     const mod = this.modifiers.getRerollModifier();
     if (mod) return mod.resolve(profile, this);
     return 0;

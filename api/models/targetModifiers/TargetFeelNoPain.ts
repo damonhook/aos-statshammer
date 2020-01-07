@@ -8,7 +8,7 @@ export default class TargetFeelNoPain extends BaseTargetModifier {
   on: number;
 
   constructor({ on = 6 }) {
-    super();
+    super({});
     this.on = Number(on);
   }
 

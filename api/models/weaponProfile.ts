@@ -39,7 +39,7 @@ class WeaponProfile {
    * @param unmodified Whether you want the unmodified characteristic or not
    * @param roll Whether the roll or use average
    */
-  getAttacks(unmodified = false, roll = false) {
+  getAttacks(unmodified = false, roll = false): number {
     let attacks = roll ? this.attacks.roll() : this.attacks.average;
     if (!unmodified) attacks += this.resolveStackableModifier(m.BONUS, C.ATTACKS, roll);
     return Math.max(attacks, 1);
@@ -49,7 +49,7 @@ class WeaponProfile {
    * Get the to hit target for the profile
    * @param unmodified Whether you want the unmodified characteristic or not
    */
-  getToHit(unmodified = false, roll = false) {
+  getToHit(unmodified = false, roll = false): number {
     let { toHit } = this;
     if (!unmodified) toHit -= this.resolveStackableModifier(m.BONUS, C.TO_HIT, roll);
     return Math.min(Math.max(toHit, 2), 6);
@@ -59,7 +59,7 @@ class WeaponProfile {
    * Get the to wound target for the profile
    * @param unmodified Whether you want the unmodified characteristic or not
    */
-  getToWound(unmodified = false, roll = false) {
+  getToWound(unmodified = false, roll = false): number {
     let { toWound } = this;
     if (!unmodified) toWound -= this.resolveStackableModifier(m.BONUS, C.TO_WOUND, roll);
     return Math.min(Math.max(toWound, 2), 6);
@@ -69,7 +69,7 @@ class WeaponProfile {
    * Get the amount of rend for the profile
    * @param unmodified Whether you want the unmodified characteristic or not
    */
-  getRend(unmodified = false, roll = false) {
+  getRend(unmodified = false, roll = false): number {
     let { rend } = this;
     if (!unmodified) rend += this.resolveStackableModifier(m.BONUS, C.REND, roll);
     return Math.max(rend, 0);
@@ -80,7 +80,7 @@ class WeaponProfile {
    * @param unmodified Whether you want the unmodified characteristic or not
    * @param roll Whether the roll or use average
    */
-  getDamage(unmodified = false, roll = false) {
+  getDamage(unmodified = false, roll = false): number {
     let damage = roll ? this.damage.roll() : this.damage.average;
     if (!unmodified) damage += this.resolveStackableModifier(m.BONUS, C.DAMAGE, roll);
     return Math.max(damage, 1);
@@ -91,7 +91,7 @@ class WeaponProfile {
    * @param characteristic The characteristic to get
    * @param unmodified Whether you want the unmodified characteristic or not
    */
-  getCharacteristic(characteristic: Characteristic, unmodified = false, roll = false) {
+  getCharacteristic(characteristic: Characteristic, unmodified = false, roll = false): number {
     switch (characteristic) {
       case C.ATTACKS:
         return this.getAttacks(unmodified, roll);
@@ -123,7 +123,7 @@ class WeaponProfile {
    * Attempt to resolve the reroll modifiers for a characteristic (if one exists)
    * @param characteristic The characteristic the modifier must belong to
    */
-  resolveRerolls(characteristic: Characteristic) {
+  resolveRerolls(characteristic: Characteristic): number {
     const mod = this.modifiers.getRerollModifier(characteristic);
     if (mod) return mod.resolve(this);
     return 0;
@@ -134,7 +134,11 @@ class WeaponProfile {
    * @param modifier The modifier class to attempt to resolve
    * @param characteristic The characteristic the modifier must belong to
    */
-  resolveStackableModifier(modifier: typeof BaseModifier, characteristic: Characteristic, roll = false) {
+  resolveStackableModifier(
+    modifier: typeof BaseModifier,
+    characteristic: Characteristic,
+    roll = false,
+  ): number {
     const modList = this.modifiers.getStackableModifier(modifier, characteristic);
     if (modList && modList.length) {
       // @ts-ignore
@@ -149,7 +153,7 @@ class WeaponProfile {
    * @param]} excludeModifiers An array of modifiers to exclude from the new profile
    * @param]} extraModifiers An array of modifiers to add to the new profile
    */
-  getSplitProfile(excludeModifiers: BaseModifier[], extraModifiers: BaseModifier[]) {
+  getSplitProfile(excludeModifiers: BaseModifier[], extraModifiers: BaseModifier[]): WeaponProfile {
     const newProfile = new WeaponProfile(
       this.numModels,
       this.attacks,
@@ -168,7 +172,7 @@ class WeaponProfile {
   /**
    * Get the list of Leader specific modifiers (if any exist)
    */
-  getLeaderModifiers() {
+  getLeaderModifiers(): LeaderBonus[] {
     const modList: LeaderBonus[] = [];
     m.LEADER_BONUS.availableCharacteristics.forEach(c => {
       const mod = this.modifiers.getModifier(m.LEADER_BONUS, c);

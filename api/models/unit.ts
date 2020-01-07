@@ -35,7 +35,7 @@ class Unit {
    * Calculate the average damage this unit would do against a particular target
    * @param target The target to calculate the damage against
    */
-  averageDamage(target: Target) {
+  averageDamage(target: Target): number {
     return this.weaponProfiles.reduce(
       (acc, profile) => acc + new Average(profile, target).getAverageDamage(),
       0,

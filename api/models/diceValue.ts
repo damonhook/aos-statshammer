@@ -25,7 +25,7 @@ class DiceValue {
    * The average of this dice value (combination of the average of each dice,
    * summed with the additions)
    * */
-  get average() {
+  get average(): number {
     const averageAditions = this.additions.reduce<number>(
       (acc, item) => (item instanceof Dice ? acc + item.average : acc + Number(item)),
       0,
@@ -38,7 +38,7 @@ class DiceValue {
   }
 
   /** Roll the this dice value (combination of dice rolls summed with additions) */
-  roll() {
+  roll(): number {
     const rolledAditions = this.additions.reduce<number>(
       (acc, item) => (item instanceof Dice ? acc + item.roll() : acc + Number(item)),
       0,
@@ -53,7 +53,7 @@ class DiceValue {
   /**
    * Build a `DiceValue` class by parsing a value
    */
-  static parse(val: string | Dice | DiceValue | number) {
+  static parse(val: string | Dice | DiceValue | number): DiceValue {
     if (val instanceof this) return val;
     if (val instanceof Dice) return new this([val]);
     const additions: (Dice | number)[] = [];
