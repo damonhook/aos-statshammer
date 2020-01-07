@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Snackbar, IconButton, SnackbarContent } from '@material-ui/core';
+import { Snackbar, IconButton, SnackbarContent, Button } from '@material-ui/core';
 import { Close, CheckCircle, Warning, Error as ErrorIcon, Info } from '@material-ui/icons';
 import { connect, ConnectedProps } from 'react-redux';
 import { notifications } from 'store/slices';
 import clsx from 'clsx';
 import { amber, green } from '@material-ui/core/colors';
 import { SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
-import { TNotificationVariants } from 'types/notification';
+import { TNotificationVariants, INotificationAction } from 'types/notification';
 
 const variantIcon = {
   success: CheckCircle,
@@ -78,6 +78,7 @@ interface INotificationProps extends ConnectedProps<typeof connector> {
   message: string;
   notificationId: string;
   variant: TNotificationVariants;
+  action?: INotificationAction;
   timeout?: number | null;
 }
 
@@ -89,6 +90,7 @@ const Notification: React.FC<INotificationProps> = ({
   notificationId,
   dismissNotification,
   variant = 'info',
+  action,
   timeout = 3000,
 }) => {
   const classes = useStyles();
@@ -99,14 +101,16 @@ const Notification: React.FC<INotificationProps> = ({
     setOpen(true);
   }, [notificationId]);
 
-  const handleClose = reason => {
+  const handleClose = (reason: any) => {
     if (reason === 'clickaway') return;
-    if (reason === 'swipeaway') {
-      if (dismissNotification) dismissNotification({ key: notificationId });
-      return;
-    }
+    const t = reason === 'swipeaway' || reason === 'actioned' ? 0 : 500;
     setOpen(false);
-    if (dismissNotification) setTimeout(() => dismissNotification({ key: notificationId }), 500);
+    if (dismissNotification) setTimeout(() => dismissNotification({ key: notificationId }), t);
+  };
+
+  const handleAction = () => {
+    if (action?.onClick) action.onClick();
+    handleClose('actioned');
   };
 
   return (
@@ -131,6 +135,7 @@ const Notification: React.FC<INotificationProps> = ({
             </span>
           }
           action={[
+            ...(action?.label ? [<Button onClick={handleAction}>{action.label}</Button>] : []),
             <IconButton key="close" onClick={handleClose}>
               <Close className={classes.icon} />
             </IconButton>,

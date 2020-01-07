@@ -38,8 +38,8 @@ const Notifications: React.FC<INotificationsProps> = ({ notifications }) => {
 
   return (
     <div className={clsx(classes.notifications, mobile ? classes.mobile : '')}>
-      {notifications.map(({ message, key, variant }) => (
-        <Notification message={message} notificationId={key} key={key} variant={variant} />
+      {notifications.map(({ message, key, variant, action }) => (
+        <Notification message={message} notificationId={key} key={key} variant={variant} action={action} />
       ))}
     </div>
   );

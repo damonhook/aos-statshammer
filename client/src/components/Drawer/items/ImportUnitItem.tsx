@@ -33,7 +33,7 @@ const ImportUnitItem: React.FC<ImportUnitItemProps> = ({ numUnits, addNotificati
     data => {
       if (data && data.name && data.weapon_profiles) {
         addNotification({ message: 'Successfully imported unit', variant: 'success' });
-        addUnit(data);
+        addUnit({ unit: data });
       }
       if (onClick) onClick();
     },

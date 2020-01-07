@@ -36,7 +36,7 @@ const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotifi
   const onUpload = (data: IUnit) => {
     if (data && data.name && data.weapon_profiles) {
       addNotification({ message: 'Successfully imported unit', variant: 'success' });
-      addUnit({ name: data.name, weapon_profiles: data.weapon_profiles });
+      addUnit({ unit: data });
     }
   };
 
@@ -44,7 +44,7 @@ const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotifi
     <div className={classes.group}>
       <Button
         fullWidth
-        onClick={() => addUnit({ name: `Unit ${units.length + 1}` })}
+        onClick={() => addUnit({ unit: { name: `Unit ${units.length + 1}` } })}
         variant="contained"
         startIcon={<Add />}
         color="primary"

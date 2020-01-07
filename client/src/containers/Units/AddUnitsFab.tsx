@@ -13,7 +13,7 @@ interface AddUnitsFabProps extends ConnectedProps<typeof connector> {}
 
 const AddUnitsFab: React.FC<AddUnitsFabProps> = ({ numUnits, addUnit }) => (
   <FloatingButton
-    onClick={() => addUnit({ name: `Unit ${numUnits + 1}` })}
+    onClick={() => addUnit({ unit: { name: `Unit ${numUnits + 1}` } })}
     icon={<AddIcon />}
     disabled={!addUnitEnabled()}
   />

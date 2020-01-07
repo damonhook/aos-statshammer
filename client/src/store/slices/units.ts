@@ -23,8 +23,12 @@ const INITIAL_STATE: IUnitStore = [
   },
 ];
 
-export const addUnit = (state: IUnitStore, action: { payload: IUnitParameter }) => {
-  const { name, weapon_profiles } = action.payload;
+export const addUnit = (
+  state: IUnitStore,
+  action: { payload: { unit: IUnitParameter; atPosition?: number | null } },
+) => {
+  const { name, weapon_profiles } = action.payload.unit;
+  const { atPosition } = action.payload;
   const profiles = weapon_profiles ?? [DEFAULT_WEAPON_PROFILE];
   const unit = {
     name,
@@ -34,7 +38,11 @@ export const addUnit = (state: IUnitStore, action: { payload: IUnitParameter }) 
       uuid: nanoid(),
     })),
   };
-  state.push(unit);
+  if (typeof atPosition === 'number' && atPosition >= 0 && atPosition < state.length) {
+    state.splice(atPosition, 0, unit);
+  } else {
+    state.push(unit);
+  }
 };
 
 export const deleteUnit = (state: IUnitStore, action: { payload: { index: number } }) => {

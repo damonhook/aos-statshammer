@@ -14,6 +14,7 @@ import _ from 'lodash';
 import { scrollToRef } from 'utils/scrollIntoView';
 import { IStore } from 'types/store';
 import { IUnit } from 'types/unit';
+import { INotificationAction } from 'types/notification';
 
 const useStyles = makeStyles(theme => ({
   unit: {
@@ -75,9 +76,13 @@ const Unit: React.FC<IUnitProps> = React.memo(
     }, [unit.uuid]);
 
     const handleDeleteUnit = useCallback(() => {
-      addNotification({ message: 'Deleted Unit' });
+      const action: INotificationAction = {
+        label: 'Undo',
+        onClick: () => addUnit({ unit, atPosition: id }),
+      };
+      addNotification({ message: 'Deleted Unit', action });
       deleteUnit({ index: id });
-    }, [id, addNotification, deleteUnit]);
+    }, [unit, addNotification, addUnit, deleteUnit, id]);
 
     const exportUnit = useCallback(() => {
       downloadUnit(unit);
@@ -90,7 +95,7 @@ const Unit: React.FC<IUnitProps> = React.memo(
     const unitNameError = !unit.name || unit.name === '';
 
     const copyUnit = () => {
-      addUnit({ name: `${unit.name} copy`, weapon_profiles: [...unit.weapon_profiles] });
+      addUnit({ unit: { name: `${unit.name} copy`, weapon_profiles: [...unit.weapon_profiles] } });
     };
 
     const moveUnitUp = () => {
