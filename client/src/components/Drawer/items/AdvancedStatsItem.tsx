@@ -4,6 +4,7 @@ import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { Timeline as TimelineIcon } from '@material-ui/icons';
 import BetaTag from 'components/BetaTag';
 import { IStore } from 'types/store';
+import { getRoute, EPages } from 'types/routes';
 import LinkItem from './LinkItem';
 
 const mapStateToProps = (state: IStore) => ({
@@ -16,12 +17,12 @@ interface AdvancedStatsItemProps extends ConnectedProps<typeof connector> {
 }
 
 const AdvancedStatsItem: React.FC<AdvancedStatsItemProps> = ({ numUnits }) => (
-  <LinkItem to="/advanced" disabled={numUnits <= 0}>
+  <LinkItem to={getRoute(EPages.SIMULATIONS)} disabled={numUnits <= 0}>
     <ListItemIcon>
       <TimelineIcon />
     </ListItemIcon>
     <ListItemText>
-      Advanced Stats
+      Simulations
       <BetaTag />
     </ListItemText>
   </LinkItem>

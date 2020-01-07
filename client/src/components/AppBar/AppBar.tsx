@@ -6,6 +6,7 @@ import { Menu as MenuIcon } from '@material-ui/icons';
 import Drawer from 'components/Drawer';
 import Link from 'components/Link';
 import { useHashMatch } from 'hooks';
+import { EPages, getRoute } from 'types/routes';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -35,13 +36,13 @@ const useStyles = makeStyles(theme => ({
 
 interface IAppBarProps {
   title: string;
-  variant?: 'home' | 'advanced';
+  variant?: EPages;
 }
 
 /**
  * The app bar that appears on top of the page
  */
-const AppBar: React.FC<IAppBarProps> = ({ title, variant = 'home' }) => {
+const AppBar: React.FC<IAppBarProps> = ({ title, variant = EPages.HOME }) => {
   const classes = useStyles();
   const history = useHistory();
   const drawerOpen = useHashMatch('#menu');
@@ -64,7 +65,7 @@ const AppBar: React.FC<IAppBarProps> = ({ title, variant = 'home' }) => {
               <IconButton onClick={handleDrawerOpen} className={classes.menuButton}>
                 <MenuIcon />
               </IconButton>
-              <Link to="/" className={classes.link}>
+              <Link to={getRoute(EPages.HOME)} className={classes.link}>
                 <Typography variant="h5" component="h1" className={classes.title}>
                   {title}
                 </Typography>

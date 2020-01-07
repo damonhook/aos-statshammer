@@ -15,6 +15,7 @@ import BasicCurves from 'containers/ProbabilityCurves/BasicCurves';
 import CumulativeCurves from 'containers/ProbabilityCurves/CumulativeCurves';
 import { IStore } from 'types/store';
 import Notifications from 'components/Notifications';
+import { EPages } from 'types/routes';
 import MetricsTables from './MetricsTables';
 import ProbabilityTables from './ProbabilityTables';
 
@@ -52,9 +53,9 @@ const mapStateToProps = (state: IStore) => ({
 });
 
 const connector = connect(mapStateToProps, { fetchSimulations });
-interface AdvancedStatsProps extends ConnectedProps<typeof connector> {}
+interface ISimulationsProps extends ConnectedProps<typeof connector> {}
 
-const AdvancedStats: React.FC<AdvancedStatsProps> = React.memo(
+const Simulations: React.FC<ISimulationsProps> = React.memo(
   ({ units, simulations, fetchSimulations }) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -80,7 +81,7 @@ const AdvancedStats: React.FC<AdvancedStatsProps> = React.memo(
 
     return (
       <div className={classes.app}>
-        <AppBar title="AoS Statshammer" variant="advanced" />
+        <AppBar title="AoS Statshammer" variant={EPages.SIMULATIONS} />
         <div className={classes.container}>
           <Tabbed
             className={classes.tabs}
@@ -128,4 +129,4 @@ const AdvancedStats: React.FC<AdvancedStatsProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-export default connector(AdvancedStats);
+export default connector(Simulations);

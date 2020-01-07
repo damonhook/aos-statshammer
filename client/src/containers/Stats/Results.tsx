@@ -8,6 +8,7 @@ import Graphs from 'containers/Graphs';
 import { GetApp, BarChart } from '@material-ui/icons';
 import TargetSummary from 'components/TargetSummary';
 import { IStatsStore } from 'types/store';
+import { getRoute, EPages } from 'types/routes';
 import ResultsTable from './ResultsTable';
 
 const useStyles = makeStyles({
@@ -45,9 +46,9 @@ const Results: React.FC<IResultsProps> = React.memo(
               disabled={downloadDisabled}
               style={{ marginBottom: theme.spacing(2) }}
               size={mobile ? 'large' : 'medium'}
-              href="/advanced"
+              href={getRoute(EPages.SIMULATIONS)}
             >
-              Advanced Stats
+              Simulations
             </Button>
           </Tooltip>
         )}

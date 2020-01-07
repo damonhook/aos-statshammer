@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Home, BarChart } from '@material-ui/icons';
 import { useHistory, useLocation, matchPath } from 'react-router-dom';
 import { IStore } from 'types/store';
+import { getRoute, EPages } from 'types/routes';
 
 const useStyles = makeStyles(theme => ({
   nav: {
@@ -33,26 +34,26 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ numUnits }) => {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
-  const advancedDisabled = numUnits <= 0;
+  const simulationsDisabled = numUnits <= 0;
 
   const handleMainClick = () => {
-    history.push('/');
+    history.push(getRoute(EPages.HOME));
   };
 
-  const handleAdvancedClick = () => {
-    history.push('/advanced');
+  const handleSimClick = () => {
+    history.push(getRoute(EPages.SIMULATIONS));
   };
 
-  const activeIndex = matchPath(location.pathname, { path: '/advanced' }) ? 1 : 0;
+  const activeIndex = matchPath(location.pathname, { path: getRoute(EPages.SIMULATIONS) }) ? 1 : 0;
 
   return (
     <Navigation showLabels className={classes.nav} value={activeIndex}>
       <NavigationItem label="Main" icon={<Home />} onClick={handleMainClick} />
       <NavigationItem
-        label="Advanced"
+        label="Simulations"
         icon={<BarChart />}
-        onClick={handleAdvancedClick}
-        disabled={advancedDisabled}
+        onClick={handleSimClick}
+        disabled={simulationsDisabled}
         className={classes.item}
       />
     </Navigation>

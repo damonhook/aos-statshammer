@@ -4,6 +4,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Link from 'components/Link';
 import { useHistory } from 'react-router-dom';
 import { grey } from '@material-ui/core/colors';
+import { EPages, getRoute } from 'types/routes';
 import HomeItem from './items/HomeItem';
 import ClearUnitsItem from './items/ClearUnitsItem';
 import ImportUnitItem from './items/ImportUnitItem';
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 interface DrawerProps {
   open: boolean;
   onClose?: () => void;
-  page?: 'home' | 'advanced';
+  page?: EPages;
 }
 
 const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
@@ -67,7 +68,7 @@ const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
         keepMounted: true, // Better open performance on mobile.
       }}
     >
-      <Link to="/" replace>
+      <Link to={getRoute(EPages.HOME)} replace>
         <Typography variant="h6" className={classes.title}>
           AoS Statshammer
         </Typography>
@@ -79,8 +80,8 @@ const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
         <PdfDownloadItem />
         <Divider className={classes.divider} variant="middle" />
         <ToggleDarkModeItem />
-        {page === 'home' && !mobile && <ToggleGraphListItem />}
-        {page === 'home' && (
+        {page === EPages.HOME && !mobile && <ToggleGraphListItem />}
+        {page === EPages.HOME && (
           <>
             <ClearUnitsItem />
             <ImportUnitItem onClick={onClose} />
@@ -101,7 +102,7 @@ const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
 };
 
 Drawer.defaultProps = {
-  page: 'home',
+  page: EPages.HOME,
 };
 
 export default Drawer;
