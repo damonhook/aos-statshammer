@@ -17,12 +17,6 @@
         "storybook": "cd client && yarn storybook",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn lint",
-            "pre-push": "yarn test && yarn lint"
-        }
-    },
     "dependencies": {
         "@babel/cli": "^7.7.4",
         "@babel/core": "^7.7.4",
@@ -63,7 +57,6 @@
         "eslint-import-resolver-typescript": "^2.0.0",
         "eslint-plugin-json": "^2.0.1",
         "eslint-plugin-prettier": "^3.1.2",
-        "husky": "^4.0.1",
         "jest": "^24.9.0",
         "lerna": "^3.19.0",
         "prettier": "^1.19.1",
