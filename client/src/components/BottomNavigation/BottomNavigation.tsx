@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { BottomNavigation as Navigation, BottomNavigationAction as NavigationItem } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { Home, BarChart } from '@material-ui/icons';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Home, BarChart, Info } from '@material-ui/icons';
 import { useHistory, useLocation, matchPath } from 'react-router-dom';
 import { IStore } from 'types/store';
 import { getRoute, EPages } from 'types/routes';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   nav: {
     position: 'fixed',
     bottom: 0,
@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     zIndex: theme.zIndex.appBar,
     boxShadow: theme.palette.type === 'dark' ? theme.shadows[20] : theme.shadows[10],
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
   },
   item: {
     '&:disabled': {
@@ -44,7 +47,13 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ numUnits }) => {
     history.push(getRoute(EPages.SIMULATIONS));
   };
 
-  const activeIndex = matchPath(location.pathname, { path: getRoute(EPages.SIMULATIONS) }) ? 1 : 0;
+  const handleAboutClick = () => {
+    history.push(getRoute(EPages.ABOUT));
+  };
+
+  let activeIndex = 0;
+  if (matchPath(location.pathname, { path: getRoute(EPages.SIMULATIONS) })) activeIndex = 1;
+  if (matchPath(location.pathname, { path: getRoute(EPages.ABOUT) })) activeIndex = 2;
 
   return (
     <Navigation showLabels className={classes.nav} value={activeIndex}>
@@ -56,6 +65,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ numUnits }) => {
         disabled={simulationsDisabled}
         className={classes.item}
       />
+      <NavigationItem label="About" icon={<Info />} onClick={handleAboutClick} />
     </Navigation>
   );
 };

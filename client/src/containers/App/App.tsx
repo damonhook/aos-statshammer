@@ -8,6 +8,7 @@ import PdfContainer from 'containers/PdfContainer';
 import Simulations from 'containers/Simulations';
 import { IStore } from 'types/store';
 import { getRoute, EPages } from 'types/routes';
+import About from 'containers/About';
 import AppContentWrapper from './AppContentWrapper';
 
 const mapStateToProps = (state: IStore) => ({
@@ -25,7 +26,8 @@ const App: React.FC<AppProps> = ({ config }) => (
         <Route exact path={getRoute(EPages.HOME)} component={AppContentWrapper} />
         <Route path={['/units', '/target', '/stats']} component={AppContentWrapper} />
         <Route exact path={getRoute(EPages.SIMULATIONS)} component={Simulations} />
-        <Route exact path="/pdf" component={PdfContainer} />
+        <Route exact path={getRoute(EPages.PDF)} component={PdfContainer} />
+        <Route exact path={getRoute(EPages.ABOUT)} component={About} />
 
         <Redirect exact from="/units" to={getRoute(EPages.HOME)} />
         <Redirect from="/advanced" to={getRoute(EPages.SIMULATIONS)} />

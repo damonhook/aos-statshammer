@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { grey } from '@material-ui/core/colors';
 import { EPages, getRoute } from 'types/routes';
 import HomeItem from './items/HomeItem';
+import AboutItem from './items/AboutItem';
 import ClearUnitsItem from './items/ClearUnitsItem';
 import ImportUnitItem from './items/ImportUnitItem';
 import AdvancedStatsItem from './items/AdvancedStatsItem';
@@ -78,6 +79,7 @@ const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
         <HomeItem />
         <AdvancedStatsItem />
         <PdfDownloadItem />
+        <AboutItem />
         <Divider className={classes.divider} variant="middle" />
         <ToggleDarkModeItem />
         {page === EPages.HOME && !mobile && <ToggleGraphListItem />}

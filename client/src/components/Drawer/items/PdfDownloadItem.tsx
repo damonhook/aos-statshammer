@@ -4,6 +4,7 @@ import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { GetApp } from '@material-ui/icons';
 import BetaTag from 'components/BetaTag';
 import { IStore } from 'types/store';
+import { getRoute, EPages } from 'types/routes';
 import LinkItem from './LinkItem';
 
 const mapStateToProps = (state: IStore) => ({
@@ -16,7 +17,7 @@ interface PdfDownloadItemProps extends ConnectedProps<typeof connector> {
 }
 
 const PdfDownloadItem: React.FC<PdfDownloadItemProps> = ({ numUnits }) => (
-  <LinkItem to="/pdf" disabled={numUnits <= 0}>
+  <LinkItem to={getRoute(EPages.PDF)} disabled={numUnits <= 0}>
     <ListItemIcon>
       <GetApp />
     </ListItemIcon>

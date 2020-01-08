@@ -63,7 +63,7 @@ const Results: React.FC<IResultsProps> = React.memo(
         <Graphs stats={stats} unitNames={unitNames} />
         {!mobile && (
           <Button
-            href="/pdf"
+            href={getRoute(EPages.PDF)}
             variant="contained"
             color="primary"
             fullWidth

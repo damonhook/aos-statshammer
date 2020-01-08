@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback, useRef } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { fetchSimulations } from 'api';
@@ -17,6 +17,7 @@ import { IStore } from 'types/store';
 import Notifications from 'components/Notifications';
 import { EPages } from 'types/routes';
 import SimulationTabControls from 'components/SimulationTabControls';
+import { scrollToRef } from 'utils/scrollIntoView';
 import MetricsTables from './MetricsTables';
 import ProbabilityTables from './ProbabilityTables';
 
@@ -63,6 +64,7 @@ const Simulations: React.FC<ISimulationsProps> = React.memo(
     const theme = useTheme();
     const history = useHistory();
     const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const ref = useRef(null);
 
     if (units.length <= 0) {
       history.replace('/');
@@ -81,8 +83,12 @@ const Simulations: React.FC<ISimulationsProps> = React.memo(
       fetchSimulations();
     }, [fetchSimulations]);
 
+    useEffect(() => {
+      scrollToRef(ref, true);
+    }, [results]);
+
     return (
-      <div className={classes.app}>
+      <div className={classes.app} ref={ref}>
         <AppBar title="AoS Statshammer" variant={EPages.SIMULATIONS}>
           <SimulationTabControls pending={simulations.pending} />
         </AppBar>

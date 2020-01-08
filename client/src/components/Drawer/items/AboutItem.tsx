@@ -1,16 +1,16 @@
 import React from 'react';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
-import { Home as HomeIcon } from '@material-ui/icons';
+import { Info as InfoIcon } from '@material-ui/icons';
 import { getRoute, EPages } from 'types/routes';
 import LinkItem from './LinkItem';
 
-const HomeItem = () => (
-  <LinkItem to={getRoute(EPages.HOME)}>
+const AboutItem = () => (
+  <LinkItem to={getRoute(EPages.ABOUT)}>
     <ListItemIcon>
-      <HomeIcon />
+      <InfoIcon />
     </ListItemIcon>
-    <ListItemText primary="Home" />
+    <ListItemText primary="About" />
   </LinkItem>
 );
 
-export default HomeItem;
+export default AboutItem;
