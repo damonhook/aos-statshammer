@@ -12,7 +12,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install -g yarn
+    - run: npm install -g yarn@1.19.2
     - name: yarn install, build, and test
       run: |
         yarn
