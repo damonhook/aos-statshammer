@@ -11,7 +11,9 @@ export const setAutoScrollEnabled = (enabled: boolean) => {
 };
 
 export const scrollToRef = (ref, force = false) => {
-  if ((force || window.autoScrollEnabled) && ref && ref.current) {
-    ref.current.scrollIntoView({ behavior: 'smooth' });
-  }
+  setTimeout(() => {
+    if ((force || window.autoScrollEnabled) && ref && ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, 100);
 };
