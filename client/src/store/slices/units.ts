@@ -71,16 +71,21 @@ export const moveUnit = (state: IUnitStore, action: { payload: { index: number; 
 
 export const addWeaponProfile = (
   state: IUnitStore,
-  action: { payload: { index: number; weaponProfile?: IWeaponProfileParameter } },
+  action: { payload: { index: number; weaponProfile?: IWeaponProfileParameter; atPosition?: number | null } },
 ) => {
-  const { index, weaponProfile } = action.payload;
+  const { index, weaponProfile, atPosition } = action.payload;
   const profile = weaponProfile ?? DEFAULT_WEAPON_PROFILE;
   const unit = state.find((_, i) => i === index);
   if (unit) {
-    unit.weapon_profiles.push({
+    const newProfile = {
       ...profile,
       uuid: nanoid(),
-    });
+    };
+    if (typeof atPosition === 'number' && atPosition >= 0 && atPosition < unit.weapon_profiles.length) {
+      unit.weapon_profiles.splice(atPosition, 0, newProfile);
+    } else {
+      unit.weapon_profiles.push(newProfile);
+    }
   }
 };
 

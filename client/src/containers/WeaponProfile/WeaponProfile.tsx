@@ -91,11 +91,17 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
      * @param {int} unitId The index of the unit that this profile belongs to
      */
     const handleDelete = useCallback(
-      (id, unitId) => {
-        addNotification({ message: 'Deleted Profile' });
+      (id: number, unitId: number) => {
+        addNotification({
+          message: 'Deleted Profile',
+          action: {
+            label: 'Undo',
+            onClick: () => addWeaponProfile({ index: unitId, weaponProfile: profile, atPosition: id }),
+          },
+        });
         deleteWeaponProfile({ index: unitId, profileIndex: id });
       },
-      [addNotification, deleteWeaponProfile],
+      [addNotification, addWeaponProfile, deleteWeaponProfile, profile],
     );
 
     /** Whether the move up button is enabled or not */
