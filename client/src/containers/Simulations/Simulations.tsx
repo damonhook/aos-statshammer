@@ -83,9 +83,10 @@ const Simulations: React.FC<ISimulationsProps> = React.memo(
 
     return (
       <div className={classes.app}>
-        <AppBar title="AoS Statshammer" variant={EPages.SIMULATIONS} />
-        <div className={classes.container}>
+        <AppBar title="AoS Statshammer" variant={EPages.SIMULATIONS}>
           <SimulationTabControls />
+        </AppBar>
+        <div className={classes.container}>
           <Tabbed
             className={classes.tabs}
             tabNames={['Cumulative', 'Discrete', 'Metrics']}
