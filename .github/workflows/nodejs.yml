@@ -1,4 +1,4 @@
-name: Node CI
+name: Node CI (yarn lint && yarn test)
 on: [push, pull_request] # Run on Push and Pull Requests
 jobs:
   build:
@@ -15,6 +15,6 @@ jobs:
     - run: npm install -g yarn@1.19.2
     - name: yarn install, build, and test
       run: |
-        yarn
+        yarn install
         yarn lint
         yarn test
