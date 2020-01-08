@@ -7,6 +7,7 @@
         "yarn": "1.19.2"
     },
     "scripts": {
+        "setup": "yarn install && cd client && yarn install",
         "client": "cd client && yarn start",
         "server": "nodemon --exec babel-node server.ts --extensions \".ts\"",
         "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
@@ -16,11 +17,6 @@
         "bumpversion": "lerna version --no-git-tag-version --no-push",
         "storybook": "cd client && yarn storybook",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
-    },
-    "eslintConfig": {
-        "extends": [
-          "./eslintrc.js"
-        ]
     },
     "dependencies": {
         "@babel/cli": "^7.7.4",
