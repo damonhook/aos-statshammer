@@ -5,7 +5,7 @@ import { EPages, getRoute } from 'types/routes';
 import { useReadFromFile } from 'hooks';
 import ReactMarkdown from 'react-markdown';
 import { Paper, Theme, Typography, Divider, Button, CircularProgress, IconButton } from '@material-ui/core';
-import { GitHub, Reddit, Assessment as Logo } from '@material-ui/icons';
+import { GitHub, Reddit, Assessment as Logo, LocalOffer } from '@material-ui/icons';
 import Footer from 'components/Footer';
 import BottomNavigation from 'components/BottomNavigation';
 import { grey } from '@material-ui/core/colors';
@@ -58,11 +58,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'flex-end',
     color: grey[500],
   },
-  socialActions: {
-    marginTop: theme.spacing(1),
-  },
   socialButton: {
-    marginRight: theme.spacing(2),
+    margin: theme.spacing(1),
   },
 }));
 
@@ -96,7 +93,7 @@ const About = () => {
           <ReactMarkdown source={content} className={classes.md} />
           <Divider className={classes.divider} />
           <Typography variant="h6">Social:</Typography>
-          <div className={classes.socialActions}>
+          <div>
             <Button
               className={classes.socialButton}
               startIcon={<GitHub />}
@@ -114,6 +111,15 @@ const About = () => {
               target="_blank"
             >
               Reddit
+            </Button>
+            <Button
+              className={classes.socialButton}
+              startIcon={<LocalOffer />}
+              variant="contained"
+              href="https://github.com/damonhook/aos-statshammer/releases"
+              target="_blank"
+            >
+              Releases
             </Button>
           </div>
           <div className={classes.spacer} />

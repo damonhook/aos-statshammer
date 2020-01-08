@@ -31,7 +31,7 @@ const AppContentWrapper: React.FC = () => {
   useEffect(() => {
     setAutoScrollEnabled(false);
     setTimeout(() => {
-      scrollToRef({ ref: contentRef, force: true });
+      scrollToRef(contentRef, true);
     }, 500);
     setTimeout(() => {
       setAutoScrollEnabled(true);
