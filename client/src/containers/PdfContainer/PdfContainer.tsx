@@ -6,6 +6,20 @@ import { useMapping } from 'hooks';
 import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
 import _ from 'lodash';
 import { IStore } from 'types/store';
+import AppBar from 'components/AppBar';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() => ({
+  pdfContainer: {
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  generatorInner: {
+    flex: 1,
+    display: 'flex',
+  },
+}));
 
 const mapStateToProps = (state: IStore) => ({
   units: state.units,
@@ -38,6 +52,7 @@ const PdfContainer: React.FC<PdfContainerProps> = React.memo(
     fetchTargetModifiers,
     fetchSimulations,
   }) => {
+    const classes = useStyles();
     const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
     const resultsMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
     const simMapper = useCallback(getProbabilitiesMapping(nameMapping), [nameMapping]);
@@ -58,7 +73,14 @@ const PdfContainer: React.FC<PdfContainerProps> = React.memo(
     const probabilitiesReady = probabilities && probabilities.length;
 
     if (modifiersReady && targetModifiersReady && resultsReady && probabilitiesReady) {
-      return <PdfGenerator units={units} target={target} results={results} probabilities={probabilities} />;
+      return (
+        <div className={classes.pdfContainer}>
+          <AppBar />
+          <div className={classes.generatorInner}>
+            <PdfGenerator units={units} target={target} results={results} probabilities={probabilities} />
+          </div>
+        </div>
+      );
     }
     return null;
   },

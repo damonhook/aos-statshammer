@@ -5,7 +5,7 @@ import { CircularProgress, Typography, Paper } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
   loader: {
     width: '100%',
-    height: '100vh',
+    height: '100%',
     display: 'flex',
     textAlign: 'center',
   },

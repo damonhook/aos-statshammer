@@ -13,18 +13,17 @@ import PdfLoader from './PdfLoader';
 import { StatsGraphs, ProbabilityGraphs, CumulativeProbabilityGraphs } from './graphs';
 
 const useStyles = makeStyles(() => ({
+  pdfGenerator: {
+    width: '100%',
+  },
   hidden: {
     width: '100%',
     position: 'absolute',
     left: -2000,
   },
   iframe: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    bottom: 0,
-    height: '100%',
     width: '100%',
+    height: '100%',
   },
 }));
 
@@ -75,7 +74,7 @@ const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, pr
   }
 
   return (
-    <div>
+    <div className={classes.pdfGenerator}>
       <ThemeProvider theme={lightTheme}>
         <div className={classes.hidden} ref={ref}>
           <StatsGraphs results={results} unitNames={unitNames} />

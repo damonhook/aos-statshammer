@@ -41,14 +41,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface IAppBarProps {
-  title: string;
+  title?: string;
   variant?: EPages;
 }
 
 /**
  * The app bar that appears on top of the page
  */
-const AppBar: React.FC<IAppBarProps> = ({ title, variant = EPages.HOME, children }) => {
+const AppBar: React.FC<IAppBarProps> = ({ title = 'AoS Statshammer', variant = EPages.HOME, children }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
 
