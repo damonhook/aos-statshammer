@@ -84,7 +84,7 @@ const Simulations: React.FC<ISimulationsProps> = React.memo(
     return (
       <div className={classes.app}>
         <AppBar title="AoS Statshammer" variant={EPages.SIMULATIONS}>
-          <SimulationTabControls />
+          <SimulationTabControls pending={simulations.pending} />
         </AppBar>
         <div className={classes.container}>
           <Tabbed

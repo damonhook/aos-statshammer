@@ -38,7 +38,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const SimulationTabControls = () => {
+interface ISimulationTabControlsProps {
+  pending?: boolean;
+}
+
+const SimulationTabControls: React.FC<ISimulationTabControlsProps> = ({ pending }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -60,7 +64,7 @@ const SimulationTabControls = () => {
         <Button startIcon={<ArrowBack />} className={classes.spacedItem} onClick={handleClick}>
           Return
         </Button>
-        <Button startIcon={<Refresh />} onClick={handleRerun}>
+        <Button startIcon={<Refresh />} onClick={handleRerun} disabled={pending}>
           {`Rerun ${md ? '' : 'Simulations'}`}
         </Button>
       </div>
