@@ -6,6 +6,7 @@ import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import { TableSkeleton } from 'components/Skeletons';
 import _ from 'lodash';
 import { TError } from 'types/store';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {},
@@ -13,6 +14,7 @@ const useStyles = makeStyles(theme => ({
   tableContainer: {
     flexGrow: 1,
     flexBasis: '33%',
+    maxWidth: '100%',
   },
   tableTitle: {
     paddingBottom: theme.spacing(0, 0, 1),
@@ -20,6 +22,10 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     background: theme.palette.background.nested,
+    overflowX: 'scroll',
+  },
+  header: {
+    fontWeight: theme.typography.fontWeightBold,
   },
   sticky: {
     position: 'sticky',
@@ -95,10 +101,12 @@ const ProbabilityTables: React.FC<ProbabilityTablesProps> = ({
                 <Paper className={classes.table}>
                   <Table size="small">
                     <TableHead>
-                      <TableRow>
-                        <TableCell className={classes.sticky}>Damage</TableCell>
+                      <TableRow className={classes.header}>
+                        <TableCell className={clsx(classes.sticky, classes.header)}>Damage</TableCell>
                         {unitNames.map(name => (
-                          <TableCell key={name}>{name}</TableCell>
+                          <TableCell key={name} className={classes.header}>
+                            {name}
+                          </TableCell>
                         ))}
                       </TableRow>
                     </TableHead>

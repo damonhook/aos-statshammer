@@ -6,6 +6,7 @@ import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import { TableSkeleton } from 'components/Skeletons';
 import _ from 'lodash';
 import { TError } from 'types/store';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {},
@@ -13,6 +14,7 @@ const useStyles = makeStyles(theme => ({
   tableContainer: {
     flexGrow: 1,
     flexBasis: '33%',
+    maxWidth: '100%',
   },
   tableTitle: {
     paddingBottom: theme.spacing(0, 0, 1),
@@ -20,6 +22,16 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     background: theme.palette.background.nested,
+    overflowX: 'scroll',
+  },
+  header: {
+    fontWeight: theme.typography.fontWeightBold,
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    zIndex: 11,
+    backgroundColor: theme.palette.background.nested,
   },
 }));
 
@@ -77,12 +89,13 @@ const MetricsTables: React.FC<MetricsTablesProps> = ({ pending, results, unitNam
                 <Paper className={classes.table}>
                   <Table size="small">
                     <TableHead>
-                      <TableRow>
-                        <TableCell>Unit Name</TableCell>
-                        <TableCell>Mean</TableCell>
-                        <TableCell>Median</TableCell>
-                        <TableCell>Max</TableCell>
-                        <TableCell>Var.</TableCell>
+                      <TableRow className={classes.header}>
+                        <TableCell className={clsx(classes.sticky, classes.header)}>Unit Name</TableCell>
+                        <TableCell className={classes.header}>Mean</TableCell>
+                        <TableCell className={classes.header}>Median</TableCell>
+                        <TableCell className={classes.header}>Max</TableCell>
+                        <TableCell className={classes.header}>Var.</TableCell>
+                        <TableCell className={classes.header}>Std. Dev.</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -90,11 +103,14 @@ const MetricsTables: React.FC<MetricsTablesProps> = ({ pending, results, unitNam
                         const { metrics } = unitData[k];
                         return (
                           <TableRow key={k}>
-                            <TableCell>{k}</TableCell>
+                            <TableCell className={classes.sticky}>{k}</TableCell>
                             <TableCell>{metrics.mean.toFixed(2)}</TableCell>
                             <TableCell>{metrics.median.toFixed(0)}</TableCell>
                             <TableCell>{metrics.max.toFixed(0)}</TableCell>
-                            <TableCell>{Math.abs(metrics.variance).toFixed(2)}</TableCell>
+                            <TableCell>{metrics.variance.toFixed(2)}</TableCell>
+                            <TableCell>
+                              {metrics.standardDeviation ? metrics.standardDeviation.toFixed(2) : '<0.01'}
+                            </TableCell>
                           </TableRow>
                         );
                       })}
