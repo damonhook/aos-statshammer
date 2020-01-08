@@ -17,6 +17,11 @@
         "storybook": "cd client && yarn storybook",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
     },
+    "eslintConfig": {
+        "extends": [
+          "./eslintrc.js"
+        ]
+    },
     "dependencies": {
         "@babel/cli": "^7.7.4",
         "@babel/core": "^7.7.4",
