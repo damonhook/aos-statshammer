@@ -76,11 +76,13 @@ const Unit: React.FC<IUnitProps> = React.memo(
     }, [unit.uuid]);
 
     const handleDeleteUnit = useCallback(() => {
-      const action: INotificationAction = {
-        label: 'Undo',
-        onClick: () => addUnit({ unit, atPosition: id }),
-      };
-      addNotification({ message: 'Deleted Unit', action });
+      addNotification({
+        message: 'Deleted Unit',
+        action: {
+          label: 'Undo',
+          onClick: () => addUnit({ unit, atPosition: id }),
+        },
+      });
       deleteUnit({ index: id });
     }, [unit, addNotification, addUnit, deleteUnit, id]);
 
