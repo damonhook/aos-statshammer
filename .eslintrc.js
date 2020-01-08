@@ -1,6 +1,6 @@
 module.exports = {
   extends: ['airbnb', 'plugin:@typescript-eslint/recommended', 'prettier'],
-  plugins: ['react-hooks', '@typescript-eslint', 'prettier'],
+  plugins: ['import', 'react-hooks', '@typescript-eslint', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json',
@@ -67,12 +67,9 @@ module.exports = {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     'import/resolver': {
-      typescript: {
+      ts: {
         directory: ['./tsconfig.json', './client/tsconfig.json'],
-      },
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
+      }
     },
   },
   env: {
