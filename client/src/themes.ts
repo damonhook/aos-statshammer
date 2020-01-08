@@ -64,7 +64,7 @@ const darkTheme = createMuiTheme({
       series: ['#8884d8', '#82ca9d', '#ff7300', teal[400], '#ff5252'],
     },
     notifications: {
-      info: grey[900],
+      info: grey[100],
       success: green[600],
       warning: amber[500],
       error: red[800],
