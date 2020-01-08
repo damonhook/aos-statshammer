@@ -16,6 +16,7 @@ import CumulativeCurves from 'containers/ProbabilityCurves/CumulativeCurves';
 import { IStore } from 'types/store';
 import Notifications from 'components/Notifications';
 import { EPages } from 'types/routes';
+import SimulationTabControls from 'components/SimulationTabControls';
 import MetricsTables from './MetricsTables';
 import ProbabilityTables from './ProbabilityTables';
 
@@ -30,6 +31,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flex: 1,
+    flexDirection: 'column',
   },
   tabs: {
     marginTop: 0,
@@ -83,9 +85,10 @@ const Simulations: React.FC<ISimulationsProps> = React.memo(
       <div className={classes.app}>
         <AppBar title="AoS Statshammer" variant={EPages.SIMULATIONS} />
         <div className={classes.container}>
+          <SimulationTabControls />
           <Tabbed
             className={classes.tabs}
-            tabNames={['Cumulative', 'Single', 'Tables']}
+            tabNames={['Cumulative', 'Discrete', 'Metrics']}
             tabContent={[
               <div className={classes.tab}>
                 <CumulativeCurves

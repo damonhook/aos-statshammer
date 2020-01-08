@@ -3,8 +3,12 @@ import { getUnits } from 'utils/unitHelpers';
 import { getTarget } from 'utils/targetHelpers';
 import { stats, notifications, modifiers, targetModifiers, simulations } from 'store/slices';
 import { ISimulation } from 'types/simulations';
+import { NUM_SIMULATIONS } from 'appConstants';
+import { ThunkDispatch } from 'redux-thunk';
+import { IStore, ITargetStore, IUnitStore } from 'types/store';
+import { Action } from 'redux';
 
-export const fetchStatsCompare = () => async dispatch => {
+export const fetchStatsCompare = () => async (dispatch: ThunkDispatch<IStore, void, Action>) => {
   dispatch(stats.actions.fetchStatsPending());
   try {
     const units = getUnits();
@@ -46,7 +50,7 @@ export const fetchStatsCompare = () => async dispatch => {
   }
 };
 
-export const fetchModifiers = () => async dispatch => {
+export const fetchModifiers = () => async (dispatch: ThunkDispatch<IStore, void, Action>) => {
   dispatch(modifiers.actions.fetchModifiersPending());
   try {
     const request = await fetch('/api/modifiers', {
@@ -73,7 +77,7 @@ export const fetchModifiers = () => async dispatch => {
   }
 };
 
-export const fetchTargetModifiers = () => async dispatch => {
+export const fetchTargetModifiers = () => async (dispatch: ThunkDispatch<IStore, void, Action>) => {
   dispatch(targetModifiers.actions.fetchTargetModifiersPending());
   try {
     const request = await fetch('/api/target/modifiers', {
@@ -100,7 +104,12 @@ export const fetchTargetModifiers = () => async dispatch => {
   }
 };
 
-const fetchSimulationForSave = async (units, target, save, numSimulations) => {
+const fetchSimulationForSave = async (
+  units: IUnitStore,
+  target: ITargetStore,
+  save: number,
+  numSimulations: number,
+) => {
   const data = {
     units: units.map(unit => ({
       name: unit.uuid,
@@ -123,7 +132,7 @@ const fetchSimulationForSave = async (units, target, save, numSimulations) => {
   });
 };
 
-export const fetchSimulations = () => async dispatch => {
+export const fetchSimulations = () => async (dispatch: ThunkDispatch<IStore, void, Action>) => {
   dispatch(simulations.actions.fetchSimulationsPending());
   try {
     const units = getUnits();
@@ -131,7 +140,7 @@ export const fetchSimulations = () => async dispatch => {
     const target = getTarget();
     const responses = await Promise.all(
       [2, 3, 4, 5, 6, 0].map(save =>
-        fetchSimulationForSave(units, target, save, 5000).then(data => data.json()),
+        fetchSimulationForSave(units, target, save, NUM_SIMULATIONS).then(data => data.json()),
       ),
     );
     const res: ISimulation = responses.reduce(
