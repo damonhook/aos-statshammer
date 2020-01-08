@@ -13,8 +13,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install -g yarn@1.19.2
-    - name: yarn install, build, and test
+    - name: Install Dependencies
+        run: yarn --frozen-lockfile
+    - name: Lint and Test
       run: |
-        yarn install --frozen-lockfile;
-        yarn lint;
-        yarn test;
+        yarn lint
+        yarn test
