@@ -9,7 +9,7 @@ export const round = (number: number) => Math.round(number * 1000) / 1000;
 
 export const repeat = (results: number[]) => SAVES.map((save, index) => ({ save, result: results[index] }));
 
-export const assertCloseEnough = (actual: number, expected: number, deviation = 0.05) => {
+export const assertCloseEnough = (actual: number, expected: number, deviation = 0.1) => {
   const diff = Math.abs(actual - expected);
   const diffDeviation = diff / Math.max(actual, expected);
   assert.equal(diffDeviation <= deviation, true, `${actual} is not within ${deviation} of ${expected}`);

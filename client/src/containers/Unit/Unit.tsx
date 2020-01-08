@@ -14,7 +14,6 @@ import _ from 'lodash';
 import { scrollToRef } from 'utils/scrollIntoView';
 import { IStore } from 'types/store';
 import { IUnit } from 'types/unit';
-import { INotificationAction } from 'types/notification';
 
 const useStyles = makeStyles(theme => ({
   unit: {
