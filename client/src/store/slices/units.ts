@@ -2,7 +2,7 @@ import nanoid from 'nanoid';
 import { IUnitStore } from 'types/store';
 import { IWeaponProfileParameter, IUnitParameter } from 'types/unit';
 import { createSlice } from '@reduxjs/toolkit';
-import { moveItemInArray } from 'reducers/helpers';
+import { moveItemInArray } from 'utils/arrayUpdates';
 
 const DEFAULT_WEAPON_PROFILE: IWeaponProfileParameter = {
   active: true,

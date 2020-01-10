@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch';
-import { getUnits } from 'utils/unitHelpers';
-import { getTarget } from 'utils/targetHelpers';
+import { getUnits } from 'store/selectors/unitHelpers';
+import { getTarget } from 'store/selectors/targetHelpers';
 import { stats, notifications, modifiers, targetModifiers, simulations } from 'store/slices';
 import { ISimulation } from 'types/simulations';
 import { NUM_SIMULATIONS } from 'appConstants';

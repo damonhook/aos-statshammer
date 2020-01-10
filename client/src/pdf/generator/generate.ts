@@ -4,8 +4,8 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable'; // Has to be separate import
 // eslint-disable-next-line import/no-duplicates
 import { MultipleRowType } from 'jspdf-autotable';
-import { getModifierById } from 'utils/modifierHelpers';
-import { getTargetModifierById } from 'utils/targetModifierHelpers';
+import { getModifierById } from 'store/selectors/modifierHelpers';
+import { getTargetModifierById } from 'store/selectors/targetModifierHelpers';
 import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
 import { IUnitStore, ITargetStore } from 'types/store';
 import { TResult } from 'types/stats';

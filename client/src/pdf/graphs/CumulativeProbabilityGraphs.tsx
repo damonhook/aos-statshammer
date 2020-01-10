@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
 import { getMaxDamage, getTicks } from 'containers/ProbabilityCurves/probabilityUtils';
+import { IProbability } from 'types/simulations';
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles({
@@ -15,7 +16,15 @@ const useStyles = makeStyles({
   },
 });
 
-const CumulativeProbabilityGraphs = ({ probabilities, unitNames }) => {
+interface ICumulativeProbabilityGraphsProps {
+  probabilities: IProbability[];
+  unitNames: string[];
+}
+
+const CumulativeProbabilityGraphs: React.FC<ICumulativeProbabilityGraphsProps> = ({
+  probabilities,
+  unitNames,
+}) => {
   const classes = useStyles();
   const yAxisFormatter = useCallback(value => `${value}%`, []);
   const cols = 2;

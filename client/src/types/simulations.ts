@@ -1,3 +1,16 @@
+export type TSimResult = {
+  save: string;
+} & {
+  buckets: {
+    count: number;
+    damage: number;
+    probability: number;
+  };
+  metrics: {
+    [name: string]: number;
+  };
+};
+
 export interface IProbabilityBucket {
   damage: number;
   [name: string]: number;
@@ -18,23 +31,10 @@ export interface IProbabilityMetrics {
 
 export interface IProbability {
   save: string;
-  buckets: any[];
-  cumulative: any[];
-  metrics: any;
+  buckets: IProbabilityBucket[];
+  cumulative: IProbabilityCumulative[];
+  metrics: IProbabilityMetrics;
 }
-
-export type TSimResult = {
-  save: string;
-} & {
-  buckets: {
-    count: number;
-    damage: number;
-    probability: number;
-  };
-  metrics: {
-    [name: string]: number;
-  };
-};
 
 export interface ISimulation {
   results: TSimResult[];

@@ -30,8 +30,7 @@ Ensure that you have `node`, `yarn`, and `nodedeamon` installed.
 Install the packages needed for the express server (backend) and the client (frontend)
 
 ```bash
-yarn install;
-cd client && yarn install && cd ..;
+yarn setup
 ```
 
 ## Usage
@@ -56,4 +55,4 @@ Open http://localhost:9009 to view it in the browser
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-If you make any changes to the API. Please ensure that you have run the unit tests. In addition, if you have added extra functionality to the API (e.g: a new modifier), please add a unit test to the `api/tests/testUnits.js` file that contains this new functionality
+If you make any changes to the API. Please ensure that you have run the unit tests. In addition, if you have added extra functionality to the API (e.g: a new modifier), please add a unit test to the `api/tests/test.units.ts` file that contains this new functionality

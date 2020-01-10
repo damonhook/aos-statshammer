@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { units } from 'store/slices';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useHistory, useParams } from 'react-router-dom';
-import { getUnitByUuid, getUnitIndexByUuid } from 'utils/unitHelpers';
+import { getUnitByUuid, getUnitIndexByUuid } from 'store/selectors/unitHelpers';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { IWeaponProfile } from 'types/unit';
 import DialogTitle from './DialogTitle';

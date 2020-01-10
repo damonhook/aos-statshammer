@@ -3,7 +3,7 @@ import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { ImportExport } from '@material-ui/icons';
 import { connect, ConnectedProps } from 'react-redux';
 import Uploader from 'components/Uploader';
-import { addUnitEnabled } from 'utils/unitHelpers';
+import { addUnitEnabled } from 'store/selectors/unitHelpers';
 import { IStore } from 'types/store';
 import { notifications, units } from 'store/slices';
 

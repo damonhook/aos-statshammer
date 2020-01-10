@@ -22,6 +22,7 @@ import {
   GraphProps,
   IReferenceLine,
   ILabel,
+  TOpacity,
 } from './graphHelpers';
 
 const useStyles = makeStyles(() => ({
@@ -55,7 +56,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
 }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [opacity, setOpacity] = useState({});
+  const [opacity, setOpacity] = useState<TOpacity>({});
 
   const handleMouseEnter = getMouseEnterHandler(opacity, setOpacity);
   const handleMouseLeave = getMouseLeaveHandler(opacity, setOpacity);
@@ -99,7 +100,6 @@ const LineGraph: React.FC<LineGraphProps> = ({
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}
-          onMouseDown={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         />
         {referenceLines &&

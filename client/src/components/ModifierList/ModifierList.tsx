@@ -7,7 +7,7 @@ import ModifierSelector from 'components/ModifierSelector';
 import ModifierItem from 'components/ModifierItem';
 import { MAX_MODIFIERS } from 'appConstants';
 import _ from 'lodash';
-import { getModifierById } from 'utils/modifierHelpers';
+import { getModifierById } from 'store/selectors/modifierHelpers';
 import { IModifierInstance } from 'types/modifiers';
 import { IStore } from 'types/store';
 import PendingModifiers from './PendingModifiers';

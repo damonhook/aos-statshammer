@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 /**
  * A hook used to hold the state from the previous render
- * @param {object} state The state top keep track of
+ * @param state The state top keep track of
  */
-const usePrevious = state => {
+const usePrevious = (state: any) => {
   const ref = useRef();
   useEffect(() => {
     ref.current = state;

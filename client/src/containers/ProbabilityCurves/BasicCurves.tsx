@@ -60,7 +60,7 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
     const [matchXAxis, setMatchXAxis] = useState(true);
 
     let maxDamage = matchXAxis ? 0 : 'dataMax';
-    let ticks: number[] | null = null;
+    let ticks: number[];
     let maxProbability = 0;
     if (probabilities && probabilities.length) {
       if (matchXAxis) {

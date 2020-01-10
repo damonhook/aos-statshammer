@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, ReferenceLine } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  Label,
+  ReferenceLine,
+  ErrorBarProps,
+} from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { DefaultTooltip } from 'components/GraphTooltips';
@@ -18,16 +29,17 @@ const useStyles = makeStyles({
   graph: {},
 });
 
-interface BarGraphProps extends GraphProps {
+interface IBarGraphProps extends GraphProps {
   referenceLines?: IReferenceLine[];
   xAxisLabel?: ILabel;
   yAxisLabel?: ILabel;
+  errorBars?: ErrorBarProps;
 }
 
 /**
  * A bar graph component for the average damage results
  */
-const BarGraph: React.FC<BarGraphProps> = ({
+const BarGraph: React.FC<IBarGraphProps> = ({
   data,
   series,
   className,
@@ -87,7 +99,6 @@ const BarGraph: React.FC<BarGraphProps> = ({
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}
-          onMouseDown={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         />
         {referenceLines &&
@@ -101,7 +112,6 @@ const BarGraph: React.FC<BarGraphProps> = ({
           ))}
         {series.map((key, index) => (
           <Bar
-            type="monotone"
             dataKey={key}
             fill={theme.palette.graphs.series[index]}
             key={key}

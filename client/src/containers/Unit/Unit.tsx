@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { MAX_PROFILES } from 'appConstants';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
-import { addUnitEnabled } from 'utils/unitHelpers';
+import { addUnitEnabled } from 'store/selectors/unitHelpers';
 import _ from 'lodash';
 import { scrollToRef } from 'utils/scrollIntoView';
 import { IStore } from 'types/store';

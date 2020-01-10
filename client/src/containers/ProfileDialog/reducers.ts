@@ -1,4 +1,4 @@
-import { moveItemInArray, updateItemInArray } from 'reducers/helpers';
+import { moveItemInArray, updateItemInArray } from 'utils/arrayUpdates';
 import nanoid from 'nanoid';
 
 export const errorReducer = (state, action) => {

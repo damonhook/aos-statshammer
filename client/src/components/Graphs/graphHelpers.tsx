@@ -1,6 +1,10 @@
 import React from 'react';
+import { TickFormatterFunction, AxisDomain, PositionType } from 'recharts';
+import { Theme } from '@material-ui/core/styles';
 
-export const getInitOpacity = series =>
+export type TOpacity = { [name: string]: number };
+
+export const getInitOpacity = (series: string[]): TOpacity =>
   series.reduce(
     (acc, name) => ({
       ...acc,
@@ -9,7 +13,9 @@ export const getInitOpacity = series =>
     {},
   );
 
-export const getMouseEnterHandler = (opacity, setOpacity) => ({ dataKey }) => {
+export const getMouseEnterHandler = (opacity: TOpacity, setOpacity: (value: TOpacity) => void) => ({
+  dataKey,
+}) => {
   setOpacity(
     Object.keys(opacity).reduce(
       (acc, name) => ({
@@ -21,7 +27,7 @@ export const getMouseEnterHandler = (opacity, setOpacity) => ({ dataKey }) => {
   );
 };
 
-export const getMouseLeaveHandler = (opacity, setOpacity) => () => {
+export const getMouseLeaveHandler = (opacity: TOpacity, setOpacity: (value: TOpacity) => void) => () => {
   setOpacity(
     Object.keys(opacity).reduce(
       (acc, name) => ({
@@ -33,7 +39,7 @@ export const getMouseLeaveHandler = (opacity, setOpacity) => () => {
   );
 };
 
-export const getLegendFormatter = (theme, opacity) => value => (
+export const getLegendFormatter = (theme: Theme, opacity: TOpacity) => (value: string) => (
   <span
     style={{
       color: theme.palette.getContrastText(theme.palette.background.paper),
@@ -44,21 +50,21 @@ export const getLegendFormatter = (theme, opacity) => value => (
   </span>
 );
 
-interface IXAxis {
+export interface IXAxis {
   dataKey: string;
-  tickFormatter?: any;
-  domain?: (number | string)[] | null;
-  ticks?: (number | string)[] | null;
-  type?: 'number' | 'category' | null;
-  tickCount?: number | null;
+  tickFormatter?: TickFormatterFunction;
+  domain?: Readonly<[AxisDomain, AxisDomain]>;
+  ticks?: ReadonlyArray<any>;
+  type?: 'number' | 'category';
+  tickCount?: number;
 }
 
-interface IyAxis {
-  tickFormatter?: any;
-  domain?: (number | string)[] | null;
-  ticks?: (number | string)[] | null;
-  type?: 'number' | 'category' | null;
-  tickCount?: number | null;
+export interface IYAxis {
+  tickFormatter?: TickFormatterFunction;
+  domain?: Readonly<[AxisDomain, AxisDomain]>;
+  ticks?: ReadonlyArray<any>;
+  type?: 'number' | 'category';
+  tickCount?: number;
 }
 
 export interface IReferenceLine {
@@ -68,8 +74,8 @@ export interface IReferenceLine {
 }
 
 export interface ILabel {
-  value: string;
-  position?: string;
+  value: number | string;
+  position?: PositionType;
   offset?: number;
 }
 
@@ -81,6 +87,6 @@ export interface GraphProps {
   title?: string;
   syncId?: string;
   xAxis: IXAxis;
-  yAxis?: IyAxis;
-  tooltip?: React.ReactNode;
+  yAxis?: IYAxis;
+  tooltip?: React.ReactElement;
 }

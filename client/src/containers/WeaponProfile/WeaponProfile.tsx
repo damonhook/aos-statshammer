@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ModifierSummary from 'components/ModifierSummary';
 import { useHistory } from 'react-router-dom';
-import { getUnitByPosition } from 'utils/unitHelpers';
+import { getUnitByPosition } from 'store/selectors/unitHelpers';
 import { Delete, FileCopy, Edit } from '@material-ui/icons';
 import _ from 'lodash';
 import { scrollToRef } from 'utils/scrollIntoView';

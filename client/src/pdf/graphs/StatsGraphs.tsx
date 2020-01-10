@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
+import { TResult } from 'types/stats';
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles(() => ({
@@ -17,7 +18,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const StatsGraphs = ({ results, unitNames }) => {
+interface IStatsGraphsProps {
+  results: TResult[];
+  unitNames: string[];
+}
+
+const StatsGraphs: React.FC<IStatsGraphsProps> = ({ results, unitNames }) => {
   const classes = useStyles();
   const xAxisFormatter = useCallback(value => (value === 'None' ? '-' : `${value}+`), []);
 

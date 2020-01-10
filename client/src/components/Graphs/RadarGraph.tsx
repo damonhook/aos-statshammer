@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { RadarChart, Radar, PolarAngleAxis, PolarRadiusAxis, Tooltip, Legend, PolarGrid } from 'recharts';
+import {
+  RadarChart,
+  Radar,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Tooltip,
+  Legend,
+  PolarGrid,
+  BaseValueType,
+} from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { DefaultTooltip } from 'components/GraphTooltips';
@@ -10,6 +19,7 @@ import {
   getMouseLeaveHandler,
   getInitOpacity,
   GraphProps,
+  IYAxis,
 } from './graphHelpers';
 
 const useStyles = makeStyles({
@@ -18,7 +28,12 @@ const useStyles = makeStyles({
   },
 });
 
+interface IRadiusAxis extends IYAxis {
+  domain?: Readonly<[BaseValueType, BaseValueType]>;
+}
+
 interface RadarGraphProps extends GraphProps {
+  yAxis?: IRadiusAxis;
   outerRadius?: number;
 }
 
@@ -68,12 +83,10 @@ const RadarGraph: React.FC<RadarGraphProps> = ({
         <Legend
           formatter={formatLegendEntry}
           onMouseEnter={handleMouseEnter}
-          onMouseDown={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         />
         {series.map((key, index) => (
           <Radar
-            type="monotone"
             dataKey={key}
             stroke={theme.palette.graphs.series[index]}
             fill={theme.palette.graphs.series[index]}

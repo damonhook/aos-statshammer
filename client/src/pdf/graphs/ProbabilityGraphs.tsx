@@ -23,7 +23,7 @@ const ProbabilityGraphs = ({ probabilities, unitNames }) => {
 
   let maxDamage = 0;
   let maxProbability = 0;
-  let ticks: number[] | null = null;
+  let ticks: number[];
   if (probabilities && probabilities.length) {
     maxDamage = getMaxDamage(probabilities);
     maxProbability = getMaxProbability(probabilities);
