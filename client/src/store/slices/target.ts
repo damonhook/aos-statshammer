@@ -24,9 +24,8 @@ const removeTargetModifier = (state: ITargetStore, action: { payload: { index: n
   state.modifiers = state.modifiers.filter((_, i) => i !== index);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const clearAllTargetModifiers = (state: ITargetStore) => {
-  state = INITIAL_STATE;
+const clearAllTargetModifiers = (): ITargetStore => {
+  return INITIAL_STATE;
 };
 
 const moveTargetModifier = (
