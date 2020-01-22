@@ -11,7 +11,7 @@
         "client": "cd client && yarn start",
         "server": "nodemon --exec babel-node server.ts --extensions \".ts\"",
         "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-        "start": "babel-node server.ts --extensions \".ts\"",
+        "start": "babel-node server.ts --extensions \".ts,.tsx\"",
         "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
         "test": "jest",
         "bumpversion": "lerna version --no-git-tag-version --no-push",
@@ -43,7 +43,9 @@
         "esm": "^3.2.25",
         "express": "^4.16.4",
         "mocha": "^6.2.2",
-        "regenerator-runtime": "^0.13.3"
+        "regenerator-runtime": "^0.13.3",
+        "lerna": "^3.19.0",
+        "typescript": "^3.7.4"
     },
     "devDependencies": {
         "@types/body-parser": "^1.17.1",
@@ -58,10 +60,8 @@
         "eslint-import-resolver-typescript": "^2.0.0",
         "eslint-plugin-json": "^2.0.1",
         "eslint-plugin-prettier": "^3.1.2",
-        "husky": "^4.0.1",
-        "jest": "^24.9.0",
-        "lerna": "^3.19.0",
         "prettier": "^1.19.1",
-        "typescript": "^3.7.4"
+        "jest": "^24.9.0",
+        "husky": "^4.0.1"
     }
 }
