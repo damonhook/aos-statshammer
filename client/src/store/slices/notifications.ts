@@ -16,11 +16,14 @@ const addNotification = (state: INotificationsStore, action: { payload: INotific
   ];
 };
 
-const dismissNotification = (state: INotificationsStore, action: { payload: { key: string } }) => {
-  state = state.filter(n => n.key !== action.payload.key);
+const dismissNotification = (
+  state: INotificationsStore,
+  action: { payload: { key: string } },
+): INotificationsStore => {
+  return state.filter(n => n.key !== action.payload.key);
 };
 
-const dismissAllNotifications = () => {
+const dismissAllNotifications = (): INotificationsStore => {
   return [];
 };
 

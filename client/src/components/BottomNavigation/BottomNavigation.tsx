@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { BottomNavigation as Navigation, BottomNavigationAction as NavigationItem } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Home, BarChart, Info } from '@material-ui/icons';
+import { Home, BarChart, Info, Timeline as TimelineIcon } from '@material-ui/icons';
 import { useHistory, useLocation, matchPath } from 'react-router-dom';
 import { IStore } from 'types/store';
 import { getRoute, EPages } from 'types/routes';
@@ -43,6 +43,10 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ numUnits }) => {
     history.push(getRoute(EPages.HOME));
   };
 
+  const handleStatsClick = () => {
+    history.push('/stats');
+  };
+
   const handleSimClick = () => {
     history.push(getRoute(EPages.SIMULATIONS));
   };
@@ -52,15 +56,17 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ numUnits }) => {
   };
 
   let activeIndex = 0;
-  if (matchPath(location.pathname, { path: getRoute(EPages.SIMULATIONS) })) activeIndex = 1;
-  if (matchPath(location.pathname, { path: getRoute(EPages.ABOUT) })) activeIndex = 2;
+  if (matchPath(location.pathname, { path: '/stats' })) activeIndex = 1;
+  if (matchPath(location.pathname, { path: getRoute(EPages.SIMULATIONS) })) activeIndex = 2;
+  if (matchPath(location.pathname, { path: getRoute(EPages.ABOUT) })) activeIndex = 3;
 
   return (
     <Navigation showLabels className={classes.nav} value={activeIndex}>
-      <NavigationItem label="Main" icon={<Home />} onClick={handleMainClick} />
+      <NavigationItem label="Home" icon={<Home />} onClick={handleMainClick} />
+      <NavigationItem label="Stats" icon={<BarChart />} onClick={handleStatsClick} />
       <NavigationItem
         label="Simulations"
-        icon={<BarChart />}
+        icon={<TimelineIcon />}
         onClick={handleSimClick}
         disabled={simulationsDisabled}
         className={classes.item}

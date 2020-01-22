@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   metricsContainer: {},
   tableContainer: {
     flexGrow: 1,
-    flexBasis: '33%',
+    flexBasis: '50%',
     maxWidth: '100%',
   },
   tableTitle: {
