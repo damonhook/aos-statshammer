@@ -32,15 +32,6 @@ if (process.env.NODE_ENV !== 'production') {
   middleware.push(logger);
 }
 
-export const configureSampleStore = (initialState = {}) => {
-  const store = createStore({
-    reducer: appReducer,
-    preloadedState: initialState,
-    middleware,
-  });
-  return store;
-};
-
 const persistConfig = {
   key: 'aos-statshammer-12-12-19',
   storage,

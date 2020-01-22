@@ -45,12 +45,6 @@ Open http://localhost:3000 to view it in the browser
 
 Runs the api tests. Please make sure you run this whenever you make any changes to the api / backend
 
-### `yarn storybook`
-
-Runs a storybook (https://storybook.js.org/)
-
-Open http://localhost:9009 to view it in the browser
-
 ### Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

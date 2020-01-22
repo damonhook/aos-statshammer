@@ -15,7 +15,6 @@
         "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
         "test": "jest",
         "bumpversion": "lerna version --no-git-tag-version --no-push",
-        "storybook": "cd client && yarn storybook",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
     },
     "dependencies": {
