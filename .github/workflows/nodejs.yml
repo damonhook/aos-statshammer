@@ -1,0 +1,21 @@
+name: Node CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.13.1]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install -g yarn@1.19.2
+    - name: Install Dependencies
+      run: yarn setup
+    - name: Lint and Test
+      run: |
+        yarn lint
+        yarn test
