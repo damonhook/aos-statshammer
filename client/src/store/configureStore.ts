@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
 import { configureStore as createStore, combineReducers, Middleware } from '@reduxjs/toolkit';
-import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2'
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 import {
   config,
@@ -40,7 +40,7 @@ const persistConfig = {
   whitelist: ['units', 'config', 'target'],
 };
 
-//@ts-ignore
+// @ts-ignore
 const persistedReducer = persistReducer(persistConfig, appReducer);
 
 const configureStore = () => {

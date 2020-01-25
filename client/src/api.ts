@@ -140,7 +140,9 @@ export const fetchSimulations = () => async (dispatch: ThunkDispatch<IStore, voi
     const target = getTarget();
     const responses = await Promise.all(
       [2, 3, 4, 5, 6, 0].map(save =>
-        fetchSimulationForSave(units, target, save, store.getState().config.numSimulations).then(data => data.json()),
+        fetchSimulationForSave(units, target, save, store.getState().config.numSimulations).then(data =>
+          data.json(),
+        ),
       ),
     );
     const res: ISimulation = responses.reduce(

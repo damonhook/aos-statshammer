@@ -4,7 +4,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Close, InfoOutlined } from '@material-ui/icons';
 import { useHashMatch, useReadFromFile } from 'hooks';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import { IStore } from 'types/store';
 
@@ -22,7 +22,7 @@ const SimulationInfoModal = () => {
   const classes = useStyles();
   const open = useHashMatch('#info');
   const history = useHistory();
-  const numSimulations = useSelector((state: IStore) => state.config.numSimulations)
+  const numSimulations = useSelector((state: IStore) => state.config.numSimulations);
   const content = useReadFromFile('simInfo.md', { numSim: numSimulations, totSim: numSimulations * 6 });
 
   const handleOpen = () => {

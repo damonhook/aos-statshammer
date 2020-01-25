@@ -1,1 +1,1 @@
-export { default } from './SimulationConfigDialog'
+export { default } from './SimulationConfigDialog';
