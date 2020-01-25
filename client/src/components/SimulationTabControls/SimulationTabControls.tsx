@@ -1,14 +1,13 @@
 import React from 'react';
 import SimulationInfoModal from 'components/SimulationInfoModal';
-import { Button, Typography, Tooltip, useMediaQuery } from '@material-ui/core';
+import { Button, useMediaQuery } from '@material-ui/core';
 import { ArrowBack, Refresh } from '@material-ui/icons';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { getRoute, EPages } from 'types/routes';
-import { NUM_SIMULATIONS } from 'appConstants';
 import { fetchSimulations } from 'api';
-import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
+import SimulationConfigDialog from 'components/SimulationConfigDialog';
 
 const useStyles = makeStyles((theme: Theme) => ({
   simTabControls: {
@@ -28,12 +27,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       marginRight: theme.spacing(1),
-    },
-  },
-  numSimText: {
-    cursor: 'help',
-    [theme.breakpoints.down('xs')]: {
-      display: 'none',
     },
   },
 }));
@@ -69,12 +62,7 @@ const SimulationTabControls: React.FC<ISimulationTabControlsProps> = ({ pending 
         </Button>
       </div>
       <div className={classes.group}>
-        <Tooltip title="Number of simulations run per save (sample size)">
-          <Typography className={clsx(classes.spacedItem, classes.numSimText)}>
-            <b># Simulations: </b>
-            {NUM_SIMULATIONS}
-          </Typography>
-        </Tooltip>
+        <SimulationConfigDialog />
         <SimulationInfoModal />
       </div>
     </div>

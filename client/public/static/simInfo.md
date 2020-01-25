@@ -1,7 +1,9 @@
 # Overview
 The simulations page runs **{numSim}** simulations per save (Total: **{totSim}**) and
-uses the results to gather more advanced metrics. These analytics are split
-into the following **3 tabs**:
+uses the results to gather more advanced metrics. You can modify the number of simulations
+you want to perform by clicking on the '`# Simulations: x`' button.
+
+These extra analytics are split into the following **3 tabs**:
 
 ## Cumulative
 

@@ -3,10 +3,10 @@ import { getUnits } from 'store/selectors/unitHelpers';
 import { getTarget } from 'store/selectors/targetHelpers';
 import { stats, notifications, modifiers, targetModifiers, simulations } from 'store/slices';
 import { ISimulation } from 'types/simulations';
-import { NUM_SIMULATIONS } from 'appConstants';
 import { ThunkDispatch } from 'redux-thunk';
 import { IStore, ITargetStore, IUnitStore } from 'types/store';
 import { Action } from 'redux';
+import store from 'store';
 
 export const fetchStatsCompare = () => async (dispatch: ThunkDispatch<IStore, void, Action>) => {
   dispatch(stats.actions.fetchStatsPending());
@@ -140,7 +140,7 @@ export const fetchSimulations = () => async (dispatch: ThunkDispatch<IStore, voi
     const target = getTarget();
     const responses = await Promise.all(
       [2, 3, 4, 5, 6, 0].map(save =>
-        fetchSimulationForSave(units, target, save, NUM_SIMULATIONS).then(data => data.json()),
+        fetchSimulationForSave(units, target, save, store.getState().config.numSimulations).then(data => data.json()),
       ),
     );
     const res: ISimulation = responses.reduce(

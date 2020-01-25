@@ -53,13 +53,14 @@ const useStyles = makeStyles(theme => ({
 const mapStateToProps = (state: IStore) => ({
   units: state.units,
   simulations: state.simulations,
+  numSimulations: state.config.numSimulations,
 });
 
 const connector = connect(mapStateToProps, { fetchSimulations });
 interface ISimulationsProps extends ConnectedProps<typeof connector> {}
 
 const Simulations: React.FC<ISimulationsProps> = React.memo(
-  ({ units, simulations, fetchSimulations }) => {
+  ({ units, numSimulations, simulations, fetchSimulations }) => {
     const classes = useStyles();
     const theme = useTheme();
     const history = useHistory();
@@ -81,7 +82,7 @@ const Simulations: React.FC<ISimulationsProps> = React.memo(
 
     useEffect(() => {
       fetchSimulations();
-    }, [fetchSimulations]);
+    }, [fetchSimulations, numSimulations]);
 
     useEffect(() => {
       scrollToRef(ref, true);
