@@ -26,6 +26,10 @@ The number of simulations is customizable from the simulations screen.
 
 Save your crafted units so that you can re-import them later
 
+## Export PDF
+
+Export the full stats, as well as, simulations to PDF form
+
 ## And more
 
 Keep an eye on the releases, or the Reddit page to get notified of new additions
