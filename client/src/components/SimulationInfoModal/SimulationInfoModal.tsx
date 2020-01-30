@@ -1,6 +1,15 @@
 import React from 'react';
-import { Dialog, DialogTitle, Button, DialogContent, DialogActions, IconButton } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import {
+  Dialog,
+  DialogTitle,
+  Button,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  useMediaQuery,
+  Tooltip,
+} from '@material-ui/core';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { Close, InfoOutlined } from '@material-ui/icons';
 import { useHashMatch, useReadFromFile } from 'hooks';
 import { useHistory } from 'react-router-dom';
@@ -22,6 +31,9 @@ const SimulationInfoModal = () => {
   const classes = useStyles();
   const open = useHashMatch('#info');
   const history = useHistory();
+  const theme = useTheme();
+
+  const xs = useMediaQuery(theme.breakpoints.down('xs'));
   const numSimulations = useSelector((state: IStore) => state.config.numSimulations);
   const content = useReadFromFile('simInfo.md', { numSim: numSimulations, totSim: numSimulations * 6 });
 
@@ -35,9 +47,17 @@ const SimulationInfoModal = () => {
 
   return (
     <>
-      <Button onClick={handleOpen} endIcon={<InfoOutlined />}>
-        Info
-      </Button>
+      {xs ? (
+        <Tooltip title="Info">
+          <IconButton onClick={handleOpen}>
+            <InfoOutlined />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Button onClick={handleOpen} endIcon={<InfoOutlined />}>
+          Info
+        </Button>
+      )}
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md" scroll="paper">
         <DialogTitle className={classes.title}>
           <IconButton onClick={handleClose} size="small" className={classes.closeIcon}>

@@ -5,7 +5,7 @@ import { AppBar as Bar, Toolbar, Typography, IconButton, useScrollTrigger, Slide
 import { Menu as MenuIcon } from '@material-ui/icons';
 import Drawer from 'components/Drawer';
 import Link from 'components/Link';
-import { useHashMatch } from 'hooks';
+import { useHashMatch, useBreakpointChanged } from 'hooks';
 import { EPages, getRoute } from 'types/routes';
 
 interface StyleProps {
@@ -57,6 +57,8 @@ const AppBar: React.FC<IAppBarProps> = ({ title = 'AoS Statshammer', variant = E
   const drawerOpen = useHashMatch('#menu');
   const trigger = useScrollTrigger();
 
+  const breakpoints = useBreakpointChanged();
+
   const handleDrawerClose = () => {
     history.goBack();
   };
@@ -66,10 +68,12 @@ const AppBar: React.FC<IAppBarProps> = ({ title = 'AoS Statshammer', variant = E
   };
 
   useEffect(() => {
-    if (ref && ref.current) {
-      setHeight(ref.current.clientHeight);
-    }
-  }, [ref]);
+    setTimeout(() => {
+      if (ref && ref.current) {
+        setHeight(ref.current.clientHeight);
+      }
+    }, 300);
+  }, [ref, breakpoints]);
 
   return (
     <div className={classes.appBar}>

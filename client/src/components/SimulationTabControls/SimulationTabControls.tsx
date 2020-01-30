@@ -1,6 +1,6 @@
 import React from 'react';
 import SimulationInfoModal from 'components/SimulationInfoModal';
-import { Button, useMediaQuery } from '@material-ui/core';
+import { IconButton, Button, useMediaQuery, Tooltip } from '@material-ui/core';
 import { ArrowBack, Refresh } from '@material-ui/icons';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
@@ -42,6 +42,7 @@ const SimulationTabControls: React.FC<ISimulationTabControlsProps> = ({ pending 
 
   const theme = useTheme();
   const md = useMediaQuery(theme.breakpoints.down('md'));
+  const xs = useMediaQuery(theme.breakpoints.down('xs'));
 
   const handleClick = () => {
     history.push(getRoute(EPages.HOME));
@@ -54,12 +55,29 @@ const SimulationTabControls: React.FC<ISimulationTabControlsProps> = ({ pending 
   return (
     <div className={classes.simTabControls}>
       <div className={classes.group}>
-        <Button startIcon={<ArrowBack />} className={classes.spacedItem} onClick={handleClick}>
-          Return
-        </Button>
-        <Button startIcon={<Refresh />} onClick={handleRerun} disabled={pending}>
-          {`Rerun ${md ? '' : 'Simulations'}`}
-        </Button>
+        {xs ? (
+          <>
+            <Tooltip title="Return">
+              <IconButton className={classes.spacedItem} onClick={handleClick}>
+                <ArrowBack />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Rerun Simulations">
+              <IconButton className={classes.spacedItem} onClick={handleRerun}>
+                <Refresh />
+              </IconButton>
+            </Tooltip>
+          </>
+        ) : (
+          <>
+            <Button startIcon={<ArrowBack />} className={classes.spacedItem} onClick={handleClick}>
+              Return
+            </Button>
+            <Button startIcon={<Refresh />} onClick={handleRerun} disabled={pending}>
+              {`Rerun ${md ? '' : 'Simulations'}`}
+            </Button>
+          </>
+        )}
       </div>
       <div className={classes.group}>
         <SimulationConfigDialog />
