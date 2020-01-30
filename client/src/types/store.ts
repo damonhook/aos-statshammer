@@ -44,6 +44,8 @@ export interface IConfigStore {
   darkMode: boolean;
   /** Whether to display the desktop graphs as tabbed, or a list */
   desktopGraphList: boolean;
+  /** The number of simulations to run */
+  numSimulations: number;
 }
 
 export interface IStore {

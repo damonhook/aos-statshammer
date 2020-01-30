@@ -4,13 +4,13 @@ import AppBar from 'components/AppBar';
 import { EPages, getRoute } from 'types/routes';
 import { useReadFromFile } from 'hooks';
 import ReactMarkdown from 'react-markdown';
-import { Paper, Theme, Typography, Divider, Button, CircularProgress, IconButton } from '@material-ui/core';
-import { GitHub, Reddit, Assessment as Logo, LocalOffer } from '@material-ui/icons';
+import { Paper, Theme, Typography, Divider, CircularProgress, IconButton, Icon } from '@material-ui/core';
 import Footer from 'components/Footer';
 import BottomNavigation from 'components/BottomNavigation';
 import { grey } from '@material-ui/core/colors';
 import { scrollToRef } from 'utils/scrollIntoView';
 import { useHistory } from 'react-router-dom';
+import { Github, Reddit, Releases } from 'components/SocialButtons';
 
 const useStyles = makeStyles((theme: Theme) => ({
   about: {
@@ -44,7 +44,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '7rem',
   },
   md: {
+    margin: 'auto',
     marginTop: -theme.spacing(2),
+    maxWidth: 600,
   },
   divider: {
     marginTop: theme.spacing(3),
@@ -83,7 +85,9 @@ const About = () => {
       <div className={classes.wrapper}>
         <Paper className={classes.paper}>
           <IconButton onClick={handleLogoClick} className={classes.logo}>
-            <Logo color="primary" className={classes.logoIcon} />
+            <Icon color="primary" className={classes.logoIcon}>
+              <img src="/logo.svg" alt="Logo" style={{ height: '100%' }} />
+            </Icon>
           </IconButton>
           {!content && (
             <div className={classes.loader}>
@@ -94,33 +98,9 @@ const About = () => {
           <Divider className={classes.divider} />
           <Typography variant="h6">Social:</Typography>
           <div>
-            <Button
-              className={classes.socialButton}
-              startIcon={<GitHub />}
-              variant="contained"
-              href="https://github.com/damonhook/aos-statshammer"
-              target="_blank"
-            >
-              GitHub
-            </Button>
-            <Button
-              className={classes.socialButton}
-              startIcon={<Reddit />}
-              variant="contained"
-              href="https://www.reddit.com/r/AoSStatshammer"
-              target="_blank"
-            >
-              Reddit
-            </Button>
-            <Button
-              className={classes.socialButton}
-              startIcon={<LocalOffer />}
-              variant="contained"
-              href="https://github.com/damonhook/aos-statshammer/releases"
-              target="_blank"
-            >
-              Releases
-            </Button>
+            <Github className={classes.socialButton} />
+            <Reddit className={classes.socialButton} />
+            <Releases className={classes.socialButton} />
           </div>
           <div className={classes.spacer} />
           <Divider className={classes.divider} />

@@ -1,22 +1,64 @@
+![https://img.shields.io/github/v/release/damonhook/aos-statshammer.svg](https://img.shields.io/github/v/release/damonhook/aos-statshammer.svg)
+
+<div align="center">
+    <a href="https://aos-statshammer.herokuapp.com/" target="_blank">
+        <img width="128" src="docs/logo256.png">
+    </a>
+</div>
+
 # Age of Sigmar Statshammer
 
-A tool for caclulating and comparing damage outputs for Warhammer Age of Sigmar units.
+A tool for calculating and comparing damage outputs for Warhammer Age of Sigmar units
+(also referred to as Mathhammer).
 
 The production deploy of the tool is located at: https://aos-statshammer.herokuapp.com/
 
 The tool works by adding a number of weapon profiles to various units, which can contain
 a number of modifiers (abilities)
 
+<div align="center">
+    <a href="https://aos-statshammer.herokuapp.com/" target="_blank">
+        <img width="100%" src="docs/compare.png">
+    </a>
+</div>
+
 ## Features
 
-- Ability to add multiple units, each with multiple profiles
-- The API will then determine the average damage per target save
-- Includes a results table and various graphs
-- Dark theme
-- Persisitent data between refreshes
-- Import/Export of unit data
-- Ability to export results as PDF
-- Ability to add modifiers to the target (e.g: Reroll saves, ethereal, FNP, etc.)
+- **Average Damage Stats**
+  - Gather the average damage that each unit is expected to do against each possible save.
+  - This average is a calculated value (not simulated)
+  - The average damage is presented the following forms:
+    - Table
+    - Bar Graph
+    - Line Graph
+    - Radar Graph
+- **Profile Modifiers**
+  - Add various modifiers, or abilities, to your weapon profiles in order to replicate the vast array of unit rules/abilities.
+  - Some examples are:
+    - 'Deal `x` Mortal Wounds on a roll of `y`'
+    - 'Rerolls'
+    - 'Leader Bonuses'
+- **Target Modifiers**
+  - Add various modifiers, or abilities, to the target to which stats are generated against (the opponents unit).
+  - Some examples are: 
+    - 'Ethereal' 
+    - 'Rerolls'
+    - 'Negate wounds and mortal wounds on a roll of `y`'
+- **Simulations**
+  - Generating `x` simulations to gather the following:
+    - **Discrete** Porbabilities
+    - **Cumulative** Probabilities
+    - Various **Sample Metrics** (mean, max, variance, etc.).
+  - The number of simulations is customizable from the simulations screen.
+- **Import/Export JSON**
+  - Save your crafted units so that you can re-import them later
+- **Export PDF**
+  - Export the full stats, as well as, simulations to PDF form
+- **Dark Theme**
+- **Persisitent data between refreshes**
+- **And more**
+  - Keep an eye on the [Github Releases](https://github.com/damonhook/aos-statshammer/releases),
+    or the [SubReddit](https://www.reddit.com/r/AoSStatshammer/) to get notified of new additions
 
 ## Roadmap Features
 

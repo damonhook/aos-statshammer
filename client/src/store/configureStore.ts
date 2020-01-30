@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
 import { configureStore as createStore, combineReducers, Middleware } from '@reduxjs/toolkit';
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 import {
   config,
@@ -35,9 +36,11 @@ if (process.env.NODE_ENV !== 'production') {
 const persistConfig = {
   key: 'aos-statshammer-12-12-19',
   storage,
+  stateReconciler: autoMergeLevel2,
   whitelist: ['units', 'config', 'target'],
 };
 
+// @ts-ignore
 const persistedReducer = persistReducer(persistConfig, appReducer);
 
 const configureStore = () => {
