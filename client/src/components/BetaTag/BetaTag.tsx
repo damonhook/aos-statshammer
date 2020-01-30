@@ -3,8 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import clsx from 'clsx';
 
+interface IStyleProps {
+  variant: 'main' | 'light' | 'dark';
+}
+
 const useStyles = makeStyles(theme => ({
-  caption: ({ variant }) => ({
+  caption: ({ variant }: IStyleProps) => ({
     marginLeft: theme.spacing(0.5),
     verticalAlign: 'super',
     color: theme.palette.secondary[variant],
@@ -16,7 +20,7 @@ interface BetaTagProps {
   variant?: 'main' | 'light' | 'dark';
 }
 
-const BetaTag: React.FC<BetaTagProps> = ({ className, variant }) => {
+const BetaTag = ({ className, variant = 'main' }: BetaTagProps) => {
   const classes = useStyles({ variant });
 
   return (
@@ -24,10 +28,6 @@ const BetaTag: React.FC<BetaTagProps> = ({ className, variant }) => {
       Beta
     </Typography>
   );
-};
-
-BetaTag.defaultProps = {
-  variant: 'main',
 };
 
 export default BetaTag;
