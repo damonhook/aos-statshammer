@@ -1,6 +1,6 @@
 const appConfig = {
   simulations: {
-    min: 2000,
+    min: 3000,
     default: 5000,
     max: 8000,
   },

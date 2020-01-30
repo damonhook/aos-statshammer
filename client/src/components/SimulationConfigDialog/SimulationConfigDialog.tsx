@@ -86,6 +86,7 @@ const SimulationConfigDialog: React.FC<ISimulationConfigDialogProps> = ({ classN
               defaultValue={appConfig.simulations.default}
               valueLabelDisplay="auto"
               step={1000}
+              marks={[{ value: appConfig.simulations.default, label: 'Default' }]}
               min={appConfig.simulations.min}
               max={appConfig.simulations.max}
               value={numSims}

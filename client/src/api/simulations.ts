@@ -1,16 +1,21 @@
 import fetch from 'cross-fetch';
 import { getUnits } from 'store/selectors/unitHelpers';
 import { getTarget } from 'store/selectors/targetHelpers';
-import { notifications, simulations } from 'store/slices';
+import { notifications, simulations, config } from 'store/slices';
 import { ISimulation } from 'types/simulations';
 import { ITargetStore, IUnitStore } from 'types/store';
 import store from 'store';
 import appConfig from 'appConfig';
 import { TDispatch } from './api.types';
 
-const getNumSimulations = (): number => {
-  const numSims = store.getState().config.numSimulations ?? appConfig.simulations.default;
-  return Math.min(Math.max(numSims, appConfig.simulations.min), appConfig.simulations.max);
+const verifyNumSimulations = (dispatch: TDispatch): number => {
+  const storeNumSims = store.getState().config.numSimulations;
+  let numSims = storeNumSims ?? appConfig.simulations.default;
+  numSims = Math.min(Math.max(numSims, appConfig.simulations.min), appConfig.simulations.max);
+  if (numSims !== storeNumSims) {
+    dispatch(config.actions.changeNumSimulations({ newValue: numSims }));
+  }
+  return numSims;
 };
 
 const fetchSimulationForSave = async (
@@ -47,7 +52,7 @@ export const fetchSimulations = () => async (dispatch: TDispatch) => {
     const units = getUnits();
     if (!units) dispatch(simulations.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
     const target = getTarget();
-    const numSimulations = getNumSimulations();
+    const numSimulations = verifyNumSimulations(dispatch);
 
     const responses = await Promise.all(
       [2, 3, 4, 5, 6, 0].map(save =>
