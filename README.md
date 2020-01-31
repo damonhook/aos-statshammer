@@ -46,7 +46,7 @@ a number of modifiers (abilities)
     - 'Negate wounds and mortal wounds on a roll of `y`'
 - **Simulations**
   - Generating `x` simulations to gather the following:
-    - **Discrete** Porbabilities
+    - **Discrete** Probabilities
     - **Cumulative** Probabilities
     - Various **Sample Metrics** (mean, max, variance, etc.).
   - The number of simulations is customizable from the simulations screen.
