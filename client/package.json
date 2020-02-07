@@ -1,6 +1,6 @@
 {
     "name": "statshammer",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "private": true,
     "proxy": "http://localhost:5000/",
     "engines": {
@@ -43,6 +43,7 @@
         "node-sass": "^4.13.0",
         "prop-types": "^15.7.2",
         "react": "^16.11.0",
+        "react-device-detect": "^1.11.14",
         "react-dom": "^16.11.0",
         "react-markdown": "^4.3.1",
         "react-redux": "^7.1.3",

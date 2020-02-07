@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 import clsx from 'clsx';
 import _ from 'lodash';
+import { isAndroid } from 'react-device-detect';
 
 const useStyles = makeStyles({
   diceInput: {},
@@ -84,7 +85,7 @@ const DiceInput: React.FC<DiceInputProps> = React.memo(
         label={label}
         value={value}
         className={clsx(classes.diceInput, className)}
-        inputProps={{ inputMode: 'numeric' }}
+        inputProps={isAndroid ? { inputMode: 'numeric' } : {}}
         variant={variant}
         error={Boolean(error)}
         helperText={error ? errorMessage : null}
