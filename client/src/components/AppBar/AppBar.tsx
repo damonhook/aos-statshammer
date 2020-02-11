@@ -6,7 +6,8 @@ import { Menu as MenuIcon } from '@material-ui/icons';
 import Drawer from 'components/Drawer';
 import Link from 'components/Link';
 import { useHashMatch, useBreakpointChanged } from 'hooks';
-import { EPages, getRoute } from 'types/routes';
+import { EPages } from 'types/routes';
+import { HASHES, ROUTES } from 'utils/urls';
 
 interface StyleProps {
   height: number;
@@ -54,7 +55,7 @@ const AppBar: React.FC<IAppBarProps> = ({ title = 'AoS Statshammer', variant = E
 
   const classes = useStyles({ height });
   const history = useHistory();
-  const drawerOpen = useHashMatch('#menu');
+  const drawerOpen = useHashMatch(HASHES.DRAWER);
   const trigger = useScrollTrigger();
 
   const breakpoints = useBreakpointChanged();
@@ -64,7 +65,7 @@ const AppBar: React.FC<IAppBarProps> = ({ title = 'AoS Statshammer', variant = E
   };
 
   const handleDrawerOpen = () => {
-    history.push('#menu');
+    history.push(HASHES.DRAWER);
   };
 
   useEffect(() => {
@@ -85,7 +86,7 @@ const AppBar: React.FC<IAppBarProps> = ({ title = 'AoS Statshammer', variant = E
                 <IconButton onClick={handleDrawerOpen} className={classes.menuButton}>
                   <MenuIcon />
                 </IconButton>
-                <Link to={getRoute(EPages.HOME)} className={classes.link}>
+                <Link to={ROUTES.HOME} className={classes.link}>
                   <Typography variant="h5" component="h1" className={classes.title}>
                     {title}
                   </Typography>

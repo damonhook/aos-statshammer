@@ -17,6 +17,7 @@ import appConfig from 'appConfig';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { config as configStore } from 'store/slices';
+import { HASHES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({
   numSimText: {},
@@ -35,14 +36,14 @@ interface ISimulationConfigDialogProps {
 
 const SimulationConfigDialog: React.FC<ISimulationConfigDialogProps> = ({ className }) => {
   const classes = useStyles();
-  const open = useHashMatch('#num-sims');
+  const open = useHashMatch(HASHES.SIM_CONFIG);
   const history = useHistory();
   const dispatch = useDispatch();
   const numSimulations = useSelector((state: IStore) => state.config.numSimulations);
   const [numSims, setNumSims] = useState(numSimulations);
 
   const handleOpen = () => {
-    history.push('#num-sims');
+    history.push(HASHES.SIM_CONFIG);
     setNumSims(numSimulations);
   };
 

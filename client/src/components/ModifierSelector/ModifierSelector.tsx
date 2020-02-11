@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { useHashMatch } from 'hooks';
 import { IModifierDefinition } from 'types/modifiers';
 import { TError } from 'types/store';
+import { HASHES } from 'utils/urls';
 import ModifierOption from './ModifierOption';
 import SelectorDialog from './SelectorDialog';
 
@@ -34,11 +35,10 @@ const ModifierSelector: React.FC<IModifierSelectorProps> = React.memo(
     const theme = useTheme();
     const mobile = useMediaQuery(theme.breakpoints.down('sm'));
     const history = useHistory();
-    const editPath = '#modifiers';
-    const open = useHashMatch(editPath);
+    const open = useHashMatch(HASHES.MODIFIERS);
 
     const handleOpen = () => {
-      history.push(editPath);
+      history.push(HASHES.MODIFIERS);
     };
 
     const handleClose = useCallback(() => {
@@ -101,7 +101,7 @@ const ModifierSelector: React.FC<IModifierSelectorProps> = React.memo(
           </Button>
         )}
         {mobile ? (
-          <SelectorDialog modifiers={modifiers} addModifier={addModifier} hash={editPath} />
+          <SelectorDialog modifiers={modifiers} addModifier={addModifier} hash={HASHES.MODIFIERS} />
         ) : (
           <Collapse in={open} timeout={{ enter: 200, exit: 0 }}>
             <Paper className={classes.list} square>

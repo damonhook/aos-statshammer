@@ -5,7 +5,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Home, BarChart, Info, Timeline as TimelineIcon } from '@material-ui/icons';
 import { useHistory, useLocation, matchPath } from 'react-router-dom';
 import { IStore } from 'types/store';
-import { getRoute, EPages } from 'types/routes';
+import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({
   nav: {
@@ -40,25 +40,25 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ numUnits }) => {
   const simulationsDisabled = numUnits <= 0;
 
   const handleMainClick = () => {
-    history.push(getRoute(EPages.HOME));
+    history.push(ROUTES.HOME);
   };
 
   const handleStatsClick = () => {
-    history.push('/stats');
+    history.push(ROUTES.STATS);
   };
 
   const handleSimClick = () => {
-    history.push(getRoute(EPages.SIMULATIONS));
+    history.push(ROUTES.SIMULATIONS);
   };
 
   const handleAboutClick = () => {
-    history.push(getRoute(EPages.ABOUT));
+    history.push(ROUTES.ABOUT);
   };
 
   let activeIndex = 0;
-  if (matchPath(location.pathname, { path: '/stats' })) activeIndex = 1;
-  if (matchPath(location.pathname, { path: getRoute(EPages.SIMULATIONS) })) activeIndex = 2;
-  if (matchPath(location.pathname, { path: getRoute(EPages.ABOUT) })) activeIndex = 3;
+  if (matchPath(location.pathname, { path: ROUTES.STATS })) activeIndex = 1;
+  if (matchPath(location.pathname, { path: ROUTES.SIMULATIONS })) activeIndex = 2;
+  if (matchPath(location.pathname, { path: ROUTES.ABOUT })) activeIndex = 3;
 
   return (
     <Navigation showLabels className={classes.nav} value={activeIndex}>

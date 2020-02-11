@@ -4,7 +4,7 @@ import FloatingButton from 'components/FloatingButton';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { useHistory } from 'react-router-dom';
 import { IStore } from 'types/store';
-import { getRoute, EPages } from 'types/routes';
+import { ROUTES } from 'utils/urls';
 
 const mapStateToProps = (state: IStore) => ({
   numUnits: state.units.length,
@@ -19,7 +19,7 @@ const ExportPdfFab: React.FC<IExportPdfFabProps> = ({ numUnits }) => {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push(getRoute(EPages.PDF));
+    history.push(ROUTES.PDF);
   };
 
   return <FloatingButton onClick={handleClick} icon={<GetAppIcon />} disabled={numUnits <= 0} />;

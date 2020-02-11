@@ -4,10 +4,10 @@ import { IconButton, Button, useMediaQuery, Tooltip } from '@material-ui/core';
 import { ArrowBack, Refresh } from '@material-ui/icons';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import { getRoute, EPages } from 'types/routes';
 import { fetchSimulations } from 'api';
 import { useDispatch } from 'react-redux';
 import SimulationConfigDialog from 'components/SimulationConfigDialog';
+import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({
   simTabControls: {
@@ -45,7 +45,7 @@ const SimulationTabControls: React.FC<ISimulationTabControlsProps> = ({ pending 
   const xs = useMediaQuery(theme.breakpoints.down('xs'));
 
   const handleClick = () => {
-    history.push(getRoute(EPages.HOME));
+    history.push(ROUTES.HOME);
   };
 
   const handleRerun = () => {

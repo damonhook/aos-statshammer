@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from 'components/AppBar';
-import { EPages, getRoute } from 'types/routes';
+import { EPages } from 'types/routes';
 import { useReadFromFile } from 'hooks';
 import ReactMarkdown from 'react-markdown';
-import { Paper, Theme, Typography, Divider, CircularProgress, IconButton, Icon } from '@material-ui/core';
+import { Paper, Theme, Typography, Divider, CircularProgress, IconButton } from '@material-ui/core';
 import Footer from 'components/Footer';
 import BottomNavigation from 'components/BottomNavigation';
 import { grey } from '@material-ui/core/colors';
@@ -12,6 +12,7 @@ import { scrollToRef } from 'utils/scrollIntoView';
 import { useHistory } from 'react-router-dom';
 import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
 import { LogoIcon } from 'components/Icons';
+import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({
   about: {
@@ -81,7 +82,7 @@ const About = () => {
   });
 
   const handleLogoClick = () => {
-    history.push(getRoute(EPages.HOME));
+    history.push(ROUTES.HOME);
   };
 
   return (

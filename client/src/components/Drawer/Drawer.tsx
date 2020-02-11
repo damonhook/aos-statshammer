@@ -4,7 +4,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Link from 'components/Link';
 import { useHistory } from 'react-router-dom';
 import { grey } from '@material-ui/core/colors';
-import { EPages, getRoute } from 'types/routes';
+import { EPages } from 'types/routes';
+import { HASHES, ROUTES } from 'utils/urls';
 import HomeItem from './items/HomeItem';
 import AboutItem from './items/AboutItem';
 import ClearUnitsItem from './items/ClearUnitsItem';
@@ -51,7 +52,7 @@ const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
   const history = useHistory();
 
   const onSwipeOpen = () => {
-    history.push('#menu');
+    history.push(HASHES.DRAWER);
   };
 
   const handleClose = () => {
@@ -69,7 +70,7 @@ const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
         keepMounted: true, // Better open performance on mobile.
       }}
     >
-      <Link to={getRoute(EPages.HOME)} replace>
+      <Link to={ROUTES.HOME} replace>
         <Typography variant="h6" className={classes.title}>
           AoS Statshammer
         </Typography>

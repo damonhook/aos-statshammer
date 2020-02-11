@@ -8,7 +8,7 @@ import Graphs from 'containers/Graphs';
 import { GetApp, BarChart } from '@material-ui/icons';
 import TargetSummary from 'components/TargetSummary';
 import { IStatsStore } from 'types/store';
-import { getRoute, EPages } from 'types/routes';
+import { ROUTES } from 'utils/urls';
 import ResultsTable from './ResultsTable';
 
 const useStyles = makeStyles({
@@ -46,7 +46,7 @@ const Results: React.FC<IResultsProps> = React.memo(
               disabled={downloadDisabled}
               style={{ marginBottom: theme.spacing(2) }}
               size={mobile ? 'large' : 'medium'}
-              href={getRoute(EPages.SIMULATIONS)}
+              href={ROUTES.SIMULATIONS}
             >
               Simulations
             </Button>
@@ -63,7 +63,7 @@ const Results: React.FC<IResultsProps> = React.memo(
         <Graphs stats={stats} unitNames={unitNames} />
         {!mobile && (
           <Button
-            href={getRoute(EPages.PDF)}
+            href={ROUTES.PDF}
             variant="contained"
             color="primary"
             fullWidth

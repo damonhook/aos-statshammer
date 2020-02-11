@@ -1,11 +1,11 @@
 import React from 'react';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { Info as InfoIcon } from '@material-ui/icons';
-import { getRoute, EPages } from 'types/routes';
+import { ROUTES } from 'utils/urls';
 import LinkItem from './LinkItem';
 
 const AboutItem = () => (
-  <LinkItem to={getRoute(EPages.ABOUT)}>
+  <LinkItem to={ROUTES.ABOUT}>
     <ListItemIcon>
       <InfoIcon />
     </ListItemIcon>
