@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography, Paper, useMediaQuery } from '@material-ui/core';
-import { Github, Reddit, Releases } from 'components/SocialButtons';
+import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
@@ -61,6 +61,7 @@ const Footer: React.FC = () => {
           <Github className={classes.footerButton} />
           <Reddit className={classes.footerButton} />
           <Releases className={classes.footerButton} />
+          <WarcryStatshammer className={classes.footerButton} />
         </Typography>
       </Paper>
     </footer>

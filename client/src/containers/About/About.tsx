@@ -10,7 +10,8 @@ import BottomNavigation from 'components/BottomNavigation';
 import { grey } from '@material-ui/core/colors';
 import { scrollToRef } from 'utils/scrollIntoView';
 import { useHistory } from 'react-router-dom';
-import { Github, Reddit, Releases } from 'components/SocialButtons';
+import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
+import { LogoIcon } from 'components/Icons';
 
 const useStyles = makeStyles((theme: Theme) => ({
   about: {
@@ -37,16 +38,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   loader: {
     margin: theme.spacing(4),
   },
-  logo: {
+  logoButton: {
     margin: '0 auto',
-  },
-  logoIcon: {
     fontSize: '7rem',
   },
   md: {
     margin: 'auto',
     marginTop: -theme.spacing(2),
     maxWidth: 600,
+    '& a': {
+      color: theme.palette.primary.main,
+      '&:visited': {
+        color: theme.palette.primary.dark,
+      },
+    },
   },
   divider: {
     marginTop: theme.spacing(3),
@@ -84,10 +89,8 @@ const About = () => {
       <AppBar variant={EPages.ABOUT} />
       <div className={classes.wrapper}>
         <Paper className={classes.paper}>
-          <IconButton onClick={handleLogoClick} className={classes.logo}>
-            <Icon color="primary" className={classes.logoIcon}>
-              <img src="/logo.svg" alt="Logo" style={{ height: '100%' }} />
-            </Icon>
+          <IconButton onClick={handleLogoClick} className={classes.logoButton}>
+            <LogoIcon color="primary" fontSize="inherit" />
           </IconButton>
           {!content && (
             <div className={classes.loader}>
@@ -101,6 +104,7 @@ const About = () => {
             <Github className={classes.socialButton} />
             <Reddit className={classes.socialButton} />
             <Releases className={classes.socialButton} />
+            <WarcryStatshammer className={classes.socialButton} />
           </div>
           <div className={classes.spacer} />
           <Divider className={classes.divider} />
