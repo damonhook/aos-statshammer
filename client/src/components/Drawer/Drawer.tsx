@@ -87,11 +87,6 @@ const Drawer = () => {
     >
       <Link to={ROUTES.HOME} replace className={classes.logo}>
         <LogoIcon color="primary" fontSize="inherit" />
-        {!lg && (
-          <Typography variant="h6" className={classes.title} color="primary">
-            AoS Statshammer
-          </Typography>
-        )}
       </Link>
       <Divider />
       <List className={classes.list}>
