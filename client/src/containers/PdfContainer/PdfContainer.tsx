@@ -6,12 +6,11 @@ import { useMapping } from 'hooks';
 import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
 import _ from 'lodash';
 import { IStore } from 'types/store';
-import AppBar from 'components/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   pdfContainer: {
-    height: '100vh',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -75,7 +74,6 @@ const PdfContainer: React.FC<PdfContainerProps> = React.memo(
     if (modifiersReady && targetModifiersReady && resultsReady && probabilitiesReady) {
       return (
         <div className={classes.pdfContainer}>
-          <AppBar />
           <div className={classes.generatorInner}>
             <PdfGenerator units={units} target={target} results={results} probabilities={probabilities} />
           </div>

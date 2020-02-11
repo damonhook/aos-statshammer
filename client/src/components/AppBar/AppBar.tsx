@@ -1,18 +1,33 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { AppBar as Bar, Toolbar, Typography, IconButton, useScrollTrigger, Slide } from '@material-ui/core';
+import {
+  AppBar as Bar,
+  Toolbar,
+  Typography,
+  IconButton,
+  useScrollTrigger,
+  Slide,
+  Grid,
+} from '@material-ui/core';
 import { Menu as MenuIcon } from '@material-ui/icons';
-import Drawer from 'components/Drawer';
 import Link from 'components/Link';
-import { useHashMatch, useBreakpointChanged } from 'hooks';
+import { useBreakpointChanged, useRouteFind } from 'hooks';
 import { HASHES, ROUTES } from 'utils/urls';
+import { useSelector } from 'react-redux';
+import SimulationTabControls from 'components/SimulationTabControls';
+import { IStore } from '../../types/store';
 
 interface StyleProps {
   height: number;
 }
 const useStyles = makeStyles((theme: Theme) => ({
-  appBar: {},
+  appBar: {
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: theme.mixins.drawer.width,
+      width: `calc(100% - ${theme.mixins.drawer.width}px)`,
+    },
+  },
   offset: ({ height }: StyleProps) => ({
     marginTop: height,
   }),
@@ -26,10 +41,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
+    marginLeft: theme.spacing(1),
   },
   menuButton: {
-    margin: theme.spacing(0, 1),
     color: theme.palette.getContrastText(theme.palette.primary.main),
+    [theme.breakpoints.up('lg')]: {
+      display: 'none',
+    },
   },
   title: {
     padding: theme.spacing(2, 0),
@@ -40,27 +58,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface IAppBarProps {
-  children?: React.ReactNode;
-}
-
 /**
  * The app bar that appears on top of the page
  */
-const AppBar = ({ children }: IAppBarProps) => {
+const AppBar = () => {
   const ref = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
+  const [, , page] = useRouteFind(Object.values(ROUTES));
 
   const classes = useStyles({ height });
   const history = useHistory();
-  const drawerOpen = useHashMatch(HASHES.DRAWER);
   const trigger = useScrollTrigger();
 
   const breakpoints = useBreakpointChanged();
-
-  const handleDrawerClose = () => {
-    history.goBack();
-  };
+  const simulationsPending = useSelector((state: IStore) => state.simulations.pending);
 
   const handleDrawerOpen = () => {
     history.push(HASHES.DRAWER);
@@ -75,27 +86,32 @@ const AppBar = ({ children }: IAppBarProps) => {
   }, [ref, breakpoints]);
 
   return (
-    <div className={classes.appBar}>
+    <div>
       <Slide appear={false} direction="down" in={!trigger}>
-        <Bar>
+        <Bar className={classes.appBar}>
           <div ref={ref}>
             <Toolbar variant="dense" className={classes.toolbar} disableGutters>
               <div className={classes.leftContent}>
-                <IconButton onClick={handleDrawerOpen} className={classes.menuButton}>
-                  <MenuIcon />
-                </IconButton>
-                <Link to={ROUTES.HOME} className={classes.link}>
-                  <Typography variant="h5" component="h1" className={classes.title}>
-                    AoS Statshammer
-                  </Typography>
-                </Link>
+                <Grid container spacing={1} alignItems="center">
+                  <Grid item>
+                    <IconButton onClick={handleDrawerOpen} className={classes.menuButton}>
+                      <MenuIcon />
+                    </IconButton>
+                  </Grid>
+                  <Grid item>
+                    <Link to={ROUTES.HOME} className={classes.link}>
+                      <Typography variant="h5" component="h1" className={classes.title}>
+                        AoS Statshammer
+                      </Typography>
+                    </Link>
+                  </Grid>
+                </Grid>
               </div>
-              {children}
+              {page === ROUTES.SIMULATIONS && <SimulationTabControls pending={simulationsPending} />}
             </Toolbar>
           </div>
         </Bar>
       </Slide>
-      <Drawer open={drawerOpen} onClose={handleDrawerClose} />
       <div className={classes.offset} />
     </div>
   );

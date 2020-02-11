@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { Button, IconButton, Snackbar, SnackbarContent, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Snackbar, IconButton, SnackbarContent, Button, Theme } from '@material-ui/core';
-import { Close, CheckCircle, Warning, Error as ErrorIcon, Info } from '@material-ui/icons';
-import { connect, ConnectedProps } from 'react-redux';
-import { notifications } from 'store/slices';
-import clsx from 'clsx';
+import { CheckCircle, Close, Error as ErrorIcon, Info, Warning } from '@material-ui/icons';
 import { SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
-import { TNotificationVariants, INotificationAction } from 'types/notification';
+import clsx from 'clsx';
+import { useIsMobile } from 'hooks';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { notifications as notificationsStore } from 'store/slices';
+import { INotificationAction, TNotificationVariants } from 'types/notification';
 
 const variantIcon = {
   success: CheckCircle,
@@ -20,10 +21,13 @@ interface IStyleProps {
 }
 const useStyles = makeStyles((theme: Theme) => ({
   notification: {
-    position: 'relative',
-    marginTop: '.5em',
-    flex: '1 1 auto',
-    zIndex: theme.zIndex.snackbar,
+    [theme.breakpoints.down('sm')]: {
+      bottom: 90,
+      minWidth: '85%',
+    },
+  },
+  inner: {
+    flex: 1,
   },
   content: ({ variant }: IStyleProps) => ({
     flexWrap: 'nowrap',
@@ -47,10 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const connector = connect(null, {
-  dismissNotification: notifications.actions.dismissNotification,
-});
-interface INotificationProps extends ConnectedProps<typeof connector> {
+interface INotificationProps {
   message: string;
   notificationId: string;
   variant: TNotificationVariants;
@@ -61,27 +62,28 @@ interface INotificationProps extends ConnectedProps<typeof connector> {
 /**
  * A single notification snackbar
  */
-const Notification: React.FC<INotificationProps> = ({
+const Notification = ({
   message,
   notificationId,
-  dismissNotification,
   variant = 'info',
   action,
   timeout = 3000,
-}) => {
+}: INotificationProps) => {
   const classes = useStyles({ variant });
   const [open, setOpen] = useState(true);
+  const dispatch = useDispatch();
+  const mobile = useIsMobile();
   const Icon = variantIcon[variant];
 
   useEffect(() => {
     setOpen(true);
   }, [notificationId]);
 
-  const handleClose = (event?: React.SyntheticEvent | null, reason?: string) => {
+  const handleClose = (event: any, reason?: string) => {
     if (reason === 'clickaway') return;
     const t = reason === 'swipeaway' || reason === 'actioned' ? 0 : 500;
     setOpen(false);
-    if (dismissNotification) setTimeout(() => dismissNotification({ key: notificationId }), t);
+    setTimeout(() => dispatch(notificationsStore.actions.dismissNotification({ key: notificationId })), t);
   };
 
   const handleAction = () => {
@@ -92,43 +94,49 @@ const Notification: React.FC<INotificationProps> = ({
   let actionElement: React.ReactNode | null = null;
   if (action?.label && action?.onClick) {
     actionElement = (
-      <Button onClick={handleAction} className={classes.action}>
+      <Button onClick={handleAction} className={classes.action} key={action.label}>
         {action.label}
       </Button>
     );
   }
 
+  const swipeAction = {
+    content: <span />,
+    action: () => handleClose(null, 'swipeaway'),
+  };
+
   return (
-    <SwipeableListItem
-      swipeRight={{
-        content: <span />,
-        action: () => handleClose(null, 'swipeaway'),
+    <Snackbar
+      className={classes.notification}
+      open={open}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: mobile ? 'center' : 'left',
       }}
-      swipeLeft={{
-        content: <span />,
-        action: () => handleClose(null, 'swipeaway'),
-      }}
-      threshold={0.3}
+      autoHideDuration={timeout}
     >
-      <Snackbar className={classes.notification} open={open} onClose={handleClose} autoHideDuration={timeout}>
-        <SnackbarContent
-          className={clsx(classes.content)}
-          message={
-            <span className={classes.message}>
-              <Icon className={clsx(classes.icon, classes.iconVariant)} />
-              {message}
-            </span>
-          }
-          action={[
-            ...([actionElement] ?? []),
-            <IconButton key="close" onClick={handleClose} className={classes.action}>
-              <Close className={classes.icon} />
-            </IconButton>,
-          ]}
-        />
-      </Snackbar>
-    </SwipeableListItem>
+      <div className={classes.inner}>
+        <SwipeableListItem swipeRight={swipeAction} swipeLeft={swipeAction} threshold={0.3}>
+          <SnackbarContent
+            className={clsx(classes.content)}
+            message={
+              <span className={classes.message}>
+                <Icon className={clsx(classes.icon, classes.iconVariant)} />
+                {message}
+              </span>
+            }
+            action={[
+              ...([actionElement] ?? []),
+              <IconButton key="close" onClick={handleClose} className={classes.action}>
+                <Close className={classes.icon} />
+              </IconButton>,
+            ]}
+          />
+        </SwipeableListItem>
+      </div>
+    </Snackbar>
   );
 };
 
-export default connector(Notification);
+export default Notification;

@@ -17,7 +17,7 @@ interface IStatsProps extends ConnectedProps<typeof connector> {
   className?: string;
 }
 
-const Stats: React.FC<IStatsProps> = ({ units, stats, className }) => {
+const Stats = ({ units, stats, className }: IStatsProps) => {
   const [unitNames, setUnitNames] = useState(units.map(({ name }) => name));
   const [unitMapping, setUnitMapping] = useState({});
 

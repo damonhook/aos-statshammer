@@ -4,7 +4,6 @@ import Stats, { ExportPdfFab } from 'containers/Stats';
 import Target, { AddModifiersFab } from 'containers/Target';
 import { makeStyles } from '@material-ui/core/styles';
 import { RoutedTabs } from 'components/Tabbed';
-import BottomNavigation from 'components/BottomNavigation';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(() => ({
@@ -49,7 +48,6 @@ const MobileAppContent: React.FC<MobileAppContent> = ({ className }) => {
 
   return (
     <div className={clsx(classes.mobileContent, className)}>
-      <BottomNavigation />
       <Fab activeIndex={activeTab} />
       <RoutedTabs
         className={classes.tabs}

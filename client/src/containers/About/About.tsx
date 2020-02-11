@@ -1,11 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from 'components/AppBar';
 import { useReadFromFile } from 'hooks';
 import ReactMarkdown from 'react-markdown';
 import { Paper, Theme, Typography, Divider, CircularProgress, IconButton } from '@material-ui/core';
-import Footer from 'components/Footer';
-import BottomNavigation from 'components/BottomNavigation';
 import { grey } from '@material-ui/core/colors';
 import { scrollToRef } from 'utils/scrollIntoView';
 import { useHistory } from 'react-router-dom';
@@ -86,7 +83,6 @@ const About = () => {
 
   return (
     <div className={classes.about} ref={ref}>
-      <AppBar />
       <div className={classes.wrapper}>
         <Paper className={classes.paper}>
           <IconButton onClick={handleLogoClick} className={classes.logoButton}>
@@ -115,8 +111,6 @@ const About = () => {
           )}
         </Paper>
       </div>
-      <Footer />
-      <BottomNavigation />
     </div>
   );
 };

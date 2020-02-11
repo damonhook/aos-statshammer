@@ -27,13 +27,14 @@ const Results: React.FC<IResultsProps> = React.memo(
     const theme = useTheme();
     const firstLoad = !stats?.payload?.length && stats?.pending;
     const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const lg = useMediaQuery(theme.breakpoints.up('lg'));
 
     const downloadDisabled = unitNames.length <= 0;
 
     return (
       <Typography className={clsx(classes.results, className)} component="div">
         <TargetSummary />
-        {!mobile && (
+        {!mobile && !lg && (
           <Tooltip
             title={`View more advanced stats (like full probability curves), 
             calculated through simulations`}
@@ -45,7 +46,6 @@ const Results: React.FC<IResultsProps> = React.memo(
               startIcon={<BarChart />}
               disabled={downloadDisabled}
               style={{ marginBottom: theme.spacing(2) }}
-              size={mobile ? 'large' : 'medium'}
               href={ROUTES.SIMULATIONS}
             >
               Simulations
@@ -61,7 +61,7 @@ const Results: React.FC<IResultsProps> = React.memo(
           <ResultsTable stats={stats} unitNames={unitNames} />
         </ListItem>
         <Graphs stats={stats} unitNames={unitNames} />
-        {!mobile && (
+        {!mobile && !lg && (
           <Button
             href={ROUTES.PDF}
             variant="contained"
@@ -69,7 +69,7 @@ const Results: React.FC<IResultsProps> = React.memo(
             fullWidth
             startIcon={<GetApp />}
             disabled={downloadDisabled}
-            style={{ marginBottom: theme.spacing(1) }}
+            style={{ marginBottom: theme.spacing(2) }}
           >
             Download PDF
           </Button>

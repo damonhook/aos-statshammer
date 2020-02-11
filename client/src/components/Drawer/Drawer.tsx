@@ -1,11 +1,12 @@
 import React from 'react';
 import { SwipeableDrawer as AppDrawer, List, Typography, Divider, useMediaQuery } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import Link from 'components/Link';
 import { useHistory } from 'react-router-dom';
 import { grey } from '@material-ui/core/colors';
 import { HASHES, ROUTES } from 'utils/urls';
-import { useRouteFind } from 'hooks';
+import { useRouteFind, useHashMatch } from 'hooks';
+import { LogoIcon } from 'components/Icons';
 import HomeItem from './items/HomeItem';
 import AboutItem from './items/AboutItem';
 import ClearUnitsItem from './items/ClearUnitsItem';
@@ -17,7 +18,15 @@ import ToggleGraphListItem from './items/ToggleGraphListItem';
 import PdfDownloadItem from './items/PdfDownloadItem';
 import ClearTargetItem from './items/ClearTargetItem';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
+  drawer: {
+    [theme.breakpoints.up('lg')]: {
+      width: theme.mixins.drawer.width,
+    },
+  },
+  docked: {
+    width: theme.mixins.drawer.width,
+  },
   title: {
     padding: theme.spacing(2, 2),
   },
@@ -26,10 +35,14 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(1),
   },
   list: {
-    width: 300,
-    [theme.breakpoints.down('md')]: {
-      width: 250,
-    },
+    width: '100%',
+  },
+  logo: {
+    margin: theme.spacing(1, 0, 1.5),
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: '3.5rem',
+    display: 'flex',
   },
   version: {
     display: 'flex',
@@ -39,41 +52,46 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface DrawerProps {
-  open: boolean;
-  onClose?: () => void;
-}
-
-const Drawer = ({ open, onClose }: DrawerProps) => {
+const Drawer = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const history = useHistory();
+
+  const open = useHashMatch(HASHES.DRAWER);
   const [, , page] = useRouteFind(Object.values(ROUTES));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const lg = useMediaQuery(theme.breakpoints.up('lg'));
 
   const onSwipeOpen = () => {
     history.push(HASHES.DRAWER);
   };
 
   const handleClose = () => {
-    if (onClose) onClose();
+    history.goBack();
   };
 
   return (
     <AppDrawer
       open={open}
       onOpen={onSwipeOpen}
-      variant="temporary"
+      variant={lg ? 'permanent' : 'temporary'}
       anchor="left"
       onClose={handleClose}
       ModalProps={{
         keepMounted: true, // Better open performance on mobile.
       }}
+      className={classes.drawer}
+      classes={{
+        paperAnchorLeft: classes.docked,
+      }}
     >
-      <Link to={ROUTES.HOME} replace>
-        <Typography variant="h6" className={classes.title}>
-          AoS Statshammer
-        </Typography>
+      <Link to={ROUTES.HOME} replace className={classes.logo}>
+        <LogoIcon color="primary" fontSize="inherit" />
+        {!lg && (
+          <Typography variant="h6" className={classes.title} color="primary">
+            AoS Statshammer
+          </Typography>
+        )}
       </Link>
       <Divider />
       <List className={classes.list}>
@@ -87,7 +105,7 @@ const Drawer = ({ open, onClose }: DrawerProps) => {
         {page === ROUTES.HOME && (
           <>
             <ClearUnitsItem />
-            <ImportUnitItem onClick={onClose} />
+            <ImportUnitItem onClick={handleClose} />
             <ClearTargetItem />
           </>
         )}
