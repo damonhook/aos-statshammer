@@ -2,7 +2,6 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { Timeline as TimelineIcon } from '@material-ui/icons';
-import BetaTag from 'components/BetaTag';
 import { IStore } from 'types/store';
 import { ROUTES } from 'utils/urls';
 import LinkItem from './LinkItem';
@@ -21,10 +20,7 @@ const AdvancedStatsItem: React.FC<AdvancedStatsItemProps> = ({ numUnits }) => (
     <ListItemIcon>
       <TimelineIcon />
     </ListItemIcon>
-    <ListItemText>
-      Simulations
-      <BetaTag />
-    </ListItemText>
+    <ListItemText>Simulations</ListItemText>
   </LinkItem>
 );
 

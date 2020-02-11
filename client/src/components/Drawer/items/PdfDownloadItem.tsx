@@ -2,7 +2,6 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { GetApp } from '@material-ui/icons';
-import BetaTag from 'components/BetaTag';
 import { IStore } from 'types/store';
 import { ROUTES } from 'utils/urls';
 import LinkItem from './LinkItem';
@@ -21,10 +20,7 @@ const PdfDownloadItem: React.FC<PdfDownloadItemProps> = ({ numUnits }) => (
     <ListItemIcon>
       <GetApp />
     </ListItemIcon>
-    <ListItemText>
-      Download PDF
-      <BetaTag />
-    </ListItemText>
+    <ListItemText>Download PDF</ListItemText>
   </LinkItem>
 );
 
