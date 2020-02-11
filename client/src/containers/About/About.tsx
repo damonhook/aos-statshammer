@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useReadFromFile } from 'hooks';
 import ReactMarkdown from 'react-markdown';
 import { Paper, Theme, Typography, Divider, CircularProgress, IconButton } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
-import { scrollToRef } from 'utils/scrollIntoView';
+import { scrollToTop } from 'utils/scrollIntoView';
 import { useHistory } from 'react-router-dom';
 import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
 import { LogoIcon } from 'components/Icons';
@@ -71,10 +71,9 @@ const About = () => {
   const classes = useStyles();
   const content = useReadFromFile('about.md');
   const history = useHistory();
-  const ref = useRef(null);
 
   useEffect(() => {
-    scrollToRef(ref, true);
+    scrollToTop(true);
   });
 
   const handleLogoClick = () => {
@@ -82,7 +81,7 @@ const About = () => {
   };
 
   return (
-    <div className={classes.about} ref={ref}>
+    <div className={classes.about}>
       <div className={classes.wrapper}>
         <Paper className={classes.paper}>
           <IconButton onClick={handleLogoClick} className={classes.logoButton}>
