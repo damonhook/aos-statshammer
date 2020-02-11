@@ -15,7 +15,6 @@ import BasicCurves from 'containers/ProbabilityCurves/BasicCurves';
 import CumulativeCurves from 'containers/ProbabilityCurves/CumulativeCurves';
 import { IStore } from 'types/store';
 import Notifications from 'components/Notifications';
-import { EPages } from 'types/routes';
 import SimulationTabControls from 'components/SimulationTabControls';
 import { scrollToRef } from 'utils/scrollIntoView';
 import MetricsTables from './MetricsTables';
@@ -90,7 +89,7 @@ const Simulations: React.FC<ISimulationsProps> = React.memo(
 
     return (
       <div className={classes.app} ref={ref}>
-        <AppBar title="AoS Statshammer" variant={EPages.SIMULATIONS}>
+        <AppBar>
           <SimulationTabControls pending={simulations.pending} />
         </AppBar>
         <div className={classes.container}>

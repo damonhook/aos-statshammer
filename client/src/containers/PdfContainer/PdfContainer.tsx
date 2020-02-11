@@ -8,7 +8,6 @@ import _ from 'lodash';
 import { IStore } from 'types/store';
 import AppBar from 'components/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
-import { EPages } from 'types/routes';
 
 const useStyles = makeStyles(() => ({
   pdfContainer: {
@@ -76,7 +75,7 @@ const PdfContainer: React.FC<PdfContainerProps> = React.memo(
     if (modifiersReady && targetModifiersReady && resultsReady && probabilitiesReady) {
       return (
         <div className={classes.pdfContainer}>
-          <AppBar variant={EPages.PDF} />
+          <AppBar />
           <div className={classes.generatorInner}>
             <PdfGenerator units={units} target={target} results={results} probabilities={probabilities} />
           </div>

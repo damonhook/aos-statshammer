@@ -4,8 +4,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Link from 'components/Link';
 import { useHistory } from 'react-router-dom';
 import { grey } from '@material-ui/core/colors';
-import { EPages } from 'types/routes';
 import { HASHES, ROUTES } from 'utils/urls';
+import { useRouteFind } from 'hooks';
 import HomeItem from './items/HomeItem';
 import AboutItem from './items/AboutItem';
 import ClearUnitsItem from './items/ClearUnitsItem';
@@ -42,14 +42,14 @@ const useStyles = makeStyles(theme => ({
 interface DrawerProps {
   open: boolean;
   onClose?: () => void;
-  page?: EPages;
 }
 
-const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
+const Drawer = ({ open, onClose }: DrawerProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const history = useHistory();
+  const [, , page] = useRouteFind(Object.values(ROUTES));
 
   const onSwipeOpen = () => {
     history.push(HASHES.DRAWER);
@@ -83,8 +83,8 @@ const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
         <AboutItem />
         <Divider className={classes.divider} variant="middle" />
         <ToggleDarkModeItem />
-        {page === EPages.HOME && !mobile && <ToggleGraphListItem />}
-        {page === EPages.HOME && (
+        {page === ROUTES.HOME && !mobile && <ToggleGraphListItem />}
+        {page === ROUTES.HOME && (
           <>
             <ClearUnitsItem />
             <ImportUnitItem onClick={onClose} />
@@ -102,10 +102,6 @@ const Drawer: React.FC<DrawerProps> = ({ open, onClose, page }) => {
       </List>
     </AppDrawer>
   );
-};
-
-Drawer.defaultProps = {
-  page: EPages.HOME,
 };
 
 export default Drawer;

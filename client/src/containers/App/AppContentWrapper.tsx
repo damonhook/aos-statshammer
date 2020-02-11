@@ -40,7 +40,7 @@ const AppContentWrapper: React.FC = () => {
 
   return (
     <div className={classes.app} ref={contentRef}>
-      <AppBar title="AoS Statshammer" />
+      <AppBar />
       <StoreSubscriber />
       {mobile ? (
         <MobileAppContent className={classes.container} />

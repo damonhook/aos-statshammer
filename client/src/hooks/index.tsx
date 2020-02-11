@@ -6,3 +6,4 @@ export { default as useMapping } from './useMapping';
 export { default as useReadFromFile } from './useReadFromFile';
 export { default as useIsMobile } from './useIsMobile';
 export { default as useBreakpointChanged } from './useBreakpointChanged';
+export { default as useRouteFind } from './useRouteFind';

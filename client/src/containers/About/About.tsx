@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from 'components/AppBar';
-import { EPages } from 'types/routes';
 import { useReadFromFile } from 'hooks';
 import ReactMarkdown from 'react-markdown';
 import { Paper, Theme, Typography, Divider, CircularProgress, IconButton } from '@material-ui/core';
@@ -87,7 +86,7 @@ const About = () => {
 
   return (
     <div className={classes.about} ref={ref}>
-      <AppBar variant={EPages.ABOUT} />
+      <AppBar />
       <div className={classes.wrapper}>
         <Paper className={classes.paper}>
           <IconButton onClick={handleLogoClick} className={classes.logoButton}>

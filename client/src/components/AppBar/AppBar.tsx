@@ -6,7 +6,6 @@ import { Menu as MenuIcon } from '@material-ui/icons';
 import Drawer from 'components/Drawer';
 import Link from 'components/Link';
 import { useHashMatch, useBreakpointChanged } from 'hooks';
-import { EPages } from 'types/routes';
 import { HASHES, ROUTES } from 'utils/urls';
 
 interface StyleProps {
@@ -42,14 +41,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface IAppBarProps {
-  title?: string;
-  variant?: EPages;
+  children?: React.ReactNode;
 }
 
 /**
  * The app bar that appears on top of the page
  */
-const AppBar: React.FC<IAppBarProps> = ({ title = 'AoS Statshammer', variant = EPages.HOME, children }) => {
+const AppBar = ({ children }: IAppBarProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
 
@@ -88,7 +86,7 @@ const AppBar: React.FC<IAppBarProps> = ({ title = 'AoS Statshammer', variant = E
                 </IconButton>
                 <Link to={ROUTES.HOME} className={classes.link}>
                   <Typography variant="h5" component="h1" className={classes.title}>
-                    {title}
+                    AoS Statshammer
                   </Typography>
                 </Link>
               </div>
@@ -97,7 +95,7 @@ const AppBar: React.FC<IAppBarProps> = ({ title = 'AoS Statshammer', variant = E
           </div>
         </Bar>
       </Slide>
-      <Drawer open={drawerOpen} onClose={handleDrawerClose} page={variant} />
+      <Drawer open={drawerOpen} onClose={handleDrawerClose} />
       <div className={classes.offset} />
     </div>
   );
