@@ -1,11 +1,12 @@
-import React from 'react';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { Home as HomeIcon } from '@material-ui/icons';
-import { getRoute, EPages } from 'types/routes';
+import React from 'react';
+import { ROUTES } from 'utils/urls';
+
 import LinkItem from './LinkItem';
 
 const HomeItem = () => (
-  <LinkItem to={getRoute(EPages.HOME)}>
+  <LinkItem to={ROUTES.HOME}>
     <ListItemIcon>
       <HomeIcon />
     </ListItemIcon>

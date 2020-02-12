@@ -1,12 +1,13 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import ModifierDescription from 'components/ModifierItem/ModifierDescription';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { List, ListItem as Item, Tooltip, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ChevronRight, HelpOutline } from '@material-ui/icons';
 import clsx from 'clsx';
+import ModifierDescription from 'components/ModifierItem/ModifierDescription';
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { IModifierInstance } from 'types/modifiers';
 import { IStore } from 'types/store';
+
 import SummaryLoading from './SummaryLoading';
 
 const useStyles = makeStyles(theme => ({

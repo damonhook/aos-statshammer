@@ -1,14 +1,15 @@
-import React from 'react';
+import { Button, Tooltip, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { BarChart, GetApp } from '@material-ui/icons';
 import clsx from 'clsx';
-import { Typography, Button, useMediaQuery, Tooltip } from '@material-ui/core';
 import ListItem from 'components/ListItem';
-import _ from 'lodash';
-import Graphs from 'containers/Graphs';
-import { GetApp, BarChart } from '@material-ui/icons';
 import TargetSummary from 'components/TargetSummary';
+import Graphs from 'containers/Graphs';
+import _ from 'lodash';
+import React from 'react';
 import { IStatsStore } from 'types/store';
-import { getRoute, EPages } from 'types/routes';
+import { ROUTES } from 'utils/urls';
+
 import ResultsTable from './ResultsTable';
 
 const useStyles = makeStyles({
@@ -27,13 +28,14 @@ const Results: React.FC<IResultsProps> = React.memo(
     const theme = useTheme();
     const firstLoad = !stats?.payload?.length && stats?.pending;
     const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const lg = useMediaQuery(theme.breakpoints.up('lg'));
 
     const downloadDisabled = unitNames.length <= 0;
 
     return (
       <Typography className={clsx(classes.results, className)} component="div">
         <TargetSummary />
-        {!mobile && (
+        {!mobile && !lg && (
           <Tooltip
             title={`View more advanced stats (like full probability curves), 
             calculated through simulations`}
@@ -45,8 +47,7 @@ const Results: React.FC<IResultsProps> = React.memo(
               startIcon={<BarChart />}
               disabled={downloadDisabled}
               style={{ marginBottom: theme.spacing(2) }}
-              size={mobile ? 'large' : 'medium'}
-              href={getRoute(EPages.SIMULATIONS)}
+              href={ROUTES.SIMULATIONS}
             >
               Simulations
             </Button>
@@ -61,15 +62,15 @@ const Results: React.FC<IResultsProps> = React.memo(
           <ResultsTable stats={stats} unitNames={unitNames} />
         </ListItem>
         <Graphs stats={stats} unitNames={unitNames} />
-        {!mobile && (
+        {!mobile && !lg && (
           <Button
-            href={getRoute(EPages.PDF)}
+            href={ROUTES.PDF}
             variant="contained"
             color="primary"
             fullWidth
             startIcon={<GetApp />}
             disabled={downloadDisabled}
-            style={{ marginBottom: theme.spacing(1) }}
+            style={{ marginBottom: theme.spacing(2) }}
           >
             Download PDF
           </Button>

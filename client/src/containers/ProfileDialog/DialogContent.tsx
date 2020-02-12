@@ -1,12 +1,13 @@
-import React, { useCallback } from 'react';
-import { Typography, DialogContent as Content, TextField } from '@material-ui/core';
-import ModifierList from 'components/ModifierList';
+import { DialogContent as Content, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import DiceInput from 'components/DiceInput';
+import ModifierList from 'components/ModifierList';
 import RollInput from 'components/RollInput';
 import _ from 'lodash';
+import React, { useCallback } from 'react';
 import { IWeaponProfile } from 'types/unit';
+
 import FormField from './FormField';
 
 const useStyles = makeStyles(theme => ({

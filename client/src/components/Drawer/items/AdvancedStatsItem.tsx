@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { Timeline as TimelineIcon } from '@material-ui/icons';
-import BetaTag from 'components/BetaTag';
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { IStore } from 'types/store';
-import { getRoute, EPages } from 'types/routes';
+import { ROUTES } from 'utils/urls';
+
 import LinkItem from './LinkItem';
 
 const mapStateToProps = (state: IStore) => ({
@@ -17,14 +17,11 @@ interface AdvancedStatsItemProps extends ConnectedProps<typeof connector> {
 }
 
 const AdvancedStatsItem: React.FC<AdvancedStatsItemProps> = ({ numUnits }) => (
-  <LinkItem to={getRoute(EPages.SIMULATIONS)} disabled={numUnits <= 0}>
+  <LinkItem to={ROUTES.SIMULATIONS} disabled={numUnits <= 0}>
     <ListItemIcon>
       <TimelineIcon />
     </ListItemIcon>
-    <ListItemText>
-      Simulations
-      <BetaTag />
-    </ListItemText>
+    <ListItemText>Simulations</ListItemText>
   </LinkItem>
 );
 

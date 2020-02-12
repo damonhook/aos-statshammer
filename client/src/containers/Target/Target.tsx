@@ -1,20 +1,14 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
-import _ from 'lodash';
 import TargetModifierList from 'components/TargetModifierList';
+import _ from 'lodash';
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { IStore } from 'types/store';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   target: {
-    marginBottom: '1em',
-    flexGrow: 1,
-    flexBasis: '50%',
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: '4em',
-    },
     overflowX: 'hidden',
   },
 }));

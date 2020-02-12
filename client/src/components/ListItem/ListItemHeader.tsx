@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { CardHeader } from 'components/Card';
-import { makeStyles } from '@material-ui/core/styles';
-import ListControls from 'components/ListControls';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
-import clsx from 'clsx';
-import useLongPress from 'hooks/useLongPress';
-import ActionsDialog from 'components/ActionsDialog';
+import { makeStyles } from '@material-ui/core/styles';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { LONG_PRESS_DELAY } from 'appConstants';
+import clsx from 'clsx';
+import ActionsDialog from 'components/ActionsDialog';
+import { CardHeader } from 'components/Card';
+import ListControls from 'components/ListControls';
 import { IPrimaryItem, ISecondaryItem } from 'components/ListControls/types';
+import useLongPress from 'hooks/useLongPress';
+import React, { useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
   header: {

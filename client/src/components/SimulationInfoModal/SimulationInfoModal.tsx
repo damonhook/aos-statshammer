@@ -1,21 +1,22 @@
-import React from 'react';
 import {
-  Dialog,
-  DialogTitle,
   Button,
-  DialogContent,
+  Dialog,
   DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
-  useMediaQuery,
   Tooltip,
+  useMediaQuery,
 } from '@material-ui/core';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { Close, InfoOutlined } from '@material-ui/icons';
 import { useHashMatch, useReadFromFile } from 'hooks';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { IStore } from 'types/store';
+import { HASHES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const SimulationInfoModal = () => {
   const classes = useStyles();
-  const open = useHashMatch('#info');
+  const open = useHashMatch(HASHES.SIM_INFO);
   const history = useHistory();
   const theme = useTheme();
 
@@ -38,7 +39,7 @@ const SimulationInfoModal = () => {
   const content = useReadFromFile('simInfo.md', { numSim: numSimulations, totSim: numSimulations * 6 });
 
   const handleOpen = () => {
-    history.push('#info');
+    history.push(HASHES.SIM_INFO);
   };
 
   const handleClose = () => {

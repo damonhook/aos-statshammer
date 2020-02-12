@@ -1,16 +1,17 @@
-import React, { useCallback, useState } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { LineGraph } from 'components/Graphs';
 import { Grid } from '@material-ui/core';
-import _ from 'lodash';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { LineGraph } from 'components/Graphs';
 import { ProbabilityTooltip } from 'components/GraphTooltips';
 import ListItem from 'components/ListItem';
-import clsx from 'clsx';
+import _ from 'lodash';
+import React, { useCallback, useState } from 'react';
 import { IProbability } from 'types/simulations';
 import { TError } from 'types/store';
-import { getMaxDamage, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
-import Loadable from './Loadable';
+
 import GraphControls from './GraphControls';
+import Loadable from './Loadable';
+import { getMaxDamage, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 
 const useStyles = makeStyles(theme => ({
   probabilityCurves: {},

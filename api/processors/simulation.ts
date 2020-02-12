@@ -1,10 +1,10 @@
-import { D6 } from '../models/dice';
 import { Characteristic as C } from '../constants';
-import { getMetrics } from '../utils/StatsUtils';
+import { D6 } from '../models/dice';
 import { MODIFIERS as m } from '../models/modifiers';
-import { TARGET_MODIFIERS as t } from '../models/targetModifiers';
 import Target from '../models/target';
+import { TARGET_MODIFIERS as t } from '../models/targetModifiers';
 import WeaponProfile from '../models/weaponProfile';
+import { getMetrics } from '../utils/StatsUtils';
 
 class Simulation {
   profile: WeaponProfile;

@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
-import Unit from '../models/unit';
-import WeaponProfile from '../models/weaponProfile';
-import { MODIFIERS as m } from '../models/modifiers';
 import { Characteristic as C } from '../constants';
 import { D6 } from '../models/dice';
-import { testUnit } from './utils';
 import DiceValue from '../models/diceValue';
+import { MODIFIERS as m } from '../models/modifiers';
+import Unit from '../models/unit';
+import WeaponProfile from '../models/weaponProfile';
+import { testUnit } from './utils';
 
 describe('Units', () => {
   describe('Chainrasp Horde', () => {

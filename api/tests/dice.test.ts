@@ -1,4 +1,5 @@
 import assert from 'assert';
+
 import { Dice } from '../models/dice';
 import { round } from './utils';
 

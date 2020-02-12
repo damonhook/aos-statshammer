@@ -1,13 +1,14 @@
 import { Characteristic } from 'api/constants';
-import RerollFailed from './RerollFailed';
-import Reroll from './Reroll';
-import Exploding from './Exploding';
-import MortalWounds from './MortalWounds';
-import Bonus from './Bonus';
-import RerollOnes from './RerollOnes';
+
 import BaseModifier from './BaseModifier';
+import Bonus from './Bonus';
 import ConditionalBonus from './ConditionalBonus';
+import Exploding from './Exploding';
 import LeaderBonus from './LeaderBonus';
+import MortalWounds from './MortalWounds';
+import Reroll from './Reroll';
+import RerollFailed from './RerollFailed';
+import RerollOnes from './RerollOnes';
 
 /**
  * The list of possible modifiers

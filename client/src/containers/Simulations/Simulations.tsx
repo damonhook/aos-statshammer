@@ -1,23 +1,17 @@
-import React, { useEffect, useMemo, useCallback, useRef } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { fetchSimulations } from 'api';
-import AppBar from 'components/AppBar';
-import _ from 'lodash';
-import Footer from 'components/Footer';
 import Tabbed from 'components/Tabbed';
-import BottomNavigation from 'components/BottomNavigation';
-import { useMediaQuery } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
-import { useMapping } from 'hooks';
-import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
 import BasicCurves from 'containers/ProbabilityCurves/BasicCurves';
 import CumulativeCurves from 'containers/ProbabilityCurves/CumulativeCurves';
+import { useMapping } from 'hooks';
+import _ from 'lodash';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { IStore } from 'types/store';
-import Notifications from 'components/Notifications';
-import { EPages } from 'types/routes';
-import SimulationTabControls from 'components/SimulationTabControls';
-import { scrollToRef } from 'utils/scrollIntoView';
+import { applyUnitNameMapping, getProbabilitiesMapping, getResultsMapping } from 'utils/mappers';
+import { scrollToTop } from 'utils/scrollIntoView';
+
 import MetricsTables from './MetricsTables';
 import ProbabilityTables from './ProbabilityTables';
 
@@ -62,10 +56,7 @@ interface ISimulationsProps extends ConnectedProps<typeof connector> {}
 const Simulations: React.FC<ISimulationsProps> = React.memo(
   ({ units, numSimulations, simulations, fetchSimulations }) => {
     const classes = useStyles();
-    const theme = useTheme();
     const history = useHistory();
-    const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const ref = useRef(null);
 
     if (units.length <= 0) {
       history.replace('/');
@@ -85,14 +76,11 @@ const Simulations: React.FC<ISimulationsProps> = React.memo(
     }, [fetchSimulations, numSimulations]);
 
     useEffect(() => {
-      scrollToRef(ref, true);
+      scrollToTop(true);
     }, [results]);
 
     return (
-      <div className={classes.app} ref={ref}>
-        <AppBar title="AoS Statshammer" variant={EPages.SIMULATIONS}>
-          <SimulationTabControls pending={simulations.pending} />
-        </AppBar>
+      <div className={classes.app}>
         <div className={classes.container}>
           <Tabbed
             className={classes.tabs}
@@ -131,9 +119,6 @@ const Simulations: React.FC<ISimulationsProps> = React.memo(
             ]}
           />
         </div>
-        <Notifications />
-        {mobile && <BottomNavigation />}
-        <Footer />
       </div>
     );
   },

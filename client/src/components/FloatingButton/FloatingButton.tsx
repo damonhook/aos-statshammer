@@ -1,7 +1,7 @@
-import React from 'react';
 import { Fab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   fab: {
@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     right: theme.spacing(2),
     zIndex: theme.zIndex.appBar,
     [theme.breakpoints.down('sm')]: {
-      bottom: theme.spacing(7.5),
+      bottom: theme.spacing(8),
     },
   },
 }));
@@ -23,7 +23,7 @@ interface FloatingButtonProps {
 }
 
 /** A floating button component that is used for the mobile interface */
-const FloatingButton: React.FC<FloatingButtonProps> = ({ onClick, disabled, icon, className }) => {
+const FloatingButton = ({ onClick, disabled = false, icon, className }: FloatingButtonProps) => {
   const classes = useStyles();
   return (
     <Fab
@@ -36,10 +36,6 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onClick, disabled, icon
       {icon}
     </Fab>
   );
-};
-
-FloatingButton.defaultProps = {
-  disabled: false,
 };
 
 export default FloatingButton;

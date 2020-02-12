@@ -1,6 +1,7 @@
+import { fetchStatsCompare } from 'api';
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { fetchStatsCompare } from 'api';
+
 import ErrorCard from './ErrorCard';
 
 const connector = connect(null, { fetchStatsCompare });

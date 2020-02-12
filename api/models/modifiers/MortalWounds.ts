@@ -1,9 +1,9 @@
 import { Characteristic as C } from '../../constants';
+import { booleanOption, numberOption, rollOption } from '../../utils/ModifierOptions';
 import { D6 } from '../dice';
 import DiceValue from '../diceValue';
-import BaseModifier from './BaseModifier';
-import { numberOption, booleanOption, rollOption } from '../../utils/ModifierOptions';
 import WeaponProfile from '../weaponProfile';
+import BaseModifier from './BaseModifier';
 
 export default class MortalWounds extends BaseModifier {
   ['constructor']: typeof MortalWounds;

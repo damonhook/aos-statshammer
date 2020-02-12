@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ISimulationsStore, TError } from 'types/store';
 import { IProbability, TSimResult } from 'types/simulations';
+import { ISimulationsStore, TError } from 'types/store';
 
 const INITIAL_STATE: ISimulationsStore = {
   pending: false,

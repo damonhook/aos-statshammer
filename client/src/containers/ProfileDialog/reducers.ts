@@ -1,5 +1,5 @@
-import { moveItemInArray, updateItemInArray } from 'utils/arrayUpdates';
 import nanoid from 'nanoid';
+import { moveItemInArray, updateItemInArray } from 'utils/arrayUpdates';
 
 export const errorReducer = (state, action) => {
   switch (action.type) {

@@ -1,12 +1,12 @@
-import React from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Typography, Paper, Grid } from '@material-ui/core';
+import { Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import ListItem from 'components/ListItem';
+import clsx from 'clsx';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
+import ListItem from 'components/ListItem';
 import { TableSkeleton } from 'components/Skeletons';
 import _ from 'lodash';
+import React from 'react';
 import { TError } from 'types/store';
-import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {},

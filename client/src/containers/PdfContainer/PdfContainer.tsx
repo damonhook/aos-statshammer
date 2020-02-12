@@ -1,18 +1,16 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { fetchStatsCompare, fetchModifiers, fetchTargetModifiers, fetchSimulations } from 'api';
-import PdfGenerator from 'pdf';
-import { useMapping } from 'hooks';
-import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
-import _ from 'lodash';
-import { IStore } from 'types/store';
-import AppBar from 'components/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
-import { EPages } from 'types/routes';
+import { fetchModifiers, fetchSimulations, fetchStatsCompare, fetchTargetModifiers } from 'api';
+import { useMapping } from 'hooks';
+import _ from 'lodash';
+import PdfGenerator from 'pdf';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { IStore } from 'types/store';
+import { applyUnitNameMapping, getProbabilitiesMapping, getResultsMapping } from 'utils/mappers';
 
 const useStyles = makeStyles(() => ({
   pdfContainer: {
-    height: '100vh',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -76,7 +74,6 @@ const PdfContainer: React.FC<PdfContainerProps> = React.memo(
     if (modifiersReady && targetModifiersReady && resultsReady && probabilitiesReady) {
       return (
         <div className={classes.pdfContainer}>
-          <AppBar variant={EPages.PDF} />
           <div className={classes.generatorInner}>
             <PdfGenerator units={units} target={target} results={results} probabilities={probabilities} />
           </div>

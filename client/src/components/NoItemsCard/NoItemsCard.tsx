@@ -1,8 +1,8 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { InfoOutlined } from '@material-ui/icons';
 import clsx from 'clsx';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   noItemsContainer: {

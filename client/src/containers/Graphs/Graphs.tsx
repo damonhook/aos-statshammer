@@ -1,9 +1,10 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
-import { useMediaQuery } from '@material-ui/core';
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { IStatsStore, IStore } from 'types/store';
+
 import GraphList from './GraphList';
 import GraphTabbed from './GraphTabbed';
 

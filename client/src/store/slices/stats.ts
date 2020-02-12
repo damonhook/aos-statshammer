@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IStatsStore, TError } from 'types/store';
 import { TResults } from 'types/stats';
+import { IStatsStore, TError } from 'types/store';
 
 const INITIAL_STATE: IStatsStore = {
   pending: false,

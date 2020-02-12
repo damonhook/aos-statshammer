@@ -1,18 +1,20 @@
 /* eslint-disable no-underscore-dangle */
-import jsPDF from 'jspdf';
 // eslint-disable-next-line import/no-duplicates
 import 'jspdf-autotable'; // Has to be separate import
+
+import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
+import jsPDF from 'jspdf';
 // eslint-disable-next-line import/no-duplicates
 import { MultipleRowType } from 'jspdf-autotable';
 import { getModifierById } from 'store/selectors/modifierHelpers';
 import { getTargetModifierById } from 'store/selectors/targetModifierHelpers';
-import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
-import { IUnitStore, ITargetStore } from 'types/store';
-import { TResult } from 'types/stats';
-import { IJsPDF } from 'types/pdf';
 import { IModifierInstance } from 'types/modifiers';
+import { IJsPDF } from 'types/pdf';
+import { TResult } from 'types/stats';
+import { ITargetStore, IUnitStore } from 'types/store';
+
 import cursor from './cursor';
-import { margin, headerColor, addHeader, addSubHeader, addHR, addPage, addGraphs } from './pdfUtils';
+import { addGraphs, addHeader, addHR, addPage, addSubHeader, headerColor, margin } from './pdfUtils';
 
 const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): MultipleRowType => {
   const modifierItems = modifiers

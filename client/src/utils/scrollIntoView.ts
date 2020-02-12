@@ -17,3 +17,11 @@ export const scrollToRef = (ref, force = false) => {
     }
   }, 100);
 };
+
+export const scrollToTop = (force = false) => {
+  setTimeout(() => {
+    if (force || window.autoScrollEnabled) {
+      window.scrollTo(0, 0);
+    }
+  }, 100);
+};

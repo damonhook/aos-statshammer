@@ -1,14 +1,15 @@
-import React, { useEffect, useCallback, useMemo, useReducer } from 'react';
-import { Button, Dialog, useMediaQuery, DialogActions, Slide } from '@material-ui/core';
-import { connect, ConnectedProps } from 'react-redux';
-import { units } from 'store/slices';
+import { Button, Dialog, DialogActions, Slide, useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { TransitionProps } from '@material-ui/core/transitions';
+import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { getUnitByUuid, getUnitIndexByUuid } from 'store/selectors/unitHelpers';
-import { TransitionProps } from '@material-ui/core/transitions';
+import { units } from 'store/slices';
 import { IWeaponProfile } from 'types/unit';
-import DialogTitle from './DialogTitle';
+
 import DialogContent from './DialogContent';
+import DialogTitle from './DialogTitle';
 import { errorReducer, profileReducer } from './reducers';
 
 const useStyles = makeStyles(theme => ({

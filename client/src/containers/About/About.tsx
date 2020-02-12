@@ -1,16 +1,14 @@
-import React, { useEffect, useRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from 'components/AppBar';
-import { EPages, getRoute } from 'types/routes';
-import { useReadFromFile } from 'hooks';
-import ReactMarkdown from 'react-markdown';
-import { Paper, Theme, Typography, Divider, CircularProgress, IconButton, Icon } from '@material-ui/core';
-import Footer from 'components/Footer';
-import BottomNavigation from 'components/BottomNavigation';
+import { CircularProgress, Divider, IconButton, Paper, Theme, Typography } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
-import { scrollToRef } from 'utils/scrollIntoView';
+import { makeStyles } from '@material-ui/core/styles';
+import { LogoIcon } from 'components/Icons';
+import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
+import { useReadFromFile } from 'hooks';
+import React, { useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { useHistory } from 'react-router-dom';
-import { Github, Reddit, Releases } from 'components/SocialButtons';
+import { scrollToTop } from 'utils/scrollIntoView';
+import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({
   about: {
@@ -29,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   paper: {
     padding: theme.spacing(3),
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
     flexDirection: 'column',
     display: 'flex',
     flex: 1,
@@ -37,16 +35,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   loader: {
     margin: theme.spacing(4),
   },
-  logo: {
+  logoButton: {
     margin: '0 auto',
-  },
-  logoIcon: {
     fontSize: '7rem',
   },
   md: {
     margin: 'auto',
     marginTop: -theme.spacing(2),
     maxWidth: 600,
+    '& a': {
+      color: theme.palette.primary.main,
+      '&:visited': {
+        color: theme.palette.primary.dark,
+      },
+    },
   },
   divider: {
     marginTop: theme.spacing(3),
@@ -69,25 +71,21 @@ const About = () => {
   const classes = useStyles();
   const content = useReadFromFile('about.md');
   const history = useHistory();
-  const ref = useRef(null);
 
   useEffect(() => {
-    scrollToRef(ref, true);
+    scrollToTop(true);
   });
 
   const handleLogoClick = () => {
-    history.push(getRoute(EPages.HOME));
+    history.push(ROUTES.HOME);
   };
 
   return (
-    <div className={classes.about} ref={ref}>
-      <AppBar variant={EPages.ABOUT} />
+    <div className={classes.about}>
       <div className={classes.wrapper}>
         <Paper className={classes.paper}>
-          <IconButton onClick={handleLogoClick} className={classes.logo}>
-            <Icon color="primary" className={classes.logoIcon}>
-              <img src="/logo.svg" alt="Logo" style={{ height: '100%' }} />
-            </Icon>
+          <IconButton onClick={handleLogoClick} className={classes.logoButton}>
+            <LogoIcon color="primary" fontSize="inherit" />
           </IconButton>
           {!content && (
             <div className={classes.loader}>
@@ -101,6 +99,7 @@ const About = () => {
             <Github className={classes.socialButton} />
             <Reddit className={classes.socialButton} />
             <Releases className={classes.socialButton} />
+            <WarcryStatshammer className={classes.socialButton} />
           </div>
           <div className={classes.spacer} />
           <Divider className={classes.divider} />
@@ -111,8 +110,6 @@ const About = () => {
           )}
         </Paper>
       </div>
-      <Footer />
-      <BottomNavigation />
     </div>
   );
 };

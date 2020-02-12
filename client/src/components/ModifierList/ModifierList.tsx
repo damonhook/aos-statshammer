@@ -1,15 +1,16 @@
-import React, { useEffect, useCallback, useReducer } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import { Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
-import ModifierSelector from 'components/ModifierSelector';
-import ModifierItem from 'components/ModifierItem';
+import { makeStyles } from '@material-ui/core/styles';
+import { ArrowDownward, ArrowUpward, Delete } from '@material-ui/icons';
 import { MAX_MODIFIERS } from 'appConstants';
+import ModifierItem from 'components/ModifierItem';
+import ModifierSelector from 'components/ModifierSelector';
 import _ from 'lodash';
+import React, { useCallback, useEffect, useReducer } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { getModifierById } from 'store/selectors/modifierHelpers';
 import { IModifierInstance } from 'types/modifiers';
 import { IStore } from 'types/store';
+
 import PendingModifiers from './PendingModifiers';
 import { errorReducer } from './reducers';
 

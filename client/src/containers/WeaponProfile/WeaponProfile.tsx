@@ -1,17 +1,18 @@
-import React, { useRef, useEffect, useCallback, useMemo } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { units, notifications } from 'store/slices';
 import { Switch } from '@material-ui/core';
-import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
+import { Delete, Edit, FileCopy } from '@material-ui/icons';
 import clsx from 'clsx';
+import ListItem from 'components/ListItem';
 import ModifierSummary from 'components/ModifierSummary';
+import _ from 'lodash';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getUnitByPosition } from 'store/selectors/unitHelpers';
-import { Delete, FileCopy, Edit } from '@material-ui/icons';
-import _ from 'lodash';
-import { scrollToRef } from 'utils/scrollIntoView';
+import { notifications, units } from 'store/slices';
 import { IWeaponProfile } from 'types/unit';
+import { scrollToRef } from 'utils/scrollIntoView';
+
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles(theme => ({

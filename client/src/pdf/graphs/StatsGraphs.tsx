@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
+import React, { useCallback } from 'react';
 import { TResult } from 'types/stats';
+
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles(() => ({

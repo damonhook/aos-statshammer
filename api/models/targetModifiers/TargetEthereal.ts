@@ -1,6 +1,6 @@
-import BaseTargetModifier from './BaseTargetModifier';
 import Target from '../target';
 import WeaponProfile from '../weaponProfile';
+import BaseTargetModifier from './BaseTargetModifier';
 
 export default class TargetEthereal extends BaseTargetModifier {
   static get displayName() {

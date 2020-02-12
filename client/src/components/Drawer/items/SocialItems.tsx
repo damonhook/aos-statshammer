@@ -1,11 +1,12 @@
+import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
 import React from 'react';
-import { Github, Reddit, Releases } from 'components/SocialButtons';
 
 const SocialItems = () => (
   <>
     <Github forceVariant="mini" />
     <Reddit forceVariant="mini" />
     <Releases forceVariant="mini" />
+    <WarcryStatshammer forceVariant="mini" />
   </>
 );
 

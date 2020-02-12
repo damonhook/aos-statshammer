@@ -1,7 +1,7 @@
-import React from 'react';
-import { Typography, DialogTitle as Title, AppBar, Toolbar, IconButton } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { AppBar, DialogTitle as Title, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Close } from '@material-ui/icons';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   appBar: {

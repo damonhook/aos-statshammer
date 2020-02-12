@@ -1,7 +1,8 @@
-import React from 'react';
-import { useIsMobile } from 'hooks';
 import { Button, useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
+import { useIsMobile } from 'hooks';
+import React from 'react';
+
 import SocialIcon from './SocialIcon';
 
 interface ISocialItemProps {

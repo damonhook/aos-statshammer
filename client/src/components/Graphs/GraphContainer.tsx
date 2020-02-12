@@ -1,8 +1,8 @@
-import React from 'react';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import React from 'react';
 import { ResponsiveContainer } from 'recharts';
-import { Typography } from '@material-ui/core';
 
 const useSyles = makeStyles(theme => ({
   container: {
