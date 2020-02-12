@@ -1,8 +1,7 @@
-/* eslint-disable no-undef */
 import Unit from 'api/models/unit';
 import assert from 'assert';
 
-import Target from '../models/target';
+import Target from '../../models/target';
 
 export const SAVES = [0, 6, 5, 4, 3, 2];
 

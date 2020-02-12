@@ -13,7 +13,7 @@ export default class MortalWounds extends BaseModifier {
   unmodified: boolean;
   inAddition: boolean;
 
-  constructor({ characteristic, on = 6, mortalWounds = 1, unmodified = true, inAddition = false }) {
+  constructor({ characteristic, on = 6, mortalWounds, unmodified = true, inAddition = false }) {
     super({ characteristic });
     this.on = Number(on);
     this.mortalWounds = DiceValue.parse(mortalWounds);

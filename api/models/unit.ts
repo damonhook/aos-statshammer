@@ -1,4 +1,5 @@
 import Average from '../processors/average';
+import MaxDamageProcessor from '../processors/maxDamageProcessor';
 import Simulation from '../processors/simulation';
 import { getMetrics } from '../utils/StatsUtils';
 import Target from './target';
@@ -71,6 +72,13 @@ class Unit {
       buckets,
       metrics: getMetrics(results),
     };
+  }
+
+  maxDamage(): number {
+    return this.weaponProfiles.reduce(
+      (acc, profile) => acc + new MaxDamageProcessor(profile).getMaxDamage(),
+      0,
+    );
   }
 }
 

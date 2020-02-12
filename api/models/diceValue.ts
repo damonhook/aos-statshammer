@@ -26,7 +26,7 @@ class DiceValue {
    * summed with the additions)
    * */
   get average(): number {
-    const averageAditions = this.additions.reduce<number>(
+    const averageAdditions = this.additions.reduce<number>(
       (acc, item) => (item instanceof Dice ? acc + item.average : acc + Number(item)),
       0,
     );
@@ -34,12 +34,27 @@ class DiceValue {
       (acc, item) => (item instanceof Dice ? acc + item.average : acc + Number(item)),
       0,
     );
-    return averageAditions - averageSubtractions;
+    return averageAdditions - averageSubtractions;
+  }
+
+  /**
+   * Get the maximum of this dice value
+   */
+  get max(): number {
+    const maxAdditions = this.additions.reduce<number>(
+      (acc, item) => (item instanceof Dice ? acc + item.sides : acc + Number(item)),
+      0,
+    );
+    const minSubtractions = this.subtractions.reduce<number>(
+      (acc, item) => (item instanceof Dice ? acc + 1 : acc + Number(item)),
+      0,
+    );
+    return maxAdditions - minSubtractions;
   }
 
   /** Roll the this dice value (combination of dice rolls summed with additions) */
   roll(): number {
-    const rolledAditions = this.additions.reduce<number>(
+    const rolledAdditions = this.additions.reduce<number>(
       (acc, item) => (item instanceof Dice ? acc + item.roll() : acc + Number(item)),
       0,
     );
@@ -47,7 +62,7 @@ class DiceValue {
       (acc, item) => (item instanceof Dice ? acc + item.roll() : acc + Number(item)),
       0,
     );
-    return rolledAditions - rolledSubtractions;
+    return rolledAdditions - rolledSubtractions;
   }
 
   /**
