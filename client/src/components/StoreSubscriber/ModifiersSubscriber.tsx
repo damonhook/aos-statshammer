@@ -1,9 +1,9 @@
+import { fetchModifiers } from 'api';
+import { RETRY_TIMEOUT } from 'appConstants';
 import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { fetchModifiers } from 'api';
-import { useDebouncedCallback } from 'use-debounce';
-import { RETRY_TIMEOUT } from 'appConstants';
 import { IStore } from 'types/store';
+import { useDebouncedCallback } from 'use-debounce';
 
 const mapStateToProps = (state: IStore) => ({ modifiers: state.modifiers });
 

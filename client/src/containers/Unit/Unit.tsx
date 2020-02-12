@@ -1,19 +1,19 @@
-import React, { useEffect, useRef, useCallback } from 'react';
-import WeaponProfile from 'containers/WeaponProfile';
-import { connect, ConnectedProps } from 'react-redux';
-import { notifications, units } from 'store/slices';
-import ListItem from 'components/ListItem';
-import { TextField, Button } from '@material-ui/core';
-import { Add, Delete, FileCopy } from '@material-ui/icons';
+import { Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Add, Delete, FileCopy } from '@material-ui/icons';
 import { MAX_PROFILES } from 'appConstants';
 import clsx from 'clsx';
+import ListItem from 'components/ListItem';
 import NoItemsCard from 'components/NoItemsCard';
-import { addUnitEnabled } from 'store/selectors/unitHelpers';
+import WeaponProfile from 'containers/WeaponProfile';
 import _ from 'lodash';
-import { scrollToRef } from 'utils/scrollIntoView';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { addUnitEnabled } from 'store/selectors/unitHelpers';
+import { notifications, units } from 'store/slices';
 import { IStore } from 'types/store';
 import { IUnit } from 'types/unit';
+import { scrollToRef } from 'utils/scrollIntoView';
 
 const useStyles = makeStyles(theme => ({
   unit: {

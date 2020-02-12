@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { IStore } from 'types/store';
-import { useHashMatch } from 'hooks';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Slider,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Slider,
   Tooltip,
   Typography,
-  DialogActions,
 } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
-import appConfig from 'appConfig';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import appConfig from 'appConfig';
 import clsx from 'clsx';
+import { useHashMatch } from 'hooks';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { config as configStore } from 'store/slices';
+import { IStore } from 'types/store';
 import { HASHES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({

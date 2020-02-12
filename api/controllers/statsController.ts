@@ -1,6 +1,6 @@
-import Unit from '../models/unit';
-import Target from '../models/target';
 import { SAVES } from '../constants';
+import Target from '../models/target';
+import Unit from '../models/unit';
 
 /**
  * Compare the average damage of these units

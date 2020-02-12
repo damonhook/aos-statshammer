@@ -1,8 +1,8 @@
-import WeaponProfile from './weaponProfile';
-import Simulation from '../processors/simulation';
 import Average from '../processors/average';
+import Simulation from '../processors/simulation';
 import { getMetrics } from '../utils/StatsUtils';
 import Target from './target';
+import WeaponProfile from './weaponProfile';
 
 /**
  * A class representing a single unit

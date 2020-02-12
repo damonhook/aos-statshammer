@@ -1,5 +1,5 @@
-import { D6 } from '../models/dice';
 import { Characteristic as C } from '../constants';
+import { D6 } from '../models/dice';
 import { MODIFIERS as m } from '../models/modifiers';
 import Target from '../models/target';
 import WeaponProfile from '../models/weaponProfile';

@@ -1,16 +1,17 @@
-import React, { useMemo, useLayoutEffect, useCallback, useState } from 'react';
-import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { makeStyles, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import { useRefCallback } from 'hooks';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { lightTheme } from 'themes';
-import { IUnitStore, ITargetStore } from 'types/store';
 import { IJsPDF } from 'types/pdf';
-import { TResult } from 'types/stats';
 import { IProbability } from 'types/simulations';
+import { TResult } from 'types/stats';
+import { ITargetStore, IUnitStore } from 'types/store';
+
 import generate from './generator';
+import { CumulativeProbabilityGraphs, ProbabilityGraphs, StatsGraphs } from './graphs';
 import PdfLoader from './PdfLoader';
-import { StatsGraphs, ProbabilityGraphs, CumulativeProbabilityGraphs } from './graphs';
 
 const useStyles = makeStyles(() => ({
   pdfGenerator: {

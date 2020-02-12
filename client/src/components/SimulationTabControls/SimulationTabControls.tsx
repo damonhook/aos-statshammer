@@ -1,12 +1,12 @@
-import React from 'react';
-import SimulationInfoModal from 'components/SimulationInfoModal';
-import { IconButton, Button, useMediaQuery, Tooltip } from '@material-ui/core';
-import { ArrowBack, Refresh } from '@material-ui/icons';
+import { Button, IconButton, Tooltip, useMediaQuery } from '@material-ui/core';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { ArrowBack, Refresh } from '@material-ui/icons';
 import { fetchSimulations } from 'api';
-import { useDispatch } from 'react-redux';
 import SimulationConfigDialog from 'components/SimulationConfigDialog';
+import SimulationInfoModal from 'components/SimulationInfoModal';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({

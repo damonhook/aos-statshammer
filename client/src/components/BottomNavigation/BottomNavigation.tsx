@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { BottomNavigation as Navigation, BottomNavigationAction as NavigationItem } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Home, BarChart, Info, Timeline as TimelineIcon } from '@material-ui/icons';
+import { BarChart, Home, Info, Timeline as TimelineIcon } from '@material-ui/icons';
+import { useBreakpointChanged, useRouteFind } from 'hooks';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { IStore } from 'types/store';
 import { ROUTES } from 'utils/urls';
-import { useRouteFind, useBreakpointChanged } from 'hooks';
 
 interface IStyleProps {
   height: number;

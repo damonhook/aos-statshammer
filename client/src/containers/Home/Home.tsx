@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import StoreSubscriber from 'components/StoreSubscriber';
-import { setAutoScrollEnabled, scrollToTop } from 'utils/scrollIntoView';
+import React, { useEffect } from 'react';
+import { scrollToTop, setAutoScrollEnabled } from 'utils/scrollIntoView';
+
 import DesktopHome from './DesktopHome';
 import MobileHome from './MobileHome';
 

@@ -1,7 +1,8 @@
 import fetch from 'cross-fetch';
-import { getUnits } from 'store/selectors/unitHelpers';
 import { getTarget } from 'store/selectors/targetHelpers';
-import { stats, notifications } from 'store/slices';
+import { getUnits } from 'store/selectors/unitHelpers';
+import { notifications, stats } from 'store/slices';
+
 import { TDispatch } from './api.types';
 
 export const fetchStatsCompare = () => async (dispatch: TDispatch) => {

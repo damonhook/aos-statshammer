@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { Divider, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Menu, MenuItem, IconButton, Divider } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import clsx from 'clsx';
+import React, { useState } from 'react';
+
 import { IPrimaryItem, ISecondaryItem } from './types';
 
 const useStyles = makeStyles({

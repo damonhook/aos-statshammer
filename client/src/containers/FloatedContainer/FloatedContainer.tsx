@@ -1,11 +1,10 @@
+import { AddTargetModifierFab, AddUnitFab, ExportPdfFab } from 'components/FloatingButton';
+import Notification from 'components/Notification';
+import { useIsMobile, useRouteFind } from 'hooks';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { IStore } from 'types/store';
-
-import Notification from 'components/Notification';
-import { useRouteFind, useIsMobile } from 'hooks';
 import { ROUTES } from 'utils/urls';
-import { AddUnitFab, ExportPdfFab, AddTargetModifierFab } from 'components/FloatingButton';
 
 /**
  * A component used to display the current notifications

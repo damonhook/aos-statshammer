@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Tab, Paper, Tabs } from '@material-ui/core';
+import { Paper, Tab, Tabs } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import SwipeableViews from 'react-swipeable-views';
 import clsx from 'clsx';
+import React, { useState } from 'react';
+import SwipeableViews from 'react-swipeable-views';
+
 import TabPanel from './TabPanel';
 
 const useStyles = makeStyles({

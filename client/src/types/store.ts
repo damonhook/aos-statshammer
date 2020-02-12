@@ -1,8 +1,8 @@
 import { IModifierDefinition, IModifierInstance } from './modifiers';
-import { IUnit } from './unit';
 import { INotification } from './notification';
-import { TResults } from './stats';
 import { IProbability, TSimResult } from './simulations';
+import { TResults } from './stats';
+import { IUnit } from './unit';
 
 export type TError = boolean | string | null;
 

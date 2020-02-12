@@ -1,9 +1,9 @@
-import React from 'react';
+import { ListItem, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
-import { ListItem, Typography } from '@material-ui/core';
-import _ from 'lodash';
 import clsx from 'clsx';
+import _ from 'lodash';
+import React from 'react';
 import { IModifierDefinition } from 'types/modifiers';
 
 const useStyles = makeStyles(theme => ({

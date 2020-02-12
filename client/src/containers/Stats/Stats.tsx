@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { useDebouncedCallback } from 'use-debounce';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
 import { useMapping } from 'hooks';
-import { getResultsMapping, applyUnitNameMapping } from 'utils/mappers';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { IStore } from 'types/store';
+import { useDebouncedCallback } from 'use-debounce';
+import { applyUnitNameMapping, getResultsMapping } from 'utils/mappers';
+
 import Results from './Results';
 
 const mapStateToProps = (state: IStore) => ({

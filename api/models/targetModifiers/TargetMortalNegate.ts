@@ -1,8 +1,8 @@
-import { D6 } from '../dice';
-import BaseTargetModifier from './BaseTargetModifier';
 import { rollOption } from '../../utils/ModifierOptions';
-import WeaponProfile from '../weaponProfile';
+import { D6 } from '../dice';
 import Target from '../target';
+import WeaponProfile from '../weaponProfile';
+import BaseTargetModifier from './BaseTargetModifier';
 
 export default class TargetMortalNegate extends BaseTargetModifier {
   on: number;

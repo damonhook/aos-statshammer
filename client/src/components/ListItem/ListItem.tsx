@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import Card, { CardBody } from 'components/Card';
 import { Collapse } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import LoadingBar from 'components/LoadingBar';
 import clsx from 'clsx';
+import Card, { CardBody } from 'components/Card';
 import { IPrimaryItem, ISecondaryItem } from 'components/ListControls/types';
+import LoadingBar from 'components/LoadingBar';
+import React, { useState } from 'react';
+
 import ListItemHeader from './ListItemHeader';
 
 const useStyles = makeStyles(() => ({

@@ -1,21 +1,22 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
   AppBar as Bar,
+  Grid,
+  IconButton,
+  Slide,
   Toolbar,
   Typography,
-  IconButton,
   useScrollTrigger,
-  Slide,
-  Grid,
 } from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Menu as MenuIcon } from '@material-ui/icons';
 import Link from 'components/Link';
-import { useBreakpointChanged, useRouteFind } from 'hooks';
-import { HASHES, ROUTES } from 'utils/urls';
-import { useSelector } from 'react-redux';
 import SimulationTabControls from 'components/SimulationTabControls';
+import { useBreakpointChanged, useRouteFind } from 'hooks';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { HASHES, ROUTES } from 'utils/urls';
+
 import { IStore } from '../../types/store';
 
 interface StyleProps {

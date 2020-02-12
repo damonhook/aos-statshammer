@@ -1,20 +1,21 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
-import getTheme from 'themes';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import PdfContainer from 'containers/PdfContainer';
-import Simulations from 'containers/Simulations';
-import { IStore } from 'types/store';
-import About from 'containers/About';
-import { ROUTES } from 'utils/urls';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import AppBar from 'components/AppBar';
+import BottomNavigation from 'components/BottomNavigation';
 import Drawer from 'components/Drawer';
 import Footer from 'components/Footer';
-import BottomNavigation from 'components/BottomNavigation';
+import About from 'containers/About';
 import FloatedContainer from 'containers/FloatedContainer';
 import Home from 'containers/Home';
+import PdfContainer from 'containers/PdfContainer';
+import Simulations from 'containers/Simulations';
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import getTheme from 'themes';
+import { IStore } from 'types/store';
+import { ROUTES } from 'utils/urls';
+
 import Wrapper from './Wrapper';
 
 const useStyles = makeStyles(() => ({

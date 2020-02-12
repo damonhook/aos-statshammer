@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
 import { getMaxDamage, getMaxProbability, getTicks } from 'containers/ProbabilityCurves/probabilityUtils';
+import React, { useCallback } from 'react';
+
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles({

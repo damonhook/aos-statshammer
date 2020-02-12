@@ -1,5 +1,5 @@
-import WeaponProfile from '../weaponProfile';
 import Target from '../target';
+import WeaponProfile from '../weaponProfile';
 
 export default class BaseTargetModifier {
   // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars

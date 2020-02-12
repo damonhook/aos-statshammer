@@ -1,6 +1,7 @@
+import { fetchSimulations } from 'api';
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { fetchSimulations } from 'api';
+
 import ErrorCard from './ErrorCard';
 
 const connector = connect(null, { fetchSimulations });

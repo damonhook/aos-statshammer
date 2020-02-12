@@ -1,7 +1,7 @@
+import { Characteristic as C, Characteristic } from '../constants';
+import DiceValue from './diceValue';
 import ModifierManager, { MODIFIERS as m } from './modifiers';
 import BaseModifier from './modifiers/BaseModifier';
-import { Characteristic, Characteristic as C } from '../constants';
-import DiceValue from './diceValue';
 import LeaderBonus from './modifiers/LeaderBonus';
 
 /**

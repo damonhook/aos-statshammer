@@ -1,9 +1,9 @@
-import React from 'react';
-import { Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import TableSkeleton from 'components/Skeletons/TableSkeleton';
 import { StatsErrorCard } from 'components/ErrorCards';
+import TableSkeleton from 'components/Skeletons/TableSkeleton';
+import React from 'react';
 import { IStatsStore } from 'types/store';
 
 const useStyles = makeStyles(theme => ({

@@ -1,10 +1,10 @@
 import BaseTargetModifier from './BaseTargetModifier';
+import TargetEthereal from './TargetEthereal';
+import TargetFeelNoPain from './TargetFeelNoPain';
+import TargetMortalNegate from './TargetMortalNegate';
 import TargetReroll from './TargetReroll';
 import TargetRerollFailed from './TargetRerollFailed';
 import TargetRerollOnes from './TargetRerollOnes';
-import TargetFeelNoPain from './TargetFeelNoPain';
-import TargetMortalNegate from './TargetMortalNegate';
-import TargetEthereal from './TargetEthereal';
 
 /**
  * The list of possible target modifiers

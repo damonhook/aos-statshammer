@@ -1,6 +1,6 @@
-import React from 'react';
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { BarChart } from '@material-ui/icons';
+import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { config } from 'store/slices';
 

@@ -1,10 +1,10 @@
+import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { InfoOutlined } from '@material-ui/icons';
+import ListItem from 'components/ListItem';
+import ModifierSummary from 'components/ModifierSummary';
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import ListItem from 'components/ListItem';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
-import { InfoOutlined } from '@material-ui/icons';
-import ModifierSummary from 'components/ModifierSummary';
 import { IStore } from 'types/store';
 
 const useStyles = makeStyles(theme => ({

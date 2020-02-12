@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import _ from 'lodash';
-import { IModifierDefinition, TOptionValue } from 'types/modifiers';
 import formatUnicorn from 'format-unicorn/safe';
+import _ from 'lodash';
+import React, { useMemo } from 'react';
+import { IModifierDefinition, TOptionValue } from 'types/modifiers';
 
 const useStyles = makeStyles({
   description: {

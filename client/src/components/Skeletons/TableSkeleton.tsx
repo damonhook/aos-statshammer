@@ -1,8 +1,8 @@
-import React from 'react';
 import { Card, CardContent, Typography } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
+import { Skeleton } from '@material-ui/lab';
 import clsx from 'clsx';
+import React from 'react';
 
 const useStyles = makeStyles({
   content: {

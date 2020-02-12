@@ -1,22 +1,23 @@
-import React from 'react';
-import { SwipeableDrawer as AppDrawer, List, Typography, Divider, useMediaQuery } from '@material-ui/core';
-import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
-import Link from 'components/Link';
-import { useHistory } from 'react-router-dom';
+import { Divider, List, SwipeableDrawer as AppDrawer, Typography, useMediaQuery } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
-import { HASHES, ROUTES } from 'utils/urls';
-import { useRouteFind, useHashMatch } from 'hooks';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { LogoIcon } from 'components/Icons';
-import HomeItem from './items/HomeItem';
+import Link from 'components/Link';
+import { useHashMatch, useRouteFind } from 'hooks';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { HASHES, ROUTES } from 'utils/urls';
+
 import AboutItem from './items/AboutItem';
-import ClearUnitsItem from './items/ClearUnitsItem';
-import ImportUnitItem from './items/ImportUnitItem';
 import AdvancedStatsItem from './items/AdvancedStatsItem';
-import ToggleDarkModeItem from './items/ToggleDarkModeItem';
-import SocialItems from './items/SocialItems';
-import ToggleGraphListItem from './items/ToggleGraphListItem';
-import PdfDownloadItem from './items/PdfDownloadItem';
 import ClearTargetItem from './items/ClearTargetItem';
+import ClearUnitsItem from './items/ClearUnitsItem';
+import HomeItem from './items/HomeItem';
+import ImportUnitItem from './items/ImportUnitItem';
+import PdfDownloadItem from './items/PdfDownloadItem';
+import SocialItems from './items/SocialItems';
+import ToggleDarkModeItem from './items/ToggleDarkModeItem';
+import ToggleGraphListItem from './items/ToggleGraphListItem';
 
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {

@@ -1,10 +1,11 @@
-import React from 'react';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
-import { Route } from 'react-router-dom';
 import ConfirmationDialog from 'components/ConfirmationDialog';
+import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
+import { Route } from 'react-router-dom';
 import { notifications, target } from 'store/slices';
+
 import LinkItem from './LinkItem';
 
 const mapDispatchToProps = {

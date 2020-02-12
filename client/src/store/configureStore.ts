@@ -1,10 +1,9 @@
-import { persistStore, persistReducer } from 'redux-persist';
+import { combineReducers, configureStore as createStore, Middleware } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
+import { persistReducer, persistStore } from 'redux-persist';
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
-
-import { configureStore as createStore, combineReducers, Middleware } from '@reduxjs/toolkit';
-import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 import {
   config,

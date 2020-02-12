@@ -1,8 +1,8 @@
-import React from 'react';
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { BrightnessMedium as BrightnessMediumIcon } from '@material-ui/icons';
-import { config } from 'store/slices';
+import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
+import { config } from 'store/slices';
 
 const connector = connect(null, {
   toggleDarkMode: config.actions.toggleDarkMode,

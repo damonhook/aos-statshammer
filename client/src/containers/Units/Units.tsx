@@ -1,14 +1,15 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import Unit from 'containers/Unit';
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
-import { Route } from 'react-router-dom';
 import ProfileDialog from 'containers/ProfileDialog';
+import Unit from 'containers/Unit';
 import _ from 'lodash';
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { Route } from 'react-router-dom';
 import { IStore } from 'types/store';
+
 import AddUnitButton from './AddUnitButton';
 
 const useStyles = makeStyles(() => ({

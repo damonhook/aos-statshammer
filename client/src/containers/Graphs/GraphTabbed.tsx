@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Tabbed from 'components/Tabbed';
 import { Paper } from '@material-ui/core';
-import ListItem from 'components/ListItem';
+import { makeStyles } from '@material-ui/core/styles';
 import { SaveTooltip } from 'components/GraphTooltips';
+import ListItem from 'components/ListItem';
+import Tabbed from 'components/Tabbed';
+import React, { useCallback } from 'react';
 import { IStatsStore } from 'types/store';
+
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles(() => ({

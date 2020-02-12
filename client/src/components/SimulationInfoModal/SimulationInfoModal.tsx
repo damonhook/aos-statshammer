@@ -1,20 +1,20 @@
-import React from 'react';
 import {
-  Dialog,
-  DialogTitle,
   Button,
-  DialogContent,
+  Dialog,
   DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
-  useMediaQuery,
   Tooltip,
+  useMediaQuery,
 } from '@material-ui/core';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { Close, InfoOutlined } from '@material-ui/icons';
 import { useHashMatch, useReadFromFile } from 'hooks';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { IStore } from 'types/store';
 import { HASHES } from 'utils/urls';
 

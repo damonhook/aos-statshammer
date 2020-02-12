@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { useReadFromFile } from 'hooks';
-import ReactMarkdown from 'react-markdown';
-import { Paper, Theme, Typography, Divider, CircularProgress, IconButton } from '@material-ui/core';
+import { CircularProgress, Divider, IconButton, Paper, Theme, Typography } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
-import { scrollToTop } from 'utils/scrollIntoView';
-import { useHistory } from 'react-router-dom';
-import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
+import { makeStyles } from '@material-ui/core/styles';
 import { LogoIcon } from 'components/Icons';
+import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
+import { useReadFromFile } from 'hooks';
+import React, { useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { useHistory } from 'react-router-dom';
+import { scrollToTop } from 'utils/scrollIntoView';
 import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({

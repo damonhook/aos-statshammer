@@ -1,5 +1,5 @@
+import { amber, green, grey, red, teal } from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { grey, red, teal, green, amber } from '@material-ui/core/colors';
 import { IConfigStore } from 'types/store';
 
 const commonOptions = {

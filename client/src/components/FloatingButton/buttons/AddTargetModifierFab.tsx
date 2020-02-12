@@ -1,7 +1,8 @@
-import React from 'react';
 import { Add as AddIcon } from '@material-ui/icons';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { HASHES } from 'utils/urls';
+
 import FloatingButton from '../FloatingButton';
 
 const AddTargetModifierFab = () => {

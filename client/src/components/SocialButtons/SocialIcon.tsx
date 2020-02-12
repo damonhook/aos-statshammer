@@ -1,5 +1,5 @@
-import React from 'react';
 import { IconButton, Tooltip } from '@material-ui/core';
+import React from 'react';
 
 interface ISocialIconProps {
   className?: string;

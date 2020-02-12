@@ -1,14 +1,15 @@
-import React from 'react';
+import { Button, Tooltip, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { BarChart, GetApp } from '@material-ui/icons';
 import clsx from 'clsx';
-import { Typography, Button, useMediaQuery, Tooltip } from '@material-ui/core';
 import ListItem from 'components/ListItem';
-import _ from 'lodash';
-import Graphs from 'containers/Graphs';
-import { GetApp, BarChart } from '@material-ui/icons';
 import TargetSummary from 'components/TargetSummary';
+import Graphs from 'containers/Graphs';
+import _ from 'lodash';
+import React from 'react';
 import { IStatsStore } from 'types/store';
 import { ROUTES } from 'utils/urls';
+
 import ResultsTable from './ResultsTable';
 
 const useStyles = makeStyles({

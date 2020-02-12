@@ -1,13 +1,14 @@
-import React, { useRef, useEffect, useCallback, useReducer } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { IPrimaryItem } from 'components/ListControls/types';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
-import { scrollToRef } from 'utils/scrollIntoView';
-import clsx from 'clsx';
+import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import { IModifierDefinition, TModifierInstanceOptions, TOptionValue } from 'types/modifiers';
-import { IPrimaryItem } from 'components/ListControls/types';
-import ModifierInput from './ModifierInput';
+import { scrollToRef } from 'utils/scrollIntoView';
+
 import ModifierDescription from './ModifierDescription';
+import ModifierInput from './ModifierInput';
 import { errorReducer } from './reducers';
 
 const useStyles = makeStyles(theme => ({

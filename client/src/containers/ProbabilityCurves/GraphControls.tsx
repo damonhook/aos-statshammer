@@ -1,8 +1,9 @@
-import React from 'react';
+import { FormControlLabel, MenuItem, Switch, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { MenuItem, TextField, FormControlLabel, Switch } from '@material-ui/core';
-import _ from 'lodash';
 import clsx from 'clsx';
+import _ from 'lodash';
+import React from 'react';
+
 import { REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 
 const useStyles = makeStyles(theme => ({

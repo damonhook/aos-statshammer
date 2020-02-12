@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { fetchStatsCompare, fetchModifiers, fetchTargetModifiers, fetchSimulations } from 'api';
-import PdfGenerator from 'pdf';
-import { useMapping } from 'hooks';
-import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
-import _ from 'lodash';
-import { IStore } from 'types/store';
 import { makeStyles } from '@material-ui/core/styles';
+import { fetchModifiers, fetchSimulations, fetchStatsCompare, fetchTargetModifiers } from 'api';
+import { useMapping } from 'hooks';
+import _ from 'lodash';
+import PdfGenerator from 'pdf';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { IStore } from 'types/store';
+import { applyUnitNameMapping, getProbabilitiesMapping, getResultsMapping } from 'utils/mappers';
 
 const useStyles = makeStyles(() => ({
   pdfContainer: {

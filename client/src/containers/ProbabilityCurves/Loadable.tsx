@@ -1,9 +1,9 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
-import { GraphSkeleton } from 'components/Skeletons';
+import { makeStyles } from '@material-ui/core/styles';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
+import { GraphSkeleton } from 'components/Skeletons';
 import _ from 'lodash';
+import React from 'react';
 import { TError } from 'types/store';
 
 const useStyles = makeStyles(theme => ({

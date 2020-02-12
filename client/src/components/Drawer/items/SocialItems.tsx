@@ -1,5 +1,5 @@
-import React from 'react';
 import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
+import React from 'react';
 
 const SocialItems = () => (
   <>

@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { ImportExport } from '@material-ui/icons';
-import { connect, ConnectedProps } from 'react-redux';
 import Uploader from 'components/Uploader';
+import React, { useCallback } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { addUnitEnabled } from 'store/selectors/unitHelpers';
-import { IStore } from 'types/store';
 import { notifications, units } from 'store/slices';
+import { IStore } from 'types/store';
 
 const mapStateToProps = (state: IStore) => ({
   numUnits: state.units.length,

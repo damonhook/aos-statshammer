@@ -1,4 +1,4 @@
-import { getCharacteristic, Characteristic } from '../../constants';
+import { Characteristic, getCharacteristic } from '../../constants';
 import { choiceOption } from '../../utils/ModifierOptions';
 
 export default class BaseModifier {

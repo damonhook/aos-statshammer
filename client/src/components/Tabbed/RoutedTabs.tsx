@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
-import { Tab, Paper, Tabs } from '@material-ui/core';
+import { Paper, Tab, Tabs } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import SwipeableViews from 'react-swipeable-views';
-import { useHistory, Route } from 'react-router-dom';
 import clsx from 'clsx';
 import { useRouteFind } from 'hooks';
+import React, { useEffect } from 'react';
+import { Route, useHistory } from 'react-router-dom';
+import SwipeableViews from 'react-swipeable-views';
+
 import TabPanel from './TabPanel';
 
 const useStyles = makeStyles({

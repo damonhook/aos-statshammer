@@ -1,8 +1,8 @@
-import React from 'react';
+import { Paper, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Typography, Paper, useMediaQuery } from '@material-ui/core';
-import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
 import clsx from 'clsx';
+import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   footer: {

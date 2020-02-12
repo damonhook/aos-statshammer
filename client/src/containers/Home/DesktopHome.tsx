@@ -1,10 +1,10 @@
-import React from 'react';
-import Units from 'containers/Units';
-import Stats from 'containers/Stats';
-import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
-import Target from 'containers/Target';
+import { makeStyles } from '@material-ui/core/styles';
 import { RoutedTabs } from 'components/Tabbed';
+import Stats from 'containers/Stats';
+import Target from 'containers/Target';
+import Units from 'containers/Units';
+import React from 'react';
 import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles(theme => ({

@@ -1,11 +1,12 @@
+import appConfig from 'appConfig';
 import fetch from 'cross-fetch';
-import { getUnits } from 'store/selectors/unitHelpers';
+import store from 'store';
 import { getTarget } from 'store/selectors/targetHelpers';
-import { notifications, simulations, config } from 'store/slices';
+import { getUnits } from 'store/selectors/unitHelpers';
+import { config, notifications, simulations } from 'store/slices';
 import { ISimulation } from 'types/simulations';
 import { ITargetStore, IUnitStore } from 'types/store';
-import store from 'store';
-import appConfig from 'appConfig';
+
 import { TDispatch } from './api.types';
 
 const verifyNumSimulations = (dispatch: TDispatch): number => {

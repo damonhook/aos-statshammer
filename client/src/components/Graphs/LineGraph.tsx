@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Label,
-  ReferenceLine,
-} from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { DefaultTooltip } from 'components/GraphTooltips';
+import React, { useEffect, useState } from 'react';
+import {
+  CartesianGrid,
+  Label,
+  Legend,
+  Line,
+  LineChart,
+  ReferenceLine,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
 import GraphContainer from './GraphContainer';
 import {
+  getInitOpacity,
   getLegendFormatter,
   getMouseEnterHandler,
   getMouseLeaveHandler,
-  getInitOpacity,
   GraphProps,
-  IReferenceLine,
   ILabel,
+  IReferenceLine,
   TOpacity,
 } from './graphHelpers';
 

@@ -1,9 +1,10 @@
+import { GetApp as GetAppIcon } from '@material-ui/icons';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getNumUnits } from 'store/selectors';
-import { GetApp as GetAppIcon } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
+import { getNumUnits } from 'store/selectors';
 import { ROUTES } from 'utils/urls';
+
 import FloatingButton from '../FloatingButton';
 
 const ExportPdfFab = () => {

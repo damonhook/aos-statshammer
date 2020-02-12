@@ -1,5 +1,5 @@
-import { IStore } from 'types/store';
 import appConfig from 'appConfig';
+import { IStore } from 'types/store';
 
 export const getNumUnits = (state: IStore) => state.units.length ?? 0;
 

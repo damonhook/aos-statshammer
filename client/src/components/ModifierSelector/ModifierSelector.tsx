@@ -1,13 +1,14 @@
-import React, { useCallback } from 'react';
-import { Button, Collapse, useMediaQuery, Paper } from '@material-ui/core';
-import { Add, Remove, Sync } from '@material-ui/icons';
+import { Button, Collapse, Paper, useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
-import _ from 'lodash';
+import { Add, Remove, Sync } from '@material-ui/icons';
 import { useHashMatch } from 'hooks';
+import _ from 'lodash';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { IModifierDefinition } from 'types/modifiers';
 import { TError } from 'types/store';
 import { HASHES } from 'utils/urls';
+
 import ModifierOption from './ModifierOption';
 import SelectorDialog from './SelectorDialog';
 
