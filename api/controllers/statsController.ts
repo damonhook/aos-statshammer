@@ -24,8 +24,17 @@ export const compareUnits = ({ units, target }) => {
   };
 };
 
-const buildCumulative = (probabilities: any, unitNames: string[], metrics: any) => {
-  const maxDamage = Math.max(...Object.keys(probabilities).map(n => Number(n)));
+const buildCumulative = (
+  probabilities: any,
+  unitNames: string[],
+  metrics: {
+    mean: { [name: string]: number };
+    median: { [name: string]: number };
+    max: { [name: string]: number };
+  },
+) => {
+  // const maxDamage = Math.max(...Object.keys(probabilities).map(n => Number(n)));
+  const maxDamage = Math.max(...Object.values(metrics.max));
   const sums = unitNames.reduce((acc, name) => ({ ...acc, [name]: 0 }), {});
   const cumulative = [...Array(maxDamage + 1)].map((_, damage) => {
     const map = probabilities[damage] ?? {};

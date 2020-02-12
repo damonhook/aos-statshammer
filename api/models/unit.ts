@@ -52,25 +52,40 @@ class Unit {
       }, 0),
     );
 
+    const max = this.maxDamage();
+
     const counts = results.reduce<{ [damage: number]: any }>((acc, n) => {
       acc[n] = acc[n] ? acc[n] + 1 : 1;
       return acc;
     }, {});
 
     const buckets = Object.keys(counts)
-      .sort((x, y) => Number(x) - Number(y))
+      .map(Number)
+      .sort((x, y) => x - y)
       .map(damage => ({
         damage,
         count: counts[damage],
         probability: parseFloat(((counts[damage] * 100) / numSimulations).toFixed(2)),
       }));
 
+    const sampleMax = Math.max(...Object.keys(counts).map(Number));
+    [...Array(max - sampleMax)].forEach((_, index) => {
+      buckets.push({
+        damage: sampleMax + index + 1,
+        count: 0,
+        probability: 0,
+      });
+    });
+
     const data = includeOutcomes ? { results } : {};
 
     return {
       ...data,
       buckets,
-      metrics: getMetrics(results),
+      metrics: {
+        ...getMetrics(results),
+        max,
+      },
     };
   }
 
