@@ -22,9 +22,12 @@ interface IStyleProps {
 const useStyles = makeStyles((theme: Theme) => ({
   notification: {
     [theme.breakpoints.down('sm')]: {
-      bottom: 90,
+      bottom: theme.spacing(12),
       minWidth: '85%',
     },
+  },
+  hasFab: {
+    bottom: theme.spacing(16),
   },
   inner: {
     flex: 1,
@@ -57,6 +60,7 @@ interface INotificationProps {
   variant: TNotificationVariants;
   action?: INotificationAction;
   timeout?: number | null;
+  hasActiveFab?: boolean;
 }
 
 /**
@@ -67,7 +71,8 @@ const Notification = ({
   notificationId,
   variant = 'info',
   action,
-  timeout = 3000,
+  timeout = 400000,
+  hasActiveFab = false,
 }: INotificationProps) => {
   const classes = useStyles({ variant });
   const [open, setOpen] = useState(true);
@@ -107,7 +112,7 @@ const Notification = ({
 
   return (
     <Snackbar
-      className={classes.notification}
+      className={clsx(classes.notification, { [classes.hasFab]: hasActiveFab })}
       open={open}
       onClose={handleClose}
       anchorOrigin={{

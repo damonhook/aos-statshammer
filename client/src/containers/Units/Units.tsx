@@ -11,14 +11,8 @@ import _ from 'lodash';
 import { IStore } from 'types/store';
 import AddUnitButton from './AddUnitButton';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   units: {
-    marginBottom: '1em',
-    flexGrow: 1,
-    flexBasis: '50%',
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: '4em',
-    },
     overflowX: 'hidden',
   },
 }));

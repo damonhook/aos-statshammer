@@ -41,7 +41,7 @@ const Wrapper = ({ children }: IWrapperProps) => {
   const [, , page] = useRouteFind(Object.values(ROUTES));
 
   const useFullWidth = [ROUTES.PDF, ROUTES.SIMULATIONS].includes(page);
-  const isHome = page === ROUTES.HOME;
+  const isHome = [ROUTES.HOME, ROUTES.TARGET].includes(page);
 
   return (
     <div

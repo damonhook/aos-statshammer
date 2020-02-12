@@ -7,14 +7,8 @@ import _ from 'lodash';
 import TargetModifierList from 'components/TargetModifierList';
 import { IStore } from 'types/store';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   target: {
-    marginBottom: '1em',
-    flexGrow: 1,
-    flexBasis: '50%',
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: '4em',
-    },
     overflowX: 'hidden',
   },
 }));

@@ -82,7 +82,7 @@ const AppBar = () => {
       if (ref && ref.current) {
         setHeight(ref.current.clientHeight);
       }
-    }, 300);
+    }, 200);
   }, [ref, breakpoints]);
 
   return (

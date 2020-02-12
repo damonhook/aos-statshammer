@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Target from 'containers/Target';
 import { RoutedTabs } from 'components/Tabbed';
+import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles(theme => ({
   desktopHome: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DesktopAppContent = () => {
+const DesktopHome = () => {
   const classes = useStyles();
 
   return (
@@ -33,7 +34,7 @@ const DesktopAppContent = () => {
             className={classes.tabs}
             tabNames={['Units', 'Target']}
             tabContent={[<Units className={classes.tab} />, <Target className={classes.tab} />]}
-            tabRoutes={['/', '/target']}
+            tabRoutes={[ROUTES.HOME, ROUTES.TARGET]}
           />
         </Grid>
         <Grid item xs={6}>
@@ -46,4 +47,4 @@ const DesktopAppContent = () => {
   );
 };
 
-export default DesktopAppContent;
+export default DesktopHome;

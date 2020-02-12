@@ -3,8 +3,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import StoreSubscriber from 'components/StoreSubscriber';
 import { setAutoScrollEnabled, scrollToTop } from 'utils/scrollIntoView';
-import DesktopAppContent from './DesktopAppContent';
-import MobileAppContent from './MobileAppContent';
+import DesktopHome from './DesktopHome';
+import MobileHome from './MobileHome';
 
 const useStyles = makeStyles(() => ({
   home: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const AppContentWrapper: React.FC = () => {
+const Home = () => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -30,9 +30,9 @@ const AppContentWrapper: React.FC = () => {
   return (
     <div className={classes.home}>
       <StoreSubscriber />
-      {mobile ? <MobileAppContent /> : <DesktopAppContent />}
+      {mobile ? <MobileHome /> : <DesktopHome />}
     </div>
   );
 };
 
-export default AppContentWrapper;
+export default Home;

@@ -13,8 +13,8 @@ import AppBar from 'components/AppBar';
 import Drawer from 'components/Drawer';
 import Footer from 'components/Footer';
 import BottomNavigation from 'components/BottomNavigation';
-import Notifications from 'components/Notifications';
-import AppContentWrapper from './AppContentWrapper';
+import FloatedContainer from 'containers/FloatedContainer';
+import Home from 'containers/Home';
 import Wrapper from './Wrapper';
 
 const useStyles = makeStyles(() => ({
@@ -58,8 +58,8 @@ const App: React.FC<AppProps> = ({ config }) => {
             <div className={classes.contentWrapper}>
               <Wrapper>
                 <Switch>
-                  <Route exact path={ROUTES.HOME} component={AppContentWrapper} />
-                  <Route path={['/units', '/target', '/stats']} component={AppContentWrapper} />
+                  <Route exact path={ROUTES.HOME} component={Home} />
+                  <Route path={['/units', '/target', '/stats']} component={Home} />
                   <Route exact path={ROUTES.SIMULATIONS} component={Simulations} />
                   <Route exact path={ROUTES.PDF} component={PdfContainer} />
                   <Route exact path={ROUTES.ABOUT} component={About} />
@@ -69,7 +69,7 @@ const App: React.FC<AppProps> = ({ config }) => {
                   <Redirect to={ROUTES.HOME} />
                 </Switch>
               </Wrapper>
-              <Notifications />
+              <FloatedContainer />
               <Footer />
             </div>
           </div>

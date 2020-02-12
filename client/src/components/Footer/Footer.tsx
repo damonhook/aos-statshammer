@@ -11,9 +11,6 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: '1em',
-    [theme.breakpoints.down('sm')]: {
-      paddingBottom: theme.spacing(7),
-    },
   },
   Actions: {
     marginTop: theme.spacing(1),
@@ -41,14 +38,14 @@ const useStyles = makeStyles(theme => ({
 /**
  * The footer that appears at the bottom of the page
  */
-const Footer: React.FC = () => {
+const Footer = () => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <footer className={classes.footer}>
-      <Paper className={clsx(classes.paper)}>
+      <Paper className={clsx(classes.paper)} square>
         <Typography variant="body2" component="p">
           Built by: Damon Hook&nbsp;
           <i>(NoMaDhOoK)</i>
