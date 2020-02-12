@@ -33,7 +33,6 @@ const buildCumulative = (
     max: { [name: string]: number };
   },
 ) => {
-  // const maxDamage = Math.max(...Object.keys(probabilities).map(n => Number(n)));
   const maxDamage = Math.max(...Object.values(metrics.max));
   const sums = unitNames.reduce((acc, name) => ({ ...acc, [name]: 0 }), {});
   const cumulative = [...Array(maxDamage + 1)].map((_, damage) => {

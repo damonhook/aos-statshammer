@@ -11,7 +11,7 @@ import { TError } from 'types/store';
 
 import GraphControls from './GraphControls';
 import Loadable from './Loadable';
-import { getMaxDamage, getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
+import { getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 
 const useStyles = makeStyles(theme => ({
   probabilityCurves: {},
@@ -58,15 +58,10 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
     const classes = useStyles({ numUnits: unitNames.length });
     const theme = useTheme();
     const [activeReferenceLine, setActiveReferenceLine] = useState(REFERENCE_LINE_OPTIONS.NONE);
-    const [matchXAxis, setMatchXAxis] = useState(true);
 
-    let maxDamage = matchXAxis ? 0 : 'dataMax';
     let ticks: number[];
     let maxProbability = 0;
     if (probabilities && probabilities.length) {
-      if (matchXAxis) {
-        maxDamage = getMaxDamage(probabilities);
-      }
       maxProbability = getMaxProbability(probabilities);
       if (maxProbability) {
         ticks = getTicks(maxProbability);
@@ -83,10 +78,6 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
       setActiveReferenceLine(value);
     };
 
-    const handleSetMatchXAxisChanged = (value: boolean) => {
-      setMatchXAxis(value);
-    };
-
     return (
       <ListItem
         className={clsx(classes.probabilityCurves, className)}
@@ -96,8 +87,6 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
         loaderDelay={0}
       >
         <GraphControls
-          matchXAxis={matchXAxis}
-          setMatchXAxis={handleSetMatchXAxisChanged}
           activeReferenceLine={activeReferenceLine}
           setActiveReferenceLine={handleReferenceLineChanged}
         />
@@ -110,7 +99,7 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
                   data={buckets}
                   series={unitNames}
                   xAxis={{
-                    domain: [0, maxDamage],
+                    domain: [0, 'dataMax'],
                     type: 'number',
                     dataKey: 'damage',
                     tickCount: 10,
