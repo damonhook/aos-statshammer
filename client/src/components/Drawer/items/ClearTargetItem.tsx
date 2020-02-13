@@ -1,31 +1,25 @@
-import { ListItemIcon, ListItemText } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
+import { TrackChanges } from '@material-ui/icons';
 import ConfirmationDialog from 'components/ConfirmationDialog';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { notifications, target } from 'store/slices';
+import { notifications as notificationsStore, target as targetStore } from 'store/slices';
 
-import LinkItem from './LinkItem';
+import MenuLinkItem from '../MenuLinkItem';
 
-const mapDispatchToProps = {
-  clearAllTargetModifiers: target.actions.clearAllTargetModifiers,
-  addNotification: notifications.actions.addNotification,
-};
-
-const connector = connect(null, mapDispatchToProps);
-interface ClearTargetItemProps extends ConnectedProps<typeof connector> {
+interface IClearTargetItemProps {
   onClick?: () => void;
+  mini?: boolean;
 }
 
-const ClearTargetItem: React.FC<ClearTargetItemProps> = ({
-  clearAllTargetModifiers,
-  addNotification,
-  onClick,
-}) => {
+const ClearTargetItem = ({ onClick, mini }: IClearTargetItemProps) => {
+  const dispatch = useDispatch();
+
   const handleConfirm = () => {
-    addNotification({ message: 'Target modifiers cleared', variant: 'info' });
-    clearAllTargetModifiers();
+    dispatch(
+      notificationsStore.actions.addNotification({ message: 'Target modifiers cleared', variant: 'info' }),
+    );
+    dispatch(targetStore.actions.clearAllTargetModifiers());
     if (onClick) onClick();
   };
 
@@ -35,12 +29,7 @@ const ClearTargetItem: React.FC<ClearTargetItemProps> = ({
 
   return (
     <div>
-      <LinkItem to="/target/confirm">
-        <ListItemIcon>
-          <Delete />
-        </ListItemIcon>
-        <ListItemText primary="Clear Target Modifiers" />
-      </LinkItem>
+      <MenuLinkItem to="/target/confirm" label="Clear Target Modifiers" icon={<TrackChanges />} mini={mini} />
       <Route path="/target/confirm">
         <ConfirmationDialog
           open
@@ -53,4 +42,4 @@ const ClearTargetItem: React.FC<ClearTargetItemProps> = ({
   );
 };
 
-export default connector(ClearTargetItem);
+export default ClearTargetItem;

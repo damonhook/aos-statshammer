@@ -1,13 +1,28 @@
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
 import React from 'react';
 
-const SocialItems = () => (
-  <>
-    <Github forceVariant="mini" />
-    <Reddit forceVariant="mini" />
-    <Releases forceVariant="mini" />
-    <WarcryStatshammer forceVariant="mini" />
-  </>
-);
+const useStyles = makeStyles(() => ({
+  miniIcon: {
+    textAlign: 'center',
+  },
+}));
+
+interface ISocialItemsProps {
+  mini?: boolean;
+}
+const SocialItems = ({ mini }: ISocialItemsProps) => {
+  const classes = useStyles();
+
+  return (
+    <div className={clsx({ [classes.miniIcon]: mini })}>
+      <Github forceVariant="mini" />
+      <Reddit forceVariant="mini" />
+      <Releases forceVariant="mini" />
+      <WarcryStatshammer forceVariant="mini" />
+    </div>
+  );
+};
 
 export default SocialItems;

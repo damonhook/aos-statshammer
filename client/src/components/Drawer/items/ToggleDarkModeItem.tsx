@@ -1,30 +1,26 @@
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { BrightnessMedium as BrightnessMediumIcon } from '@material-ui/icons';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { config } from 'store/slices';
+import { useDispatch } from 'react-redux';
+import { config as configStore } from 'store/slices';
 
-const connector = connect(null, {
-  toggleDarkMode: config.actions.toggleDarkMode,
-});
-interface ToggleDarkModeItemProps extends ConnectedProps<typeof connector> {
+import MenuItem from '../MenuItem';
+
+interface IToggleDarkModeItemProps {
   onClick?: () => void;
+  mini?: boolean;
 }
 
-const ToggleDarkModeItem: React.FC<ToggleDarkModeItemProps> = ({ onClick, toggleDarkMode }) => {
+const ToggleDarkModeItem = ({ onClick, mini }: IToggleDarkModeItemProps) => {
+  const dispatch = useDispatch();
+
   const handleClick = () => {
-    toggleDarkMode();
+    dispatch(configStore.actions.toggleDarkMode());
     if (onClick) onClick();
   };
 
   return (
-    <ListItem button onClick={handleClick}>
-      <ListItemIcon>
-        <BrightnessMediumIcon />
-      </ListItemIcon>
-      <ListItemText primary="Toggle Dark Mode" />
-    </ListItem>
+    <MenuItem label="Toggle Dark Mode" icon={<BrightnessMediumIcon />} onClick={handleClick} mini={mini} />
   );
 };
 
-export default connector(ToggleDarkModeItem);
+export default ToggleDarkModeItem;
