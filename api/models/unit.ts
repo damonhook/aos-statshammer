@@ -1,6 +1,7 @@
-import Average from '../processors/average';
-import Simulation from '../processors/simulation';
-import { getMetrics } from '../utils/StatsUtils';
+import AverageDamageProcessor from '../processors/averageDamageProcessor';
+import MaxDamageProcessor from '../processors/maxDamageProcessor';
+import SimulationProcessor from '../processors/simulationProcessor';
+import { range } from '../utils/mathUtils';
 import Target from './target';
 import WeaponProfile from './weaponProfile';
 
@@ -37,39 +38,59 @@ class Unit {
    */
   averageDamage(target: Target): number {
     return this.weaponProfiles.reduce(
-      (acc, profile) => acc + new Average(profile, target).getAverageDamage(),
+      (acc, profile) => acc + new AverageDamageProcessor(profile, target).getAverageDamage(),
       0,
     );
   }
 
-  runSimulations(target: Target, numSimulations = 1000, includeOutcomes = true) {
-    const results = [...Array(numSimulations)].map(() =>
-      this.weaponProfiles.reduce((acc, profile) => {
-        const sim = new Simulation(profile, target);
+  maxDamage(): number {
+    return this.weaponProfiles.reduce(
+      (acc, profile) => acc + new MaxDamageProcessor(profile).getMaxDamage(),
+      0,
+    );
+  }
+
+  runSimulations(target: Target, numSimulations = 1000) {
+    const max = this.maxDamage();
+    const mean = this.averageDamage(target);
+
+    let variance = 0;
+    const counts: { [damage: number]: number } = {};
+    [...Array(numSimulations)].forEach(() => {
+      const result = this.weaponProfiles.reduce<number>((acc, profile) => {
+        const sim = new SimulationProcessor(profile, target);
         const simResult = sim.simulate();
         return acc + simResult;
-      }, 0),
-    );
-
-    const counts = results.reduce<{ [damage: number]: any }>((acc, n) => {
-      acc[n] = acc[n] ? acc[n] + 1 : 1;
-      return acc;
-    }, {});
+      }, 0);
+      variance += (result - mean) ** 2;
+      counts[result] = counts[result] ? counts[result] + 1 : 1;
+    });
+    variance /= numSimulations;
 
     const buckets = Object.keys(counts)
-      .sort((x, y) => Number(x) - Number(y))
+      .map(Number)
+      .sort((x, y) => x - y)
       .map(damage => ({
         damage,
         count: counts[damage],
         probability: parseFloat(((counts[damage] * 100) / numSimulations).toFixed(2)),
       }));
 
-    const data = includeOutcomes ? { results } : {};
+    const sampleMax = Math.max(...Object.keys(counts).map(Number));
+    const step = Math.max(Math.floor(((max - sampleMax) / max) * 10), 1);
+    [...range(sampleMax + 1, max, step)].forEach(i => {
+      buckets.push({ damage: i, count: 0, probability: 0 });
+    });
+    buckets.push({ damage: max, count: 0, probability: 0 });
 
     return {
-      ...data,
       buckets,
-      metrics: getMetrics(results),
+      metrics: {
+        max,
+        mean,
+        variance,
+        standardDeviation: Math.sqrt(variance),
+      },
     };
   }
 }

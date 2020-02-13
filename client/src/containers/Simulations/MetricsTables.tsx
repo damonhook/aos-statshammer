@@ -92,7 +92,6 @@ const MetricsTables: React.FC<MetricsTablesProps> = ({ pending, results, unitNam
                       <TableRow className={classes.header}>
                         <TableCell className={clsx(classes.sticky, classes.header)}>Unit Name</TableCell>
                         <TableCell className={classes.header}>Mean</TableCell>
-                        <TableCell className={classes.header}>Median</TableCell>
                         <TableCell className={classes.header}>Max</TableCell>
                         <TableCell className={classes.header}>Var.</TableCell>
                         <TableCell className={classes.header}>Std. Dev.</TableCell>
@@ -105,7 +104,6 @@ const MetricsTables: React.FC<MetricsTablesProps> = ({ pending, results, unitNam
                           <TableRow key={k}>
                             <TableCell className={classes.sticky}>{k}</TableCell>
                             <TableCell>{metrics.mean.toFixed(2)}</TableCell>
-                            <TableCell>{metrics.median.toFixed(0)}</TableCell>
                             <TableCell>{metrics.max.toFixed(0)}</TableCell>
                             <TableCell>{metrics.variance.toFixed(2)}</TableCell>
                             <TableCell>

@@ -1,5 +1,5 @@
 import { Characteristic as C } from '../../constants';
-import { booleanOption, numberOption, rollOption } from '../../utils/ModifierOptions';
+import { booleanOption, numberOption, rollOption } from '../../utils/modifierUtils';
 import { D6 } from '../dice';
 import DiceValue from '../diceValue';
 import WeaponProfile from '../weaponProfile';
@@ -13,7 +13,7 @@ export default class MortalWounds extends BaseModifier {
   unmodified: boolean;
   inAddition: boolean;
 
-  constructor({ characteristic, on = 6, mortalWounds = 1, unmodified = true, inAddition = false }) {
+  constructor({ characteristic, on = 6, mortalWounds, unmodified = true, inAddition = false }) {
     super({ characteristic });
     this.on = Number(on);
     this.mortalWounds = DiceValue.parse(mortalWounds);

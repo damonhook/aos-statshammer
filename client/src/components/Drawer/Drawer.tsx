@@ -71,6 +71,12 @@ const Drawer = () => {
     history.goBack();
   };
 
+  if (lg && open) {
+    handleClose();
+  }
+
+  const isHome = [ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS].includes(page);
+
   return (
     <AppDrawer
       open={open}
@@ -97,8 +103,8 @@ const Drawer = () => {
         <AboutItem />
         <Divider className={classes.divider} variant="middle" />
         <ToggleDarkModeItem />
-        {page === ROUTES.HOME && !mobile && <ToggleGraphListItem />}
-        {page === ROUTES.HOME && (
+        {isHome && !mobile && <ToggleGraphListItem />}
+        {isHome && (
           <>
             <ClearUnitsItem />
             <ImportUnitItem onClick={handleClose} />

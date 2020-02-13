@@ -1,4 +1,4 @@
-import { rollOption } from '../../utils/ModifierOptions';
+import { rollOption } from '../../utils/modifierUtils';
 import { D6 } from '../dice';
 import Target from '../target';
 import WeaponProfile from '../weaponProfile';

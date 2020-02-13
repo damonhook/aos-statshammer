@@ -4,7 +4,7 @@ import { MODIFIERS as m } from '../models/modifiers';
 import Target from '../models/target';
 import WeaponProfile from '../models/weaponProfile';
 
-export default class Average {
+export default class AverageDamageProcessor {
   profile: WeaponProfile;
   target: Target;
 
@@ -30,7 +30,7 @@ export default class Average {
           leaderModifiers.map(mod => mod.getAsBonusModifier()),
         );
         leaderProfile.numModels = numLeaders;
-        const leaderProcessor = new Average(leaderProfile, this.target);
+        const leaderProcessor = new AverageDamageProcessor(leaderProfile, this.target);
         leaderDamage += leaderProcessor.getAverageDamage();
       }
     }
@@ -59,7 +59,7 @@ export default class Average {
     if (cbModifier) {
       const newProfile = this.profile.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()]);
       const cbModHits = attacks * cbModifier.resolve(this.profile);
-      const splitProcessor = new Average(newProfile, this.target);
+      const splitProcessor = new AverageDamageProcessor(newProfile, this.target);
       splitDamage = splitProcessor.resolveWounds(cbModHits);
       hits -= cbModHits;
     }
@@ -87,7 +87,7 @@ export default class Average {
     if (cbModifier) {
       const newProfile = this.profile.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()]);
       const cbModWounds = hits * cbModifier.resolve(this.profile);
-      const splitProcessor = new Average(newProfile, this.target);
+      const splitProcessor = new AverageDamageProcessor(newProfile, this.target);
       splitDamage = splitProcessor.resolveSaves(cbModWounds);
       wounds -= cbModWounds;
     }

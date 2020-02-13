@@ -71,7 +71,7 @@ const Notification = ({
   notificationId,
   variant = 'info',
   action,
-  timeout = 400000,
+  timeout = 4000,
   hasActiveFab = false,
 }: INotificationProps) => {
   const classes = useStyles({ variant });

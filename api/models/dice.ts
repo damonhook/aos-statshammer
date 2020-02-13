@@ -1,4 +1,4 @@
-import { getRandomInt } from '../utils/StatsUtils';
+import { getRandomInt } from '../utils/mathUtils';
 
 /**
  * A class used to represent a single dice (e.g: D3, D6)
