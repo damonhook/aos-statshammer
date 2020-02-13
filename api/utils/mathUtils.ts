@@ -1,3 +1,5 @@
+import 'regenerator-runtime/runtime';
+
 /**
  * Create an array from one number to another (e.g: `range(2, 4)` => `[2, 3, 4]`)
  * @param start The number to start at
