@@ -1,5 +1,5 @@
 import { Characteristic as C, getCharacteristic } from '../../constants';
-import { booleanOption, choiceOption, numberOption, rollOption } from '../../utils/modifierOptions';
+import { booleanOption, choiceOption, numberOption, rollOption } from '../../utils/modifierUtils';
 import { D6 } from '../dice';
 import DiceValue from '../diceValue';
 import WeaponProfile from '../weaponProfile';
