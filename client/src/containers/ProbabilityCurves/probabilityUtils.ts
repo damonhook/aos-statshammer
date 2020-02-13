@@ -3,7 +3,6 @@ import { IProbability } from 'types/simulations';
 export const REFERENCE_LINE_OPTIONS = {
   NONE: 'None',
   MEAN: 'Mean',
-  MEDIAN: 'Median',
   MAX: 'Max',
 };
 

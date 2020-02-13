@@ -26,7 +26,6 @@ export type IProbabilityMetric = { [name: string]: number };
 export interface IProbabilityMetrics {
   mean: IProbabilityMetric;
   max: IProbabilityMetric;
-  median: IProbabilityMetric;
 }
 
 export interface IProbability {

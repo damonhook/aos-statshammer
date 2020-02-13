@@ -24,8 +24,8 @@ These extra analytics are split into the following **3 tabs**:
 - Sample Metrics Tables
   - Contains sample metrics for each **unit** against a target with **y** save:
     - Mean
-    - Median
     - Max
     - Variance
+    - Standard Deviation
 - Probability Tables
   - Contains the data that was used to generate the **Discrete Probability Graphs**

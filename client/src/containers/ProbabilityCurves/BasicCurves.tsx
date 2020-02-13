@@ -113,7 +113,7 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
                   yAxisLabel={{
                     value: 'Probability (%)',
                   }}
-                  dotSize={0}
+                  dotSize={1}
                   referenceLines={
                     activeMetric && activeMetric !== null
                       ? Object.keys(metrics[activeMetric]).map(name => {

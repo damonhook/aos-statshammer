@@ -29,7 +29,6 @@ const buildCumulative = (
   unitNames: string[],
   metrics: {
     mean: { [name: string]: number };
-    median: { [name: string]: number };
     max: { [name: string]: number };
   },
 ) => {
@@ -57,14 +56,13 @@ const buildCumulative = (
 
 const buildProbability = ({ save, ...unitResults }) => {
   const probabilities = {};
-  const metrics = { mean: {}, median: {}, max: {} };
+  const metrics = { mean: {}, max: {} };
   Object.keys(unitResults).forEach(name => {
     unitResults[name].buckets.forEach(({ damage, probability }) => {
       if (probabilities[damage] == null) probabilities[damage] = {};
       probabilities[damage][name] = probability;
     });
     metrics.mean[name] = unitResults[name].metrics.mean;
-    metrics.median[name] = unitResults[name].metrics.median;
     metrics.max[name] = unitResults[name].metrics.max;
   });
   const buckets = Object.keys(probabilities)

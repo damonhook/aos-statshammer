@@ -4,7 +4,6 @@ import { MODIFIERS as m } from '../models/modifiers';
 import Target from '../models/target';
 import { TARGET_MODIFIERS as t } from '../models/targetModifiers';
 import WeaponProfile from '../models/weaponProfile';
-import { getMetrics } from '../utils/StatsUtils';
 
 class Simulation {
   profile: WeaponProfile;
@@ -15,15 +14,7 @@ class Simulation {
     this.target = target;
   }
 
-  runSimulations(numSimulations = 1000) {
-    const results = [...Array(numSimulations)].map(() => this.simulate());
-    return {
-      results,
-      metrics: getMetrics(results),
-    };
-  }
-
-  simulate() {
+  simulate(): number {
     let { numModels } = this.profile;
     let totalAttacks = 0;
 

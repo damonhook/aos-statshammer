@@ -1,7 +1,7 @@
 import Average from '../processors/average';
 import MaxDamageProcessor from '../processors/maxDamageProcessor';
 import Simulation from '../processors/simulation';
-import { getMetrics } from '../utils/StatsUtils';
+import { range } from '../utils/mathUtils';
 import Target from './target';
 import WeaponProfile from './weaponProfile';
 
@@ -43,16 +43,28 @@ class Unit {
     );
   }
 
+  maxDamage(): number {
+    return this.weaponProfiles.reduce(
+      (acc, profile) => acc + new MaxDamageProcessor(profile).getMaxDamage(),
+      0,
+    );
+  }
+
   runSimulations(target: Target, numSimulations = 1000, includeOutcomes = true) {
-    const results = [...Array(numSimulations)].map(() =>
-      this.weaponProfiles.reduce((acc, profile) => {
+    const max = this.maxDamage();
+    const mean = this.averageDamage(target);
+
+    let variance = 0;
+    const results = [...Array(numSimulations)].map(() => {
+      const result = this.weaponProfiles.reduce<number>((acc, profile) => {
         const sim = new Simulation(profile, target);
         const simResult = sim.simulate();
         return acc + simResult;
-      }, 0),
-    );
-
-    const max = this.maxDamage();
+      }, 0);
+      variance += (result - mean) ** 2;
+      return result;
+    });
+    variance /= numSimulations;
 
     const counts = results.reduce<{ [damage: number]: any }>((acc, n) => {
       acc[n] = acc[n] ? acc[n] + 1 : 1;
@@ -69,13 +81,11 @@ class Unit {
       }));
 
     const sampleMax = Math.max(...Object.keys(counts).map(Number));
-    [...Array(max - sampleMax)].forEach((_, index) => {
-      buckets.push({
-        damage: sampleMax + index + 1,
-        count: 0,
-        probability: 0,
-      });
+    const step = Math.max(Math.floor(((max - sampleMax) / max) * 10), 1);
+    [...range(sampleMax + 1, max, step)].forEach(i => {
+      buckets.push({ damage: i, count: 0, probability: 0 });
     });
+    buckets.push({ damage: max, count: 0, probability: 0 });
 
     const data = includeOutcomes ? { results } : {};
 
@@ -83,17 +93,12 @@ class Unit {
       ...data,
       buckets,
       metrics: {
-        ...getMetrics(results),
         max,
+        mean,
+        variance,
+        standardDeviation: Math.sqrt(variance),
       },
     };
-  }
-
-  maxDamage(): number {
-    return this.weaponProfiles.reduce(
-      (acc, profile) => acc + new MaxDamageProcessor(profile).getMaxDamage(),
-      0,
-    );
   }
 }
 
