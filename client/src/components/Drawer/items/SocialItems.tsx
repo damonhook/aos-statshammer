@@ -4,6 +4,10 @@ import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialBu
 import React from 'react';
 
 const useStyles = makeStyles(() => ({
+  socialItems: {
+    display: 'flex',
+    justifyContent: 'space-around',
+  },
   miniIcon: {
     textAlign: 'center',
   },
@@ -16,7 +20,7 @@ const SocialItems = ({ mini }: ISocialItemsProps) => {
   const classes = useStyles();
 
   return (
-    <div className={clsx({ [classes.miniIcon]: mini })}>
+    <div className={clsx(classes.socialItems, { [classes.miniIcon]: mini })}>
       <Github forceVariant="mini" />
       <Reddit forceVariant="mini" />
       <Releases forceVariant="mini" />
