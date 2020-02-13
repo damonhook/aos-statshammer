@@ -45,7 +45,9 @@ export default class MaxDamageProcessor {
 
     m.CONDITIONAL_BONUS.availableCharacteristics.forEach(c => {
       const mod = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, c);
-      if (mod && mod.bonusToCharacteristic === C.DAMAGE) bonus += mod.bonus.max;
+      if (mod && mod.bonusToCharacteristic === characteristic) {
+        bonus += mod.bonus.max;
+      }
     });
 
     return bonus;
