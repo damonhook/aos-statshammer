@@ -1,6 +1,6 @@
-import Average from '../processors/average';
+import AverageDamageProcessor from '../processors/averageDamageProcessor';
 import MaxDamageProcessor from '../processors/maxDamageProcessor';
-import Simulation from '../processors/simulation';
+import SimulationProcessor from '../processors/simulationProcessor';
 import { range } from '../utils/mathUtils';
 import Target from './target';
 import WeaponProfile from './weaponProfile';
@@ -38,7 +38,7 @@ class Unit {
    */
   averageDamage(target: Target): number {
     return this.weaponProfiles.reduce(
-      (acc, profile) => acc + new Average(profile, target).getAverageDamage(),
+      (acc, profile) => acc + new AverageDamageProcessor(profile, target).getAverageDamage(),
       0,
     );
   }
@@ -58,7 +58,7 @@ class Unit {
     const counts: { [damage: number]: number } = {};
     [...Array(numSimulations)].forEach(() => {
       const result = this.weaponProfiles.reduce<number>((acc, profile) => {
-        const sim = new Simulation(profile, target);
+        const sim = new SimulationProcessor(profile, target);
         const simResult = sim.simulate();
         return acc + simResult;
       }, 0);

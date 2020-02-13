@@ -5,7 +5,7 @@ import Target from '../models/target';
 import { TARGET_MODIFIERS as t } from '../models/targetModifiers';
 import WeaponProfile from '../models/weaponProfile';
 
-class Simulation {
+class SimulationProcessor {
   profile: WeaponProfile;
   target: Target;
 
@@ -28,7 +28,7 @@ class Simulation {
         leaderModifiers.map(mod => mod.getAsBonusModifier()),
       );
       leaderProfile.numModels = numLeaders;
-      const leaderSim = new Simulation(leaderProfile, this.target);
+      const leaderSim = new SimulationProcessor(leaderProfile, this.target);
       const leaderAttacks = numLeaders * leaderProfile.getAttacks(false, true);
       leaderDamage += [...Array(leaderAttacks)].reduce(acc => acc + leaderSim.resolveHitRoll(), 0);
     }
@@ -59,7 +59,7 @@ class Simulation {
       const cbModifier = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_HIT);
       if (cbModifier && hitRoll >= cbModifier.on) {
         const splitProfile = this.profile.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()]);
-        const splitSimulation = new Simulation(splitProfile, this.target);
+        const splitSimulation = new SimulationProcessor(splitProfile, this.target);
         return splitSimulation.resolveWoundRoll() + mortalDamage;
       }
 
@@ -91,7 +91,7 @@ class Simulation {
       const cbModifier = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_WOUND);
       if (cbModifier && woundRoll >= cbModifier.on) {
         const splitProfile = this.profile.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()]);
-        const splitSimulation = new Simulation(splitProfile, this.target);
+        const splitSimulation = new SimulationProcessor(splitProfile, this.target);
         return splitSimulation.resolveSaveRoll() + mortalDamage;
       }
 
@@ -158,4 +158,4 @@ class Simulation {
   }
 }
 
-export default Simulation;
+export default SimulationProcessor;
