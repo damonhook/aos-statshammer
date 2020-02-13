@@ -6,6 +6,7 @@ const commonOptions = {
   mixins: {
     drawer: {
       width: 220,
+      miniWidth: 76,
     },
   },
   typography: {

@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginLeft: theme.mixins.drawer.width,
       width: `calc(100% - ${theme.mixins.drawer.width}px)`,
     },
+    [theme.breakpoints.only('md')]: {
+      marginLeft: theme.mixins.drawer.miniWidth,
+      width: `calc(100% - ${theme.mixins.drawer.miniWidth}px)`,
+    },
   },
   offset: ({ height }: StyleProps) => ({
     marginTop: height,

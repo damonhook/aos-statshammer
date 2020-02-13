@@ -1,27 +1,24 @@
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { BarChart } from '@material-ui/icons';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { config } from 'store/slices';
+import { useDispatch } from 'react-redux';
+import { config as configStore } from 'store/slices';
 
-const connector = connect(null, {
-  toggleDesktopGraphList: config.actions.toggleDesktopGraphList,
-});
-interface ToggleGraphListItemProps extends ConnectedProps<typeof connector> {}
+import MenuItem from '../MenuItem';
 
-const ToggleGraphListItem: React.FC<ToggleGraphListItemProps> = ({ toggleDesktopGraphList }) => {
+interface IToggleGraphListItemProps {
+  onClick?: () => void;
+  mini?: boolean;
+}
+
+const ToggleGraphListItem = ({ onClick, mini }: IToggleGraphListItemProps) => {
+  const dispatch = useDispatch();
+
   const handleClick = () => {
-    toggleDesktopGraphList();
+    dispatch(configStore.actions.toggleDesktopGraphList());
+    if (onClick) onClick();
   };
 
-  return (
-    <ListItem button onClick={handleClick}>
-      <ListItemIcon>
-        <BarChart />
-      </ListItemIcon>
-      <ListItemText primary="Toggle Graph List/Tabs" />
-    </ListItem>
-  );
+  return <MenuItem label="Toggle Graph List/Tabs" icon={<BarChart />} onClick={handleClick} mini={mini} />;
 };
 
-export default connector(ToggleGraphListItem);
+export default ToggleGraphListItem;
