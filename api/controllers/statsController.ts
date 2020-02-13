@@ -80,18 +80,12 @@ const buildProbability = ({ save, ...unitResults }) => {
   };
 };
 
-export const simulateUnitsForSave = ({
-  units,
-  save,
-  target,
-  numSimulations = 1000,
-  includeOutcomes = false,
-}) => {
+export const simulateUnitsForSave = ({ units, save, target, numSimulations = 1000 }) => {
   const unitList: Unit[] = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
   const targetClass = new Target(save, target ? target.modifiers : []);
   const results = unitList.reduce(
     (acc, unit) => {
-      acc[unit.name] = unit.runSimulations(targetClass, numSimulations, includeOutcomes);
+      acc[unit.name] = unit.runSimulations(targetClass, numSimulations);
       return acc;
     },
     { save: save ? save.toString() : 'None' },
@@ -105,7 +99,7 @@ export const simulateUnitsForSave = ({
   };
 };
 
-export const simulateUnits = ({ units, target, numSimulations = 1000, includeOutcomes = false }) => {
+export const simulateUnits = ({ units, target, numSimulations = 1000 }) => {
   const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
   const data = SAVES.reduce(
     (acc, save) => {
@@ -114,7 +108,6 @@ export const simulateUnits = ({ units, target, numSimulations = 1000, includeOut
         save,
         target,
         numSimulations,
-        includeOutcomes,
       });
       return {
         results: [...acc.results, saveData.results],

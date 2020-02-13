@@ -71,6 +71,10 @@ const Drawer = () => {
     history.goBack();
   };
 
+  if (lg && open) {
+    handleClose();
+  }
+
   const isHome = [ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS].includes(page);
 
   return (

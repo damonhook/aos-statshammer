@@ -50,26 +50,22 @@ class Unit {
     );
   }
 
-  runSimulations(target: Target, numSimulations = 1000, includeOutcomes = true) {
+  runSimulations(target: Target, numSimulations = 1000) {
     const max = this.maxDamage();
     const mean = this.averageDamage(target);
 
     let variance = 0;
-    const results = [...Array(numSimulations)].map(() => {
+    const counts: { [damage: number]: number } = {};
+    [...Array(numSimulations)].forEach(() => {
       const result = this.weaponProfiles.reduce<number>((acc, profile) => {
         const sim = new Simulation(profile, target);
         const simResult = sim.simulate();
         return acc + simResult;
       }, 0);
       variance += (result - mean) ** 2;
-      return result;
+      counts[result] = counts[result] ? counts[result] + 1 : 1;
     });
     variance /= numSimulations;
-
-    const counts = results.reduce<{ [damage: number]: any }>((acc, n) => {
-      acc[n] = acc[n] ? acc[n] + 1 : 1;
-      return acc;
-    }, {});
 
     const buckets = Object.keys(counts)
       .map(Number)
@@ -87,10 +83,7 @@ class Unit {
     });
     buckets.push({ damage: max, count: 0, probability: 0 });
 
-    const data = includeOutcomes ? { results } : {};
-
     return {
-      ...data,
       buckets,
       metrics: {
         max,
