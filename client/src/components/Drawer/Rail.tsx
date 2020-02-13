@@ -67,30 +67,22 @@ const Drawer = () => {
       <DrawerLogo />
       <Divider />
       <List className={classes.list}>
-        <MenuLinkItem
-          to={ROUTES.HOME}
-          label="Home"
-          icon={<Home color={isHome ? 'primary' : 'action'} />}
-          mini
-        />
+        <MenuLinkItem to={ROUTES.HOME} label="Home" icon={<Home />} selected={isHome} mini />
         <MenuLinkItem
           to={ROUTES.SIMULATIONS}
           label="Simulations"
-          icon={<Timeline color={page === ROUTES.SIMULATIONS ? 'primary' : 'action'} />}
+          icon={<Timeline />}
+          selected={page === ROUTES.SIMULATIONS}
           mini
         />
         <MenuLinkItem
           to={ROUTES.PDF}
           label="Download PDF"
-          icon={<GetApp color={page === ROUTES.PDF ? 'primary' : 'action'} />}
+          icon={<GetApp />}
+          selected={page === ROUTES.PDF}
           mini
         />
-        <MenuLinkItem
-          to={ROUTES.ABOUT}
-          label="About"
-          icon={<Info color={page === ROUTES.ABOUT ? 'primary' : 'action'} />}
-          mini
-        />
+        <MenuLinkItem to={ROUTES.ABOUT} label="About" icon={<Info />} selected={page === ROUTES.ABOUT} mini />
         <Divider className={classes.divider} variant="middle" />
         <ToggleDarkModeItem mini />
         {isHome && !mobile && <ToggleGraphListItem mini />}
