@@ -5,19 +5,20 @@ import React from 'react';
 import { ResponsiveContainer } from 'recharts';
 
 const useSyles = makeStyles(theme => ({
-  container: {
+  graphContainer: {
     width: '100%',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
   },
-  responsive: {
-    display: 'flex',
-  },
   title: {
     textAlign: 'center',
     marginBottom: theme.spacing(1),
     color: theme.palette.getContrastText(theme.palette.background.paper),
+  },
+  wrapper: {
+    width: '100%',
+    height: '100%',
   },
 }));
 
@@ -33,15 +34,15 @@ const GraphContainer: React.FC<GraphContainerProps> = ({ className, title, child
   const classes = useSyles();
 
   return (
-    <div className={clsx(classes.container, className)}>
+    <div className={clsx(classes.graphContainer, className)}>
       {title && (
         <Typography variant="h6" className={classes.title}>
           {title}
         </Typography>
       )}
-      <ResponsiveContainer width="98%" height="98%" className={classes.responsive}>
-        {children}
-      </ResponsiveContainer>
+      <div className={clsx(classes.wrapper)}>
+        <ResponsiveContainer>{children}</ResponsiveContainer>
+      </div>
     </div>
   );
 };
