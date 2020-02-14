@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch';
-import { getTarget } from 'store/selectors/targetHelpers';
-import { getUnits } from 'store/selectors/unitHelpers';
+import store from 'store';
+import { targetSelector, unitsSelector } from 'store/selectors';
 import { notifications, stats } from 'store/slices';
 
 import { TDispatch } from './api.types';
@@ -8,9 +8,10 @@ import { TDispatch } from './api.types';
 export const fetchStatsCompare = () => async (dispatch: TDispatch) => {
   dispatch(stats.actions.fetchStatsPending());
   try {
-    const units = getUnits();
+    const state = store.getState();
+    const units = unitsSelector(state);
     if (!units) dispatch(stats.actions.fetchStatsSuccess({ results: [] }));
-    const target = getTarget();
+    const target = targetSelector(state);
     const data = {
       units: units.map(unit => ({
         name: unit.uuid,

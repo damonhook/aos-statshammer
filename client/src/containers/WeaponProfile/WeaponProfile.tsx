@@ -5,10 +5,10 @@ import clsx from 'clsx';
 import ListItem from 'components/ListItem';
 import ModifierSummary from 'components/ModifierSummary';
 import _ from 'lodash';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getUnitByPosition } from 'store/selectors/unitHelpers';
+import { unitByIndexSelector } from 'store/selectors';
 import { notifications, units } from 'store/slices';
 import { IWeaponProfile } from 'types/unit';
 import { scrollToRef } from 'utils/scrollIntoView';
@@ -72,7 +72,7 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
     const history = useHistory();
 
     /** The unit that this profile belongs to */
-    const unit = useMemo(() => getUnitByPosition(unitId), [unitId]);
+    const unit = useSelector(unitByIndexSelector)(unitId);
     /** The URL used to open an edit dialog for this item */
     const editPath = `/units/${unit.uuid}/${id}`;
 

@@ -6,8 +6,8 @@ import ModifierItem from 'components/ModifierItem';
 import ModifierSelector from 'components/ModifierSelector';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useReducer } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { getModifierById } from 'store/selectors/modifierHelpers';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
+import { modifierByIdSelector } from 'store/selectors';
 import { IModifierInstance } from 'types/modifiers';
 import { IStore } from 'types/store';
 
@@ -44,6 +44,7 @@ interface IModifierListProps extends ConnectedProps<typeof connector> {
 const ModifierList: React.FC<IModifierListProps> = React.memo(
   ({ pending, definitions, error, modifiers, errorCallback, dispatchModifiers }) => {
     const classes = useStyles();
+    const modifierSelector = useSelector(modifierByIdSelector);
     const [errors, dispatchErrors] = useReducer(
       errorReducer,
       modifiers.map(() => false),
@@ -116,7 +117,7 @@ const ModifierList: React.FC<IModifierListProps> = React.memo(
           <div className={classes.activeModifiers}>
             {(modifiers ?? []).map((modifier, index) => (
               <ModifierItem
-                definition={getModifierById(modifier.id)}
+                definition={modifierSelector(modifier.id)}
                 options={modifier.options}
                 actions={[
                   {

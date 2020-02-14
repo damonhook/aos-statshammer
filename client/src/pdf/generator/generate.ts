@@ -6,8 +6,8 @@ import { getFormattedDescription } from 'components/ModifierItem/ModifierDescrip
 import jsPDF from 'jspdf';
 // eslint-disable-next-line import/no-duplicates
 import { MultipleRowType } from 'jspdf-autotable';
-import { getModifierById } from 'store/selectors/modifierHelpers';
-import { getTargetModifierById } from 'store/selectors/targetModifierHelpers';
+import store from 'store';
+import { modifierByIdSelector, targetModifierByIdSelector } from 'store/selectors';
 import { IModifierInstance } from 'types/modifiers';
 import { IJsPDF } from 'types/pdf';
 import { TResult } from 'types/stats';
@@ -17,6 +17,9 @@ import cursor from './cursor';
 import { addGraphs, addHeader, addHR, addPage, addSubHeader, headerColor, margin } from './pdfUtils';
 
 const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): MultipleRowType => {
+  const state = store.getState();
+  const getModifierById = modifierByIdSelector(state);
+  const getTargetModifierById = targetModifierByIdSelector(state);
   const modifierItems = modifiers
     .map(({ id, options }) => {
       const definition = isTarget ? getTargetModifierById(id) : getModifierById(id);

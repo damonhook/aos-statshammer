@@ -8,8 +8,8 @@ import NoItemsCard from 'components/NoItemsCard';
 import WeaponProfile from 'containers/WeaponProfile';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { addUnitEnabled } from 'store/selectors/unitHelpers';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
+import { addUnitEnabledSelector } from 'store/selectors';
 import { notifications, units } from 'store/slices';
 import { IStore } from 'types/store';
 import { IUnit } from 'types/unit';
@@ -69,6 +69,7 @@ const Unit: React.FC<IUnitProps> = React.memo(
   }) => {
     const unitRef = useRef(null);
     const classes = useStyles();
+    const adUnitEnabled = useSelector(addUnitEnabledSelector);
 
     useEffect(() => {
       scrollToRef(unitRef);
@@ -116,7 +117,7 @@ const Unit: React.FC<IUnitProps> = React.memo(
               name: 'Copy',
               onClick: copyUnit,
               icon: <FileCopy />,
-              disabled: !addUnitEnabled(),
+              disabled: !adUnitEnabled,
             },
             { name: 'Delete', onClick: handleDeleteUnit, icon: <Delete /> },
           ]}

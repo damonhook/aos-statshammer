@@ -7,7 +7,7 @@ import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getNumUnits, getUnitNames } from 'store/selectors';
+import { numUnitsSelector, unitNamesSelector } from 'store/selectors';
 import { IStore } from 'types/store';
 import { scrollToTop } from 'utils/scrollIntoView';
 
@@ -48,8 +48,8 @@ const Simulations = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const unitNames = useSelector(getUnitNames, _.isEqual);
-  const numUnits = useSelector(getNumUnits);
+  const unitNames = useSelector(unitNamesSelector, _.isEqual);
+  const numUnits = useSelector(numUnitsSelector);
   const simulations = useSelector((state: IStore) => state.simulations, _.isEqual);
 
   if (numUnits <= 0) {

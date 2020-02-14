@@ -2,9 +2,9 @@ import { Button, Dialog, DialogActions, Slide, useMediaQuery } from '@material-u
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { TransitionProps } from '@material-ui/core/transitions';
 import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { getUnitByUuid, getUnitIndexByUuid } from 'store/selectors/unitHelpers';
+import { unitByUuidSelector, unitIndexByUuidSelector } from 'store/selectors';
 import { units } from 'store/slices';
 import { IWeaponProfile } from 'types/unit';
 
@@ -38,8 +38,8 @@ const ProfileDialog: React.FC<IProfileDialogProps> = ({ editWeaponProfile, open 
   const history = useHistory();
   const { unitUuid, profileIndex } = useParams();
 
-  const unit = getUnitByUuid(unitUuid);
-  const unitId = getUnitIndexByUuid(unitUuid);
+  const unitId = useSelector(unitIndexByUuidSelector)(unitUuid ?? 'no-match');
+  const unit = useSelector(unitByUuidSelector)(unitUuid ?? 'no-match');
   const id = Number(profileIndex);
   let profile: IWeaponProfile | null = null;
   if (unit && id != null && !Number.isNaN(id)) {

@@ -2,7 +2,7 @@ import { ImportExport } from '@material-ui/icons';
 import Uploader from 'components/Uploader';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAddUnitEnabled } from 'store/selectors';
+import { addUnitEnabledSelector } from 'store/selectors';
 import { notifications as notificationsStore, units as unitsStore } from 'store/slices';
 
 import MenuItem from '../MenuItem';
@@ -14,7 +14,7 @@ interface IImportUnitItemProps {
 
 const ImportUnitItem = ({ onClick, mini }: IImportUnitItemProps) => {
   const dispatch = useDispatch();
-  const uploadEnabled = useSelector(getAddUnitEnabled);
+  const uploadEnabled = useSelector(addUnitEnabledSelector);
 
   /** The function to call when a file upload happens.
    * In this case that would be importing the uploaded unit data

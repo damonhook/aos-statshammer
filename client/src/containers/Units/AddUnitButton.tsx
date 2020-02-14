@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Add, ImportExport } from '@material-ui/icons';
 import Uploader from 'components/Uploader';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { addUnitEnabled } from 'store/selectors/unitHelpers';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
+import { addUnitEnabledSelector } from 'store/selectors';
 import { notifications, units } from 'store/slices';
 import { IUnitStore } from 'types/store';
 import { IUnit } from 'types/unit';
@@ -32,6 +32,7 @@ interface AddUnitButtonProps extends ConnectedProps<typeof connector> {
 
 const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotification }) => {
   const classes = useStyles();
+  const addUnitEnabled = useSelector(addUnitEnabledSelector);
 
   const onUpload = (data: IUnit) => {
     if (data && data.name && data.weapon_profiles) {
@@ -48,20 +49,20 @@ const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotifi
         variant="contained"
         startIcon={<Add />}
         color="primary"
-        disabled={!addUnitEnabled()}
+        disabled={!addUnitEnabled}
         className={classes.button}
       >
         Add Unit
       </Button>
       <Uploader
         onUpload={onUpload}
-        disabled={!addUnitEnabled()}
+        disabled={!addUnitEnabled}
         component={
           <Button
             variant="contained"
             startIcon={<ImportExport />}
             color="primary"
-            disabled={!addUnitEnabled()}
+            disabled={!addUnitEnabled}
             className={classes.button}
             component="span"
           >
