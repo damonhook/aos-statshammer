@@ -5,7 +5,7 @@ import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { lightTheme } from 'themes';
 import { IJsPDF } from 'types/pdf';
-import { IProbability } from 'types/simulations';
+import { ISimulationResult } from 'types/simulations';
 import { TResult } from 'types/stats';
 import { ITargetStore, IUnitStore } from 'types/store';
 
@@ -32,7 +32,7 @@ interface IPdfGeneratorProps {
   units: IUnitStore;
   target: ITargetStore;
   results: TResult[];
-  probabilities: IProbability[];
+  probabilities: ISimulationResult[];
 }
 
 const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, probabilities }) => {

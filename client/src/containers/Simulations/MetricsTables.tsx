@@ -1,14 +1,14 @@
 import { Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import ListItem from 'components/ListItem';
 import { TableSkeleton } from 'components/Skeletons';
-import _ from 'lodash';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { ISimulationResult } from 'types/simulations';
 import { TError } from 'types/store';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {},
   metricsContainer: {},
   tableContainer: {
@@ -39,48 +39,49 @@ interface ILoadableProps {
   loading?: boolean;
   numUnits: number;
   error?: TError;
+  children?: React.ReactNode;
 }
+const Loadable = ({ children, loading, numUnits, error }: ILoadableProps) => {
+  const classes = useStyles();
 
-const Loadable: React.FC<ILoadableProps> = React.memo(
-  ({ children, loading, numUnits, error }) => {
-    const classes = useStyles();
+  if (error) {
+    return <AdvancedStatsErrorCard />;
+  }
+  if (loading) {
+    return (
+      <Grid container spacing={2}>
+        {[...Array(6)].map(() => (
+          <Grid item className={classes.tableContainer}>
+            <TableSkeleton rows={numUnits} cols={5} dense />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+  return <>{children}</>;
+};
 
-    if (error) {
-      return <AdvancedStatsErrorCard />;
-    }
-    if (loading) {
-      return (
-        <Grid container spacing={2}>
-          {[...Array(6)].map(() => (
-            <Grid item className={classes.tableContainer}>
-              <TableSkeleton rows={numUnits} cols={5} dense />
-            </Grid>
-          ))}
-        </Grid>
-      );
-    }
-    return <>{children}</>;
-  },
-  (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
-);
-
-interface MetricsTablesProps {
+interface IMetricsTablesProps {
   pending: boolean;
-  results?: any[];
+  results?: ISimulationResult[];
   unitNames: string[];
   className?: string;
   error?: TError;
 }
-
-const MetricsTables: React.FC<MetricsTablesProps> = ({ pending, results, unitNames, className, error }) => {
+const MetricsTables = ({ pending, results, unitNames, className, error }: IMetricsTablesProps) => {
   const classes = useStyles();
+
+  const data = useMemo(() => {
+    if (pending || !results) return [];
+    return results.map(({ save, metrics }) => ({ save, metrics }));
+  }, [pending, results]);
 
   return (
     <ListItem header="Metric Tables" className={className} collapsible loading={pending} loaderDelay={0}>
       <Loadable loading={pending} error={error} numUnits={unitNames.length}>
         <Grid container spacing={2} className={classes.metricsContainer}>
-          {(results || []).map(({ save, ...unitData }) => {
-            const saveString = save !== 'None' ? `${save}+` : '-';
+          {data.map(({ save, metrics }) => {
+            const saveString = save ? `${save}+` : '-';
             return (
               <Grid item className={classes.tableContainer} key={save}>
                 <Typography variant="h6" className={classes.tableTitle}>
@@ -93,22 +94,23 @@ const MetricsTables: React.FC<MetricsTablesProps> = ({ pending, results, unitNam
                         <TableCell className={clsx(classes.sticky, classes.header)}>Unit Name</TableCell>
                         <TableCell className={classes.header}>Mean</TableCell>
                         <TableCell className={classes.header}>Max</TableCell>
-                        <TableCell className={classes.header}>Var.</TableCell>
-                        <TableCell className={classes.header}>Std. Dev.</TableCell>
+                        {/* <TableCell className={classes.header}>Var.</TableCell>
+                        <TableCell className={classes.header}>Std. Dev.</TableCell> */}
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {Object.keys(unitData).map(k => {
-                        const { metrics } = unitData[k];
+                      {unitNames.map(name => {
                         return (
-                          <TableRow key={k}>
-                            <TableCell className={classes.sticky}>{k}</TableCell>
-                            <TableCell>{metrics.mean.toFixed(2)}</TableCell>
-                            <TableCell>{metrics.max.toFixed(0)}</TableCell>
-                            <TableCell>{metrics.variance.toFixed(2)}</TableCell>
+                          <TableRow key={name}>
+                            <TableCell className={classes.sticky}>{name}</TableCell>
+                            <TableCell>{metrics.mean[name].toFixed(2)}</TableCell>
+                            <TableCell>{metrics.max[name].toFixed(0)}</TableCell>
+                            {/* <TableCell>{metricData.variance.toFixed(2)}</TableCell>
                             <TableCell>
-                              {metrics.standardDeviation ? metrics.standardDeviation.toFixed(2) : '<0.01'}
-                            </TableCell>
+                              {metricData.standardDeviation
+                                ? metricData.standardDeviation.toFixed(2)
+                                : '<0.01'}
+                            </TableCell> */}
                           </TableRow>
                         );
                       })}

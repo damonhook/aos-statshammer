@@ -6,7 +6,7 @@ import PdfGenerator from 'pdf';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { IStore } from 'types/store';
-import { applyUnitNameMapping, getProbabilitiesMapping, getResultsMapping } from 'utils/mappers';
+import { applyUnitNameMapping, getResultsMapping } from 'utils/mappers';
 
 const useStyles = makeStyles(() => ({
   pdfContainer: {
@@ -54,10 +54,9 @@ const PdfContainer: React.FC<PdfContainerProps> = React.memo(
     const classes = useStyles();
     const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
     const resultsMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
-    const simMapper = useCallback(getProbabilitiesMapping(nameMapping), [nameMapping]);
 
     const results = useMapping(stats.payload, resultsMapper, stats.pending);
-    const probabilities = useMapping(simulations.probabilities, simMapper, simulations.pending);
+    const probabilities = simulations.results;
 
     useEffect(() => {
       fetchStatsCompare();

@@ -1,4 +1,4 @@
-import { IProbability } from 'types/simulations';
+import { ISimulationResult } from 'types/simulations';
 
 export const REFERENCE_LINE_OPTIONS = {
   NONE: 'None',
@@ -6,17 +6,15 @@ export const REFERENCE_LINE_OPTIONS = {
   MAX: 'Max',
 };
 
-export const getMaxDamage = (probabilities: IProbability[]) =>
-  Math.max(
-    ...probabilities.map(({ metrics }) => Math.max(...Object.values(metrics.max).map(d => Number(d)))),
-  );
+export const getMaxDamage = (data: ISimulationResult[]) =>
+  Math.max(...data.map(({ metrics }) => Math.max(...Object.values(metrics.max).map(d => Number(d)))));
 
-export const getMaxProbability = (probabilities: IProbability[]) =>
+export const getMaxProbability = (data: ISimulationResult[]) =>
   Math.max(
-    ...probabilities.map(({ buckets }) =>
+    ...data.map(({ discrete }) =>
       Math.max(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ...buckets.map(({ damage, ...other }) => Math.max(...Object.values(other).map(p => Number(p)))),
+        ...discrete.map(({ damage, ...other }) => Math.max(...Object.values(other).map(p => Number(p)))),
       ),
     ),
   );

@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
 import { getMaxDamage, getMaxProbability, getTicks } from 'containers/ProbabilityCurves/probabilityUtils';
 import React, { useCallback } from 'react';
+import { ISimulationResult } from 'types/simulations';
 
 import GraphWrapper from './GraphWrapper';
 
@@ -16,7 +17,11 @@ const useStyles = makeStyles({
   },
 });
 
-const ProbabilityGraphs = ({ probabilities, unitNames }) => {
+interface IProbabilityGraphsProps {
+  probabilities: ISimulationResult[];
+  unitNames: string[];
+}
+const ProbabilityGraphs = ({ probabilities, unitNames }: IProbabilityGraphsProps) => {
   const classes = useStyles();
   const yAxisFormatter = useCallback(value => `${value}%`, []);
   const cols = 2;
@@ -42,12 +47,12 @@ const ProbabilityGraphs = ({ probabilities, unitNames }) => {
             {[...Array(cols)].map((_, colIndex) => {
               const index = rowIndex * cols + colIndex;
               const item = probabilities[index];
-              const { save, buckets } = item;
+              const { save, discrete } = item;
               return (
                 <LineGraph
-                  title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
+                  title={`Damage Probability (${save ? '-' : `${save}+`})`}
                   key={save}
-                  data={buckets}
+                  data={discrete}
                   isAnimationActive={false}
                   series={unitNames}
                   className={classes.line}
