@@ -3,6 +3,8 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Link from 'components/Link';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { HASHES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({
   miniIcon: {
@@ -23,6 +25,9 @@ interface IMenuLinkItemProps {
 }
 const MenuLinkItem = ({ to, disabled, icon, label, mini, selected }: IMenuLinkItemProps) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const replace = history.location.hash === HASHES.DRAWER;
 
   const inner = (
     <Tooltip title={mini ? label : ''} placement="right" arrow>
@@ -39,7 +44,7 @@ const MenuLinkItem = ({ to, disabled, icon, label, mini, selected }: IMenuLinkIt
   );
 
   return !disabled ? (
-    <Link to={to} replace>
+    <Link to={to} replace={replace}>
       {inner}
     </Link>
   ) : (

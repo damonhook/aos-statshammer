@@ -72,12 +72,13 @@ class Unit {
       counts[result] = counts[result] ? counts[result] + 1 : 1;
     });
     variance /= numSimulations;
+    const standardDeviation = Math.sqrt(variance);
 
     const metrics = {
-      max,
-      mean,
-      variance,
-      standardDeviation: Math.sqrt(variance),
+      max: Number(max.toFixed(2)),
+      mean: Number(mean.toFixed(2)),
+      variance: Number(variance.toFixed(2)),
+      standardDeviation: Number((standardDeviation ?? 0).toFixed(2)),
     };
 
     const buckets = this.convertCountsToBuckets(counts, metrics, numSimulations);

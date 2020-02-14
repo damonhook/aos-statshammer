@@ -37,7 +37,7 @@ export default class StatsController {
       const targetClass = new Target(save, target ? target.modifiers : []);
       return unitList.reduce(
         (acc, unit) => {
-          acc[unit.name] = parseFloat(unit.averageDamage(targetClass).toFixed(2));
+          acc[unit.name] = Number(unit.averageDamage(targetClass).toFixed(2));
           return acc;
         },
         { save: save ?? 0 },

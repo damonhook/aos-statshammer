@@ -3,7 +3,7 @@ import { grey } from '@material-ui/core/colors';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { GetApp, Home, Info, Timeline } from '@material-ui/icons';
 import { useHashMatch, useRouteFind } from 'hooks';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { HASHES, ROUTES } from 'utils/urls';
 
@@ -54,9 +54,11 @@ const Drawer = () => {
     history.push(HASHES.DRAWER);
   };
 
-  const handleClose = () => {
-    history.goBack();
-  };
+  const handleClose = useCallback(() => {
+    if (history.location.hash === HASHES.DRAWER) {
+      history.goBack();
+    }
+  }, [history]);
 
   if (lg && open) {
     handleClose();
