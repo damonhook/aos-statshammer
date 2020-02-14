@@ -32,10 +32,7 @@ const MenuLinkItem = ({ to, disabled, icon, label, mini, selected }: IMenuLinkIt
   const inner = (
     <Tooltip title={mini ? label : ''} placement="right" arrow>
       <ListItem button disabled={disabled}>
-        <ListItemIcon
-          className={clsx({ [classes.miniIcon]: mini, [classes.selected]: selected })}
-          style={{ color: 'inherit' }}
-        >
+        <ListItemIcon className={clsx({ [classes.miniIcon]: mini, [classes.selected]: selected })}>
           {icon}
         </ListItemIcon>
         {!mini && <ListItemText primary={label} className={clsx({ [classes.selected]: selected })} />}
