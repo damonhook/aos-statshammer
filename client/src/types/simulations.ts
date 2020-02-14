@@ -8,6 +8,8 @@ export type TMetric = { [name: string]: number };
 export type TMetrics = {
   max: TMetric;
   mean: TMetric;
+  variance: TMetric;
+  standardDeviation: TMetric;
 };
 
 export interface ISimulationResult {

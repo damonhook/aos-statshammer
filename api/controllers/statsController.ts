@@ -97,7 +97,7 @@ export default class StatsController {
   }
 
   private buildSimulationMetrics(data: TMappedResult): TMetrics {
-    const initial: TMetrics = { mean: {}, max: {} };
+    const initial: TMetrics = { mean: {}, max: {}, variance: {}, standardDeviation: {} };
     const metrics = Object.keys(initial);
     return Object.keys(data.results).reduce<TMetrics>((acc, name) => {
       metrics.forEach(metric => {

@@ -94,8 +94,8 @@ const MetricsTables = ({ pending, results, unitNames, className, error }: IMetri
                         <TableCell className={clsx(classes.sticky, classes.header)}>Unit Name</TableCell>
                         <TableCell className={classes.header}>Mean</TableCell>
                         <TableCell className={classes.header}>Max</TableCell>
-                        {/* <TableCell className={classes.header}>Var.</TableCell>
-                        <TableCell className={classes.header}>Std. Dev.</TableCell> */}
+                        <TableCell className={classes.header}>Var.</TableCell>
+                        <TableCell className={classes.header}>Std. Dev.</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -105,12 +105,12 @@ const MetricsTables = ({ pending, results, unitNames, className, error }: IMetri
                             <TableCell className={classes.sticky}>{name}</TableCell>
                             <TableCell>{metrics.mean[name].toFixed(2)}</TableCell>
                             <TableCell>{metrics.max[name].toFixed(0)}</TableCell>
-                            {/* <TableCell>{metricData.variance.toFixed(2)}</TableCell>
+                            <TableCell>{metrics.variance[name].toFixed(2)}</TableCell>
                             <TableCell>
-                              {metricData.standardDeviation
-                                ? metricData.standardDeviation.toFixed(2)
+                              {metrics.standardDeviation[name]
+                                ? metrics.standardDeviation[name].toFixed(2)
                                 : '<0.01'}
-                            </TableCell> */}
+                            </TableCell>
                           </TableRow>
                         );
                       })}
