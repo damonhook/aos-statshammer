@@ -6,7 +6,7 @@ import { ProbabilityTooltip } from 'components/GraphTooltips';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import React, { useCallback, useState } from 'react';
-import { IProbability } from 'types/simulations';
+import { ISimulationResult } from 'types/simulations';
 import { TError } from 'types/store';
 
 import GraphControls from './GraphControls';
@@ -46,15 +46,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface BasicCurvesProps {
-  probabilities: IProbability[];
+  probabilities: ISimulationResult[];
   unitNames: string[];
   className?: string[];
   error?: TError;
   pending: boolean;
 }
 
-const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
-  ({ probabilities, unitNames, className, error, pending }) => {
+const BasicCurves = React.memo(
+  ({ probabilities, unitNames, className, error, pending }: BasicCurvesProps) => {
     const classes = useStyles({ numUnits: unitNames.length });
     const theme = useTheme();
     const [activeReferenceLine, setActiveReferenceLine] = useState(REFERENCE_LINE_OPTIONS.NONE);
@@ -92,11 +92,11 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
         />
         <Loadable loading={pending} numUnits={unitNames.length} error={error}>
           <Grid container spacing={2} className={classes.content}>
-            {probabilities.map(({ save, buckets, metrics }) => (
+            {probabilities.map(({ save, discrete, metrics }) => (
               <Grid item className={classes.graphContainer} key={save}>
                 <LineGraph
-                  title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
-                  data={buckets}
+                  title={`Damage Probability (${!save ? '-' : `${save}+`})`}
+                  data={discrete}
                   series={unitNames}
                   xAxis={{
                     domain: [0, 'dataMax'],

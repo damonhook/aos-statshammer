@@ -19,6 +19,16 @@ export interface ISimulationResult {
   metrics: TMetrics;
 }
 
-export interface ISimulation {
+/**
+ * Response structure for `/api/simulate/save`
+ */
+export interface ISimulationsForSaveResponse {
+  results: ISimulationResult;
+}
+
+/**
+ * Response structure for `/api/simulate`
+ */
+export interface ISimulationsResponse {
   results: ISimulationResult[];
 }

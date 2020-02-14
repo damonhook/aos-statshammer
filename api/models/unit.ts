@@ -1,12 +1,15 @@
 import AverageDamageProcessor from '../processors/averageDamageProcessor';
 import MaxDamageProcessor from '../processors/maxDamageProcessor';
 import SimulationProcessor from '../processors/simulationProcessor';
+import { IUnitSimulation, TUnitSimulationBucket, TUnitSimulationMetrics } from '../types/models/unit';
 import { range } from '../utils/mathUtils';
 import Target from './target';
 import WeaponProfile from './weaponProfile';
 
+type TFreqMap = { [damage: number]: number };
+
 /**
- * A class representing a single unit
+ * A class representing a single AoS Unit
  */
 class Unit {
   name: string;
@@ -43,6 +46,9 @@ class Unit {
     );
   }
 
+  /**
+   * Calculate the maximum damage this unit could do
+   */
   maxDamage(): number {
     return this.weaponProfiles.reduce(
       (acc, profile) => acc + new MaxDamageProcessor(profile).getMaxDamage(),
@@ -50,12 +56,12 @@ class Unit {
     );
   }
 
-  runSimulations(target: Target, numSimulations = 1000) {
+  runSimulations(target: Target, numSimulations = 1000): IUnitSimulation {
     const max = this.maxDamage();
     const mean = this.averageDamage(target);
 
     let variance = 0;
-    const counts: { [damage: number]: number } = {};
+    const counts: TFreqMap = {};
     [...Array(numSimulations)].forEach(() => {
       const result = this.weaponProfiles.reduce<number>((acc, profile) => {
         const sim = new SimulationProcessor(profile, target);
@@ -66,6 +72,26 @@ class Unit {
       counts[result] = counts[result] ? counts[result] + 1 : 1;
     });
     variance /= numSimulations;
+    const standardDeviation = Math.sqrt(variance);
+
+    const metrics = {
+      max: Number(max.toFixed(2)),
+      mean: Number(mean.toFixed(2)),
+      variance: Number(variance.toFixed(2)),
+      standardDeviation: Number((standardDeviation ?? 0).toFixed(2)),
+    };
+
+    const buckets = this.convertCountsToBuckets(counts, metrics, numSimulations);
+
+    return { buckets, metrics };
+  }
+
+  private convertCountsToBuckets(
+    counts: TFreqMap,
+    metrics: TUnitSimulationMetrics,
+    numSimulations: number,
+  ): TUnitSimulationBucket[] {
+    const { max } = metrics;
 
     const buckets = Object.keys(counts)
       .map(Number)
@@ -83,15 +109,7 @@ class Unit {
     });
     buckets.push({ damage: max, count: 0, probability: 0 });
 
-    return {
-      buckets,
-      metrics: {
-        max,
-        mean,
-        variance,
-        standardDeviation: Math.sqrt(variance),
-      },
-    };
+    return buckets;
   }
 }
 

@@ -27,5 +27,5 @@ These extra analytics are split into the following **3 tabs**:
     - Max
     - Variance
     - Standard Deviation
-- Probability Tables
-  - Contains the data that was used to generate the **Discrete Probability Graphs**
+- Average Damage Graph
+  - Contains the **average** damage each unit would do against each target save

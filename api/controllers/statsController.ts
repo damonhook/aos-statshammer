@@ -1,124 +1,139 @@
 import { SAVES } from '../constants';
 import Target from '../models/target';
 import Unit from '../models/unit';
+import { IUnitSimulation } from '../types/models';
+import { ICompareResponse } from '../types/responses/compare';
+import {
+  ISimulationResult,
+  ISimulationsForSaveResponse,
+  ISimulationsResponse,
+  TMetrics,
+  TProbabilityResult,
+} from '../types/responses/simulations';
 
-/**
- * Compare the average damage of these units
- */
-export const compareUnits = ({ units, target }) => {
-  const unitList: Unit[] = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
-  const results = SAVES.map(save => {
+type TMappedResult = {
+  save: number;
+  results: { [name: string]: IUnitSimulation };
+};
+
+interface ISimulateForSaveRequest {
+  units: any;
+  save: number;
+  target: any;
+  numSimulations?: number;
+}
+
+export type TMappedProbabilities = {
+  [damage: number]: { [name: string]: number };
+};
+
+export default class StatsController {
+  /**
+   * Compare the average damage of these units. Used by `api/compare`
+   */
+  compareUnits({ units, target }): ICompareResponse {
+    const unitList: Unit[] = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
+    const results = SAVES.map(save => {
+      const targetClass = new Target(save, target ? target.modifiers : []);
+      return unitList.reduce(
+        (acc, unit) => {
+          acc[unit.name] = Number(unit.averageDamage(targetClass).toFixed(2));
+          return acc;
+        },
+        { save: save ?? 0 },
+      );
+    });
+
+    return { results };
+  }
+
+  simulateUnits({ units, target, numSimulations = 1000 }): ISimulationsResponse {
+    return SAVES.reduce<ISimulationsResponse>(
+      (acc, save) => {
+        const saveData = this.simulateUnitsForSave({
+          units,
+          save,
+          target,
+          numSimulations,
+        });
+        return { results: [...acc.results, saveData.results] };
+      },
+      { results: [] },
+    );
+  }
+
+  simulateUnitsForSave({
+    units,
+    save,
+    target,
+    numSimulations = 1000,
+  }: ISimulateForSaveRequest): ISimulationsForSaveResponse {
+    const unitList: Unit[] = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
     const targetClass = new Target(save, target ? target.modifiers : []);
-    return unitList.reduce(
+    const data = unitList.reduce<TMappedResult>(
       (acc, unit) => {
-        acc[unit.name] = parseFloat(unit.averageDamage(targetClass).toFixed(2));
+        acc.results[unit.name] = unit.runSimulations(targetClass, numSimulations);
         return acc;
       },
-      { save: save ? save.toString() : 'None' },
+      { save: save ?? 0, results: {} },
     );
-  });
+    return { results: this.buildSimulationResult(data) };
+  }
 
-  return {
-    results,
-    units: unitList,
-  };
-};
-
-const buildCumulative = (
-  probabilities: any,
-  unitNames: string[],
-  metrics: {
-    mean: { [name: string]: number };
-    max: { [name: string]: number };
-  },
-) => {
-  const maxDamage = Math.max(...Object.values(metrics.max));
-  const sums = unitNames.reduce((acc, name) => ({ ...acc, [name]: 0 }), {});
-  const cumulative = [...Array(maxDamage + 1)].map((_, damage) => {
-    const map = probabilities[damage] ?? {};
-    return unitNames.reduce(
-      (acc, name) => {
-        const val = map[name] ?? 0;
-        sums[name] += val;
-        if (sums[name] >= 100 || damage > metrics.max[name]) {
-          sums[name] = 100;
-        }
-        return { ...acc, [name]: Number(sums[name].toFixed(2)) };
-      },
-      { damage },
-    );
-  });
-  return [
-    ...cumulative,
-    unitNames.reduce((acc, name) => ({ ...acc, [name]: 100 }), { damage: maxDamage + 1 }),
-  ];
-};
-
-const buildProbability = ({ save, ...unitResults }) => {
-  const probabilities = {};
-  const metrics = { mean: {}, max: {} };
-  Object.keys(unitResults).forEach(name => {
-    unitResults[name].buckets.forEach(({ damage, probability }) => {
-      if (probabilities[damage] == null) probabilities[damage] = {};
-      probabilities[damage][name] = probability;
-    });
-    metrics.mean[name] = unitResults[name].metrics.mean;
-    metrics.max[name] = unitResults[name].metrics.max;
-  });
-  const buckets = Object.keys(probabilities)
-    .sort((x, y) => Number(x) - Number(y))
-    .map(damage => ({
-      damage: Number(damage),
-      ...probabilities[damage],
-    }));
-  const cumulative = buildCumulative(probabilities, Object.keys(unitResults), metrics);
-  return {
-    save,
-    buckets,
-    cumulative,
-    metrics,
-  };
-};
-
-export const simulateUnitsForSave = ({ units, save, target, numSimulations = 1000 }) => {
-  const unitList: Unit[] = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
-  const targetClass = new Target(save, target ? target.modifiers : []);
-  const results = unitList.reduce(
-    (acc, unit) => {
-      acc[unit.name] = unit.runSimulations(targetClass, numSimulations);
-      return acc;
-    },
-    { save: save ? save.toString() : 'None' },
-  );
-  const probabilities = buildProbability(results);
-
-  return {
-    results,
-    probabilities,
-    units: unitList,
-  };
-};
-
-export const simulateUnits = ({ units, target, numSimulations = 1000 }) => {
-  const unitList = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
-  const data = SAVES.reduce(
-    (acc, save) => {
-      const saveData = simulateUnitsForSave({
-        units,
-        save,
-        target,
-        numSimulations,
+  private buildSimulationResult(data: TMappedResult): ISimulationResult {
+    const unitNames = Object.keys(data.results);
+    const mappedProbabilities = Object.keys(data.results).reduce<TMappedProbabilities>((acc, name) => {
+      data.results[name].buckets.forEach(({ damage, probability }) => {
+        if (acc[damage] == null) acc[damage] = {};
+        acc[damage][name] = probability;
       });
-      return {
-        results: [...acc.results, saveData.results],
-        probabilities: [...acc.probabilities, saveData.probabilities],
-      };
-    },
-    { results: [], probabilities: [] },
-  );
+      return acc;
+    }, {});
 
-  return {
-    ...data,
-    units: unitList,
-  };
-};
+    const metrics = this.buildSimulationMetrics(data);
+    const discrete = this.buildDiscreteProbabilities(mappedProbabilities);
+    const cumulative = this.buildCumulativeProbabilities(mappedProbabilities, unitNames, metrics);
+    return { save: data.save, discrete, cumulative, metrics };
+  }
+
+  private buildSimulationMetrics(data: TMappedResult): TMetrics {
+    const initial: TMetrics = { mean: {}, max: {}, variance: {}, standardDeviation: {} };
+    const metrics = Object.keys(initial);
+    return Object.keys(data.results).reduce<TMetrics>((acc, name) => {
+      metrics.forEach(metric => {
+        acc[metric][name] = data.results[name].metrics[metric];
+      });
+      return acc;
+    }, initial);
+  }
+
+  private buildDiscreteProbabilities(probabilities: TMappedProbabilities): TProbabilityResult[] {
+    return Object.keys(probabilities)
+      .map(Number)
+      .sort((x, y) => x - y)
+      .map(damage => ({ damage, ...probabilities[damage] }));
+  }
+
+  private buildCumulativeProbabilities(
+    probabilities: TMappedProbabilities,
+    unitNames: string[],
+    metrics: TMetrics,
+  ): TProbabilityResult[] {
+    const maxDamage = Math.max(...Object.keys(probabilities).map(n => Number(n)));
+    const sums = unitNames.reduce((acc, name) => ({ ...acc, [name]: 0 }), {});
+    const cumulative = [...Array(maxDamage)].map((_, damage) => {
+      const map = probabilities[damage] ?? {};
+      return unitNames.reduce(
+        (acc, name) => {
+          sums[name] += map[name] ?? 0;
+          if (sums[name] >= 100 || damage > metrics.max[name]) {
+            sums[name] = 100;
+          }
+          return { ...acc, [name]: Number(sums[name].toFixed(2)) };
+        },
+        { damage },
+      );
+    });
+    return [...cumulative, unitNames.reduce((acc, name) => ({ ...acc, [name]: 100 }), { damage: maxDamage })];
+  }
+}

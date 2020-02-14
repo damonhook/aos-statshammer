@@ -27,7 +27,7 @@ const fetchSimulationForSave = async (
 ) => {
   const data = {
     units: units.map(unit => ({
-      name: unit.uuid,
+      name: unit.name,
       weapon_profiles: unit.weapon_profiles.filter(profile => profile.active),
     })),
     target: {
@@ -62,16 +62,13 @@ export const fetchSimulations = () => async (dispatch: TDispatch) => {
     );
 
     const res: ISimulation = responses.reduce(
-      (acc, { results, probabilities }) => ({
+      (acc, { results }) => ({
         results: [...acc.results, results],
-        probabilities: [...acc.probabilities, probabilities],
       }),
-      { results: [], probabilities: [] },
+      { results: [] },
     );
 
-    dispatch(
-      simulations.actions.fetchSimulationsSuccess({ results: res.results, probabilities: res.probabilities }),
-    );
+    dispatch(simulations.actions.fetchSimulationsSuccess({ results: res.results }));
   } catch (error) {
     dispatch(simulations.actions.fetchSimulationsError({ error }));
     dispatch(

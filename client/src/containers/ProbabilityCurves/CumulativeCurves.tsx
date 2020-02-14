@@ -6,7 +6,7 @@ import { ProbabilityTooltip } from 'components/GraphTooltips';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import React, { useCallback, useState } from 'react';
-import { IProbability } from 'types/simulations';
+import { ISimulationResult } from 'types/simulations';
 import { TError } from 'types/store';
 
 import GraphControls from './GraphControls';
@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface CumulativeCurvesProps {
-  probabilities: IProbability[];
+  probabilities: ISimulationResult[];
   unitNames: string[];
   className?: string[];
   error?: TError;
@@ -96,7 +96,7 @@ const CumulativeCurves: React.FC<CumulativeCurvesProps> = React.memo(
             {probabilities.map(({ save, cumulative, metrics }) => (
               <Grid item className={classes.graphContainer} key={save}>
                 <LineGraph
-                  title={`Cumulative Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
+                  title={`Cumulative Damage Probability (${!save ? '-' : `${save}+`})`}
                   data={cumulative}
                   series={unitNames}
                   xAxis={{

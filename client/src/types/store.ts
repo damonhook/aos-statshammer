@@ -1,6 +1,6 @@
 import { IModifierDefinition, IModifierInstance } from './modifiers';
 import { INotification } from './notification';
-import { IProbability, TSimResult } from './simulations';
+import { ISimulationResult } from './simulations';
 import { TResults } from './stats';
 import { IUnit } from './unit';
 
@@ -32,8 +32,7 @@ export interface IStatsStore {
 
 export interface ISimulationsStore {
   pending: boolean;
-  results: TSimResult[];
-  probabilities: IProbability[];
+  results: ISimulationResult[];
   error: TError;
 }
 

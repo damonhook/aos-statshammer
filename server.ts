@@ -9,7 +9,7 @@ import os from 'os';
 import path from 'path';
 
 import { getModifiers, getTargetModifiers } from './api/controllers/modifiersController';
-import { compareUnits, simulateUnits, simulateUnitsForSave } from './api/controllers/statsController';
+import StatsController from './api/controllers/statsController';
 
 function addHeaders(res: Response, production = false) {
   if (production) {
@@ -42,17 +42,17 @@ function appServer(production = false) {
 
   app.post('/api/compare', (req, res) => {
     addHeaders(res, production);
-    res.send(compareUnits(req.body));
+    res.send(new StatsController().compareUnits(req.body));
   });
 
   app.post('/api/simulate', (req, res) => {
     addHeaders(res, production);
-    res.send(simulateUnits(req.body));
+    res.send(new StatsController().simulateUnits(req.body));
   });
 
   app.post('/api/simulate/save', (req, res) => {
     addHeaders(res, production);
-    res.send(simulateUnitsForSave(req.body));
+    res.send(new StatsController().simulateUnitsForSave(req.body));
   });
 
   let logMessage = `Listening on port ${port}`;
