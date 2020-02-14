@@ -1,11 +1,13 @@
 import { ListItem, ListItemIcon, ListItemText, Tooltip } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   miniIcon: {
     justifyContent: 'center',
+    paddingTop: theme.spacing(0.75),
+    paddingBottom: theme.spacing(0.75),
   },
 }));
 

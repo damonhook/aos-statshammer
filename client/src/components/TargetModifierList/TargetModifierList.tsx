@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
 const TargetModifierList = () => {
   const classes = useStyles();
   const modifiersState = useSelector(targetModifiersSelector);
-  const { pending, modifiers: definitions, error } = modifiersState;
+  const { pending, items: definitions, error } = modifiersState;
   const getModifierById = useSelector(targetModifierByIdSelector);
   const activeModifiers = useSelector(targetAppliedModifiersSelector);
   const dispatch = useDispatch();

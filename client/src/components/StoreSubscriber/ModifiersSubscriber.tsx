@@ -16,7 +16,7 @@ const ModifiersSubscriber = () => {
 
   const [debouncedUseEffect] = useDebouncedCallback(
     () => {
-      if (!modifiers?.pending && !modifiers?.modifiers?.length) {
+      if (!modifiers?.pending && !modifiers?.items?.length) {
         dispatch(fetchModifiers());
       }
     },

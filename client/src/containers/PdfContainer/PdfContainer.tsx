@@ -39,8 +39,8 @@ const PdfContainer = () => {
     dispatch(fetchSimulations());
   }, [dispatch]);
 
-  const modifiersReady = modifiers.modifiers && modifiers.modifiers.length;
-  const targetModifiersReady = targetModifiers.modifiers && targetModifiers.modifiers.length;
+  const modifiersReady = modifiers.items && modifiers.items.length;
+  const targetModifiersReady = targetModifiers.items && targetModifiers.items.length;
   const resultsReady = results && results.length;
   const probabilitiesReady = probabilities && probabilities.length;
 

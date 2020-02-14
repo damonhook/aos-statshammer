@@ -5,10 +5,7 @@ import { IStore } from 'types/store';
 export const targetModifiersSelector = (state: IStore) => state.targetModifiers;
 
 /** Get the current list of target modifier items */
-export const targetModifierItemsSelector = createSelector(
-  targetModifiersSelector,
-  ({ modifiers }) => modifiers,
-);
+export const targetModifierItemsSelector = createSelector(targetModifiersSelector, ({ items }) => items);
 
 /** Retrieve a target modifier by its ID */
 export const targetModifierByIdSelector = createSelector(targetModifierItemsSelector, modifiers =>

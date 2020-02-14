@@ -69,7 +69,7 @@ const ModifierSummary = ({
   const large = useMediaQuery(theme.breakpoints.up('lg'));
   const modifierState = useSelector(modifiersStateSelector)(isTarget);
 
-  const getModifierById = (id: string) => (modifierState?.modifiers ?? []).find(mod => mod.id === id);
+  const getModifierById = (id: string) => (modifierState?.items ?? []).find(mod => mod.id === id);
 
   return modifiers && modifiers.length ? (
     <div className={clsx(classes.modifiers, className)}>

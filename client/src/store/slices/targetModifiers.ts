@@ -5,7 +5,7 @@ import { ITargetModifiersStore, TError } from 'types/store';
 const INITIAL_STATE: ITargetModifiersStore = {
   pending: false,
   error: null,
-  modifiers: [],
+  items: [],
 };
 
 export const fetchTargetModifiersPending = (state: ITargetModifiersStore) => {
@@ -14,11 +14,11 @@ export const fetchTargetModifiersPending = (state: ITargetModifiersStore) => {
 
 export const fetchTargetModifiersSuccess = (
   state: ITargetModifiersStore,
-  action: { payload: { modifiers: IModifierDefinition[] } },
+  action: { payload: { items: IModifierDefinition[] } },
 ) => {
-  const { modifiers } = action.payload;
+  const { items } = action.payload;
   state.pending = false;
-  state.modifiers = modifiers;
+  state.items = items;
 };
 
 export const fetchTargetModifiersError = (

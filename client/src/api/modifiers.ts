@@ -14,7 +14,7 @@ export const fetchModifiers = () => async (dispatch: TDispatch) => {
     });
 
     const res = await request.json();
-    dispatch(modifiersStore.actions.fetchModifiersSuccess({ modifiers: res.modifiers }));
+    dispatch(modifiersStore.actions.fetchModifiersSuccess({ items: res.modifiers }));
   } catch (error) {
     dispatch(modifiersStore.actions.fetchModifiersError({ error }));
     dispatch(
@@ -41,7 +41,7 @@ export const fetchTargetModifiers = () => async (dispatch: TDispatch) => {
     });
 
     const res = await request.json();
-    dispatch(targetModifiersStore.actions.fetchTargetModifiersSuccess({ modifiers: res.modifiers }));
+    dispatch(targetModifiersStore.actions.fetchTargetModifiersSuccess({ items: res.modifiers }));
   } catch (error) {
     dispatch(targetModifiersStore.actions.fetchTargetModifiersError({ error }));
     dispatch(

@@ -6,7 +6,7 @@ import { IStore } from 'types/store';
 export const modifiersSelector = (state: IStore) => state.modifiers;
 
 /** Get the current list of modifier items */
-export const modifierItemsSelector = createSelector(modifiersSelector, ({ modifiers }) => modifiers);
+export const modifierItemsSelector = createSelector(modifiersSelector, ({ items }) => items);
 
 /** Retrieve a modifier by its ID */
 export const modifierByIdSelector = createSelector(modifierItemsSelector, modifiers =>

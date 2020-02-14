@@ -9,6 +9,8 @@ import { HASHES } from 'utils/urls';
 const useStyles = makeStyles((theme: Theme) => ({
   miniIcon: {
     justifyContent: 'center',
+    paddingTop: theme.spacing(0.75),
+    paddingBottom: theme.spacing(0.75),
   },
   selected: {
     color: `${theme.palette.primary.main} !important`,

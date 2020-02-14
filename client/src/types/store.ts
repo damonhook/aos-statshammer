@@ -8,13 +8,13 @@ export type TError = boolean | string | null;
 
 export interface IModifiersStore {
   pending: boolean;
-  modifiers: IModifierDefinition[];
+  items: IModifierDefinition[];
   error: TError;
 }
 
 export interface ITargetModifiersStore {
   pending: boolean;
-  modifiers: IModifierDefinition[];
+  items: IModifierDefinition[];
   error: TError;
 }
 
