@@ -96,7 +96,7 @@ const CumulativeCurves: React.FC<CumulativeCurvesProps> = React.memo(
             {probabilities.map(({ save, cumulative, metrics }) => (
               <Grid item className={classes.graphContainer} key={save}>
                 <LineGraph
-                  title={`Cumulative Damage Probability (${save ? '-' : `${save}+`})`}
+                  title={`Cumulative Damage Probability (${!save ? '-' : `${save}+`})`}
                   data={cumulative}
                   series={unitNames}
                   xAxis={{

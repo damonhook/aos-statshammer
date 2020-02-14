@@ -95,7 +95,7 @@ const BasicCurves = React.memo(
             {probabilities.map(({ save, discrete, metrics }) => (
               <Grid item className={classes.graphContainer} key={save}>
                 <LineGraph
-                  title={`Damage Probability (${save ? '-' : `${save}+`})`}
+                  title={`Damage Probability (${!save ? '-' : `${save}+`})`}
                   data={discrete}
                   series={unitNames}
                   xAxis={{

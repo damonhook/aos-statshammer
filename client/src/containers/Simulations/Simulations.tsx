@@ -11,6 +11,7 @@ import { getNumUnits, getUnitNames } from 'store/selectors';
 import { IStore } from 'types/store';
 import { scrollToTop } from 'utils/scrollIntoView';
 
+import MetricsGraphs from './MetricsGraphs';
 import MetricsTables from './MetricsTables';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -90,6 +91,12 @@ const Simulations = () => {
               <MetricsTables
                 pending={simulations.pending}
                 error={simulations.error}
+                results={simulations.results}
+                unitNames={unitNames}
+              />
+              <MetricsGraphs
+                pending={simulations.pending}
+                // error={simulations.error}
                 results={simulations.results}
                 unitNames={unitNames}
               />
