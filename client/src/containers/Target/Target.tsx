@@ -4,8 +4,8 @@ import NoItemsCard from 'components/NoItemsCard';
 import TargetModifierList from 'components/TargetModifierList';
 import _ from 'lodash';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { IStore } from 'types/store';
+import { useSelector } from 'react-redux';
+import { targetSelector } from 'store/selectors';
 
 const useStyles = makeStyles(() => ({
   target: {
@@ -13,29 +13,22 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const mapStateToProps = (state: IStore) => ({
-  target: state.target,
-});
-
-const connector = connect(mapStateToProps);
-interface ITargetProps extends ConnectedProps<typeof connector> {
+interface ITargetProps {
   className?: string;
 }
 
-const Target: React.FC<ITargetProps> = React.memo(
-  ({ target, className }) => {
-    const classes = useStyles();
+const Target = ({ className }: ITargetProps) => {
+  const classes = useStyles();
+  const target = useSelector(targetSelector, _.isEqual);
 
-    return (
-      <div className={clsx(classes.target, className)}>
-        {!target?.modifiers?.length && (
-          <NoItemsCard header="No modifiers" body="No target modifiers are present (Basic target)" />
-        )}
-        <TargetModifierList />
-      </div>
-    );
-  },
-  (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
-);
+  return (
+    <div className={clsx(classes.target, className)}>
+      {!target?.modifiers?.length && (
+        <NoItemsCard header="No modifiers" body="No target modifiers are present (Basic target)" />
+      )}
+      <TargetModifierList />
+    </div>
+  );
+};
 
-export default connector(Target);
+export default Target;

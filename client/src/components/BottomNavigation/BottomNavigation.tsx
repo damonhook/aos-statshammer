@@ -5,7 +5,7 @@ import { useBreakpointChanged, useRouteFind } from 'hooks';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { IStore } from 'types/store';
+import { numUnitsSelector } from 'store/selectors';
 import { ROUTES } from 'utils/urls';
 
 interface IStyleProps {
@@ -43,7 +43,7 @@ const BottomNavigation = () => {
   const [index] = useRouteFind(routes);
 
   const breakpoints = useBreakpointChanged();
-  const numUnits = useSelector((state: IStore) => state.units.length);
+  const numUnits = useSelector(numUnitsSelector);
 
   const handleChange = (event: any, newValue: number) => {
     history.push(routes[newValue]);

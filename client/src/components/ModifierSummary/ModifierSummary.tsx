@@ -3,10 +3,12 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ChevronRight, HelpOutline } from '@material-ui/icons';
 import clsx from 'clsx';
 import ModifierDescription from 'components/ModifierItem/ModifierDescription';
+import _ from 'lodash';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import { modifiersSelector, targetModifiersSelector } from 'store/selectors';
 import { IModifierInstance } from 'types/modifiers';
-import { IStore } from 'types/store';
 
 import SummaryLoading from './SummaryLoading';
 
@@ -40,12 +42,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const mapStateToProps = (state: IStore, ownProps: { isTarget?: boolean }) => ({
-  modifierState: ownProps.isTarget ? state.targetModifiers : state.modifiers,
-});
+const modifiersStateSelector = createSelector(
+  modifiersSelector,
+  targetModifiersSelector,
+  (modifiers, targetModifiers) => _.memoize((isTarget: boolean) => (isTarget ? targetModifiers : modifiers)),
+);
 
-const connector = connect(mapStateToProps);
-interface IModifierSummaryProps extends ConnectedProps<typeof connector> {
+interface IModifierSummaryProps {
   modifiers: IModifierInstance[];
   active?: boolean;
   className?: string;
@@ -55,17 +58,16 @@ interface IModifierSummaryProps extends ConnectedProps<typeof connector> {
 /**
  * A brief summary of the applied modifiers, used for the main page
  */
-const ModifierSummary: React.FC<IModifierSummaryProps> = ({
+const ModifierSummary = ({
   modifiers,
-  modifierState,
   active = true,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isTarget = false,
   className,
-}) => {
+}: IModifierSummaryProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const large = useMediaQuery(theme.breakpoints.up('lg'));
+  const modifierState = useSelector(modifiersStateSelector)(isTarget);
 
   const getModifierById = (id: string) => (modifierState?.modifiers ?? []).find(mod => mod.id === id);
 
@@ -114,4 +116,4 @@ const ModifierSummary: React.FC<IModifierSummaryProps> = ({
   ) : null;
 };
 
-export default connector(ModifierSummary);
+export default ModifierSummary;

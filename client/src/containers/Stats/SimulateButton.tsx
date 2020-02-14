@@ -1,14 +1,13 @@
 import { Button } from '@material-ui/core';
 import { fetchSimulations } from 'api';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-const connector = connect(null, { fetchSimulations });
-interface ISimulateButton extends ConnectedProps<typeof connector> {}
+const SimulateButton = () => {
+  const dispatch = useDispatch();
 
-const SimulateButton: React.FC<ISimulateButton> = ({ fetchSimulations }) => {
   const handleClick = () => {
-    fetchSimulations();
+    dispatch(fetchSimulations());
   };
 
   return (
@@ -18,4 +17,4 @@ const SimulateButton: React.FC<ISimulateButton> = ({ fetchSimulations }) => {
   );
 };
 
-export default connector(SimulateButton);
+export default SimulateButton;

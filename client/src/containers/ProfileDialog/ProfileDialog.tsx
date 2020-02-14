@@ -2,10 +2,10 @@ import { Button, Dialog, DialogActions, Slide, useMediaQuery } from '@material-u
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { TransitionProps } from '@material-ui/core/transitions';
 import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
-import { connect, ConnectedProps, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { unitByUuidSelector, unitIndexByUuidSelector } from 'store/selectors';
-import { units } from 'store/slices';
+import { units as unitsStore } from 'store/slices';
 import { IWeaponProfile } from 'types/unit';
 
 import DialogContent from './DialogContent';
@@ -25,15 +25,15 @@ const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
 
-const connector = connect(null, { editWeaponProfile: units.actions.editWeaponProfile });
-interface IProfileDialogProps extends ConnectedProps<typeof connector> {
+interface IProfileDialogProps {
   open: boolean;
 }
 
-const ProfileDialog: React.FC<IProfileDialogProps> = ({ editWeaponProfile, open }) => {
+const ProfileDialog = ({ open }: IProfileDialogProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const dispatch = useDispatch();
 
   const history = useHistory();
   const { unitUuid, profileIndex } = useParams();
@@ -90,9 +90,9 @@ const ProfileDialog: React.FC<IProfileDialogProps> = ({ editWeaponProfile, open 
   }, [history]);
 
   const submit = useCallback(() => {
-    editWeaponProfile({ index: unitId, profileIndex: id, weaponProfile: state });
+    dispatch(unitsStore.actions.editWeaponProfile({ index: unitId, profileIndex: id, weaponProfile: state }));
     handleClose();
-  }, [editWeaponProfile, handleClose, id, state, unitId]);
+  }, [dispatch, handleClose, id, state, unitId]);
 
   const submitDisabled = useMemo(() => Object.keys(errors).some(k => errors[k]), [errors]);
 
@@ -140,4 +140,4 @@ const ProfileDialog: React.FC<IProfileDialogProps> = ({ editWeaponProfile, open 
   );
 };
 
-export default connector(ProfileDialog);
+export default ProfileDialog;

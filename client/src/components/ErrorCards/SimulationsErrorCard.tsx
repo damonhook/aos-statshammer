@@ -1,24 +1,24 @@
-import { fetchStatsCompare } from 'api';
+import { fetchSimulations } from 'api';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import ErrorCard from './ErrorCard';
 
-interface IStatsErrorCardProps {
+interface ISimulationsErrorCardProps {
   className?: string;
 }
 
 /**
  * A card representing that there was an error getting the stats
  */
-const StatsErrorCard = ({ className }: IStatsErrorCardProps) => {
+const SimulationsErrorCard = ({ className }: ISimulationsErrorCardProps) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(fetchStatsCompare());
+    dispatch(fetchSimulations());
   };
 
   return <ErrorCard className={className} retryFunc={handleClick} />;
 };
 
-export default StatsErrorCard;
+export default SimulationsErrorCard;

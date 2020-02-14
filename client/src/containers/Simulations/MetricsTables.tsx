@@ -1,7 +1,7 @@
 import { Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { AdvancedStatsErrorCard } from 'components/ErrorCards';
+import { SimulationsErrorCard } from 'components/ErrorCards';
 import ListItem from 'components/ListItem';
 import { TableSkeleton } from 'components/Skeletons';
 import React, { useMemo } from 'react';
@@ -45,7 +45,7 @@ const Loadable = ({ children, loading, numUnits, error }: ILoadableProps) => {
   const classes = useStyles();
 
   if (error) {
-    return <AdvancedStatsErrorCard />;
+    return <SimulationsErrorCard />;
   }
   if (loading) {
     return (

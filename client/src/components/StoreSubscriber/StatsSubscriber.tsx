@@ -2,8 +2,10 @@ import { fetchStatsCompare } from 'api';
 import { DEBOUNCE_TIMEOUT } from 'appConstants';
 import _ from 'lodash';
 import React, { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { IStore } from 'types/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import { targetSelector } from 'store/selectors/targetSelectors';
+import { unitsSelector } from 'store/selectors/unitsSelectors';
 import { IUnit } from 'types/unit';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -17,31 +19,28 @@ const filterNameFromUnit = (unit: IUnit) => {
   return rest;
 };
 
-const mapStateToProps = (state: IStore) => ({
-  units: state.units.map((u: IUnit) => filterNameFromUnit(u)),
-  target: state.target,
-});
-
-const connector = connect(mapStateToProps, { fetchStatsCompare });
-interface IStatsSubscriberProps extends ConnectedProps<typeof connector> {}
+const filteredUnitsSelector = createSelector(unitsSelector, units =>
+  units.map((u: IUnit) => filterNameFromUnit(u)),
+);
 
 /**
  * A component that is subscribed to the redux store and will fetch the stats if the unit
  * state changes
  */
-const StatsSubscriber: React.FC<IStatsSubscriberProps> = React.memo(
-  ({ fetchStatsCompare }) => {
-    const [debouncedUseEffect] = useDebouncedCallback(() => {
-      fetchStatsCompare();
-    }, DEBOUNCE_TIMEOUT);
+const StatsSubscriber = () => {
+  const dispatch = useDispatch();
+  const units = useSelector(filteredUnitsSelector, _.isEqual);
+  const target = useSelector(targetSelector, _.isEqual);
 
-    useEffect(() => {
-      debouncedUseEffect();
-    });
+  const [debouncedUseEffect] = useDebouncedCallback(() => {
+    dispatch(fetchStatsCompare());
+  }, DEBOUNCE_TIMEOUT);
 
-    return <span style={{ display: 'none' }} />;
-  },
-  (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
-);
+  useEffect(() => {
+    debouncedUseEffect();
+  }, [debouncedUseEffect, units, target, dispatch]);
 
-export default connector(StatsSubscriber);
+  return <span style={{ display: 'none' }} />;
+};
+
+export default StatsSubscriber;

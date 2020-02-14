@@ -8,10 +8,9 @@ import NoItemsCard from 'components/NoItemsCard';
 import WeaponProfile from 'containers/WeaponProfile';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { connect, ConnectedProps, useSelector } from 'react-redux';
-import { addUnitEnabledSelector } from 'store/selectors';
-import { notifications, units } from 'store/slices';
-import { IStore } from 'types/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUnitEnabledSelector, numUnitsSelector } from 'store/selectors';
+import { notifications as notificationsStore, units as unitsStore } from 'store/slices';
 import { IUnit } from 'types/unit';
 import { scrollToRef } from 'utils/scrollIntoView';
 
@@ -36,60 +35,41 @@ const downloadUnit = (unit: IUnit) => {
   a.click();
 };
 
-const mapStateToProps = (state: IStore) => ({
-  numUnits: state.units.length,
-});
-
-const connector = connect(mapStateToProps, {
-  addWeaponProfile: units.actions.addWeaponProfile,
-  deleteUnit: units.actions.deleteUnit,
-  editUnitName: units.actions.editUnitName,
-  addUnit: units.actions.addUnit,
-  moveUnit: units.actions.moveUnit,
-  addNotification: notifications.actions.addNotification,
-});
-interface IUnitProps extends ConnectedProps<typeof connector> {
+interface IUnitProps {
   id: number;
   unit: IUnit;
   className?: string;
 }
 
-const Unit: React.FC<IUnitProps> = React.memo(
-  ({
-    id,
-    unit,
-    numUnits,
-    addWeaponProfile,
-    deleteUnit,
-    editUnitName,
-    addUnit,
-    addNotification,
-    moveUnit,
-    className,
-  }) => {
+const Unit = React.memo(
+  ({ id, unit, className }: IUnitProps) => {
     const unitRef = useRef(null);
     const classes = useStyles();
     const adUnitEnabled = useSelector(addUnitEnabledSelector);
+    const numUnits = useSelector(numUnitsSelector);
+    const dispatch = useDispatch();
 
     useEffect(() => {
       scrollToRef(unitRef);
     }, [unit.uuid]);
 
     const handleDeleteUnit = useCallback(() => {
-      addNotification({
-        message: 'Deleted Unit',
-        action: {
-          label: 'Undo',
-          onClick: () => addUnit({ unit, atPosition: id }),
-        },
-      });
-      deleteUnit({ index: id });
-    }, [unit, addNotification, addUnit, deleteUnit, id]);
+      dispatch(
+        notificationsStore.actions.addNotification({
+          message: 'Deleted Unit',
+          action: {
+            label: 'Undo',
+            onClick: () => dispatch(unitsStore.actions.addUnit({ unit, atPosition: id })),
+          },
+        }),
+      );
+      dispatch(unitsStore.actions.deleteUnit({ index: id }));
+    }, [dispatch, id, unit]);
 
     const exportUnit = useCallback(() => {
       downloadUnit(unit);
-      addNotification({ message: 'Exported Unit', variant: 'success' });
-    }, [unit, addNotification]);
+      dispatch(notificationsStore.actions.addNotification({ message: 'Exported Unit', variant: 'success' }));
+    }, [dispatch, unit]);
 
     const numProfiles = unit.weapon_profiles ? unit.weapon_profiles.length : 0;
     const addProfileEnabled = numProfiles < MAX_PROFILES;
@@ -97,14 +77,27 @@ const Unit: React.FC<IUnitProps> = React.memo(
     const unitNameError = !unit.name || unit.name === '';
 
     const copyUnit = () => {
-      addUnit({ unit: { name: `${unit.name} copy`, weapon_profiles: [...unit.weapon_profiles] } });
+      dispatch(
+        unitsStore.actions.addUnit({
+          unit: { name: `${unit.name} copy`, weapon_profiles: [...unit.weapon_profiles] },
+        }),
+      );
     };
 
     const moveUnitUp = () => {
-      moveUnit({ index: id, newIndex: id - 1 });
+      dispatch(unitsStore.actions.moveUnit({ index: id, newIndex: id - 1 }));
     };
+
     const moveUnitDown = () => {
-      moveUnit({ index: id, newIndex: id + 1 });
+      dispatch(unitsStore.actions.moveUnit({ index: id, newIndex: id + 1 }));
+    };
+
+    const handleEditName = (event: any) => {
+      dispatch(unitsStore.actions.editUnitName({ index: id, name: event.target.value }));
+    };
+
+    const handleAddProfile = () => {
+      dispatch(unitsStore.actions.addWeaponProfile({ index: id }));
     };
 
     return (
@@ -131,7 +124,7 @@ const Unit: React.FC<IUnitProps> = React.memo(
           <TextField
             label="Unit Name"
             value={unit.name}
-            onChange={event => editUnitName({ index: id, name: event.target.value })}
+            onChange={handleEditName}
             error={unitNameError}
             helperText={unitNameError ? 'required' : null}
             fullWidth
@@ -158,7 +151,7 @@ const Unit: React.FC<IUnitProps> = React.memo(
             )}
           </div>
           <Button
-            onClick={() => addWeaponProfile({ index: id })}
+            onClick={handleAddProfile}
             className={classes.button}
             startIcon={<Add />}
             variant="contained"
@@ -175,4 +168,4 @@ const Unit: React.FC<IUnitProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-export default connector(Unit);
+export default Unit;
