@@ -21,7 +21,7 @@ const changeNumSimulations = (state: IConfigStore, action: { payload: { newValue
   state.numSimulations = newValue;
 };
 
-export const config = createSlice({
+export const configStore = createSlice({
   name: 'config',
   initialState: INITIAL_STATE,
   reducers: {

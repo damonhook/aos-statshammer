@@ -9,7 +9,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { unitByIndexSelector } from 'store/selectors';
-import { notifications as notificationsStore, units as unitsStore } from 'store/slices';
+import { notificationsStore, unitsStore } from 'store/slices';
 import { IWeaponProfile } from 'types/unit';
 import { scrollToRef } from 'utils/scrollIntoView';
 

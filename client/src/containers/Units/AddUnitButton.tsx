@@ -5,7 +5,7 @@ import Uploader from 'components/Uploader';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUnitEnabledSelector } from 'store/selectors';
-import { notifications, units as unitsStore } from 'store/slices';
+import { notificationsStore, unitsStore } from 'store/slices';
 import { IUnitStore } from 'types/store';
 import { IUnit } from 'types/unit';
 
@@ -34,7 +34,10 @@ const AddUnitButton = ({ units }: IAddUnitButtonProps) => {
   const onUpload = (data: IUnit) => {
     if (data && data.name && data.weapon_profiles) {
       dispatch(
-        notifications.actions.addNotification({ message: 'Successfully imported unit', variant: 'success' }),
+        notificationsStore.actions.addNotification({
+          message: 'Successfully imported unit',
+          variant: 'success',
+        }),
       );
       dispatch(unitsStore.actions.addUnit({ unit: data }));
     }

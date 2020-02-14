@@ -2,7 +2,7 @@ import { Add as AddIcon } from '@material-ui/icons';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUnitEnabledSelector, numUnitsSelector } from 'store/selectors';
-import { units as unitsStore } from 'store/slices';
+import { unitsStore } from 'store/slices';
 
 import FloatingButton from '../FloatingButton';
 

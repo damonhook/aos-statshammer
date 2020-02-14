@@ -10,7 +10,7 @@ import _ from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUnitEnabledSelector, numUnitsSelector } from 'store/selectors';
-import { notifications as notificationsStore, units as unitsStore } from 'store/slices';
+import { notificationsStore, unitsStore } from 'store/slices';
 import { IUnit } from 'types/unit';
 import { scrollToRef } from 'utils/scrollIntoView';
 

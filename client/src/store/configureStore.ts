@@ -5,25 +5,25 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 import thunk from 'redux-thunk';
 
 import {
-  config,
-  modifiers,
-  notifications,
-  simulations,
-  stats,
-  target,
-  targetModifiers,
-  units,
+  configStore,
+  modifiersStore,
+  notificationsStore,
+  simulationsStore,
+  statsStore,
+  targetModifiersStore,
+  targetStore,
+  unitsStore,
 } from './slices';
 
 export const appReducer = combineReducers({
-  config: config.reducer,
-  modifiers: modifiers.reducer,
-  notifications: notifications.reducer,
-  simulations: simulations.reducer,
-  stats: stats.reducer,
-  target: target.reducer,
-  targetModifiers: targetModifiers.reducer,
-  units: units.reducer,
+  config: configStore.reducer,
+  modifiers: modifiersStore.reducer,
+  notifications: notificationsStore.reducer,
+  simulations: simulationsStore.reducer,
+  stats: statsStore.reducer,
+  target: targetStore.reducer,
+  targetModifiers: targetModifiersStore.reducer,
+  units: unitsStore.reducer,
 });
 
 const middleware: Middleware[] = [thunk];

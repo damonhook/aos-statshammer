@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { unitByUuidSelector, unitIndexByUuidSelector } from 'store/selectors';
-import { units as unitsStore } from 'store/slices';
+import { unitsStore } from 'store/slices';
 import { IWeaponProfile } from 'types/unit';
 
 import DialogContent from './DialogContent';

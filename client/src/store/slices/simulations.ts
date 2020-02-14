@@ -29,7 +29,7 @@ export const fetchSimulationsError = (state: ISimulationsStore, action: { payloa
   state.error = error;
 };
 
-export const simulations = createSlice({
+export const simulationsStore = createSlice({
   name: 'simulations',
   initialState: INITIAL_STATE,
   reducers: {

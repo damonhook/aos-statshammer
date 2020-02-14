@@ -11,7 +11,7 @@ import {
   targetModifierByIdSelector,
   targetModifiersSelector,
 } from 'store/selectors';
-import { target as targetStore } from 'store/slices';
+import { targetStore } from 'store/slices';
 
 import { TOptionValue } from '../../types/modifiers';
 import PendingModifiers from './PendingModifiers';

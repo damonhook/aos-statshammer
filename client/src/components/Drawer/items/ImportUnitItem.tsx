@@ -3,7 +3,7 @@ import Uploader from 'components/Uploader';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUnitEnabledSelector } from 'store/selectors';
-import { notifications as notificationsStore, units as unitsStore } from 'store/slices';
+import { notificationsStore, unitsStore } from 'store/slices';
 
 import MenuItem from '../MenuItem';
 

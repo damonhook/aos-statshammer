@@ -27,7 +27,7 @@ export const fetchModifiersError = (state: IModifiersStore, action: { payload: {
   state.error = error;
 };
 
-export const modifiers = createSlice({
+export const modifiersStore = createSlice({
   name: 'modifiers',
   initialState: INITIAL_STATE,
   reducers: {

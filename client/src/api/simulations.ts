@@ -2,7 +2,7 @@ import appConfig from 'appConfig';
 import fetch from 'cross-fetch';
 import store from 'store';
 import { targetSelector, unitsSelector } from 'store/selectors';
-import { config, notifications, simulations } from 'store/slices';
+import { configStore, notificationsStore, simulationsStore } from 'store/slices';
 import { ISimulation } from 'types/simulations';
 import { ITargetStore, IUnitStore } from 'types/store';
 
@@ -13,7 +13,7 @@ const verifyNumSimulations = (dispatch: TDispatch): number => {
   let numSims = storeNumSims ?? appConfig.simulations.default;
   numSims = Math.min(Math.max(numSims, appConfig.simulations.min), appConfig.simulations.max);
   if (numSims !== storeNumSims) {
-    dispatch(config.actions.changeNumSimulations({ newValue: numSims }));
+    dispatch(configStore.actions.changeNumSimulations({ newValue: numSims }));
   }
   return numSims;
 };
@@ -47,11 +47,12 @@ const fetchSimulationForSave = async (
 };
 
 export const fetchSimulations = () => async (dispatch: TDispatch) => {
-  dispatch(simulations.actions.fetchSimulationsPending());
+  dispatch(simulationsStore.actions.fetchSimulationsPending());
   try {
     const state = store.getState();
     const units = unitsSelector(state);
-    if (!units) dispatch(simulations.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
+    if (!units)
+      dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
     const target = targetSelector(state);
     const numSimulations = verifyNumSimulations(dispatch);
 
@@ -68,11 +69,11 @@ export const fetchSimulations = () => async (dispatch: TDispatch) => {
       { results: [] },
     );
 
-    dispatch(simulations.actions.fetchSimulationsSuccess({ results: res.results }));
+    dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: res.results }));
   } catch (error) {
-    dispatch(simulations.actions.fetchSimulationsError({ error }));
+    dispatch(simulationsStore.actions.fetchSimulationsError({ error }));
     dispatch(
-      notifications.actions.addNotification({
+      notificationsStore.actions.addNotification({
         message: 'Failed to fetch simulations',
         variant: 'error',
         action: {

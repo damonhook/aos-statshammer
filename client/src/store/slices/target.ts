@@ -60,7 +60,7 @@ const editTargetModifierError = (
   }
 };
 
-export const target = createSlice({
+export const targetStore = createSlice({
   name: 'target',
   initialState: INITIAL_STATE,
   reducers: {

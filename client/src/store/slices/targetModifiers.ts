@@ -30,7 +30,7 @@ export const fetchTargetModifiersError = (
   state.error = error;
 };
 
-export const targetModifiers = createSlice({
+export const targetModifiersStore = createSlice({
   name: 'targetModifiers',
   initialState: INITIAL_STATE,
   reducers: {
