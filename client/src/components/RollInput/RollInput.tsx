@@ -22,7 +22,7 @@ interface IRollInputProps {
   variant?: 'filled' | 'outlined';
 }
 
-const RollInput: React.FC<IRollInputProps> = React.memo(
+const RollInput = React.memo(
   ({
     label,
     value,
@@ -34,14 +34,25 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
     endAdornment,
     errorCallback,
     fullWidth,
-    variant,
-  }) => {
+    variant = 'filled',
+  }: IRollInputProps) => {
     const classes = useStyles();
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(null);
+    const [error, setError] = useState<string | undefined>(undefined);
 
-    const min = allowOnes ? 1 : 2;
-    const max = 6;
+    const validator = useCallback(
+      (value: string) => {
+        const min = allowOnes ? 1 : 2;
+        const max = 6;
+        let error: string | undefined;
+        if (required && !value) {
+          error = 'Required';
+        } else if (Number(value) < min || Number(value) > max) {
+          error = `Must be between ${min} and ${max}`;
+        }
+        return error;
+      },
+      [allowOnes, required],
+    );
 
     const inputProps: { [name: string]: React.ReactNode } = {};
     if (startAdornment) {
@@ -51,25 +62,11 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
       inputProps.endAdornment = <InputAdornment position="end">{endAdornment}</InputAdornment>;
     }
 
-    const isValid = useCallback(val => Number(val) <= max && Number(val) >= min, [min, max]);
-
-    const setErrorState = useCallback(errMessage => {
-      setError(true);
-      setErrorMessage(errMessage);
-    }, []);
-
-    const clearErrorState = useCallback(() => {
-      setError(false);
-      setErrorMessage(null);
-    }, []);
-
     const validate = useCallback(
       val => {
-        if (required && (val == null || val === '')) setErrorState('Required');
-        else if (!isValid(val)) setErrorState(`Must be between ${min} and ${max}`);
-        else clearErrorState();
+        setError(validator(val));
       },
-      [clearErrorState, isValid, min, required, setErrorState],
+      [validator],
     );
 
     useEffect(() => {
@@ -78,7 +75,7 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
 
     useEffect(() => {
       if (errorCallback) {
-        errorCallback(error);
+        errorCallback(Boolean(error));
       }
     }, [error, errorCallback]);
 
@@ -100,7 +97,7 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
         className={clsx(classes.rollInput, className)}
         variant={variant}
         error={Boolean(error)}
-        helperText={error ? errorMessage : null}
+        helperText={error}
         onChange={handleChange}
         InputProps={inputProps}
         fullWidth={fullWidth}
@@ -109,12 +106,5 @@ const RollInput: React.FC<IRollInputProps> = React.memo(
   },
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
-
-RollInput.defaultProps = {
-  required: false,
-  allowOnes: false,
-  fullWidth: false,
-  variant: 'filled',
-};
 
 export default RollInput;
