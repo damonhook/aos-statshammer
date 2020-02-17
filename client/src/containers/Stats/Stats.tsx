@@ -1,24 +1,22 @@
-import { DEBOUNCE_TIMEOUT } from 'appConstants';
+import appConfig from 'appConfig';
 import { useMapping } from 'hooks';
+import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { unitsSelector } from 'store/selectors';
 import { IStore } from 'types/store';
 import { useDebouncedCallback } from 'use-debounce';
 import { applyUnitNameMapping, getResultsMapping } from 'utils/mappers';
 
 import Results from './Results';
 
-const mapStateToProps = (state: IStore) => ({
-  units: state.units,
-  stats: state.stats,
-});
-
-const connector = connect(mapStateToProps);
-interface IStatsProps extends ConnectedProps<typeof connector> {
+interface IStatsProps {
   className?: string;
 }
 
-const Stats = ({ units, stats, className }: IStatsProps) => {
+const Stats = ({ className }: IStatsProps) => {
+  const units = useSelector(unitsSelector, _.isEqual);
+  const stats = useSelector((state: IStore) => state.stats, _.isEqual);
   const [unitNames, setUnitNames] = useState(units.map(({ name }) => name));
   const [unitMapping, setUnitMapping] = useState({});
 
@@ -27,12 +25,12 @@ const Stats = ({ units, stats, className }: IStatsProps) => {
 
   const [setUnitMappingDebounced] = useDebouncedCallback(newValue => {
     setUnitMapping(newValue);
-  }, DEBOUNCE_TIMEOUT);
+  }, appConfig.timers.debounce);
 
   useEffect(() => {
     const newMapping = applyUnitNameMapping(units);
     setUnitMappingDebounced(newMapping);
-  }, [units, setUnitMappingDebounced]);
+  }, [setUnitMappingDebounced, units]);
 
   useEffect(() => {
     if (results && results.length) {
@@ -44,4 +42,4 @@ const Stats = ({ units, stats, className }: IStatsProps) => {
   return <Results stats={{ ...stats, payload: results }} unitNames={unitNames} className={className} />;
 };
 
-export default connector(Stats);
+export default Stats;

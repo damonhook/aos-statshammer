@@ -1,6 +1,6 @@
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { AdvancedStatsErrorCard } from 'components/ErrorCards';
+import { SimulationsErrorCard } from 'components/ErrorCards';
 import { GraphSkeleton } from 'components/Skeletons';
 import _ from 'lodash';
 import React from 'react';
@@ -33,7 +33,7 @@ const Loadable: React.FC<ILoadableProps> = React.memo(
     const classes = useStyles({ numUnits });
 
     if (error) {
-      return <AdvancedStatsErrorCard />;
+      return <SimulationsErrorCard />;
     }
     if (loading) {
       return (

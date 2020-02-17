@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Add, ImportExport } from '@material-ui/icons';
 import Uploader from 'components/Uploader';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { addUnitEnabled } from 'store/selectors/unitHelpers';
-import { notifications, units } from 'store/slices';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUnitEnabledSelector } from 'store/selectors';
+import { notificationsStore, unitsStore } from 'store/slices';
 import { IUnitStore } from 'types/store';
 import { IUnit } from 'types/unit';
 
@@ -22,46 +22,53 @@ const useStyles = makeStyles({
   },
 });
 
-const connector = connect(null, {
-  addNotification: notifications.actions.addNotification,
-  addUnit: units.actions.addUnit,
-});
-interface AddUnitButtonProps extends ConnectedProps<typeof connector> {
+interface IAddUnitButtonProps {
   units: IUnitStore;
 }
 
-const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotification }) => {
+const AddUnitButton = ({ units }: IAddUnitButtonProps) => {
   const classes = useStyles();
+  const addUnitEnabled = useSelector(addUnitEnabledSelector);
+  const dispatch = useDispatch();
 
   const onUpload = (data: IUnit) => {
     if (data && data.name && data.weapon_profiles) {
-      addNotification({ message: 'Successfully imported unit', variant: 'success' });
-      addUnit({ unit: data });
+      dispatch(
+        notificationsStore.actions.addNotification({
+          message: 'Successfully imported unit',
+          variant: 'success',
+        }),
+      );
+      dispatch(unitsStore.actions.addUnit({ unit: data }));
     }
+  };
+
+  const handleaddUnit = () => {
+    dispatch(unitsStore.actions.addUnit({ unit: { name: `Unit ${units.length + 1}` } }));
   };
 
   return (
     <div className={classes.group}>
       <Button
         fullWidth
-        onClick={() => addUnit({ unit: { name: `Unit ${units.length + 1}` } })}
+        onClick={handleaddUnit}
         variant="contained"
         startIcon={<Add />}
         color="primary"
-        disabled={!addUnitEnabled()}
+        disabled={!addUnitEnabled}
         className={classes.button}
       >
         Add Unit
       </Button>
       <Uploader
         onUpload={onUpload}
-        disabled={!addUnitEnabled()}
+        disabled={!addUnitEnabled}
         component={
           <Button
             variant="contained"
             startIcon={<ImportExport />}
             color="primary"
-            disabled={!addUnitEnabled()}
+            disabled={!addUnitEnabled}
             className={classes.button}
             component="span"
           >
@@ -73,4 +80,4 @@ const AddUnitButton: React.FC<AddUnitButtonProps> = ({ units, addUnit, addNotifi
   );
 };
 
-export default connector(AddUnitButton);
+export default AddUnitButton;

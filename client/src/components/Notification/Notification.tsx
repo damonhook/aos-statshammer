@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useIsMobile } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { notifications as notificationsStore } from 'store/slices';
+import { notificationsStore } from 'store/slices';
 import { INotificationAction, TNotificationVariants } from 'types/notification';
 
 const variantIcon = {

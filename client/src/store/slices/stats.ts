@@ -26,7 +26,7 @@ const fetchStatsError = (state: IStatsStore, action: { payload: { error: TError 
   state.error = error;
 };
 
-export const stats = createSlice({
+export const statsStore = createSlice({
   name: 'stats',
   initialState: INITIAL_STATE,
   reducers: {

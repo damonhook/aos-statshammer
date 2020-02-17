@@ -1,7 +1,7 @@
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import { LONG_PRESS_DELAY } from 'appConstants';
+import appConfig from 'appConfig';
 import clsx from 'clsx';
 import ActionsDialog from 'components/ActionsDialog';
 import { CardHeader } from 'components/Card';
@@ -65,7 +65,7 @@ const ListItemHeader: React.FC<IListItemHeaderProps> = ({
   const classes = useStyles();
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const longPress = useLongPress(() => setDialogOpen(true), LONG_PRESS_DELAY);
+  const longPress = useLongPress(() => setDialogOpen(true), appConfig.timers.longPress);
 
   const handleClick = () => setColapsed(!collapsible ? false : !collapsed);
 

@@ -5,7 +5,7 @@ import { IModifiersStore, TError } from 'types/store';
 const INITIAL_STATE: IModifiersStore = {
   pending: false,
   error: null,
-  modifiers: [],
+  items: [],
 };
 
 export const fetchModifiersPending = (state: IModifiersStore) => {
@@ -14,11 +14,11 @@ export const fetchModifiersPending = (state: IModifiersStore) => {
 
 export const fetchModifiersSuccess = (
   state: IModifiersStore,
-  action: { payload: { modifiers: IModifierDefinition[] } },
+  action: { payload: { items: IModifierDefinition[] } },
 ) => {
-  const { modifiers } = action.payload;
+  const { items } = action.payload;
   state.pending = false;
-  state.modifiers = modifiers;
+  state.items = items;
 };
 
 export const fetchModifiersError = (state: IModifiersStore, action: { payload: { error: TError } }) => {
@@ -27,7 +27,7 @@ export const fetchModifiersError = (state: IModifiersStore, action: { payload: {
   state.error = error;
 };
 
-export const modifiers = createSlice({
+export const modifiersStore = createSlice({
   name: 'modifiers',
   initialState: INITIAL_STATE,
   reducers: {

@@ -2,8 +2,9 @@ import { useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { IStatsStore, IStore } from 'types/store';
+import { useSelector } from 'react-redux';
+import { desktopGraphListSelector } from 'store/selectors';
+import { IStatsStore } from 'types/store';
 
 import GraphList from './GraphList';
 import GraphTabbed from './GraphTabbed';
@@ -15,19 +16,15 @@ const graphMap: Map<string, any> = new Map<string, any>([
   ['Radar Graph', RadarGraph],
 ]);
 
-const mapStateToProps = (state: IStore) => ({
-  desktopGraphList: state.config.desktopGraphList,
-});
-
-const connector = connect(mapStateToProps);
-interface GraphsProps extends ConnectedProps<typeof connector> {
+interface IGraphsProps {
   stats: IStatsStore;
   unitNames: string[];
 }
 
-const Graphs: React.FC<GraphsProps> = ({ stats, unitNames, desktopGraphList = false }) => {
+const Graphs = ({ stats, unitNames }: IGraphsProps) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const desktopGraphList = useSelector(desktopGraphListSelector);
 
   return mobile || desktopGraphList ? (
     <GraphList stats={stats} unitNames={unitNames} graphMap={graphMap} />
@@ -36,4 +33,4 @@ const Graphs: React.FC<GraphsProps> = ({ stats, unitNames, desktopGraphList = fa
   );
 };
 
-export default connector(Graphs);
+export default Graphs;

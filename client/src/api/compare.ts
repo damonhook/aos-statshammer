@@ -1,16 +1,17 @@
 import fetch from 'cross-fetch';
-import { getTarget } from 'store/selectors/targetHelpers';
-import { getUnits } from 'store/selectors/unitHelpers';
-import { notifications, stats } from 'store/slices';
+import store from 'store';
+import { targetSelector, unitsSelector } from 'store/selectors';
+import { notificationsStore, statsStore } from 'store/slices';
 
 import { TDispatch } from './api.types';
 
 export const fetchStatsCompare = () => async (dispatch: TDispatch) => {
-  dispatch(stats.actions.fetchStatsPending());
+  dispatch(statsStore.actions.fetchStatsPending());
   try {
-    const units = getUnits();
-    if (!units) dispatch(stats.actions.fetchStatsSuccess({ results: [] }));
-    const target = getTarget();
+    const state = store.getState();
+    const units = unitsSelector(state);
+    if (!units) dispatch(statsStore.actions.fetchStatsSuccess({ results: [] }));
+    const target = targetSelector(state);
     const data = {
       units: units.map(unit => ({
         name: unit.uuid,
@@ -31,11 +32,11 @@ export const fetchStatsCompare = () => async (dispatch: TDispatch) => {
     });
 
     const res = await request.json();
-    dispatch(stats.actions.fetchStatsSuccess({ results: res.results }));
+    dispatch(statsStore.actions.fetchStatsSuccess({ results: res.results }));
   } catch (error) {
-    dispatch(stats.actions.fetchStatsError({ error }));
+    dispatch(statsStore.actions.fetchStatsError({ error }));
     dispatch(
-      notifications.actions.addNotification({
+      notificationsStore.actions.addNotification({
         message: 'Failed to fetch stats',
         variant: 'error',
         action: {

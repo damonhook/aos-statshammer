@@ -15,7 +15,7 @@ import { useHashMatch } from 'hooks';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { config as configStore } from 'store/slices';
+import { configStore } from 'store/slices';
 import { IStore } from 'types/store';
 import { HASHES } from 'utils/urls';
 

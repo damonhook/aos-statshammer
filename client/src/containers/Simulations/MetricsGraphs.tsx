@@ -9,11 +9,12 @@ import { ISimulationResult } from '../../types/simulations';
 
 const useStyles = makeStyles((theme: Theme) => ({
   metricsGraphs: {
-    height: '450px',
-    marginBottom: theme.spacing(3),
+    height: 400,
+    margin: `0 auto ${theme.spacing(3)}px`,
     flex: 1,
+    maxWidth: 900,
     [theme.breakpoints.down('sm')]: {
-      height: '350px',
+      height: 350,
     },
   },
 }));

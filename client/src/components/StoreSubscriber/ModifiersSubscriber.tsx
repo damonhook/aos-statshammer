@@ -1,27 +1,26 @@
 import { fetchModifiers } from 'api';
-import { RETRY_TIMEOUT } from 'appConstants';
+import appConfig from 'appConfig';
+import _ from 'lodash';
 import React, { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { IStore } from 'types/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { modifiersSelector } from 'store/selectors';
 import { useDebouncedCallback } from 'use-debounce';
-
-const mapStateToProps = (state: IStore) => ({ modifiers: state.modifiers });
-
-const connector = connect(mapStateToProps, { fetchModifiers });
-interface IModifiersSubscriberProps extends ConnectedProps<typeof connector> {}
 
 /**
  * A component that is subscribed to the redux store and will fetch the modifier definitions
  * if they do not exist
  */
-const ModifiersSubscriber: React.FC<IModifiersSubscriberProps> = ({ modifiers, fetchModifiers }) => {
+const ModifiersSubscriber = () => {
+  const dispatch = useDispatch();
+  const modifiers = useSelector(modifiersSelector, _.isEqual);
+
   const [debouncedUseEffect] = useDebouncedCallback(
     () => {
-      if (!modifiers?.pending && !modifiers?.modifiers?.length) {
-        fetchModifiers();
+      if (!modifiers?.pending && !modifiers?.items?.length) {
+        dispatch(fetchModifiers());
       }
     },
-    RETRY_TIMEOUT,
+    appConfig.timers.retry,
     { leading: true },
   );
 
@@ -32,4 +31,4 @@ const ModifiersSubscriber: React.FC<IModifiersSubscriberProps> = ({ modifiers, f
   return <span style={{ display: 'none' }} />;
 };
 
-export default connector(ModifiersSubscriber);
+export default ModifiersSubscriber;

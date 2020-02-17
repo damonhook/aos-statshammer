@@ -3,7 +3,7 @@ import ConfirmationDialog from 'components/ConfirmationDialog';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { notifications as notificationsStore, units as unitsStore } from 'store/slices';
+import { notificationsStore, unitsStore } from 'store/slices';
 
 import MenuLinkItem from '../MenuLinkItem';
 

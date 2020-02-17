@@ -9,7 +9,7 @@ const useStyles = makeStyles({
   diceInput: {},
 });
 
-interface DiceInputProps {
+interface IDiceInputProps {
   label: string;
   value?: number | string | null;
   onChange?: (event: any) => void;
@@ -24,40 +24,38 @@ interface DiceInputProps {
  * An input component that can either controlled or uncontrolled.
  * This input component contains validation for correct dice inputs (e.g: D3, or 3)
  */
-const DiceInput: React.FC<DiceInputProps> = React.memo(
-  ({ label, value, onChange, className, required, errorCallback, fullWidth, variant }) => {
+const DiceInput = React.memo(
+  ({
+    label,
+    value,
+    onChange,
+    className,
+    required,
+    errorCallback,
+    fullWidth,
+    variant = 'filled',
+  }: IDiceInputProps) => {
     const classes = useStyles();
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(null);
+    const [error, setError] = useState<string | undefined>(undefined);
 
-    const isDice = useCallback(
-      val =>
-        Boolean(
-          String(val)
-            .replace(/\s/g, '')
-            .match(/^(?:\d*[dD]?\d+)(?:[+-]\d*[dD]?\d+)*$/),
-        ),
-      [],
+    const validator = useCallback(
+      (value: string) => {
+        let error: string | undefined;
+        if (required && !value) {
+          error = 'Required';
+        } else if (!/^(?:\d*[dD]?\d+)(?:[+-]\d*[dD]?\d+)*$/.test(value.replace(/\s/g, ''))) {
+          error = 'Invalid Value/Dice';
+        }
+        return error;
+      },
+      [required],
     );
-    const isValid = useCallback(val => !Number.isNaN(Number(val)) || isDice(val), [isDice]);
-
-    const setErrorState = useCallback(errMessage => {
-      setError(true);
-      setErrorMessage(errMessage);
-    }, []);
-
-    const clearErrorState = useCallback(() => {
-      setError(false);
-      setErrorMessage(null);
-    }, []);
 
     const validate = useCallback(
       val => {
-        if (required && (val == null || val === '')) setErrorState('Required');
-        else if (!isValid(val)) setErrorState('Invalid Value/Dice');
-        else clearErrorState();
+        setError(validator(val));
       },
-      [clearErrorState, isValid, required, setErrorState],
+      [validator],
     );
 
     useEffect(() => {
@@ -66,7 +64,7 @@ const DiceInput: React.FC<DiceInputProps> = React.memo(
 
     useEffect(() => {
       if (errorCallback) {
-        errorCallback(error);
+        errorCallback(Boolean(error));
       }
     }, [error, errorCallback]);
 
@@ -88,7 +86,7 @@ const DiceInput: React.FC<DiceInputProps> = React.memo(
         inputProps={isAndroid ? { inputMode: 'numeric' } : {}}
         variant={variant}
         error={Boolean(error)}
-        helperText={error ? errorMessage : null}
+        helperText={error}
         onChange={handleChange}
         fullWidth={fullWidth}
       />
@@ -96,11 +94,5 @@ const DiceInput: React.FC<DiceInputProps> = React.memo(
   },
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
-
-DiceInput.defaultProps = {
-  required: false,
-  fullWidth: false,
-  variant: 'filled',
-};
 
 export default DiceInput;

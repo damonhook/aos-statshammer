@@ -10,7 +10,7 @@ import Home from 'containers/Home';
 import PdfContainer from 'containers/PdfContainer';
 import Simulations from 'containers/Simulations';
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import getTheme from 'themes';
 import { IStore } from 'types/store';
@@ -38,15 +38,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const mapStateToProps = (state: IStore) => ({
-  config: state.config,
-});
-
-const connector = connect(mapStateToProps);
-interface AppProps extends ConnectedProps<typeof connector> {}
-
-const App: React.FC<AppProps> = ({ config }) => {
+const App = () => {
   const classes = useStyles();
+  const config = useSelector((state: IStore) => state.config);
 
   return (
     <Router>
@@ -81,4 +75,4 @@ const App: React.FC<AppProps> = ({ config }) => {
   );
 };
 
-export default connector(App);
+export default App;

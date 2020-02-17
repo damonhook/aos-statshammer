@@ -27,7 +27,7 @@ const dismissAllNotifications = (): INotificationsStore => {
   return [];
 };
 
-export const notifications = createSlice({
+export const notificationsStore = createSlice({
   name: 'notifications',
   initialState: INITIAL_STATE,
   reducers: {

@@ -142,7 +142,7 @@ const moveWeaponProfile = (
   }
 };
 
-export const units = createSlice({
+export const unitsStore = createSlice({
   name: 'units',
   initialState: INITIAL_STATE,
   reducers: {

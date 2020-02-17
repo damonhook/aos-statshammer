@@ -1,7 +1,7 @@
 import { BarChart } from '@material-ui/icons';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { config as configStore } from 'store/slices';
+import { configStore } from 'store/slices';
 
 import MenuItem from '../MenuItem';
 

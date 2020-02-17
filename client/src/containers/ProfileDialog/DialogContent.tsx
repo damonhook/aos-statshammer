@@ -123,6 +123,7 @@ const DialogContent: React.FC<IDialogContentProps> = React.memo(
                   value={profile.to_hit}
                   onChange={getHandler('to_hit')}
                   errorCallback={getErrorCallback('to_hit')}
+                  required
                 />
                 <RollInput
                   className={classes.field}
@@ -131,6 +132,7 @@ const DialogContent: React.FC<IDialogContentProps> = React.memo(
                   value={profile.to_wound}
                   onChange={getHandler('to_wound')}
                   errorCallback={getErrorCallback('to_wound')}
+                  required
                 />
                 <FormField
                   className={classes.field}
