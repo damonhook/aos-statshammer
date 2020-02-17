@@ -1,7 +1,7 @@
 import { Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add, Delete, FileCopy } from '@material-ui/icons';
-import { MAX_PROFILES } from 'appConstants';
+import appConfig from 'appConfig';
 import clsx from 'clsx';
 import ListItem from 'components/ListItem';
 import NoItemsCard from 'components/NoItemsCard';
@@ -72,7 +72,7 @@ const Unit = React.memo(
     }, [dispatch, unit]);
 
     const numProfiles = unit.weapon_profiles ? unit.weapon_profiles.length : 0;
-    const addProfileEnabled = numProfiles < MAX_PROFILES;
+    const addProfileEnabled = numProfiles < appConfig.limits.profiles;
 
     const unitNameError = !unit.name || unit.name === '';
 

@@ -1,4 +1,4 @@
-import { DEBOUNCE_TIMEOUT } from 'appConstants';
+import appConfig from 'appConfig';
 import { useMapping } from 'hooks';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -25,7 +25,7 @@ const Stats = ({ className }: IStatsProps) => {
 
   const [setUnitMappingDebounced] = useDebouncedCallback(newValue => {
     setUnitMapping(newValue);
-  }, DEBOUNCE_TIMEOUT);
+  }, appConfig.timers.debounce);
 
   useEffect(() => {
     const newMapping = applyUnitNameMapping(units);

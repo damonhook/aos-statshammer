@@ -1,5 +1,5 @@
 import { fetchTargetModifiers } from 'api';
-import { RETRY_TIMEOUT } from 'appConstants';
+import appConfig from 'appConfig';
 import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ const TargetModifiersSubscriber = () => {
         dispatch(fetchTargetModifiers());
       }
     },
-    RETRY_TIMEOUT,
+    appConfig.timers.retry,
     { leading: true },
   );
 

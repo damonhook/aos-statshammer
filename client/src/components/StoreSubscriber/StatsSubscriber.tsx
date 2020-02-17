@@ -1,5 +1,5 @@
 import { fetchStatsCompare } from 'api';
-import { DEBOUNCE_TIMEOUT } from 'appConstants';
+import appConfig from 'appConfig';
 import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,7 +34,7 @@ const StatsSubscriber = () => {
 
   const [debouncedUseEffect] = useDebouncedCallback(() => {
     dispatch(fetchStatsCompare());
-  }, DEBOUNCE_TIMEOUT);
+  }, appConfig.timers.debounce);
 
   useEffect(() => {
     debouncedUseEffect();

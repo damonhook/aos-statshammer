@@ -1,7 +1,7 @@
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ArrowDownward, ArrowUpward, Delete } from '@material-ui/icons';
-import { MAX_MODIFIERS } from 'appConstants';
+import appConfig from 'appConfig';
 import ModifierItem from 'components/ModifierItem';
 import ModifierSelector from 'components/ModifierSelector';
 import _ from 'lodash';
@@ -149,7 +149,7 @@ const ModifierList: React.FC<IModifierListProps> = ({
         pending={pending}
         error={error}
         onClick={addModifier}
-        disabled={modifiers && modifiers.length >= MAX_MODIFIERS}
+        disabled={modifiers && modifiers.length >= appConfig.limits.modifiers}
         nested
       />
     </Typography>
