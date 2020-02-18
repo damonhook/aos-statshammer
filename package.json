@@ -13,7 +13,7 @@
         "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
         "start": "babel-node server.ts --extensions \".ts,.tsx\"",
         "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
-        "test": "jest",
+        "test": "jest api && cd client && yarn test --watchAll=false",
         "bumpversion": "lerna version --no-git-tag-version --no-push",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
     },

@@ -41,9 +41,10 @@ const DiceInput = React.memo(
     const validator = useCallback(
       (value: string) => {
         let error: string | undefined;
+        const diceValuePattern = /^(?:\d*[dD]?\d+)(?:[+-]\d*[dD]?\d+)*$/;
         if (required && !value) {
           error = 'Required';
-        } else if (!/^(?:\d*[dD]?\d+)(?:[+-]\d*[dD]?\d+)*$/.test(String(value).replace(/\s/g, ''))) {
+        } else if (diceValuePattern.test(String(value).replace(/\s/g, ''))) {
           error = 'Invalid Value/Dice';
         }
         return error;
