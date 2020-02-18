@@ -43,7 +43,7 @@ const DiceInput = React.memo(
         let error: string | undefined;
         if (required && !value) {
           error = 'Required';
-        } else if (!/^(?:\d*[dD]?\d+)(?:[+-]\d*[dD]?\d+)*$/.test(value.replace(/\s/g, ''))) {
+        } else if (!/^(?:\d*[dD]?\d+)(?:[+-]\d*[dD]?\d+)*$/.test(String(value).replace(/\s/g, ''))) {
           error = 'Invalid Value/Dice';
         }
         return error;
