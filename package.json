@@ -61,6 +61,7 @@
         "husky": "^4.0.1",
         "jest": "^25.1.0",
         "lerna": "^3.19.0",
+        "load-script": "^1.0.0",
         "mocha": "^6.2.2",
         "prettier": "^1.19.1",
         "regenerator-runtime": "^0.13.3",

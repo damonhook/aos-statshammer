@@ -6,6 +6,7 @@ import Drawer from 'components/Drawer';
 import Footer from 'components/Footer';
 import About from 'containers/About';
 import FloatedContainer from 'containers/FloatedContainer';
+import GoogleChooser from 'containers/GDrivePicker';
 import Home from 'containers/Home';
 import PdfContainer from 'containers/PdfContainer';
 import Simulations from 'containers/Simulations';
@@ -51,6 +52,10 @@ const App = () => {
           <div className={classes.inner}>
             <Drawer />
             <div className={classes.contentWrapper}>
+              {/* <GoogleChooser
+                developerKey="AIzaSyCrsTCtNSfZnWjklfG-gSXWDE-R2zX9K-Q"
+                clientId="360651691028-ceuc9mee53gjhtmpoetsb58ac57lcbgo.apps.googleusercontent.com"
+              /> */}
               <Wrapper>
                 <Switch>
                   <Route exact path={ROUTES.HOME} component={Home} />
@@ -58,7 +63,12 @@ const App = () => {
                   <Route exact path={ROUTES.SIMULATIONS} component={Simulations} />
                   <Route exact path={ROUTES.PDF} component={PdfContainer} />
                   <Route exact path={ROUTES.ABOUT} component={About} />
-
+                  <Route exact path="/gdrive">
+                    <GoogleChooser
+                      developerKey="AIzaSyCrsTCtNSfZnWjklfG-gSXWDE-R2zX9K-Q"
+                      clientId="360651691028-ceuc9mee53gjhtmpoetsb58ac57lcbgo.apps.googleusercontent.com"
+                    />
+                  </Route>
                   <Redirect exact from="/units" to={ROUTES.HOME} />
                   <Redirect from="/advanced" to={ROUTES.SIMULATIONS} />
                   <Redirect to={ROUTES.HOME} />
