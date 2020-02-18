@@ -4,7 +4,7 @@ import { RoutedTabs } from 'components/Tabbed';
 import Stats from 'containers/Stats';
 import Target from 'containers/Target';
 import Units from 'containers/Units';
-import React from 'react';
+import React, { useState } from 'react';
 import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 const DesktopHome = () => {
   const classes = useStyles();
-  const ref = React.useRef<HTMLDivElement>(null);
+  const [dragging, setDragging] = useState(false);
 
   return (
     <div className={classes.desktopHome}>
@@ -34,22 +34,13 @@ const DesktopHome = () => {
           <RoutedTabs
             className={classes.tabs}
             tabNames={['Units', 'Target']}
-            tabContent={[<Units className={classes.tab} />, <Target className={classes.tab} />]}
+            tabContent={[
+              <Units className={classes.tab} setDragging={setDragging} />,
+              <Target className={classes.tab} />,
+            ]}
             tabRoutes={[ROUTES.HOME, ROUTES.TARGET]}
-            usePortal
+            disableEvents={dragging}
           />
-          {/* <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              pointerEvents: 'none',
-            }}
-          >
-            <div ref={ref} style={{ position: 'absolute', width: '100%', height: '100%' }} />
-          </div> */}
         </Grid>
         <Grid item xs={6}>
           <div className={classes.statsContent}>

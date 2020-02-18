@@ -24,18 +24,25 @@ const useStyles = makeStyles(() => ({
 
 interface IUnitsProps {
   className?: string;
-  portal?: React.RefObject<HTMLDivElement>;
+  setDragging?: (dragging: boolean) => void;
 }
 
-const Units = ({ className, portal }: IUnitsProps) => {
+const Units = ({ className, setDragging }: IUnitsProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const units = useSelector(unitsSelector);
 
+  const handleDragStart = () => {
+    if (setDragging) setDragging(true);
+  };
+
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result;
+    setTimeout(() => {
+      if (setDragging) setDragging(false);
+    }, 500);
     if (!destination) return;
     dispatch(unitsStore.actions.moveUnit({ index: source.index, newIndex: destination.index }));
   };
@@ -45,18 +52,12 @@ const Units = ({ className, portal }: IUnitsProps) => {
       {!units?.length ? (
         <NoItemsCard header="It's lonely here" body="There are no units here, try adding some" />
       ) : (
-        <DragDropContext onDragEnd={handleDragEnd}>
+        <DragDropContext onDragEnd={handleDragEnd} onBeforeCapture={handleDragStart}>
           <Droppable droppableId="units">
             {(provided: DroppableProvided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {units.map((unit, index) => (
-                  <DraggableUnitWrapper
-                    key={unit.uuid}
-                    index={index}
-                    unit={unit}
-                    className={classes.unit}
-                    portal={portal}
-                  />
+                  <DraggableUnitWrapper key={unit.uuid} index={index} unit={unit} className={classes.unit} />
                 ))}
                 {provided.placeholder}
               </div>

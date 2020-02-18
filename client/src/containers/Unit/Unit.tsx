@@ -49,10 +49,11 @@ interface IUnitProps {
   unit: IUnit;
   className?: string;
   dragHandleProps?: DraggableProvidedDragHandleProps | null;
+  setDragging?: (dragging: boolean) => void;
 }
 
 const Unit = React.memo(
-  ({ id, unit, className, dragHandleProps }: IUnitProps) => {
+  ({ id, unit, className, dragHandleProps, setDragging }: IUnitProps) => {
     const unitRef = useRef(null);
     const classes = useStyles();
     const adUnitEnabled = useSelector(addUnitEnabledSelector);
@@ -110,8 +111,15 @@ const Unit = React.memo(
       dispatch(unitsStore.actions.addWeaponProfile({ index: id }));
     };
 
+    const handleDragStart = () => {
+      if (setDragging) setDragging(true);
+    };
+
     const handleDragEnd = (result: DropResult) => {
       const { source, destination } = result;
+      setTimeout(() => {
+        if (setDragging) setDragging(false);
+      }, 500);
       if (!destination) return;
       dispatch(
         unitsStore.actions.moveWeaponProfile({
@@ -154,7 +162,7 @@ const Unit = React.memo(
           />
           <div className={classes.profiles}>
             {unit && unit.weapon_profiles && unit.weapon_profiles.length ? (
-              <DragDropContext onDragEnd={handleDragEnd}>
+              <DragDropContext onDragEnd={handleDragEnd} onBeforeCapture={handleDragStart}>
                 <Droppable droppableId={`profiles-${id}`}>
                   {(provided: DroppableProvided) => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>

@@ -20,7 +20,6 @@ const useStyles = makeStyles(theme => ({
   profile: {
     display: 'flex',
     background: theme.palette.background.nested,
-    marginBottom: '-1em',
   },
   inactive: {
     color: theme.palette.action.disabled,

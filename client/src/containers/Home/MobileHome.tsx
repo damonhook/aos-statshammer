@@ -4,7 +4,7 @@ import { RoutedTabs } from 'components/Tabbed';
 import Stats from 'containers/Stats';
 import Target from 'containers/Target';
 import Units from 'containers/Units';
-import React from 'react';
+import React, { useState } from 'react';
 import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles(() => ({
@@ -23,6 +23,7 @@ const useStyles = makeStyles(() => ({
 
 const MobileAppContent = () => {
   const classes = useStyles();
+  const [dragging, setDragging] = useState(false);
 
   return (
     <div className={classes.mobileHome}>
@@ -32,12 +33,12 @@ const MobileAppContent = () => {
             className={classes.tabs}
             tabNames={['Units', 'Target', 'Stats']}
             tabContent={[
-              <Units className={classes.tab} />,
+              <Units className={classes.tab} setDragging={setDragging} />,
               <Target className={classes.tab} />,
               <Stats className={classes.tab} />,
             ]}
             tabRoutes={[ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS]}
-            usePortal
+            disableEvents={dragging}
           />
         </Grid>
       </Grid>
