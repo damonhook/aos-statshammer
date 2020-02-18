@@ -2,6 +2,7 @@ import appConfig from 'appConfig';
 import _ from 'lodash';
 import { createSelector } from 'reselect';
 import { IStore } from 'types/store';
+import { IWeaponProfile } from 'types/unit';
 
 /** Get the current units state */
 export const unitsSelector = (state: IStore) => state.units;
@@ -15,7 +16,7 @@ export const unitByIndexSelector = createSelector(unitsSelector, units =>
 export const numUnitsSelector = createSelector(unitsSelector, units => units.length);
 
 /** Retrieve whether the add unit buttons should be enabled or not (has the limit been reached) */
-export const addUnitEnabledSelector = (state: IStore) => numUnitsSelector(state) < appConfig.limits.units;
+export const addUnitEnabledSelector = createSelector(numUnitsSelector, num => num < appConfig.limits.units);
 
 /** Retrieve a units index by its UUID field */
 export const unitIndexByUuidSelector = createSelector(unitsSelector, units =>
@@ -28,4 +29,19 @@ export const unitByUuidSelector = createSelector(unitsSelector, unitIndexByUuidS
 );
 
 /** Retrieve a list of the unit names */
-export const unitNamesSelector = (state: IStore) => state.units.map(({ name }) => name);
+export const unitNamesSelector = createSelector(unitsSelector, units => units.map(({ name }) => name));
+
+export interface ISanitizedUnit {
+  name: string;
+  weapon_profiles: IWeaponProfile[];
+}
+export const getSanitizedUnitsSelector = createSelector(unitsSelector, units =>
+  _.memoize((useUuidAsName: boolean): ISanitizedUnit[] =>
+    units.map(unit => ({
+      name: useUuidAsName ? unit.uuid : unit.name,
+      weapon_profiles: unit.weapon_profiles
+        .filter(profile => profile.active)
+        .map(profile => ({ ...profile, modifiers: profile.modifiers.filter(mod => mod.active ?? true) })),
+    })),
+  ),
+);

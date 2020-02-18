@@ -1,10 +1,10 @@
 import appConfig from 'appConfig';
 import fetch from 'cross-fetch';
 import store from 'store';
-import { targetSelector, unitsSelector } from 'store/selectors';
+import { getSanitizedTargetSelector, getSanitizedUnitsSelector, ISanitizedUnit } from 'store/selectors';
 import { configStore, notificationsStore, simulationsStore } from 'store/slices';
 import { ISimulation } from 'types/simulations';
-import { ITargetStore, IUnitStore } from 'types/store';
+import { ITargetStore } from 'types/store';
 
 import { TDispatch } from './api.types';
 
@@ -19,7 +19,7 @@ const verifyNumSimulations = (dispatch: TDispatch): number => {
 };
 
 const fetchSimulationForSave = async (
-  units: IUnitStore,
+  units: ISanitizedUnit[],
   target: ITargetStore,
   save: number,
   numSimulations: number,
@@ -50,10 +50,10 @@ export const fetchSimulations = () => async (dispatch: TDispatch) => {
   dispatch(simulationsStore.actions.fetchSimulationsPending());
   try {
     const state = store.getState();
-    const units = unitsSelector(state);
+    const units = getSanitizedUnitsSelector(state)(false);
     if (!units)
       dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
-    const target = targetSelector(state);
+    const target = getSanitizedTargetSelector(state);
     const numSimulations = verifyNumSimulations(dispatch);
 
     const responses = await Promise.all(

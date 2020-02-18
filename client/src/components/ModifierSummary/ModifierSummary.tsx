@@ -26,6 +26,10 @@ const useStyles = makeStyles(theme => ({
     fontSize: '12px',
     marginBottom: 0,
   },
+  inactiveModifier: {
+    color: theme.palette.action.disabledBackground,
+    textDecoration: 'line-through',
+  },
   helpIcon: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -37,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     margin: 'auto',
     flex: '1 1 25%',
   },
-  inactive: {
+  inactiveProfile: {
     color: theme.palette.action.disabledBackground,
   },
 }));
@@ -79,34 +83,43 @@ const ModifierSummary = ({
         {modifiers.map((modifier, index) => {
           const modDefinition = getModifierById(modifier.id);
           if (!modDefinition) return null;
+          const isModifierActive = modifier.active ?? true;
+
           return (
             // eslint-disable-next-line react/no-array-index-key
             <Item dense key={`${modDefinition.name}-${index}`} className={classes.item}>
-              <ChevronRight />
-              <span>{modDefinition.name}</span>
-              <Tooltip
-                arrow
-                title={
-                  <ModifierDescription
-                    definition={modDefinition}
-                    options={modifier.options}
-                    className={classes.modifierTooltip}
-                  />
-                }
-                onClick={e => {
-                  e.stopPropagation();
-                }}
-                disableFocusListener
-                disableTouchListener
-              >
-                {large ? <span>:</span> : <HelpOutline className={classes.helpIcon} />}
-              </Tooltip>
-              {large && (
+              <ChevronRight className={clsx({ [classes.inactiveModifier]: !isModifierActive })} />
+              <span className={clsx({ [classes.inactiveModifier]: !isModifierActive })}>
+                {`${modDefinition.name}${large ? ':' : ''}`}
+              </span>
+              {large ? (
                 <ModifierDescription
                   definition={modDefinition}
                   options={modifier.options}
-                  className={clsx(classes.descriptionFull, { [classes.inactive]: !active })}
+                  className={clsx(classes.descriptionFull, {
+                    [classes.inactiveProfile]: !active,
+                    [classes.inactiveModifier]: !isModifierActive,
+                  })}
                 />
+              ) : (
+                <Tooltip
+                  arrow
+                  className={clsx({ [classes.inactiveModifier]: !isModifierActive })}
+                  title={
+                    <ModifierDescription
+                      definition={modDefinition}
+                      options={modifier.options}
+                      className={classes.modifierTooltip}
+                    />
+                  }
+                  onClick={e => {
+                    e.stopPropagation();
+                  }}
+                  disableFocusListener
+                  disableTouchListener
+                >
+                  <HelpOutline className={classes.helpIcon} />
+                </Tooltip>
               )}
             </Item>
           );

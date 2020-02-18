@@ -72,7 +72,14 @@ const TargetModifierList = () => {
     _.memoize((index: number) => (error: boolean) => {
       dispatch(targetStore.actions.editTargetModifierError({ index, error }));
     }),
-    [],
+    [dispatch],
+  );
+
+  const onActiveToggle = useCallback(
+    (index: number) => {
+      dispatch(targetStore.actions.toggleModifierActive({ index }));
+    },
+    [dispatch],
   );
 
   const moveUpEnabled = (index: number) => index > 0;
@@ -88,6 +95,7 @@ const TargetModifierList = () => {
             <ModifierItem
               definition={getModifierById(modifier.id)}
               options={modifier.options}
+              active={modifier.active}
               actions={[
                 {
                   name: 'Move Up',
@@ -106,6 +114,7 @@ const TargetModifierList = () => {
               index={index}
               key={modifier.uuid}
               onOptionChange={onOptionChange}
+              onActiveToggle={onActiveToggle}
               errorCallback={getErrorCallback(index)}
               scrollEnabled={false}
             />
