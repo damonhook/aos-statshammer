@@ -10,6 +10,7 @@ export const ROUTES = {
 export const HASHES = {
   DRAWER: '#menu',
   MODIFIERS: '#modifiers',
+  IMPORT: '#import',
   SIM_CONFIG: '#num-sims',
   SIM_INFO: '#info',
 };
