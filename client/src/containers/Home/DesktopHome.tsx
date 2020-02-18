@@ -41,6 +41,7 @@ const DesktopHome = () => {
             tabRoutes={[ROUTES.HOME, ROUTES.TARGET]}
             disableEvents={dragging}
           />
+          {/* <Units className={classes.tab} setDragging={setDragging} /> */}
         </Grid>
         <Grid item xs={6}>
           <div className={classes.statsContent}>

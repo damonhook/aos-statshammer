@@ -7,17 +7,16 @@ import Units from 'containers/Units';
 import React, { useState } from 'react';
 import { ROUTES } from 'utils/urls';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   mobileHome: {
     display: 'flex',
-    flex: 1,
+    flexDirection: 'row',
   },
   tabs: {
     marginTop: 0,
-    maxWidth: '100vw',
   },
   tab: {
-    padding: '.5em',
+    padding: theme.spacing(1),
   },
 }));
 
