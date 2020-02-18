@@ -1,3 +1,4 @@
+import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { RoutedTabs } from 'components/Tabbed';
 import Stats from 'containers/Stats';
@@ -25,17 +26,21 @@ const MobileAppContent = () => {
 
   return (
     <div className={classes.mobileHome}>
-      <RoutedTabs
-        className={classes.tabs}
-        tabNames={['Units', 'Target', 'Stats']}
-        tabContent={[
-          <Units className={classes.tab} />,
-          <Target className={classes.tab} />,
-          <Stats className={classes.tab} />,
-        ]}
-        tabRoutes={[ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS]}
-        swipeable
-      />
+      <Grid container>
+        <Grid item xs={12}>
+          <RoutedTabs
+            className={classes.tabs}
+            tabNames={['Units', 'Target', 'Stats']}
+            tabContent={[
+              <Units className={classes.tab} />,
+              <Target className={classes.tab} />,
+              <Stats className={classes.tab} />,
+            ]}
+            tabRoutes={[ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS]}
+            usePortal
+          />
+        </Grid>
+      </Grid>
     </div>
   );
 };

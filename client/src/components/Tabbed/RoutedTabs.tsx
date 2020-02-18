@@ -1,4 +1,4 @@
-import { Paper, Tab, Tabs } from '@material-ui/core';
+import { Paper, Portal, Tab, Tabs } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { useRouteFind } from 'hooks';
@@ -12,6 +12,7 @@ const useStyles = makeStyles({
   tabs: {
     flexGrow: 1,
     marginTop: '1em',
+    maxWidth: '100vw',
   },
   content: {
     flexGrow: 1,
@@ -33,7 +34,7 @@ interface IRoutedTabsProps {
   tabRoutes: string[];
   className?: string;
   onTabChange?: (index: number) => void;
-  swipeable?: boolean;
+  usePortal?: boolean;
 }
 
 /**
@@ -45,11 +46,12 @@ const RoutedTabs = ({
   tabRoutes,
   className,
   onTabChange,
-  swipeable,
+  usePortal,
 }: IRoutedTabsProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const handleChange = (e: any, newValue: number) => {
     history.replace(tabRoutes[newValue]);
@@ -67,17 +69,17 @@ const RoutedTabs = ({
     }
   }, [onTabChange, value]);
 
-  const innerContent = useMemo(
-    () =>
-      tabContent.map((content, index) => (
-        <Route path={tabRoutes[index]} key={tabNames[index]}>
-          <TabPanel value={value} index={index} className={classes.content}>
-            {content}
-          </TabPanel>
-        </Route>
-      )),
-    [classes.content, tabContent, tabNames, tabRoutes, value],
-  );
+  // const innerContent = useMemo(
+  //   () =>
+  //     tabContent.map((content, index) => (
+  //       <Route path={tabRoutes[index]} key={tabNames[index]}>
+  //         <TabPanel value={value} index={index} className={classes.content}>
+  //           {content}
+  //         </TabPanel>
+  //       </Route>
+  //     )),
+  //   [classes.content, tabContent, tabNames, tabRoutes, value],
+  // );
 
   return (
     <div className={clsx(classes.tabs, className)}>
@@ -88,19 +90,24 @@ const RoutedTabs = ({
           ))}
         </Tabs>
       </Paper>
-      {swipeable ? (
-        <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={value}
-          onChangeIndex={handleSwipe}
-          className={classes.swiper}
-          resistance
-        >
-          {innerContent}
-        </SwipeableViews>
-      ) : (
-        innerContent
-      )}
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={value}
+        onChangeIndex={handleSwipe}
+        className={classes.swiper}
+        resistance
+      >
+        {tabContent.map((content, index) => (
+          <Route path={tabRoutes[index]} key={tabNames[index]}>
+            {/* <Portal disablePortal={!usePortal} container={ref.current}> */}
+            <TabPanel value={value} index={index} className={classes.content}>
+              {content}
+            </TabPanel>
+            {/* </Portal> */}
+          </Route>
+        ))}
+      </SwipeableViews>
+      <div ref={ref} className="test" />
     </div>
   );
 };

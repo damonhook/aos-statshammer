@@ -6,6 +6,7 @@ import ListItem from 'components/ListItem';
 import ModifierSummary from 'components/ModifierSummary';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
+import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { unitByIndexSelector } from 'store/selectors';
@@ -19,6 +20,7 @@ const useStyles = makeStyles(theme => ({
   profile: {
     display: 'flex',
     background: theme.palette.background.nested,
+    marginBottom: '-1em',
   },
   inactive: {
     color: theme.palette.action.disabled,
@@ -45,10 +47,11 @@ interface IWeaponProfileProps {
   profile: IWeaponProfile;
   numProfiles?: number;
   addProfileEnabled: boolean;
+  dragHandleProps?: DraggableProvidedDragHandleProps | null;
 }
 
-const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
-  ({ unitId, id, profile, numProfiles = 0, addProfileEnabled }) => {
+const WeaponProfile = React.memo(
+  ({ unitId, id, profile, numProfiles = 0, addProfileEnabled, dragHandleProps }: IWeaponProfileProps) => {
     const classes = useStyles();
     const profileRef = useRef(null);
     const history = useHistory();
@@ -145,6 +148,7 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
             { name: 'Move Down', onClick: moveProfileDown, disabled: !moveDownEnabled },
           ]}
           collapsible
+          dragHandleProps={dragHandleProps}
         >
           <div className={classes.content}>
             <Switch className={classes.switch} onChange={handleToggleProfile} checked={profile.active} />

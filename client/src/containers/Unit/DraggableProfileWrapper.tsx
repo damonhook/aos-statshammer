@@ -20,7 +20,7 @@ const DraggableUnitWrapper = React.memo(
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
-            {...provided.dragHandleProps}
+            // {...provided.dragHandleProps}
             className={className}
           >
             <WeaponProfile
@@ -30,6 +30,7 @@ const DraggableUnitWrapper = React.memo(
               key={profile.uuid}
               addProfileEnabled={addProfileEnabled}
               numProfiles={numProfiles}
+              dragHandleProps={provided.dragHandleProps}
             />
           </div>
         )}

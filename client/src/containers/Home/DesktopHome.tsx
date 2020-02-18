@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 const DesktopHome = () => {
   const classes = useStyles();
+  const ref = React.useRef<HTMLDivElement>(null);
 
   return (
     <div className={classes.desktopHome}>
@@ -35,8 +36,20 @@ const DesktopHome = () => {
             tabNames={['Units', 'Target']}
             tabContent={[<Units className={classes.tab} />, <Target className={classes.tab} />]}
             tabRoutes={[ROUTES.HOME, ROUTES.TARGET]}
-            swipeable
+            usePortal
           />
+          {/* <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              pointerEvents: 'none',
+            }}
+          >
+            <div ref={ref} style={{ position: 'absolute', width: '100%', height: '100%' }} />
+          </div> */}
         </Grid>
         <Grid item xs={6}>
           <div className={classes.statsContent}>

@@ -23,11 +23,12 @@ import { scrollToRef } from 'utils/scrollIntoView';
 import DraggableProfileWrapper from './DraggableProfileWrapper';
 
 const useStyles = makeStyles(theme => ({
-  unit: {
-    marginBottom: '1em',
-  },
+  unit: {},
   profiles: {
     marginTop: '1em',
+  },
+  profile: {
+    marginBottom: '1em',
   },
   button: {
     backgroundColor: theme.palette.primary.light,
@@ -165,6 +166,7 @@ const Unit = React.memo(
                           profile={profile}
                           addProfileEnabled={addProfileEnabled}
                           numProfiles={numProfiles}
+                          className={classes.profile}
                         />
                       ))}
                       {provided.placeholder}

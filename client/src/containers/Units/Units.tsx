@@ -17,13 +17,17 @@ const useStyles = makeStyles(() => ({
   units: {
     overflowX: 'hidden',
   },
+  unit: {
+    marginBottom: '1em',
+  },
 }));
 
 interface IUnitsProps {
   className?: string;
+  portal?: React.RefObject<HTMLDivElement>;
 }
 
-const Units = ({ className }: IUnitsProps) => {
+const Units = ({ className, portal }: IUnitsProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -46,7 +50,13 @@ const Units = ({ className }: IUnitsProps) => {
             {(provided: DroppableProvided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {units.map((unit, index) => (
-                  <DraggableUnitWrapper key={unit.uuid} index={index} unit={unit} />
+                  <DraggableUnitWrapper
+                    key={unit.uuid}
+                    index={index}
+                    unit={unit}
+                    className={classes.unit}
+                    portal={portal}
+                  />
                 ))}
                 {provided.placeholder}
               </div>
