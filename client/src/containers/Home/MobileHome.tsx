@@ -34,6 +34,7 @@ const MobileAppContent = () => {
           <Stats className={classes.tab} />,
         ]}
         tabRoutes={[ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS]}
+        swipeable
       />
     </div>
   );

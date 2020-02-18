@@ -5,6 +5,7 @@ import Card, { CardBody } from 'components/Card';
 import { IPrimaryItem, ISecondaryItem } from 'components/ListControls/types';
 import LoadingBar from 'components/LoadingBar';
 import React, { useState } from 'react';
+import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
 import ListItemHeader from './ListItemHeader';
 
@@ -32,6 +33,7 @@ interface IListItemProps {
   loading?: boolean;
   loaderDelay?: number;
   startCollapsed?: boolean;
+  dragHandleProps?: DraggableProvidedDragHandleProps | null;
 }
 
 /**
@@ -48,6 +50,7 @@ const ListItem: React.FC<IListItemProps> = ({
   loading,
   loaderDelay,
   startCollapsed,
+  dragHandleProps,
   ...other
 }) => {
   const classes = useStyles();
@@ -62,6 +65,7 @@ const ListItem: React.FC<IListItemProps> = ({
         collapsible={collapsible}
         collapsed={collapsed}
         setColapsed={setColapsed}
+        dragHandleProps={dragHandleProps}
       />
       {loading && <LoadingBar wait={loaderDelay} />}
       <Collapse in={!collapsed}>

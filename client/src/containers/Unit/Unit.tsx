@@ -5,14 +5,22 @@ import appConfig from 'appConfig';
 import clsx from 'clsx';
 import ListItem from 'components/ListItem';
 import NoItemsCard from 'components/NoItemsCard';
-import WeaponProfile from 'containers/WeaponProfile';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
+import {
+  DragDropContext,
+  DraggableProvidedDragHandleProps,
+  Droppable,
+  DroppableProvided,
+  DropResult,
+} from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUnitEnabledSelector, numUnitsSelector } from 'store/selectors';
 import { notificationsStore, unitsStore } from 'store/slices';
 import { IUnit } from 'types/unit';
 import { scrollToRef } from 'utils/scrollIntoView';
+
+import DraggableProfileWrapper from './DraggableProfileWrapper';
 
 const useStyles = makeStyles(theme => ({
   unit: {
@@ -39,10 +47,11 @@ interface IUnitProps {
   id: number;
   unit: IUnit;
   className?: string;
+  dragHandleProps?: DraggableProvidedDragHandleProps | null;
 }
 
 const Unit = React.memo(
-  ({ id, unit, className }: IUnitProps) => {
+  ({ id, unit, className, dragHandleProps }: IUnitProps) => {
     const unitRef = useRef(null);
     const classes = useStyles();
     const adUnitEnabled = useSelector(addUnitEnabledSelector);
@@ -100,6 +109,18 @@ const Unit = React.memo(
       dispatch(unitsStore.actions.addWeaponProfile({ index: id }));
     };
 
+    const handleDragEnd = (result: DropResult) => {
+      const { source, destination } = result;
+      if (!destination) return;
+      dispatch(
+        unitsStore.actions.moveWeaponProfile({
+          index: id,
+          profileIndex: source.index,
+          newProfileIndex: destination.index,
+        }),
+      );
+    };
+
     return (
       <div ref={unitRef}>
         <ListItem
@@ -120,6 +141,7 @@ const Unit = React.memo(
             { name: 'Move Down', onClick: moveUnitDown, disabled: id >= numUnits - 1 },
           ]}
           collapsible
+          dragHandleProps={dragHandleProps}
         >
           <TextField
             label="Unit Name"
@@ -131,16 +153,25 @@ const Unit = React.memo(
           />
           <div className={classes.profiles}>
             {unit && unit.weapon_profiles && unit.weapon_profiles.length ? (
-              unit.weapon_profiles.map((profile, index) => (
-                <WeaponProfile
-                  unitId={id}
-                  id={index}
-                  profile={profile}
-                  key={profile.uuid}
-                  addProfileEnabled={addProfileEnabled}
-                  numProfiles={numProfiles}
-                />
-              ))
+              <DragDropContext onDragEnd={handleDragEnd}>
+                <Droppable droppableId={`profiles-${id}`}>
+                  {(provided: DroppableProvided) => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                      {unit.weapon_profiles.map((profile, index) => (
+                        <DraggableProfileWrapper
+                          key={profile.uuid}
+                          unitId={id}
+                          index={index}
+                          profile={profile}
+                          addProfileEnabled={addProfileEnabled}
+                          numProfiles={numProfiles}
+                        />
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             ) : (
               <NoItemsCard
                 header="No Profiles"

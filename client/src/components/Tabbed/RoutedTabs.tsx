@@ -2,7 +2,7 @@ import { Paper, Tab, Tabs } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { useRouteFind } from 'hooks';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
 
@@ -33,18 +33,20 @@ interface IRoutedTabsProps {
   tabRoutes: string[];
   className?: string;
   onTabChange?: (index: number) => void;
+  swipeable?: boolean;
 }
 
 /**
  * A simple tabbed interface
  */
-const RoutedTabs: React.FC<IRoutedTabsProps> = ({
+const RoutedTabs = ({
   tabNames,
   tabContent,
   tabRoutes,
   className,
   onTabChange,
-}) => {
+  swipeable,
+}: IRoutedTabsProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
@@ -65,6 +67,18 @@ const RoutedTabs: React.FC<IRoutedTabsProps> = ({
     }
   }, [onTabChange, value]);
 
+  const innerContent = useMemo(
+    () =>
+      tabContent.map((content, index) => (
+        <Route path={tabRoutes[index]} key={tabNames[index]}>
+          <TabPanel value={value} index={index} className={classes.content}>
+            {content}
+          </TabPanel>
+        </Route>
+      )),
+    [classes.content, tabContent, tabNames, tabRoutes, value],
+  );
+
   return (
     <div className={clsx(classes.tabs, className)}>
       <Paper square>
@@ -74,21 +88,19 @@ const RoutedTabs: React.FC<IRoutedTabsProps> = ({
           ))}
         </Tabs>
       </Paper>
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={value}
-        onChangeIndex={handleSwipe}
-        className={classes.swiper}
-        resistance
-      >
-        {tabContent.map((content, index) => (
-          <Route path={tabRoutes[index]} key={tabNames[index]}>
-            <TabPanel value={value} index={index} className={classes.content}>
-              {content}
-            </TabPanel>
-          </Route>
-        ))}
-      </SwipeableViews>
+      {swipeable ? (
+        <SwipeableViews
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={value}
+          onChangeIndex={handleSwipe}
+          className={classes.swiper}
+          resistance
+        >
+          {innerContent}
+        </SwipeableViews>
+      ) : (
+        innerContent
+      )}
     </div>
   );
 };

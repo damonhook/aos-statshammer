@@ -35,6 +35,7 @@ const DesktopHome = () => {
             tabNames={['Units', 'Target']}
             tabContent={[<Units className={classes.tab} />, <Target className={classes.tab} />]}
             tabRoutes={[ROUTES.HOME, ROUTES.TARGET]}
+            swipeable
           />
         </Grid>
         <Grid item xs={6}>
