@@ -99,6 +99,16 @@ const ModifierList: React.FC<IModifierListProps> = ({
     [dispatchModifiers],
   );
 
+  const onActiveToggle = useCallback(
+    (index: number) => {
+      dispatchModifiers({
+        type: 'TOGGLE_MODIFIER_ACTIVE',
+        index,
+      });
+    },
+    [dispatchModifiers],
+  );
+
   const getErrorCallback = useCallback(
     _.memoize((index: number) => (error: boolean) => {
       dispatchErrors({ type: 'SET_ERROR', index, error });
@@ -120,6 +130,7 @@ const ModifierList: React.FC<IModifierListProps> = ({
             <ModifierItem
               definition={getModifierById(modifier.id)}
               options={modifier.options}
+              active={modifier.active ?? true}
               actions={[
                 {
                   name: 'Move Up',
@@ -138,6 +149,7 @@ const ModifierList: React.FC<IModifierListProps> = ({
               index={index}
               key={modifier.uuid}
               onOptionChange={onOptionChange}
+              onActiveToggle={onActiveToggle}
               errorCallback={getErrorCallback(index)}
               nested
             />

@@ -49,6 +49,14 @@ const editTargetModifierOption = (
   }
 };
 
+const toggleModifierActive = (state: ITargetStore, action: { payload: { index: number } }) => {
+  const { index } = action.payload;
+  const modifier = state.modifiers.find((_, i) => i === index);
+  if (modifier) {
+    modifier.active = !(modifier.active ?? true);
+  }
+};
+
 const editTargetModifierError = (
   state: ITargetStore,
   action: { payload: { index: number; error: boolean } },
@@ -69,6 +77,7 @@ export const targetStore = createSlice({
     clearAllTargetModifiers,
     moveTargetModifier,
     editTargetModifierOption,
+    toggleModifierActive,
     editTargetModifierError,
   },
 });

@@ -9,7 +9,6 @@ import { IModifierDefinition, TOptionValue } from 'types/modifiers';
 const useStyles = makeStyles({
   description: {
     color: 'darkgray',
-    marginBottom: '1em',
   },
 });
 

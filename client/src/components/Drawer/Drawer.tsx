@@ -3,7 +3,7 @@ import { grey } from '@material-ui/core/colors';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { GetApp, Home, Info, Timeline } from '@material-ui/icons';
 import { useHashMatch, useRouteFind } from 'hooks';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { HASHES, ROUTES } from 'utils/urls';
 
@@ -60,9 +60,9 @@ const Drawer = () => {
     }
   }, [history]);
 
-  if (lg && open) {
-    handleClose();
-  }
+  useEffect(() => {
+    if (lg) handleClose();
+  }, [handleClose, lg]);
 
   const isHome = [ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS].includes(page);
 
