@@ -1,6 +1,6 @@
 import * as selectors from 'store/selectors/targetSelectors';
 
-import { state, target } from './testState';
+import { state, target } from './utils/testState';
 
 describe('targetSelectors', () => {
   test('targetSelector', () => {
@@ -12,16 +12,17 @@ describe('targetSelectors', () => {
   });
 
   test('getSanitizedTargetSelector', () => {
-    expect(selectors.getSanitizedTargetSelector(state)).toEqual({
+    const expected = {
       modifiers: [
         {
-          id: 'MOD_ID_0',
+          id: 'TARGET_REROLL',
           uuid: '0',
           active: true,
           error: false,
-          options: { characteristic: 'to_hit' },
+          options: {},
         },
       ],
-    });
+    };
+    expect(selectors.getSanitizedTargetSelector(state)).toEqual(expected);
   });
 });

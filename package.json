@@ -15,7 +15,8 @@
         "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
         "test": "jest api && cd client && yarn test --watchAll=false",
         "bumpversion": "lerna version --no-git-tag-version --no-push",
-        "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+        "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+        "clean-setup": "rm -rf node_modules && rm -rf client/node_modules && yarn setup"
     },
     "dependencies": {
         "@babel/cli": "^7.7.4",
