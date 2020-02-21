@@ -11,7 +11,7 @@ import { ISanitizedUnit, modifierByIdSelector, targetModifierByIdSelector } from
 import { IModifierInstance } from 'types/modifiers';
 import { IJsPDF } from 'types/pdf';
 import { TResult } from 'types/stats';
-import { ITargetStore, IUnitStore } from 'types/store';
+import { ITargetStore } from 'types/store';
 
 import cursor from './cursor';
 import { addGraphs, addHeader, addHR, addPage, addSubHeader, headerColor, margin } from './pdfUtils';
