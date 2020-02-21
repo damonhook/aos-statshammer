@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { TextField, Checkbox, MenuItem, FormControlLabel } from '@material-ui/core';
+import { Checkbox, FormControlLabel, MenuItem, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import DiceInput from 'components/DiceInput';
 import RollInput from 'components/RollInput';
 import _ from 'lodash';
-import DiceInput from 'components/DiceInput';
+import React, { useCallback, useEffect, useState } from 'react';
 import { TOptionTypes, TOptionValue } from 'types/modifiers';
 
 const useStyles = makeStyles(() => ({

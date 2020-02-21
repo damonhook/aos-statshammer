@@ -1,8 +1,9 @@
-import React from 'react';
+import { MenuItem, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { MenuItem, TextField, FormControlLabel, Switch } from '@material-ui/core';
-import _ from 'lodash';
 import clsx from 'clsx';
+import _ from 'lodash';
+import React from 'react';
+
 import { REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 
 const useStyles = makeStyles(theme => ({
@@ -43,32 +44,20 @@ const useStyles = makeStyles(theme => ({
 interface GraphControlsProps {
   activeReferenceLine: string;
   setActiveReferenceLine: (value: string) => void;
-  matchXAxis: boolean;
-  setMatchXAxis: (value: boolean) => void;
 }
 
-const GraphControls: React.FC<GraphControlsProps> = React.memo(
-  ({ activeReferenceLine, setActiveReferenceLine, matchXAxis, setMatchXAxis }) => {
+const GraphControls = React.memo(
+  ({ activeReferenceLine, setActiveReferenceLine }: GraphControlsProps) => {
     const classes = useStyles();
 
     const handleReferenceLineChanged = (event: any) => {
       setActiveReferenceLine(event.target.value);
     };
 
-    const handleSetMatchXAxisChanged = (event: any) => {
-      setMatchXAxis(event.target.checked);
-    };
-
     return (
       <>
         <span className={classes.label}>Graph Settings</span>
         <div className={classes.controls}>
-          <FormControlLabel
-            label="Match X Axis"
-            labelPlacement="start"
-            className={clsx(classes.field, classes.switch)}
-            control={<Switch checked={matchXAxis} onChange={handleSetMatchXAxisChanged} />}
-          />
           <TextField
             select
             variant="filled"

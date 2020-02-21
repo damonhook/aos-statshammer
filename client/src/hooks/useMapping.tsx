@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const useMapping = <T,>(data: T[], mapper: any, pending = false): T[] => {
   const [results, setResults] = useState<T[]>([]);

@@ -1,9 +1,12 @@
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import GraphSkeleton from 'components/Skeletons/GraphSkeleton';
 import { StatsErrorCard } from 'components/ErrorCards';
+import GraphSkeleton from 'components/Skeletons/GraphSkeleton';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
+  graphWrapper: {
+    height: '350px',
+  },
   loader: {
     padding: '2em',
   },
@@ -30,7 +33,7 @@ const GraphWrapper: React.FC<GraphWrapperProps> = ({ loading, error, children, n
   if (error) {
     return <StatsErrorCard className={classes.error} />;
   }
-  return <div>{children}</div>;
+  return <div className={classes.graphWrapper}>{children}</div>;
 };
 
 GraphWrapper.defaultProps = {

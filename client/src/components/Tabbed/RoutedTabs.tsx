@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
-import { Tab, Paper, Tabs } from '@material-ui/core';
+import { Paper, Tab, Tabs } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import SwipeableViews from 'react-swipeable-views';
-import { useHistory, Route, matchPath, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
+import { useRouteFind } from 'hooks';
+import React, { useEffect } from 'react';
+import { Route, useHistory } from 'react-router-dom';
+import SwipeableViews from 'react-swipeable-views';
+
 import TabPanel from './TabPanel';
 
 const useStyles = makeStyles({
@@ -46,25 +48,15 @@ const RoutedTabs: React.FC<IRoutedTabsProps> = ({
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
-  const location = useLocation();
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (e: any, newValue: number) => {
     history.replace(tabRoutes[newValue]);
   };
-  const handleSwipe = index => {
+  const handleSwipe = (index: number) => {
     history.replace(tabRoutes[index]);
   };
 
-  let value = 0;
-  let matched = false;
-  [...tabRoutes].reverse().some((path, index) => {
-    if (matchPath(location.pathname, { path })) {
-      value = tabRoutes.length - (index + 1);
-      matched = true;
-      return true;
-    }
-    return false;
-  });
+  const [value, matched] = useRouteFind(tabRoutes);
   if (!matched) history.replace(tabRoutes[0]);
 
   useEffect(() => {
@@ -91,7 +83,6 @@ const RoutedTabs: React.FC<IRoutedTabsProps> = ({
       >
         {tabContent.map((content, index) => (
           <Route path={tabRoutes[index]} key={tabNames[index]}>
-            {/* <TabPanel value={value} index={index} className={classes.content} dir={theme.direction}> */}
             <TabPanel value={value} index={index} className={classes.content}>
               {content}
             </TabPanel>

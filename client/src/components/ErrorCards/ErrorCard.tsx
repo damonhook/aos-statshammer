@@ -1,10 +1,10 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Typography } from '@material-ui/core';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
-import clsx from 'clsx';
 import { red } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
+import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { ErrorOutline, Sync } from '@material-ui/icons';
+import clsx from 'clsx';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   errorCard: {

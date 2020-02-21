@@ -1,11 +1,11 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import ListItem from 'components/ListItem';
-import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { InfoOutlined } from '@material-ui/icons';
+import ListItem from 'components/ListItem';
 import ModifierSummary from 'components/ModifierSummary';
-import { IStore } from 'types/store';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { targetAppliedModifiersSelector } from 'store/selectors';
 
 const useStyles = makeStyles(theme => ({
   noItems: {
@@ -19,15 +19,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const mapStateToProps = (state: IStore) => ({
-  ...state.target,
-});
-
-const connector = connect(mapStateToProps);
-interface ITargetSummaryProps extends ConnectedProps<typeof connector> {}
-
-const TargetSummary: React.FC<ITargetSummaryProps> = ({ modifiers }) => {
+const TargetSummary = () => {
   const classes = useStyles();
+  const modifiers = useSelector(targetAppliedModifiersSelector);
+
   return (
     <ListItem header="Target Summary" collapsible>
       {modifiers && modifiers.length ? (
@@ -42,4 +37,4 @@ const TargetSummary: React.FC<ITargetSummaryProps> = ({ modifiers }) => {
   );
 };
 
-export default connector(TargetSummary);
+export default TargetSummary;

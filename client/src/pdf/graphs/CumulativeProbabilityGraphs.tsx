@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
 import { getMaxDamage, getTicks } from 'containers/ProbabilityCurves/probabilityUtils';
-import { IProbability } from 'types/simulations';
+import React, { useCallback } from 'react';
+import { ISimulationResult } from 'types/simulations';
+
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles({
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
 });
 
 interface ICumulativeProbabilityGraphsProps {
-  probabilities: IProbability[];
+  probabilities: ISimulationResult[];
   unitNames: string[];
 }
 
@@ -48,7 +49,7 @@ const CumulativeProbabilityGraphs: React.FC<ICumulativeProbabilityGraphsProps> =
               const { save, cumulative } = item;
               return (
                 <LineGraph
-                  title={`Cumulative Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
+                  title={`Cumulative Damage Probability (${save ? '-' : `${save}+`})`}
                   key={save}
                   data={cumulative}
                   isAnimationActive={false}

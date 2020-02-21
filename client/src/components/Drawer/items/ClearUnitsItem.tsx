@@ -1,26 +1,25 @@
-import React from 'react';
-import { ListItemIcon, ListItemText } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
-import { Route } from 'react-router-dom';
 import ConfirmationDialog from 'components/ConfirmationDialog';
-import { units, notifications } from 'store/slices';
-import { connect, ConnectedProps } from 'react-redux';
-import LinkItem from './LinkItem';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route } from 'react-router-dom';
+import { numUnitsSelector } from 'store/selectors';
+import { notificationsStore, unitsStore } from 'store/slices';
 
-const mapDispatchToProps = {
-  clearAllUnits: units.actions.clearAllUnits,
-  addNotification: notifications.actions.addNotification,
-};
+import MenuLinkItem from '../MenuLinkItem';
 
-const connector = connect(null, mapDispatchToProps);
-interface ClearUnitsItemProps extends ConnectedProps<typeof connector> {
+interface IClearUnitsItemProps {
   onClick?: () => void;
+  mini?: boolean;
 }
 
-const ClearUnitsItem: React.FC<ClearUnitsItemProps> = ({ clearAllUnits, addNotification, onClick }) => {
+const ClearUnitsItem = ({ onClick, mini }: IClearUnitsItemProps) => {
+  const dispatch = useDispatch();
+  const numUnits = useSelector(numUnitsSelector);
+
   const handleConfirm = () => {
-    addNotification({ message: 'All units cleared', variant: 'info' });
-    clearAllUnits();
+    dispatch(notificationsStore.actions.addNotification({ message: 'All units cleared', variant: 'info' }));
+    dispatch(unitsStore.actions.clearAllUnits());
     if (onClick) onClick();
   };
 
@@ -30,12 +29,13 @@ const ClearUnitsItem: React.FC<ClearUnitsItemProps> = ({ clearAllUnits, addNotif
 
   return (
     <div>
-      <LinkItem to="/units/confirm">
-        <ListItemIcon>
-          <Delete />
-        </ListItemIcon>
-        <ListItemText primary="Clear All Units" />
-      </LinkItem>
+      <MenuLinkItem
+        to="/units/confirm"
+        label="Clear Units"
+        icon={<Delete />}
+        mini={mini}
+        disabled={numUnits <= 0}
+      />
       <Route path="/units/confirm">
         <ConfirmationDialog
           open
@@ -48,4 +48,4 @@ const ClearUnitsItem: React.FC<ClearUnitsItemProps> = ({ clearAllUnits, addNotif
   );
 };
 
-export default connector(ClearUnitsItem);
+export default ClearUnitsItem;

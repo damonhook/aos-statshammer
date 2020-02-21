@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { CardHeader } from 'components/Card';
-import { makeStyles } from '@material-ui/core/styles';
-import ListControls from 'components/ListControls';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import appConfig from 'appConfig';
 import clsx from 'clsx';
-import useLongPress from 'hooks/useLongPress';
 import ActionsDialog from 'components/ActionsDialog';
-import { LONG_PRESS_DELAY } from 'appConstants';
+import { CardHeader } from 'components/Card';
+import ListControls from 'components/ListControls';
 import { IPrimaryItem, ISecondaryItem } from 'components/ListControls/types';
+import useLongPress from 'hooks/useLongPress';
+import React, { useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -65,7 +65,7 @@ const ListItemHeader: React.FC<IListItemHeaderProps> = ({
   const classes = useStyles();
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const longPress = useLongPress(() => setDialogOpen(true), LONG_PRESS_DELAY);
+  const longPress = useLongPress(() => setDialogOpen(true), appConfig.timers.longPress);
 
   const handleClick = () => setColapsed(!collapsible ? false : !collapsed);
 

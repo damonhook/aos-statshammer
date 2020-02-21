@@ -1,12 +1,16 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
 import { BottomNavigation as Navigation, BottomNavigationAction as NavigationItem } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Home, BarChart, Info, Timeline as TimelineIcon } from '@material-ui/icons';
-import { useHistory, useLocation, matchPath } from 'react-router-dom';
-import { IStore } from 'types/store';
-import { getRoute, EPages } from 'types/routes';
+import { BarChart, Home, Info, Timeline as TimelineIcon } from '@material-ui/icons';
+import { useBreakpointChanged, useRouteFind } from 'hooks';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { numUnitsSelector } from 'store/selectors';
+import { ROUTES } from 'utils/urls';
 
+interface IStyleProps {
+  height: number;
+}
 const useStyles = makeStyles((theme: Theme) => ({
   nav: {
     position: 'fixed',
@@ -19,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       display: 'none',
     },
   },
+  offset: ({ height }: IStyleProps) => ({
+    marginTop: height,
+  }),
   item: {
     '&:disabled': {
       color: theme.palette.action.disabledBackground,
@@ -26,54 +33,48 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const mapStateToProps = (state: IStore) => ({
-  numUnits: state.units.length,
-});
-
-const connector = connect(mapStateToProps);
-interface BottomNavigationProps extends ConnectedProps<typeof connector> {}
-
-const BottomNavigation: React.FC<BottomNavigationProps> = ({ numUnits }) => {
-  const classes = useStyles();
+const BottomNavigation = () => {
   const history = useHistory();
-  const location = useLocation();
-  const simulationsDisabled = numUnits <= 0;
+  const [height, setHeight] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const classes = useStyles({ height });
 
-  const handleMainClick = () => {
-    history.push(getRoute(EPages.HOME));
+  const routes = [ROUTES.HOME, ROUTES.STATS, ROUTES.SIMULATIONS, ROUTES.ABOUT];
+  const [index] = useRouteFind(routes);
+
+  const breakpoints = useBreakpointChanged();
+  const numUnits = useSelector(numUnitsSelector);
+
+  const handleChange = (event: any, newValue: number) => {
+    history.push(routes[newValue]);
   };
 
-  const handleStatsClick = () => {
-    history.push('/stats');
-  };
-
-  const handleSimClick = () => {
-    history.push(getRoute(EPages.SIMULATIONS));
-  };
-
-  const handleAboutClick = () => {
-    history.push(getRoute(EPages.ABOUT));
-  };
-
-  let activeIndex = 0;
-  if (matchPath(location.pathname, { path: '/stats' })) activeIndex = 1;
-  if (matchPath(location.pathname, { path: getRoute(EPages.SIMULATIONS) })) activeIndex = 2;
-  if (matchPath(location.pathname, { path: getRoute(EPages.ABOUT) })) activeIndex = 3;
+  useEffect(() => {
+    setTimeout(() => {
+      if (ref && ref.current) {
+        setHeight(ref.current.clientHeight);
+      }
+    }, 150);
+  }, [ref, breakpoints]);
 
   return (
-    <Navigation showLabels className={classes.nav} value={activeIndex}>
-      <NavigationItem label="Home" icon={<Home />} onClick={handleMainClick} />
-      <NavigationItem label="Stats" icon={<BarChart />} onClick={handleStatsClick} />
-      <NavigationItem
-        label="Simulations"
-        icon={<TimelineIcon />}
-        onClick={handleSimClick}
-        disabled={simulationsDisabled}
-        className={classes.item}
-      />
-      <NavigationItem label="About" icon={<Info />} onClick={handleAboutClick} />
-    </Navigation>
+    <>
+      <div className={classes.offset} />
+      <div ref={ref} className={classes.nav}>
+        <Navigation value={index} onChange={handleChange} showLabels>
+          <NavigationItem label="Home" icon={<Home />} className={classes.item} />
+          <NavigationItem label="Stats" icon={<BarChart />} className={classes.item} />
+          <NavigationItem
+            label="Simulations"
+            icon={<TimelineIcon />}
+            disabled={numUnits <= 0}
+            className={classes.item}
+          />
+          <NavigationItem label="About" icon={<Info />} className={classes.item} />
+        </Navigation>
+      </div>
+    </>
   );
 };
 
-export default connector(BottomNavigation);
+export default BottomNavigation;

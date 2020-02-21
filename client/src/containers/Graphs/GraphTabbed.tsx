@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Tabbed from 'components/Tabbed';
 import { Paper } from '@material-ui/core';
-import ListItem from 'components/ListItem';
+import { makeStyles } from '@material-ui/core/styles';
 import { SaveTooltip } from 'components/GraphTooltips';
+import ListItem from 'components/ListItem';
+import Tabbed from 'components/Tabbed';
+import React, { useCallback } from 'react';
 import { IStatsStore } from 'types/store';
+
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles(() => ({
@@ -14,12 +15,7 @@ const useStyles = makeStyles(() => ({
   tab: {
     padding: '1em 1em 0',
   },
-  content: {
-    height: '350px',
-    paddingTop: 0,
-    overflow: 'hidden',
-    flexBasis: '50%',
-  },
+  content: {},
 }));
 
 interface GraphTabbedProps {
@@ -39,13 +35,13 @@ const GraphTabbed: React.FC<GraphTabbedProps> = ({ stats, unitNames, graphMap })
         className={classes.tabs}
         tabNames={[...graphMap.keys()]}
         tabContent={[...graphMap].map(([name, Graph]) => (
-          <GraphWrapper
-            loading={firstLoad}
-            numUnits={unitNames.length}
-            key={name}
-            error={Boolean(stats.error)}
-          >
-            <Paper square className={classes.tab}>
+          <Paper square className={classes.tab}>
+            <GraphWrapper
+              loading={firstLoad}
+              numUnits={unitNames.length}
+              key={name}
+              error={Boolean(stats.error)}
+            >
               <Graph
                 title="Average Damage"
                 className={classes.content}
@@ -61,8 +57,8 @@ const GraphTabbed: React.FC<GraphTabbedProps> = ({ stats, unitNames, graphMap })
                 }}
                 tooltip={<SaveTooltip />}
               />
-            </Paper>
-          </GraphWrapper>
+            </GraphWrapper>
+          </Paper>
         ))}
       />
     </ListItem>

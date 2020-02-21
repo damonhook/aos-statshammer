@@ -1,16 +1,20 @@
-import React, { useMemo, useLayoutEffect, useCallback, useState } from 'react';
-import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { makeStyles, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import { useRefCallback } from 'hooks';
+import _ from 'lodash';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { ISanitizedUnit, unitNamesSelector } from 'store/selectors';
 import { lightTheme } from 'themes';
-import { IUnitStore, ITargetStore } from 'types/store';
 import { IJsPDF } from 'types/pdf';
+import { ISimulationResult } from 'types/simulations';
 import { TResult } from 'types/stats';
-import { IProbability } from 'types/simulations';
+import { ITargetStore } from 'types/store';
+
 import generate from './generator';
+import { CumulativeProbabilityGraphs, ProbabilityGraphs, StatsGraphs } from './graphs';
 import PdfLoader from './PdfLoader';
-import { StatsGraphs, ProbabilityGraphs, CumulativeProbabilityGraphs } from './graphs';
 
 const useStyles = makeStyles(() => ({
   pdfGenerator: {
@@ -28,10 +32,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface IPdfGeneratorProps {
-  units: IUnitStore;
+  units: ISanitizedUnit[];
   target: ITargetStore;
   results: TResult[];
-  probabilities: IProbability[];
+  probabilities: ISimulationResult[];
 }
 
 const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, probabilities }) => {
@@ -42,7 +46,7 @@ const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, pr
   const [loading, setLoading] = useState(true);
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const unitNames = useMemo(() => units.map(({ name }) => name), [units]);
+  const unitNames = useSelector(unitNamesSelector, _.isEqual);
 
   const generatePdf = useCallback(
     () => generate(units, target, results, unitNames, 'pdf-copy', 'pdf-cumulative', 'pdf-prob'),

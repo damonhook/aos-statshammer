@@ -1,17 +1,18 @@
-import React, { useRef, useEffect, useCallback, useMemo } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { units, notifications } from 'store/slices';
 import { Switch } from '@material-ui/core';
-import ListItem from 'components/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
+import { Delete, Edit, FileCopy } from '@material-ui/icons';
 import clsx from 'clsx';
+import ListItem from 'components/ListItem';
 import ModifierSummary from 'components/ModifierSummary';
-import { useHistory } from 'react-router-dom';
-import { getUnitByPosition } from 'store/selectors/unitHelpers';
-import { Delete, FileCopy, Edit } from '@material-ui/icons';
 import _ from 'lodash';
-import { scrollToRef } from 'utils/scrollIntoView';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { unitByIndexSelector } from 'store/selectors';
+import { notificationsStore, unitsStore } from 'store/slices';
 import { IWeaponProfile } from 'types/unit';
+import { scrollToRef } from 'utils/scrollIntoView';
+
 import Characteristics from './Characteristics';
 
 const useStyles = makeStyles(theme => ({
@@ -38,14 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const connector = connect(null, {
-  toggleWeaponProfile: units.actions.toggleWeaponProfile,
-  deleteWeaponProfile: units.actions.deleteWeaponProfile,
-  addWeaponProfile: units.actions.addWeaponProfile,
-  moveWeaponProfile: units.actions.moveWeaponProfile,
-  addNotification: notifications.actions.addNotification,
-});
-interface IWeaponProfileProps extends ConnectedProps<typeof connector> {
+interface IWeaponProfileProps {
   unitId: number;
   id: number;
   profile: IWeaponProfile;
@@ -54,24 +48,14 @@ interface IWeaponProfileProps extends ConnectedProps<typeof connector> {
 }
 
 const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
-  ({
-    unitId,
-    id,
-    profile,
-    numProfiles = 0,
-    toggleWeaponProfile,
-    deleteWeaponProfile,
-    addWeaponProfile,
-    addProfileEnabled,
-    addNotification,
-    moveWeaponProfile,
-  }) => {
+  ({ unitId, id, profile, numProfiles = 0, addProfileEnabled }) => {
     const classes = useStyles();
     const profileRef = useRef(null);
     const history = useHistory();
+    const dispatch = useDispatch();
 
     /** The unit that this profile belongs to */
-    const unit = useMemo(() => getUnitByPosition(unitId), [unitId]);
+    const unit = useSelector(unitByIndexSelector, _.isEqual)(unitId);
     /** The URL used to open an edit dialog for this item */
     const editPath = `/units/${unit.uuid}/${id}`;
 
@@ -92,16 +76,25 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
      */
     const handleDelete = useCallback(
       (id: number, unitId: number) => {
-        addNotification({
-          message: 'Deleted Profile',
-          action: {
-            label: 'Undo',
-            onClick: () => addWeaponProfile({ index: unitId, weaponProfile: profile, atPosition: id }),
-          },
-        });
-        deleteWeaponProfile({ index: unitId, profileIndex: id });
+        dispatch(
+          notificationsStore.actions.addNotification({
+            message: 'Deleted Profile',
+            action: {
+              label: 'Undo',
+              onClick: () =>
+                dispatch(
+                  unitsStore.actions.addWeaponProfile({
+                    index: unitId,
+                    weaponProfile: profile,
+                    atPosition: id,
+                  }),
+                ),
+            },
+          }),
+        );
+        dispatch(unitsStore.actions.deleteWeaponProfile({ index: unitId, profileIndex: id }));
       },
-      [addNotification, addWeaponProfile, deleteWeaponProfile, profile],
+      [dispatch, profile],
     );
 
     /** Whether the move up button is enabled or not */
@@ -111,11 +104,23 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
 
     /** Move this profile up by one space */
     const moveProfileUp = () => {
-      moveWeaponProfile({ index: unitId, profileIndex: id, newProfileIndex: id - 1 });
+      dispatch(
+        unitsStore.actions.moveWeaponProfile({ index: unitId, profileIndex: id, newProfileIndex: id - 1 }),
+      );
     };
     /** Move this profile down by one space */
     const moveProfileDown = () => {
-      moveWeaponProfile({ index: unitId, profileIndex: id, newProfileIndex: id + 1 });
+      dispatch(
+        unitsStore.actions.moveWeaponProfile({ index: unitId, profileIndex: id, newProfileIndex: id + 1 }),
+      );
+    };
+
+    const handleCopyProfile = () => {
+      dispatch(unitsStore.actions.addWeaponProfile({ index: unitId, weaponProfile: { ...profile } }));
+    };
+
+    const handleToggleProfile = () => {
+      dispatch(unitsStore.actions.toggleWeaponProfile({ index: unitId, profileIndex: id }));
     };
 
     const header = `Weapon Profile ${profile.name ? `(${profile.name})` : ''}`;
@@ -129,7 +134,7 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
             { name: 'Edit', onClick: handleOpen, icon: <Edit /> },
             {
               name: 'Copy',
-              onClick: () => addWeaponProfile({ index: unitId, weaponProfile: { ...profile } }),
+              onClick: handleCopyProfile,
               icon: <FileCopy />,
               disabled: !addProfileEnabled,
             },
@@ -142,11 +147,7 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
           collapsible
         >
           <div className={classes.content}>
-            <Switch
-              className={classes.switch}
-              onChange={() => toggleWeaponProfile({ index: unitId, profileIndex: id })}
-              checked={profile.active}
-            />
+            <Switch className={classes.switch} onChange={handleToggleProfile} checked={profile.active} />
             <div className={classes.details} onClick={handleOpen} role="button">
               <Characteristics profile={profile} />
               {profile.modifiers && profile.modifiers.length ? (
@@ -161,4 +162,4 @@ const WeaponProfile: React.FC<IWeaponProfileProps> = React.memo(
   (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
 );
 
-export default connector(WeaponProfile);
+export default WeaponProfile;

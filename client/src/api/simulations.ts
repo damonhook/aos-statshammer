@@ -1,41 +1,35 @@
-import fetch from 'cross-fetch';
-import { getUnits } from 'store/selectors/unitHelpers';
-import { getTarget } from 'store/selectors/targetHelpers';
-import { notifications, simulations, config } from 'store/slices';
-import { ISimulation } from 'types/simulations';
-import { ITargetStore, IUnitStore } from 'types/store';
-import store from 'store';
 import appConfig from 'appConfig';
+import fetch from 'cross-fetch';
+import store from 'store';
+import {
+  getSanitizedTargetSelector,
+  getSanitizedUnitsSelector,
+  ISanitizedUnit,
+  numSimulationsSelector,
+} from 'store/selectors';
+import { configStore, notificationsStore, simulationsStore } from 'store/slices';
+import { ISimulation } from 'types/simulations';
+import { IStore, ITargetStore } from 'types/store';
+
 import { TDispatch } from './api.types';
 
-const verifyNumSimulations = (dispatch: TDispatch): number => {
-  const storeNumSims = store.getState().config.numSimulations;
+const verifyNumSimulations = (state: IStore, dispatch: TDispatch): number => {
+  const storeNumSims = numSimulationsSelector(state);
   let numSims = storeNumSims ?? appConfig.simulations.default;
   numSims = Math.min(Math.max(numSims, appConfig.simulations.min), appConfig.simulations.max);
   if (numSims !== storeNumSims) {
-    dispatch(config.actions.changeNumSimulations({ newValue: numSims }));
+    dispatch(configStore.actions.changeNumSimulations({ newValue: numSims }));
   }
   return numSims;
 };
 
 const fetchSimulationForSave = async (
-  units: IUnitStore,
+  units: ISanitizedUnit[],
   target: ITargetStore,
   save: number,
   numSimulations: number,
 ) => {
-  const data = {
-    units: units.map(unit => ({
-      name: unit.uuid,
-      weapon_profiles: unit.weapon_profiles.filter(profile => profile.active),
-    })),
-    target: {
-      ...target,
-      modifiers: target.modifiers.filter(({ error }) => !error),
-    },
-    numSimulations,
-    save,
-  };
+  const data = { units, target, numSimulations, save };
   return fetch('/api/simulate/save', {
     method: 'POST',
     headers: {
@@ -47,12 +41,14 @@ const fetchSimulationForSave = async (
 };
 
 export const fetchSimulations = () => async (dispatch: TDispatch) => {
-  dispatch(simulations.actions.fetchSimulationsPending());
+  dispatch(simulationsStore.actions.fetchSimulationsPending());
   try {
-    const units = getUnits();
-    if (!units) dispatch(simulations.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
-    const target = getTarget();
-    const numSimulations = verifyNumSimulations(dispatch);
+    const state = store.getState();
+    const units = getSanitizedUnitsSelector(state)(false);
+    if (!units)
+      dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
+    const target = getSanitizedTargetSelector(state);
+    const numSimulations = verifyNumSimulations(state, dispatch);
 
     const responses = await Promise.all(
       [2, 3, 4, 5, 6, 0].map(save =>
@@ -61,20 +57,17 @@ export const fetchSimulations = () => async (dispatch: TDispatch) => {
     );
 
     const res: ISimulation = responses.reduce(
-      (acc, { results, probabilities }) => ({
+      (acc, { results }) => ({
         results: [...acc.results, results],
-        probabilities: [...acc.probabilities, probabilities],
       }),
-      { results: [], probabilities: [] },
+      { results: [] },
     );
 
-    dispatch(
-      simulations.actions.fetchSimulationsSuccess({ results: res.results, probabilities: res.probabilities }),
-    );
+    dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: res.results }));
   } catch (error) {
-    dispatch(simulations.actions.fetchSimulationsError({ error }));
+    dispatch(simulationsStore.actions.fetchSimulationsError({ error }));
     dispatch(
-      notifications.actions.addNotification({
+      notificationsStore.actions.addNotification({
         message: 'Failed to fetch simulations',
         variant: 'error',
         action: {

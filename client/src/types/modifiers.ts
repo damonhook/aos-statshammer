@@ -40,5 +40,6 @@ export interface IModifierInstanceParameter {
 
 export interface IModifierInstance extends IModifierInstanceParameter {
   uuid: string;
+  active?: boolean;
   error?: boolean;
 }

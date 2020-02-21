@@ -65,6 +65,9 @@ a number of modifiers (abilities)
 - Ability to add modifiers to the unit as a whole, and not just to each profile
 - Ability to provide points costs to provide stats for average damage / 100 points
 
+## Related Projects
+- [Warcry Statshammer](https://warcry-statshammer.herokuapp.com/)
+
 ## Installation
 
 Ensure that you have `node`, `yarn`, and `nodedeamon` installed.

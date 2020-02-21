@@ -1,7 +1,7 @@
-import nanoid from 'nanoid';
 import { createSlice } from '@reduxjs/toolkit';
-import { INotificationsStore } from 'types/store';
+import nanoid from 'nanoid';
 import { INotificationParameters } from 'types/notification';
+import { INotificationsStore } from 'types/store';
 
 const INITIAL_STATE: INotificationsStore = [];
 
@@ -27,7 +27,7 @@ const dismissAllNotifications = (): INotificationsStore => {
   return [];
 };
 
-export const notifications = createSlice({
+export const notificationsStore = createSlice({
   name: 'notifications',
   initialState: INITIAL_STATE,
   reducers: {

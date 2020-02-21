@@ -1,7 +1,7 @@
-import nanoid from 'nanoid';
 import { createSlice } from '@reduxjs/toolkit';
-import { ITargetStore } from 'types/store';
+import nanoid from 'nanoid';
 import { IModifierInstanceParameter, TOptionValue } from 'types/modifiers';
+import { ITargetStore } from 'types/store';
 import { moveItemInArray } from 'utils/arrayUpdates';
 
 const INITIAL_STATE: ITargetStore = {
@@ -49,6 +49,14 @@ const editTargetModifierOption = (
   }
 };
 
+const toggleModifierActive = (state: ITargetStore, action: { payload: { index: number } }) => {
+  const { index } = action.payload;
+  const modifier = state.modifiers.find((_, i) => i === index);
+  if (modifier) {
+    modifier.active = !(modifier.active ?? true);
+  }
+};
+
 const editTargetModifierError = (
   state: ITargetStore,
   action: { payload: { index: number; error: boolean } },
@@ -60,7 +68,7 @@ const editTargetModifierError = (
   }
 };
 
-export const target = createSlice({
+export const targetStore = createSlice({
   name: 'target',
   initialState: INITIAL_STATE,
   reducers: {
@@ -69,6 +77,7 @@ export const target = createSlice({
     clearAllTargetModifiers,
     moveTargetModifier,
     editTargetModifierOption,
+    toggleModifierActive,
     editTargetModifierError,
   },
 });

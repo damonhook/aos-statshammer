@@ -1,13 +1,19 @@
-import React, { useCallback } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import { Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
-import ModifierSelector from 'components/ModifierSelector';
+import { makeStyles } from '@material-ui/core/styles';
+import { ArrowDownward, ArrowUpward, Delete } from '@material-ui/icons';
 import ModifierItem from 'components/ModifierItem';
+import ModifierSelector from 'components/ModifierSelector';
 import _ from 'lodash';
-import { target } from 'store/slices';
-import { IStore } from 'types/store';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  targetAppliedModifiersSelector,
+  targetModifierByIdSelector,
+  targetModifiersSelector,
+} from 'store/selectors';
+import { targetStore } from 'store/slices';
+
+import { TOptionValue } from '../../types/modifiers';
 import PendingModifiers from './PendingModifiers';
 
 const useStyles = makeStyles(() => ({
@@ -19,122 +25,105 @@ const useStyles = makeStyles(() => ({
   activeModifierCard: {},
 }));
 
-const mapStateToProps = (state: IStore) => ({
-  pending: state.targetModifiers.pending,
-  definitions: state.targetModifiers.modifiers,
-  error: state.targetModifiers.error,
-  activeModifiers: state.target.modifiers,
-});
+const TargetModifierList = () => {
+  const classes = useStyles();
+  const modifiersState = useSelector(targetModifiersSelector);
+  const { pending, items: definitions, error } = modifiersState;
+  const getModifierById = useSelector(targetModifierByIdSelector);
+  const activeModifiers = useSelector(targetAppliedModifiersSelector);
+  const dispatch = useDispatch();
 
-const connector = connect(mapStateToProps, {
-  addTargetModifier: target.actions.addTargetModifier,
-  removeTargetModifier: target.actions.removeTargetModifier,
-  moveTargetModifier: target.actions.moveTargetModifier,
-  editTargetModifierOption: target.actions.editTargetModifierOption,
-  editTargetModifierError: target.actions.editTargetModifierError,
-});
-interface ITargetModifierListProps extends ConnectedProps<typeof connector> {}
+  const addModifier = useCallback(
+    modifier => {
+      const newModifier = { id: modifier.id, options: {} };
+      Object.keys(modifier.options).forEach(k => {
+        newModifier.options[k] = '';
+        if (modifier.options[k].default != null) {
+          newModifier.options[k] = modifier.options[k].default;
+        }
+      });
+      dispatch(targetStore.actions.addTargetModifier({ modifier: newModifier }));
+    },
+    [dispatch],
+  );
 
-const TargetModifierList: React.FC<ITargetModifierListProps> = React.memo(
-  ({
-    pending,
-    definitions,
-    error,
-    activeModifiers,
-    addTargetModifier,
-    removeTargetModifier,
-    moveTargetModifier,
-    editTargetModifierOption,
-    editTargetModifierError,
-  }) => {
-    const classes = useStyles();
+  const removeModifier = useCallback(
+    (index: number) => {
+      dispatch(targetStore.actions.removeTargetModifier({ index }));
+    },
+    [dispatch],
+  );
 
-    const getModifierById = id => definitions.find(mod => mod.id === id);
+  const moveModifier = useCallback(
+    (index: number, newIndex: number) => {
+      dispatch(targetStore.actions.moveTargetModifier({ index, newIndex }));
+    },
+    [dispatch],
+  );
 
-    const addModifier = useCallback(
-      modifier => {
-        const newModifier = { id: modifier.id, options: {} };
-        Object.keys(modifier.options).forEach(k => {
-          newModifier.options[k] = '';
-          if (modifier.options[k].default != null) {
-            newModifier.options[k] = modifier.options[k].default;
-          }
-        });
-        addTargetModifier({ modifier: newModifier });
-      },
-      [addTargetModifier],
-    );
+  const onOptionChange = useCallback(
+    (index: number, name: string, value: TOptionValue) => {
+      dispatch(targetStore.actions.editTargetModifierOption({ index, name, value }));
+    },
+    [dispatch],
+  );
 
-    const removeModifier = useCallback(
-      index => {
-        removeTargetModifier({ index });
-      },
-      [removeTargetModifier],
-    );
+  const getErrorCallback = useCallback(
+    _.memoize((index: number) => (error: boolean) => {
+      dispatch(targetStore.actions.editTargetModifierError({ index, error }));
+    }),
+    [dispatch],
+  );
 
-    const moveModifier = useCallback(
-      (index, newIndex) => {
-        moveTargetModifier({ index, newIndex });
-      },
-      [moveTargetModifier],
-    );
+  const onActiveToggle = useCallback(
+    (index: number) => {
+      dispatch(targetStore.actions.toggleModifierActive({ index }));
+    },
+    [dispatch],
+  );
 
-    const onOptionChange = useCallback(
-      (index, name, value) => {
-        editTargetModifierOption({ index, name, value });
-      },
-      [editTargetModifierOption],
-    );
+  const moveUpEnabled = (index: number) => index > 0;
+  const moveDownEnabled = (index: number) => index < (activeModifiers || []).length - 1;
 
-    const getErrorCallback = useCallback(
-      _.memoize((index: number) => (error: boolean) => {
-        editTargetModifierError({ index, error });
-      }),
-      [],
-    );
+  return (
+    <Typography component="div" className={classes.modifierList}>
+      {pending ? (
+        <PendingModifiers />
+      ) : (
+        <div className={classes.activeModifiers}>
+          {(activeModifiers || []).map((modifier, index) => (
+            <ModifierItem
+              definition={getModifierById(modifier.id)}
+              options={modifier.options}
+              active={modifier.active}
+              actions={[
+                {
+                  name: 'Move Up',
+                  onClick: () => moveModifier(index, index - 1),
+                  icon: <ArrowUpward />,
+                  disabled: !moveUpEnabled(index),
+                },
+                {
+                  name: 'Move Down',
+                  onClick: () => moveModifier(index, index + 1),
+                  icon: <ArrowDownward />,
+                  disabled: !moveDownEnabled(index),
+                },
+                { name: 'Delete', onClick: () => removeModifier(index), icon: <Delete /> },
+              ]}
+              index={index}
+              key={modifier.uuid}
+              onOptionChange={onOptionChange}
+              onActiveToggle={onActiveToggle}
+              errorCallback={getErrorCallback(index)}
+              scrollEnabled={false}
+            />
+          ))}
+        </div>
+      )}
+      <ModifierSelector modifiers={definitions} pending={pending} error={error} onClick={addModifier} />
+    </Typography>
+  );
+};
 
-    const moveUpEnabled = index => index > 0;
-    const moveDownEnabled = index => index < (activeModifiers || []).length - 1;
-
-    return (
-      <Typography component="div" className={classes.modifierList}>
-        {pending ? (
-          <PendingModifiers />
-        ) : (
-          <div className={classes.activeModifiers}>
-            {(activeModifiers || []).map((modifier, index) => (
-              <ModifierItem
-                definition={getModifierById(modifier.id)}
-                options={modifier.options}
-                actions={[
-                  {
-                    name: 'Move Up',
-                    onClick: () => moveModifier(index, index - 1),
-                    icon: <ArrowUpward />,
-                    disabled: !moveUpEnabled(index),
-                  },
-                  {
-                    name: 'Move Down',
-                    onClick: () => moveModifier(index, index + 1),
-                    icon: <ArrowDownward />,
-                    disabled: !moveDownEnabled(index),
-                  },
-                  { name: 'Delete', onClick: () => removeModifier(index), icon: <Delete /> },
-                ]}
-                index={index}
-                key={modifier.uuid}
-                onOptionChange={onOptionChange}
-                errorCallback={getErrorCallback(index)}
-                scrollEnabled={false}
-              />
-            ))}
-          </div>
-        )}
-        <ModifierSelector modifiers={definitions} pending={pending} error={error} onClick={addModifier} />
-      </Typography>
-    );
-  },
-  (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
-);
-
-export default connector(TargetModifierList);
+export default TargetModifierList;

@@ -1,6 +1,7 @@
-import React from 'react';
+import { Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Paper } from '@material-ui/core';
+import React from 'react';
+
 import { ITooltipProps } from './types';
 
 const useStyles = makeStyles(theme => ({

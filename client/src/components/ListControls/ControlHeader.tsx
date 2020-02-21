@@ -1,5 +1,6 @@
+import { ButtonGroup, IconButton, Tooltip } from '@material-ui/core';
 import React from 'react';
-import { IconButton, ButtonGroup, Tooltip } from '@material-ui/core';
+
 import ControlMenu from './ControlMenu';
 import { IPrimaryItem, ISecondaryItem } from './types';
 

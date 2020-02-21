@@ -1,18 +1,17 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { fetchStatsCompare, fetchModifiers, fetchTargetModifiers, fetchSimulations } from 'api';
-import PdfGenerator from 'pdf';
-import { useMapping } from 'hooks';
-import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
-import _ from 'lodash';
-import { IStore } from 'types/store';
-import AppBar from 'components/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
-import { EPages } from 'types/routes';
+import { fetchModifiers, fetchSimulations, fetchStatsCompare, fetchTargetModifiers } from 'api';
+import { useMapping } from 'hooks';
+import _ from 'lodash';
+import PdfGenerator from 'pdf';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSanitizedTargetSelector, getSanitizedUnitsSelector } from 'store/selectors';
+import { IStore } from 'types/store';
+import { applyUnitNameMapping, getResultsMapping } from 'utils/mappers';
 
 const useStyles = makeStyles(() => ({
   pdfContainer: {
-    height: '100vh',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -22,70 +21,49 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const mapStateToProps = (state: IStore) => ({
-  units: state.units,
-  target: state.target,
-  modifiers: state.modifiers,
-  targetModifiers: state.targetModifiers,
-  stats: state.stats,
-  simulations: state.simulations,
-});
+const PdfContainer = () => {
+  const classes = useStyles();
+  const { units, modifiers, targetModifiers, stats, simulations } = useSelector(
+    (state: IStore) => state,
+    _.isEqual,
+  );
+  const sanitizedUnits = useSelector(getSanitizedUnitsSelector)(false);
+  const target = useSelector(getSanitizedTargetSelector);
+  const dispatch = useDispatch();
 
-const connector = connect(mapStateToProps, {
-  fetchStatsCompare,
-  fetchModifiers,
-  fetchTargetModifiers,
-  fetchSimulations,
-});
+  const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
+  const resultsMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
 
-interface PdfContainerProps extends ConnectedProps<typeof connector> {}
+  const results = useMapping(stats.payload, resultsMapper, stats.pending);
+  const probabilities = simulations.results;
 
-const PdfContainer: React.FC<PdfContainerProps> = React.memo(
-  ({
-    units,
-    target,
-    modifiers,
-    targetModifiers,
-    stats,
-    simulations,
-    fetchStatsCompare,
-    fetchModifiers,
-    fetchTargetModifiers,
-    fetchSimulations,
-  }) => {
-    const classes = useStyles();
-    const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
-    const resultsMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
-    const simMapper = useCallback(getProbabilitiesMapping(nameMapping), [nameMapping]);
+  useEffect(() => {
+    dispatch(fetchStatsCompare());
+    dispatch(fetchModifiers());
+    dispatch(fetchTargetModifiers());
+    dispatch(fetchSimulations());
+  }, [dispatch]);
 
-    const results = useMapping(stats.payload, resultsMapper, stats.pending);
-    const probabilities = useMapping(simulations.probabilities, simMapper, simulations.pending);
+  const modifiersReady = modifiers.items && modifiers.items.length;
+  const targetModifiersReady = targetModifiers.items && targetModifiers.items.length;
+  const resultsReady = results && results.length;
+  const probabilitiesReady = probabilities && probabilities.length;
 
-    useEffect(() => {
-      fetchStatsCompare();
-      fetchModifiers();
-      fetchTargetModifiers();
-      fetchSimulations();
-    }, [fetchStatsCompare, fetchModifiers, fetchSimulations, fetchTargetModifiers]);
-
-    const modifiersReady = modifiers.modifiers && modifiers.modifiers.length;
-    const targetModifiersReady = targetModifiers.modifiers && targetModifiers.modifiers.length;
-    const resultsReady = results && results.length;
-    const probabilitiesReady = probabilities && probabilities.length;
-
-    if (modifiersReady && targetModifiersReady && resultsReady && probabilitiesReady) {
-      return (
-        <div className={classes.pdfContainer}>
-          <AppBar variant={EPages.PDF} />
-          <div className={classes.generatorInner}>
-            <PdfGenerator units={units} target={target} results={results} probabilities={probabilities} />
-          </div>
+  if (modifiersReady && targetModifiersReady && resultsReady && probabilitiesReady) {
+    return (
+      <div className={classes.pdfContainer}>
+        <div className={classes.generatorInner}>
+          <PdfGenerator
+            units={sanitizedUnits}
+            target={target}
+            results={results}
+            probabilities={probabilities}
+          />
         </div>
-      );
-    }
-    return null;
-  },
-  (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
-);
+      </div>
+    );
+  }
+  return null;
+};
 
-export default connector(PdfContainer);
+export default PdfContainer;

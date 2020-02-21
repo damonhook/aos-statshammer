@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IConfigStore } from 'types/store';
 import appConfig from 'appConfig';
+import { IConfigStore } from 'types/store';
 
 const INITIAL_STATE: IConfigStore = {
   darkMode: false,
@@ -21,7 +21,7 @@ const changeNumSimulations = (state: IConfigStore, action: { payload: { newValue
   state.numSimulations = newValue;
 };
 
-export const config = createSlice({
+export const configStore = createSlice({
   name: 'config',
   initialState: INITIAL_STATE,
   reducers: {

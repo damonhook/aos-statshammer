@@ -1,6 +1,7 @@
 import assert from 'assert';
-import DiceValue from '../models/diceValue';
+
 import { D3, D6 } from '../models/dice';
+import DiceValue from '../models/diceValue';
 
 describe('DiceValue', () => {
   describe('DiceValue.average', () => {

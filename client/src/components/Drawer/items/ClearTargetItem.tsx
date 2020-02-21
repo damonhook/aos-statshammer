@@ -1,30 +1,27 @@
-import React from 'react';
-import { ListItemIcon, ListItemText } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
-import { Route } from 'react-router-dom';
+import { TrackChanges } from '@material-ui/icons';
 import ConfirmationDialog from 'components/ConfirmationDialog';
-import { connect, ConnectedProps } from 'react-redux';
-import { notifications, target } from 'store/slices';
-import LinkItem from './LinkItem';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route } from 'react-router-dom';
+import { numTargetModifiersSelector } from 'store/selectors';
+import { notificationsStore, targetStore } from 'store/slices';
 
-const mapDispatchToProps = {
-  clearAllTargetModifiers: target.actions.clearAllTargetModifiers,
-  addNotification: notifications.actions.addNotification,
-};
+import MenuLinkItem from '../MenuLinkItem';
 
-const connector = connect(null, mapDispatchToProps);
-interface ClearTargetItemProps extends ConnectedProps<typeof connector> {
+interface IClearTargetItemProps {
   onClick?: () => void;
+  mini?: boolean;
 }
 
-const ClearTargetItem: React.FC<ClearTargetItemProps> = ({
-  clearAllTargetModifiers,
-  addNotification,
-  onClick,
-}) => {
+const ClearTargetItem = ({ onClick, mini }: IClearTargetItemProps) => {
+  const dispatch = useDispatch();
+  const numTargetModifiers = useSelector(numTargetModifiersSelector);
+
   const handleConfirm = () => {
-    addNotification({ message: 'Target modifiers cleared', variant: 'info' });
-    clearAllTargetModifiers();
+    dispatch(
+      notificationsStore.actions.addNotification({ message: 'Target modifiers cleared', variant: 'info' }),
+    );
+    dispatch(targetStore.actions.clearAllTargetModifiers());
     if (onClick) onClick();
   };
 
@@ -34,12 +31,13 @@ const ClearTargetItem: React.FC<ClearTargetItemProps> = ({
 
   return (
     <div>
-      <LinkItem to="/target/confirm">
-        <ListItemIcon>
-          <Delete />
-        </ListItemIcon>
-        <ListItemText primary="Clear Target Modifiers" />
-      </LinkItem>
+      <MenuLinkItem
+        to="/target/confirm"
+        label="Clear Target Modifiers"
+        icon={<TrackChanges />}
+        mini={mini}
+        disabled={numTargetModifiers <= 0}
+      />
       <Route path="/target/confirm">
         <ConfirmationDialog
           open
@@ -52,4 +50,4 @@ const ClearTargetItem: React.FC<ClearTargetItemProps> = ({
   );
 };
 
-export default connector(ClearTargetItem);
+export default ClearTargetItem;

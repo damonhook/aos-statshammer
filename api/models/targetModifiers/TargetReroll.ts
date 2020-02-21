@@ -1,7 +1,7 @@
 import { D6 } from '../dice';
-import BaseTargetModifier from './BaseTargetModifier';
-import WeaponProfile from '../weaponProfile';
 import Target from '../target';
+import WeaponProfile from '../weaponProfile';
+import BaseTargetModifier from './BaseTargetModifier';
 
 export default class TargetReroll extends BaseTargetModifier {
   static get displayName() {

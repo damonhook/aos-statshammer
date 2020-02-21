@@ -1,6 +1,6 @@
-import React from 'react';
+import { CircularProgress, Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Typography, Paper } from '@material-ui/core';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   loader: {

@@ -1,21 +1,22 @@
-import React, { useCallback } from 'react';
 import {
-  Dialog,
   AppBar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
+  Slide,
   Toolbar,
   Typography,
-  IconButton,
-  DialogContent,
-  DialogActions,
-  Button,
-  Slide,
 } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { TransitionProps } from '@material-ui/core/transitions';
 import { Close } from '@material-ui/icons';
 import { useHashMatch } from 'hooks';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { IModifierDefinition } from 'types/modifiers';
-import { TransitionProps } from '@material-ui/core/transitions';
+
 import ModifierOption from './ModifierOption';
 
 const useStyles = makeStyles(theme => ({

@@ -1,8 +1,9 @@
-import React from 'react';
 import { useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import ControlMenu from './ControlMenu';
+import React from 'react';
+
 import ControlHeader from './ControlHeader';
+import ControlMenu from './ControlMenu';
 import { IPrimaryItem, ISecondaryItem } from './types';
 
 interface IListControlsProps {

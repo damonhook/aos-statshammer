@@ -1,8 +1,8 @@
-import React from 'react';
+import { Paper, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Typography, Paper, useMediaQuery } from '@material-ui/core';
-import { Github, Reddit, Releases } from 'components/SocialButtons';
 import clsx from 'clsx';
+import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
+import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   footer: {
@@ -11,9 +11,6 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: '1em',
-    [theme.breakpoints.down('sm')]: {
-      paddingBottom: theme.spacing(7),
-    },
   },
   Actions: {
     marginTop: theme.spacing(1),
@@ -41,14 +38,14 @@ const useStyles = makeStyles(theme => ({
 /**
  * The footer that appears at the bottom of the page
  */
-const Footer: React.FC = () => {
+const Footer = () => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <footer className={classes.footer}>
-      <Paper className={clsx(classes.paper)}>
+      <Paper className={clsx(classes.paper)} square>
         <Typography variant="body2" component="p">
           Built by: Damon Hook&nbsp;
           <i>(NoMaDhOoK)</i>
@@ -61,6 +58,7 @@ const Footer: React.FC = () => {
           <Github className={classes.footerButton} />
           <Reddit className={classes.footerButton} />
           <Releases className={classes.footerButton} />
+          <WarcryStatshammer className={classes.footerButton} />
         </Typography>
       </Paper>
     </footer>

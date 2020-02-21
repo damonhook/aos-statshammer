@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IStatsStore, TError } from 'types/store';
 import { TResults } from 'types/stats';
+import { IStatsStore, TError } from 'types/store';
 
 const INITIAL_STATE: IStatsStore = {
   pending: false,
@@ -26,7 +26,7 @@ const fetchStatsError = (state: IStatsStore, action: { payload: { error: TError 
   state.error = error;
 };
 
-export const stats = createSlice({
+export const statsStore = createSlice({
   name: 'stats',
   initialState: INITIAL_STATE,
   reducers: {

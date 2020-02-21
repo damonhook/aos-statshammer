@@ -1,18 +1,14 @@
-import React, { useCallback } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { SaveTooltip } from 'components/GraphTooltips';
-import { IStatsStore } from 'types/store';
 import ListItem from 'components/ListItem';
+import React, { useCallback } from 'react';
+import { IStatsStore } from 'types/store';
+
 import GraphWrapper from './GraphWrapper';
 
 const useStyles = makeStyles(() => ({
-  content: {
-    height: '350px',
-    paddingTop: 0,
-    overflow: 'hidden',
-    flexBasis: '50%',
-  },
+  content: {},
 }));
 
 interface GraphListProps {

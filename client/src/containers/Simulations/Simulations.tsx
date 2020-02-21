@@ -1,27 +1,20 @@
-import React, { useEffect, useMemo, useCallback, useRef } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { fetchSimulations } from 'api';
-import AppBar from 'components/AppBar';
-import _ from 'lodash';
-import Footer from 'components/Footer';
 import Tabbed from 'components/Tabbed';
-import BottomNavigation from 'components/BottomNavigation';
-import { useMediaQuery } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
-import { useMapping } from 'hooks';
-import { getResultsMapping, getProbabilitiesMapping, applyUnitNameMapping } from 'utils/mappers';
 import BasicCurves from 'containers/ProbabilityCurves/BasicCurves';
 import CumulativeCurves from 'containers/ProbabilityCurves/CumulativeCurves';
+import _ from 'lodash';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { numSimulationsSelector, numUnitsSelector, unitNamesSelector } from 'store/selectors';
 import { IStore } from 'types/store';
-import Notifications from 'components/Notifications';
-import { EPages } from 'types/routes';
-import SimulationTabControls from 'components/SimulationTabControls';
-import { scrollToRef } from 'utils/scrollIntoView';
-import MetricsTables from './MetricsTables';
-import ProbabilityTables from './ProbabilityTables';
+import { scrollToTop } from 'utils/scrollIntoView';
 
-const useStyles = makeStyles(theme => ({
+import MetricsGraphs from './MetricsGraphs';
+import MetricsTables from './MetricsTables';
+
+const useStyles = makeStyles((theme: Theme) => ({
   app: {
     fontFamily: '"Roboto", sans-serif',
     minHeight: '100vh',
@@ -50,94 +43,70 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const mapStateToProps = (state: IStore) => ({
-  units: state.units,
-  simulations: state.simulations,
-  numSimulations: state.config.numSimulations,
-});
+const Simulations = () => {
+  const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
 
-const connector = connect(mapStateToProps, { fetchSimulations });
-interface ISimulationsProps extends ConnectedProps<typeof connector> {}
+  const unitNames = useSelector(unitNamesSelector, _.isEqual);
+  const numUnits = useSelector(numUnitsSelector);
+  const simulations = useSelector((state: IStore) => state.simulations, _.isEqual);
+  const numSimulations = useSelector(numSimulationsSelector);
 
-const Simulations: React.FC<ISimulationsProps> = React.memo(
-  ({ units, numSimulations, simulations, fetchSimulations }) => {
-    const classes = useStyles();
-    const theme = useTheme();
-    const history = useHistory();
-    const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const ref = useRef(null);
+  if (numUnits <= 0) {
+    history.replace('/');
+  }
 
-    if (units.length <= 0) {
-      history.replace('/');
-    }
+  useEffect(() => {
+    dispatch(fetchSimulations());
+  }, [dispatch, numSimulations]);
 
-    const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
-    const unitNames: string[] = Object.values(nameMapping);
+  useEffect(() => {
+    scrollToTop(true);
+  }, []);
 
-    const resultMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
-    const simMapper = useCallback(getProbabilitiesMapping(nameMapping), [nameMapping]);
-
-    const results = useMapping(simulations.results, resultMapper, simulations.pending);
-    const probabilities = useMapping(simulations.probabilities, simMapper, simulations.pending);
-
-    useEffect(() => {
-      fetchSimulations();
-    }, [fetchSimulations, numSimulations]);
-
-    useEffect(() => {
-      scrollToRef(ref, true);
-    }, [results]);
-
-    return (
-      <div className={classes.app} ref={ref}>
-        <AppBar title="AoS Statshammer" variant={EPages.SIMULATIONS}>
-          <SimulationTabControls pending={simulations.pending} />
-        </AppBar>
-        <div className={classes.container}>
-          <Tabbed
-            className={classes.tabs}
-            tabNames={['Cumulative', 'Discrete', 'Metrics']}
-            tabContent={[
-              <div className={classes.tab}>
-                <CumulativeCurves
-                  pending={simulations.pending}
-                  error={simulations.error}
-                  probabilities={probabilities}
-                  unitNames={unitNames}
-                />
-              </div>,
-              <div className={classes.tab}>
-                <BasicCurves
-                  pending={simulations.pending}
-                  error={simulations.error}
-                  probabilities={probabilities}
-                  unitNames={unitNames}
-                />
-              </div>,
-              <div className={classes.tab}>
-                <MetricsTables
-                  pending={simulations.pending}
-                  error={simulations.error}
-                  results={results}
-                  unitNames={unitNames}
-                />
-                <ProbabilityTables
-                  pending={simulations.pending}
-                  error={simulations.error}
-                  probabilities={probabilities}
-                  unitNames={unitNames}
-                />
-              </div>,
-            ]}
-          />
-        </div>
-        <Notifications />
-        {mobile && <BottomNavigation />}
-        <Footer />
+  return (
+    <div className={classes.app}>
+      <div className={classes.container}>
+        <Tabbed
+          className={classes.tabs}
+          tabNames={['Cumulative', 'Discrete', 'Metrics']}
+          tabContent={[
+            <div className={classes.tab}>
+              <CumulativeCurves
+                pending={simulations.pending}
+                error={simulations.error}
+                probabilities={simulations.results}
+                unitNames={unitNames}
+              />
+            </div>,
+            <div className={classes.tab}>
+              <BasicCurves
+                pending={simulations.pending}
+                error={simulations.error}
+                probabilities={simulations.results}
+                unitNames={unitNames}
+              />
+            </div>,
+            <div className={classes.tab}>
+              <MetricsTables
+                pending={simulations.pending}
+                error={simulations.error}
+                results={simulations.results}
+                unitNames={unitNames}
+              />
+              <MetricsGraphs
+                pending={simulations.pending}
+                // error={simulations.error}
+                results={simulations.results}
+                unitNames={unitNames}
+              />
+            </div>,
+          ]}
+        />
       </div>
-    );
-  },
-  (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
-);
+    </div>
+  );
+};
 
-export default connector(Simulations);
+export default Simulations;

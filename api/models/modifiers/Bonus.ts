@@ -1,8 +1,8 @@
 import { Characteristic as C } from '../../constants';
+import { numberOption } from '../../utils/modifierUtils';
 import DiceValue from '../diceValue';
-import { numberOption } from '../../utils/ModifierOptions';
-import BaseModifier from './BaseModifier';
 import WeaponProfile from '../weaponProfile';
+import BaseModifier from './BaseModifier';
 
 export default class Bonus extends BaseModifier {
   ['constructor']: typeof Bonus;

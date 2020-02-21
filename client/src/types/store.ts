@@ -1,20 +1,20 @@
 import { IModifierDefinition, IModifierInstance } from './modifiers';
-import { IUnit } from './unit';
 import { INotification } from './notification';
+import { ISimulationResult } from './simulations';
 import { TResults } from './stats';
-import { IProbability, TSimResult } from './simulations';
+import { IUnit } from './unit';
 
 export type TError = boolean | string | null;
 
 export interface IModifiersStore {
   pending: boolean;
-  modifiers: IModifierDefinition[];
+  items: IModifierDefinition[];
   error: TError;
 }
 
 export interface ITargetModifiersStore {
   pending: boolean;
-  modifiers: IModifierDefinition[];
+  items: IModifierDefinition[];
   error: TError;
 }
 
@@ -32,8 +32,7 @@ export interface IStatsStore {
 
 export interface ISimulationsStore {
   pending: boolean;
-  results: TSimResult[];
-  probabilities: IProbability[];
+  results: ISimulationResult[];
   error: TError;
 }
 

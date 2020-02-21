@@ -1,5 +1,5 @@
-import { moveItemInArray, updateItemInArray } from 'utils/arrayUpdates';
 import nanoid from 'nanoid';
+import { moveItemInArray, updateItemInArray } from 'utils/arrayUpdates';
 
 export const errorReducer = (state, action) => {
   switch (action.type) {
@@ -20,6 +20,7 @@ const modifiersReducer = (state, action) => {
         return action.modifiers.map(mod => ({
           ...mod,
           uuid: mod.uuid || nanoid(),
+          active: mod.active ?? true,
         }));
       }
       return [];
@@ -36,6 +37,11 @@ const modifiersReducer = (state, action) => {
       return updateItemInArray(state, action.index, item => ({
         ...item,
         ...action.item,
+      }));
+    case 'TOGGLE_MODIFIER_ACTIVE':
+      return updateItemInArray(state, action.index, item => ({
+        ...item,
+        active: !(item.active ?? true),
       }));
     case 'EDIT_MODIFIER_OPTION':
       return updateItemInArray(state, action.index, item => ({
@@ -72,6 +78,7 @@ export const profileReducer = (state, action) => {
     case 'REMOVE_MODIFIER':
     case 'MOVE_MODIFIER':
     case 'EDIT_MODIFIER':
+    case 'TOGGLE_MODIFIER_ACTIVE':
     case 'EDIT_MODIFIER_OPTION':
       return {
         ...state,

@@ -1,7 +1,7 @@
 import { Characteristic as C } from '../../constants';
 import { D6 } from '../dice';
-import BaseModifier from './BaseModifier';
 import WeaponProfile from '../weaponProfile';
+import BaseModifier from './BaseModifier';
 
 export default class RerollOnes extends BaseModifier {
   ['constructor']: typeof RerollOnes;

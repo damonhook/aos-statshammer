@@ -1,47 +1,34 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import NoItemsCard from 'components/NoItemsCard';
-import _ from 'lodash';
 import TargetModifierList from 'components/TargetModifierList';
-import { IStore } from 'types/store';
+import _ from 'lodash';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { targetSelector } from 'store/selectors';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   target: {
-    marginBottom: '1em',
-    flexGrow: 1,
-    flexBasis: '50%',
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: '4em',
-    },
     overflowX: 'hidden',
   },
 }));
 
-const mapStateToProps = (state: IStore) => ({
-  target: state.target,
-});
-
-const connector = connect(mapStateToProps);
-interface ITargetProps extends ConnectedProps<typeof connector> {
+interface ITargetProps {
   className?: string;
 }
 
-const Target: React.FC<ITargetProps> = React.memo(
-  ({ target, className }) => {
-    const classes = useStyles();
+const Target = ({ className }: ITargetProps) => {
+  const classes = useStyles();
+  const target = useSelector(targetSelector, _.isEqual);
 
-    return (
-      <div className={clsx(classes.target, className)}>
-        {!target?.modifiers?.length && (
-          <NoItemsCard header="No modifiers" body="No target modifiers are present (Basic target)" />
-        )}
-        <TargetModifierList />
-      </div>
-    );
-  },
-  (prevProps, nextProps) => _.isEqual(prevProps, nextProps),
-);
+  return (
+    <div className={clsx(classes.target, className)}>
+      {!target?.modifiers?.length && (
+        <NoItemsCard header="No modifiers" body="No target modifiers are present (Basic target)" />
+      )}
+      <TargetModifierList />
+    </div>
+  );
+};
 
-export default connector(Target);
+export default Target;

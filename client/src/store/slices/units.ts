@@ -1,7 +1,7 @@
+import { createSlice } from '@reduxjs/toolkit';
 import nanoid from 'nanoid';
 import { IUnitStore } from 'types/store';
-import { IWeaponProfileParameter, IUnitParameter } from 'types/unit';
-import { createSlice } from '@reduxjs/toolkit';
+import { IUnitParameter, IWeaponProfileParameter } from 'types/unit';
 import { moveItemInArray } from 'utils/arrayUpdates';
 
 const DEFAULT_WEAPON_PROFILE: IWeaponProfileParameter = {
@@ -142,7 +142,7 @@ const moveWeaponProfile = (
   }
 };
 
-export const units = createSlice({
+export const unitsStore = createSlice({
   name: 'units',
   initialState: INITIAL_STATE,
   reducers: {

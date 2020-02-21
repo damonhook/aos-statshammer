@@ -1,5 +1,5 @@
-import { getCharacteristic, Characteristic } from '../../constants';
-import { choiceOption } from '../../utils/ModifierOptions';
+import { Characteristic, getCharacteristic } from '../../constants';
+import { choiceOption } from '../../utils/modifierUtils';
 
 export default class BaseModifier {
   ['constructor']: typeof BaseModifier;

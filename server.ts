@@ -1,6 +1,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
+import * as Sentry from '@sentry/node';
 import bodyParser from 'body-parser';
 import cluster from 'cluster';
 import compression from 'compression';
@@ -9,7 +10,7 @@ import os from 'os';
 import path from 'path';
 
 import { getModifiers, getTargetModifiers } from './api/controllers/modifiersController';
-import { compareUnits, simulateUnits, simulateUnitsForSave } from './api/controllers/statsController';
+import StatsController from './api/controllers/statsController';
 
 function addHeaders(res: Response, production = false) {
   if (production) {
@@ -24,6 +25,10 @@ function appServer(production = false) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(compression());
+  if (production) {
+    Sentry.init({ dsn: 'https://58d2fbef02e84489916ebd0b761b4ab3@sentry.io/2678767' });
+    app.use(Sentry.Handlers.requestHandler());
+  }
 
   app.get('/status', (req, res) => {
     addHeaders(res, production);
@@ -42,17 +47,17 @@ function appServer(production = false) {
 
   app.post('/api/compare', (req, res) => {
     addHeaders(res, production);
-    res.send(compareUnits(req.body));
+    res.send(new StatsController().compareUnits(req.body));
   });
 
   app.post('/api/simulate', (req, res) => {
     addHeaders(res, production);
-    res.send(simulateUnits(req.body));
+    res.send(new StatsController().simulateUnits(req.body));
   });
 
   app.post('/api/simulate/save', (req, res) => {
     addHeaders(res, production);
-    res.send(simulateUnitsForSave(req.body));
+    res.send(new StatsController().simulateUnitsForSave(req.body));
   });
 
   let logMessage = `Listening on port ${port}`;
@@ -66,6 +71,7 @@ function appServer(production = false) {
       res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
     });
 
+    app.use(Sentry.Handlers.errorHandler());
     logMessage = `Worker ${cluster.worker.id}, ${logMessage}`;
   }
 

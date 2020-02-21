@@ -1,9 +1,10 @@
 import fetch from 'cross-fetch';
-import { notifications, modifiers, targetModifiers } from 'store/slices';
+import { modifiersStore, notificationsStore, targetModifiersStore } from 'store/slices';
+
 import { TDispatch } from './api.types';
 
 export const fetchModifiers = () => async (dispatch: TDispatch) => {
-  dispatch(modifiers.actions.fetchModifiersPending());
+  dispatch(modifiersStore.actions.fetchModifiersPending());
   try {
     const request = await fetch('/api/modifiers', {
       headers: {
@@ -13,11 +14,11 @@ export const fetchModifiers = () => async (dispatch: TDispatch) => {
     });
 
     const res = await request.json();
-    dispatch(modifiers.actions.fetchModifiersSuccess({ modifiers: res.modifiers }));
+    dispatch(modifiersStore.actions.fetchModifiersSuccess({ items: res.modifiers }));
   } catch (error) {
-    dispatch(modifiers.actions.fetchModifiersError({ error }));
+    dispatch(modifiersStore.actions.fetchModifiersError({ error }));
     dispatch(
-      notifications.actions.addNotification({
+      notificationsStore.actions.addNotification({
         message: 'Failed to fetch modifiers',
         variant: 'error',
         action: {
@@ -30,7 +31,7 @@ export const fetchModifiers = () => async (dispatch: TDispatch) => {
 };
 
 export const fetchTargetModifiers = () => async (dispatch: TDispatch) => {
-  dispatch(targetModifiers.actions.fetchTargetModifiersPending());
+  dispatch(targetModifiersStore.actions.fetchTargetModifiersPending());
   try {
     const request = await fetch('/api/target/modifiers', {
       headers: {
@@ -40,11 +41,11 @@ export const fetchTargetModifiers = () => async (dispatch: TDispatch) => {
     });
 
     const res = await request.json();
-    dispatch(targetModifiers.actions.fetchTargetModifiersSuccess({ modifiers: res.modifiers }));
+    dispatch(targetModifiersStore.actions.fetchTargetModifiersSuccess({ items: res.modifiers }));
   } catch (error) {
-    dispatch(targetModifiers.actions.fetchTargetModifiersError({ error }));
+    dispatch(targetModifiersStore.actions.fetchTargetModifiersError({ error }));
     dispatch(
-      notifications.actions.addNotification({
+      notificationsStore.actions.addNotification({
         message: 'Failed to fetch target modifiers',
         variant: 'error',
         action: {

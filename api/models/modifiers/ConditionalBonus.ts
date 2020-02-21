@@ -1,10 +1,10 @@
 import { Characteristic as C, getCharacteristic } from '../../constants';
+import { booleanOption, choiceOption, numberOption, rollOption } from '../../utils/modifierUtils';
 import { D6 } from '../dice';
-import { numberOption, booleanOption, rollOption, choiceOption } from '../../utils/ModifierOptions';
 import DiceValue from '../diceValue';
+import WeaponProfile from '../weaponProfile';
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';
-import WeaponProfile from '../weaponProfile';
 
 export default class ConditionalBonus extends BaseModifier {
   ['constructor']: typeof ConditionalBonus;

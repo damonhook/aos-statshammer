@@ -24,8 +24,8 @@ These extra analytics are split into the following **3 tabs**:
 - Sample Metrics Tables
   - Contains sample metrics for each **unit** against a target with **y** save:
     - Mean
-    - Median
     - Max
     - Variance
-- Probability Tables
-  - Contains the data that was used to generate the **Discrete Probability Graphs**
+    - Standard Deviation
+- Average Damage Graph
+  - Contains the **average** damage each unit would do against each target save

@@ -1,5 +1,6 @@
-import React from 'react';
 import { LocalOffer as ReleasesIcon } from '@material-ui/icons';
+import React from 'react';
+
 import { ISocialButtonProps } from './props';
 import SocialItem from './SocialItem';
 

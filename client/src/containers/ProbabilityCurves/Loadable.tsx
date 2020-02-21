@@ -1,9 +1,9 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { SimulationsErrorCard } from 'components/ErrorCards';
 import { GraphSkeleton } from 'components/Skeletons';
-import { AdvancedStatsErrorCard } from 'components/ErrorCards';
 import _ from 'lodash';
+import React from 'react';
 import { TError } from 'types/store';
 
 const useStyles = makeStyles(theme => ({
@@ -33,13 +33,14 @@ const Loadable: React.FC<ILoadableProps> = React.memo(
     const classes = useStyles({ numUnits });
 
     if (error) {
-      return <AdvancedStatsErrorCard />;
+      return <SimulationsErrorCard />;
     }
     if (loading) {
       return (
         <Grid container spacing={2}>
-          {[...Array(6)].map(() => (
-            <Grid item className={classes.graphContainer}>
+          {[...Array(6)].map((_, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Grid item className={classes.graphContainer} key={index}>
               <GraphSkeleton
                 series={5}
                 groups={2}

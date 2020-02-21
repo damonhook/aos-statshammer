@@ -1,16 +1,17 @@
-import React, { useCallback, useState } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { LineGraph } from 'components/Graphs';
 import { Grid } from '@material-ui/core';
-import _ from 'lodash';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { LineGraph } from 'components/Graphs';
 import { ProbabilityTooltip } from 'components/GraphTooltips';
 import ListItem from 'components/ListItem';
-import clsx from 'clsx';
-import { IProbability } from 'types/simulations';
+import _ from 'lodash';
+import React, { useCallback, useState } from 'react';
+import { ISimulationResult } from 'types/simulations';
 import { TError } from 'types/store';
-import { getMaxDamage, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
-import Loadable from './Loadable';
+
 import GraphControls from './GraphControls';
+import Loadable from './Loadable';
+import { getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 
 const useStyles = makeStyles(theme => ({
   probabilityCurves: {},
@@ -53,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface CumulativeCurvesProps {
-  probabilities: IProbability[];
+  probabilities: ISimulationResult[];
   unitNames: string[];
   className?: string[];
   error?: TError;
@@ -65,13 +66,8 @@ const CumulativeCurves: React.FC<CumulativeCurvesProps> = React.memo(
     const classes = useStyles({ numUnits: unitNames.length });
     const theme = useTheme();
     const [activeReferenceLine, setActiveReferenceLine] = useState(REFERENCE_LINE_OPTIONS.NONE);
-    const [matchXAxis, setMatchXAxis] = useState(true);
 
-    let maxDamage = matchXAxis ? 0 : 'dataMax';
     const ticks = getTicks(100);
-    if (matchXAxis && probabilities && probabilities.length) {
-      maxDamage = getMaxDamage(probabilities) + 1;
-    }
 
     const yAxisLabel = useCallback(value => `${value}%`, []);
     let activeMetric: string | null = null;
@@ -83,10 +79,6 @@ const CumulativeCurves: React.FC<CumulativeCurvesProps> = React.memo(
       setActiveReferenceLine(value);
     };
 
-    const handleSetMatchXAxisChanged = value => {
-      setMatchXAxis(value);
-    };
-
     return (
       <ListItem
         className={clsx(classes.probabilityCurves, className)}
@@ -96,8 +88,6 @@ const CumulativeCurves: React.FC<CumulativeCurvesProps> = React.memo(
         loaderDelay={0}
       >
         <GraphControls
-          matchXAxis={matchXAxis}
-          setMatchXAxis={handleSetMatchXAxisChanged}
           activeReferenceLine={activeReferenceLine}
           setActiveReferenceLine={handleReferenceLineChanged}
         />
@@ -106,11 +96,11 @@ const CumulativeCurves: React.FC<CumulativeCurvesProps> = React.memo(
             {probabilities.map(({ save, cumulative, metrics }) => (
               <Grid item className={classes.graphContainer} key={save}>
                 <LineGraph
-                  title={`Cumulative Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
+                  title={`Cumulative Damage Probability (${!save ? '-' : `${save}+`})`}
                   data={cumulative}
                   series={unitNames}
                   xAxis={{
-                    domain: [0, maxDamage],
+                    domain: [0, 'dataMax'],
                     type: 'number',
                     dataKey: 'damage',
                     tickCount: 10,

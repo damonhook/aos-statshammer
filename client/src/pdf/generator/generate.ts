@@ -1,20 +1,25 @@
 /* eslint-disable no-underscore-dangle */
-import jsPDF from 'jspdf';
 // eslint-disable-next-line import/no-duplicates
 import 'jspdf-autotable'; // Has to be separate import
+
+import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
+import jsPDF from 'jspdf';
 // eslint-disable-next-line import/no-duplicates
 import { MultipleRowType } from 'jspdf-autotable';
-import { getModifierById } from 'store/selectors/modifierHelpers';
-import { getTargetModifierById } from 'store/selectors/targetModifierHelpers';
-import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
-import { IUnitStore, ITargetStore } from 'types/store';
-import { TResult } from 'types/stats';
-import { IJsPDF } from 'types/pdf';
+import store from 'store';
+import { ISanitizedUnit, modifierByIdSelector, targetModifierByIdSelector } from 'store/selectors';
 import { IModifierInstance } from 'types/modifiers';
+import { IJsPDF } from 'types/pdf';
+import { TResult } from 'types/stats';
+import { ITargetStore } from 'types/store';
+
 import cursor from './cursor';
-import { margin, headerColor, addHeader, addSubHeader, addHR, addPage, addGraphs } from './pdfUtils';
+import { addGraphs, addHeader, addHR, addPage, addSubHeader, headerColor, margin } from './pdfUtils';
 
 const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): MultipleRowType => {
+  const state = store.getState();
+  const getModifierById = modifierByIdSelector(state);
+  const getTargetModifierById = targetModifierByIdSelector(state);
   const modifierItems = modifiers
     .map(({ id, options }) => {
       const definition = isTarget ? getTargetModifierById(id) : getModifierById(id);
@@ -40,7 +45,7 @@ const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): Mul
   return [];
 };
 
-const generateUnits = (doc: IJsPDF, units: IUnitStore) => {
+const generateUnits = (doc: IJsPDF, units: ISanitizedUnit[]) => {
   addSubHeader(doc, 'Units');
   units.forEach(({ name, weapon_profiles }) => {
     weapon_profiles.forEach((profile, index) => {
@@ -153,7 +158,7 @@ const generateStatsTable = (doc: IJsPDF, results: TResult[], unitNames: string[]
 };
 
 const generate = async (
-  units: IUnitStore,
+  units: ISanitizedUnit[],
   target: ITargetStore,
   results: TResult[],
   unitNames: string[],

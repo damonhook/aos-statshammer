@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { LinearProgress, Fade } from '@material-ui/core';
+import { Fade, LinearProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(() => ({
   loader: {

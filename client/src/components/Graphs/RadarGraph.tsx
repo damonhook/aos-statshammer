@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import {
-  RadarChart,
-  Radar,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Tooltip,
-  Legend,
-  PolarGrid,
-  BaseValueType,
-} from 'recharts';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { DefaultTooltip } from 'components/GraphTooltips';
+import React, { useEffect, useState } from 'react';
+import {
+  BaseValueType,
+  Legend,
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+  Tooltip,
+} from 'recharts';
+
 import GraphContainer from './GraphContainer';
 import {
+  getInitOpacity,
   getLegendFormatter,
   getMouseEnterHandler,
   getMouseLeaveHandler,
-  getInitOpacity,
   GraphProps,
   IYAxis,
 } from './graphHelpers';

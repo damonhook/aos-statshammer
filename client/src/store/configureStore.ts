@@ -1,37 +1,32 @@
-import { persistStore, persistReducer } from 'redux-persist';
+import { combineReducers, configureStore as createStore, Middleware } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
-
-import { configureStore as createStore, combineReducers, Middleware } from '@reduxjs/toolkit';
-import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 import {
-  config,
-  modifiers,
-  notifications,
-  simulations,
-  stats,
-  target,
-  targetModifiers,
-  units,
+  configStore,
+  modifiersStore,
+  notificationsStore,
+  simulationsStore,
+  statsStore,
+  targetModifiersStore,
+  targetStore,
+  unitsStore,
 } from './slices';
 
 export const appReducer = combineReducers({
-  config: config.reducer,
-  modifiers: modifiers.reducer,
-  notifications: notifications.reducer,
-  simulations: simulations.reducer,
-  stats: stats.reducer,
-  target: target.reducer,
-  targetModifiers: targetModifiers.reducer,
-  units: units.reducer,
+  config: configStore.reducer,
+  modifiers: modifiersStore.reducer,
+  notifications: notificationsStore.reducer,
+  simulations: simulationsStore.reducer,
+  stats: statsStore.reducer,
+  target: targetStore.reducer,
+  targetModifiers: targetModifiersStore.reducer,
+  units: unitsStore.reducer,
 });
 
 const middleware: Middleware[] = [thunk];
-if (process.env.NODE_ENV !== 'production') {
-  middleware.push(logger);
-}
 
 const persistConfig = {
   key: 'aos-statshammer-12-12-19',

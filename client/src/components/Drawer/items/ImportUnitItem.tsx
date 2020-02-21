@@ -1,29 +1,20 @@
-import React, { useCallback } from 'react';
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { ImportExport } from '@material-ui/icons';
-import { connect, ConnectedProps } from 'react-redux';
 import Uploader from 'components/Uploader';
-import { addUnitEnabled } from 'store/selectors/unitHelpers';
-import { IStore } from 'types/store';
-import { notifications, units } from 'store/slices';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUnitEnabledSelector } from 'store/selectors';
+import { notificationsStore, unitsStore } from 'store/slices';
 
-const mapStateToProps = (state: IStore) => ({
-  numUnits: state.units.length,
-});
-const mapDispatchToProps = {
-  addNotification: notifications.actions.addNotification,
-  addUnit: units.actions.addUnit,
-};
+import MenuItem from '../MenuItem';
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-interface ImportUnitItemProps extends ConnectedProps<typeof connector> {
+interface IImportUnitItemProps {
   onClick?: () => void;
+  mini?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ImportUnitItem: React.FC<ImportUnitItemProps> = ({ numUnits, addNotification, addUnit, onClick }) => {
-  /** Is the upload menu item disabled or not */
-  const isUploadDisabled = !addUnitEnabled();
+const ImportUnitItem = ({ onClick, mini }: IImportUnitItemProps) => {
+  const dispatch = useDispatch();
+  const uploadEnabled = useSelector(addUnitEnabledSelector);
 
   /** The function to call when a file upload happens.
    * In this case that would be importing the uploaded unit data
@@ -32,28 +23,28 @@ const ImportUnitItem: React.FC<ImportUnitItemProps> = ({ numUnits, addNotificati
   const onUnitUpload = useCallback(
     data => {
       if (data && data.name && data.weapon_profiles) {
-        addNotification({ message: 'Successfully imported unit', variant: 'success' });
-        addUnit({ unit: data });
+        dispatch(
+          notificationsStore.actions.addNotification({
+            message: 'Successfully imported unit',
+            variant: 'success',
+          }),
+        );
+        dispatch(unitsStore.actions.addUnit({ unit: data }));
       }
       if (onClick) onClick();
     },
-    [addNotification, addUnit, onClick],
+    [dispatch, onClick],
   );
 
   return (
     <Uploader
       onUpload={onUnitUpload}
-      disabled={isUploadDisabled}
+      disabled={!uploadEnabled}
       component={
-        <ListItem button disabled={isUploadDisabled}>
-          <ListItemIcon>
-            <ImportExport />
-          </ListItemIcon>
-          <ListItemText primary="Import Unit" />
-        </ListItem>
+        <MenuItem disabled={!uploadEnabled} label="Import Unit" icon={<ImportExport />} mini={mini} />
       }
     />
   );
 };
 
-export default connector(ImportUnitItem);
+export default ImportUnitItem;

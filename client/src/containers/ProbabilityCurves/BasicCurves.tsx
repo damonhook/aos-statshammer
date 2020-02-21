@@ -1,16 +1,17 @@
-import React, { useCallback, useState } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { LineGraph } from 'components/Graphs';
 import { Grid } from '@material-ui/core';
-import _ from 'lodash';
-import { ProbabilityTooltip } from 'components/GraphTooltips';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import { LineGraph } from 'components/Graphs';
+import { ProbabilityTooltip } from 'components/GraphTooltips';
 import ListItem from 'components/ListItem';
-import { IProbability } from 'types/simulations';
+import _ from 'lodash';
+import React, { useCallback, useState } from 'react';
+import { ISimulationResult } from 'types/simulations';
 import { TError } from 'types/store';
-import { getMaxDamage, getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
+
 import GraphControls from './GraphControls';
 import Loadable from './Loadable';
+import { getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 
 const useStyles = makeStyles(theme => ({
   probabilityCurves: {},
@@ -45,27 +46,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface BasicCurvesProps {
-  probabilities: IProbability[];
+  probabilities: ISimulationResult[];
   unitNames: string[];
   className?: string[];
   error?: TError;
   pending: boolean;
 }
 
-const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
-  ({ probabilities, unitNames, className, error, pending }) => {
+const BasicCurves = React.memo(
+  ({ probabilities, unitNames, className, error, pending }: BasicCurvesProps) => {
     const classes = useStyles({ numUnits: unitNames.length });
     const theme = useTheme();
     const [activeReferenceLine, setActiveReferenceLine] = useState(REFERENCE_LINE_OPTIONS.NONE);
-    const [matchXAxis, setMatchXAxis] = useState(true);
 
-    let maxDamage = matchXAxis ? 0 : 'dataMax';
     let ticks: number[];
     let maxProbability = 0;
     if (probabilities && probabilities.length) {
-      if (matchXAxis) {
-        maxDamage = getMaxDamage(probabilities);
-      }
       maxProbability = getMaxProbability(probabilities);
       if (maxProbability) {
         ticks = getTicks(maxProbability);
@@ -82,10 +78,6 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
       setActiveReferenceLine(value);
     };
 
-    const handleSetMatchXAxisChanged = (value: boolean) => {
-      setMatchXAxis(value);
-    };
-
     return (
       <ListItem
         className={clsx(classes.probabilityCurves, className)}
@@ -95,21 +87,19 @@ const BasicCurves: React.FC<BasicCurvesProps> = React.memo(
         loaderDelay={0}
       >
         <GraphControls
-          matchXAxis={matchXAxis}
-          setMatchXAxis={handleSetMatchXAxisChanged}
           activeReferenceLine={activeReferenceLine}
           setActiveReferenceLine={handleReferenceLineChanged}
         />
         <Loadable loading={pending} numUnits={unitNames.length} error={error}>
           <Grid container spacing={2} className={classes.content}>
-            {probabilities.map(({ save, buckets, metrics }) => (
+            {probabilities.map(({ save, discrete, metrics }) => (
               <Grid item className={classes.graphContainer} key={save}>
                 <LineGraph
-                  title={`Damage Probability (${save === 'None' ? '-' : `${save}+`})`}
-                  data={buckets}
+                  title={`Damage Probability (${!save ? '-' : `${save}+`})`}
+                  data={discrete}
                   series={unitNames}
                   xAxis={{
-                    domain: [0, maxDamage],
+                    domain: [0, 'dataMax'],
                     type: 'number',
                     dataKey: 'damage',
                     tickCount: 10,
