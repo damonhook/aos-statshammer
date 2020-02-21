@@ -4,7 +4,9 @@ import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { GetApp, Home, Info, Timeline } from '@material-ui/icons';
 import { useHashMatch, useRouteFind } from 'hooks';
 import React, { useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { numUnitsSelector } from 'store/selectors';
 import { HASHES, ROUTES } from 'utils/urls';
 
 import DrawerLogo from './DrawerLogo';
@@ -43,6 +45,8 @@ const Drawer = () => {
   const theme = useTheme();
   const history = useHistory();
   const classes = useStyles();
+
+  const numUnits = useSelector(numUnitsSelector);
 
   const open = useHashMatch(HASHES.DRAWER);
   const [, , page] = useRouteFind(Object.values(ROUTES));
@@ -92,12 +96,14 @@ const Drawer = () => {
             label="Simulations"
             icon={<Timeline />}
             selected={page === ROUTES.SIMULATIONS}
+            disabled={numUnits <= 0}
           />
           <MenuLinkItem
             to={ROUTES.PDF}
             label="Download PDF"
             icon={<GetApp />}
             selected={page === ROUTES.PDF}
+            disabled={numUnits <= 0}
           />
           <MenuLinkItem to={ROUTES.ABOUT} label="About" icon={<Info />} selected={page === ROUTES.ABOUT} />
           <Divider className={classes.divider} variant="middle" />

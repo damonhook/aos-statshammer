@@ -3,6 +3,8 @@ import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { GetApp, Home, Info, Timeline } from '@material-ui/icons';
 import { useRouteFind } from 'hooks';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { numUnitsSelector } from 'store/selectors';
 import { ROUTES } from 'utils/urls';
 
 import DrawerLogo from './DrawerLogo';
@@ -38,11 +40,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Drawer = () => {
   const theme = useTheme();
+  const classes = useStyles();
+
+  const numUnits = useSelector(numUnitsSelector);
 
   const [, , page] = useRouteFind(Object.values(ROUTES));
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const classes = useStyles();
 
   const isHome = [ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS].includes(page);
 
@@ -73,6 +76,7 @@ const Drawer = () => {
           label="Simulations"
           icon={<Timeline />}
           selected={page === ROUTES.SIMULATIONS}
+          disabled={numUnits <= 0}
           mini
         />
         <MenuLinkItem
@@ -80,6 +84,7 @@ const Drawer = () => {
           label="Download PDF"
           icon={<GetApp />}
           selected={page === ROUTES.PDF}
+          disabled={numUnits <= 0}
           mini
         />
         <MenuLinkItem to={ROUTES.ABOUT} label="About" icon={<Info />} selected={page === ROUTES.ABOUT} mini />
