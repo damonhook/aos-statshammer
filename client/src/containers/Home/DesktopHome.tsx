@@ -5,6 +5,7 @@ import Stats from 'containers/Stats';
 import Target from 'containers/Target';
 import Units from 'containers/Units';
 import React from 'react';
+import { Redirect, Switch } from 'react-router-dom';
 import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles(theme => ({
@@ -43,6 +44,9 @@ const DesktopHome = () => {
           </div>
         </Grid>
       </Grid>
+      <Switch>
+        <Redirect exact from="/stats" to="/" />
+      </Switch>
     </div>
   );
 };

@@ -38,11 +38,11 @@ const RollInput = React.memo(
   }: IRollInputProps) => {
     const classes = useStyles();
     const [error, setError] = useState<string | undefined>(undefined);
+    const min = allowOnes ? 1 : 2;
+    const max = 6;
 
     const validator = useCallback(
       (value: string) => {
-        const min = allowOnes ? 1 : 2;
-        const max = 6;
         let error: string | undefined;
         if (required && !value) {
           error = 'Required';
@@ -51,10 +51,10 @@ const RollInput = React.memo(
         }
         return error;
       },
-      [allowOnes, required],
+      [min, max, required],
     );
 
-    const inputProps: { [name: string]: React.ReactNode } = {};
+    const inputProps: { [name: string]: React.ReactNode } = { inputProps: { min, max } };
     if (startAdornment) {
       inputProps.startAdornment = <InputAdornment position="start">{startAdornment}</InputAdornment>;
     }

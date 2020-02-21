@@ -38,8 +38,9 @@ const Loadable: React.FC<ILoadableProps> = React.memo(
     if (loading) {
       return (
         <Grid container spacing={2}>
-          {[...Array(6)].map(() => (
-            <Grid item className={classes.graphContainer}>
+          {[...Array(6)].map((_, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Grid item className={classes.graphContainer} key={index}>
               <GraphSkeleton
                 series={5}
                 groups={2}

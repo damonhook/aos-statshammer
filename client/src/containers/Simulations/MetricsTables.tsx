@@ -50,8 +50,9 @@ const Loadable = ({ children, loading, numUnits, error }: ILoadableProps) => {
   if (loading) {
     return (
       <Grid container spacing={2}>
-        {[...Array(6)].map(() => (
-          <Grid item className={classes.tableContainer}>
+        {[...Array(6)].map((_, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Grid item className={classes.tableContainer} key={index}>
             <TableSkeleton rows={numUnits} cols={5} dense />
           </Grid>
         ))}
