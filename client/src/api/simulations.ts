@@ -1,15 +1,20 @@
 import appConfig from 'appConfig';
 import fetch from 'cross-fetch';
 import store from 'store';
-import { getSanitizedTargetSelector, getSanitizedUnitsSelector, ISanitizedUnit } from 'store/selectors';
+import {
+  getSanitizedTargetSelector,
+  getSanitizedUnitsSelector,
+  ISanitizedUnit,
+  numSimulationsSelector,
+} from 'store/selectors';
 import { configStore, notificationsStore, simulationsStore } from 'store/slices';
 import { ISimulation } from 'types/simulations';
-import { ITargetStore } from 'types/store';
+import { IStore, ITargetStore } from 'types/store';
 
 import { TDispatch } from './api.types';
 
-const verifyNumSimulations = (dispatch: TDispatch): number => {
-  const storeNumSims = store.getState().config.numSimulations;
+const verifyNumSimulations = (state: IStore, dispatch: TDispatch): number => {
+  const storeNumSims = numSimulationsSelector(state);
   let numSims = storeNumSims ?? appConfig.simulations.default;
   numSims = Math.min(Math.max(numSims, appConfig.simulations.min), appConfig.simulations.max);
   if (numSims !== storeNumSims) {
@@ -24,18 +29,7 @@ const fetchSimulationForSave = async (
   save: number,
   numSimulations: number,
 ) => {
-  const data = {
-    units: units.map(unit => ({
-      name: unit.name,
-      weapon_profiles: unit.weapon_profiles.filter(profile => profile.active),
-    })),
-    target: {
-      ...target,
-      modifiers: target.modifiers.filter(({ error }) => !error),
-    },
-    numSimulations,
-    save,
-  };
+  const data = { units, target, numSimulations, save };
   return fetch('/api/simulate/save', {
     method: 'POST',
     headers: {
@@ -54,7 +48,7 @@ export const fetchSimulations = () => async (dispatch: TDispatch) => {
     if (!units)
       dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
     const target = getSanitizedTargetSelector(state);
-    const numSimulations = verifyNumSimulations(dispatch);
+    const numSimulations = verifyNumSimulations(state, dispatch);
 
     const responses = await Promise.all(
       [2, 3, 4, 5, 6, 0].map(save =>

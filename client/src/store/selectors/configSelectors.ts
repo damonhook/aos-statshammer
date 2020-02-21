@@ -7,3 +7,5 @@ export const desktopGraphListSelector = createSelector(
   configSelector,
   ({ desktopGraphList }) => desktopGraphList,
 );
+
+export const numSimulationsSelector = createSelector(configSelector, ({ numSimulations }) => numSimulations);

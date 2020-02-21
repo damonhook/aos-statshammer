@@ -7,11 +7,11 @@ import jsPDF from 'jspdf';
 // eslint-disable-next-line import/no-duplicates
 import { MultipleRowType } from 'jspdf-autotable';
 import store from 'store';
-import { modifierByIdSelector, targetModifierByIdSelector } from 'store/selectors';
+import { ISanitizedUnit, modifierByIdSelector, targetModifierByIdSelector } from 'store/selectors';
 import { IModifierInstance } from 'types/modifiers';
 import { IJsPDF } from 'types/pdf';
 import { TResult } from 'types/stats';
-import { ITargetStore, IUnitStore } from 'types/store';
+import { ITargetStore } from 'types/store';
 
 import cursor from './cursor';
 import { addGraphs, addHeader, addHR, addPage, addSubHeader, headerColor, margin } from './pdfUtils';
@@ -45,7 +45,7 @@ const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): Mul
   return [];
 };
 
-const generateUnits = (doc: IJsPDF, units: IUnitStore) => {
+const generateUnits = (doc: IJsPDF, units: ISanitizedUnit[]) => {
   addSubHeader(doc, 'Units');
   units.forEach(({ name, weapon_profiles }) => {
     weapon_profiles.forEach((profile, index) => {
@@ -158,7 +158,7 @@ const generateStatsTable = (doc: IJsPDF, results: TResult[], unitNames: string[]
 };
 
 const generate = async (
-  units: IUnitStore,
+  units: ISanitizedUnit[],
   target: ITargetStore,
   results: TResult[],
   unitNames: string[],

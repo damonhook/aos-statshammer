@@ -11,6 +11,10 @@ describe('targetSelectors', () => {
     expect(selectors.targetAppliedModifiersSelector(state)).toEqual(target.modifiers);
   });
 
+  test('numTargetModifiersSelector', () => {
+    expect(selectors.numTargetModifiersSelector(state)).toEqual(4);
+  });
+
   test('getSanitizedTargetSelector', () => {
     const expected = {
       modifiers: [

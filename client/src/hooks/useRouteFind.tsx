@@ -4,7 +4,7 @@ import { matchPath, useLocation } from 'react-router-dom';
 const useRouteFind = (routes: string[], defaultIndex = 0): [number, boolean, string] => {
   const location = useLocation();
   const [index, setIndex] = useState(defaultIndex);
-  const [matched, setMatched] = useState(false);
+  const [matched, setMatched] = useState(true);
   const [route, setRoute] = useState(routes[defaultIndex]);
 
   useEffect(() => {

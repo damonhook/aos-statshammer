@@ -10,4 +10,8 @@ describe('configSelectors', () => {
   test('desktopGraphListSelector', () => {
     expect(selectors.desktopGraphListSelector(state)).toEqual(false);
   });
+
+  test('numSimulationsSelector', () => {
+    expect(selectors.numSimulationsSelector(state)).toEqual(5000);
+  });
 });
