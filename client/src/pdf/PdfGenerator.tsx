@@ -1,8 +1,11 @@
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import { useRefCallback } from 'hooks';
+import _ from 'lodash';
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { ISanitizedUnit, unitNamesSelector } from 'store/selectors';
 import { lightTheme } from 'themes';
 import { IJsPDF } from 'types/pdf';
 import { ISimulationResult } from 'types/simulations';
@@ -29,7 +32,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface IPdfGeneratorProps {
-  units: IUnitStore;
+  units: ISanitizedUnit[];
   target: ITargetStore;
   results: TResult[];
   probabilities: ISimulationResult[];
@@ -43,7 +46,7 @@ const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, pr
   const [loading, setLoading] = useState(true);
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const unitNames = useMemo(() => units.map(({ name }) => name), [units]);
+  const unitNames = useSelector(unitNamesSelector, _.isEqual);
 
   const generatePdf = useCallback(
     () => generate(units, target, results, unitNames, 'pdf-copy', 'pdf-cumulative', 'pdf-prob'),

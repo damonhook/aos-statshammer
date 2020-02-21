@@ -1,9 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { fetchModifiers, fetchSimulations, fetchStatsCompare, fetchTargetModifiers } from 'api';
 import { useMapping } from 'hooks';
+import _ from 'lodash';
 import PdfGenerator from 'pdf';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getSanitizedTargetSelector, getSanitizedUnitsSelector } from 'store/selectors';
 import { IStore } from 'types/store';
 import { applyUnitNameMapping, getResultsMapping } from 'utils/mappers';
 
@@ -21,9 +23,12 @@ const useStyles = makeStyles(() => ({
 
 const PdfContainer = () => {
   const classes = useStyles();
-  const { units, target, modifiers, targetModifiers, stats, simulations } = useSelector(
+  const { units, modifiers, targetModifiers, stats, simulations } = useSelector(
     (state: IStore) => state,
+    _.isEqual,
   );
+  const sanitizedUnits = useSelector(getSanitizedUnitsSelector)(false);
+  const target = useSelector(getSanitizedTargetSelector);
   const dispatch = useDispatch();
 
   const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
@@ -48,7 +53,12 @@ const PdfContainer = () => {
     return (
       <div className={classes.pdfContainer}>
         <div className={classes.generatorInner}>
-          <PdfGenerator units={units} target={target} results={results} probabilities={probabilities} />
+          <PdfGenerator
+            units={sanitizedUnits}
+            target={target}
+            results={results}
+            probabilities={probabilities}
+          />
         </div>
       </div>
     );
