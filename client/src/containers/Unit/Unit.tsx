@@ -7,9 +7,9 @@ import ListItem from 'components/ListItem';
 import NoItemsCard from 'components/NoItemsCard';
 import WeaponProfile from 'containers/WeaponProfile';
 import _ from 'lodash';
-import React, { useCallback, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addUnitEnabledSelector, numUnitsSelector } from 'store/selectors';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { addUnitEnabledSelector, numUnitsSelector, unitNamesSelector } from 'store/selectors';
 import { notificationsStore, unitsStore } from 'store/slices';
 import { IUnit } from 'types/unit';
 import { scrollToRef } from 'utils/scrollIntoView';
@@ -45,8 +45,9 @@ const Unit = React.memo(
   ({ id, unit, className }: IUnitProps) => {
     const unitRef = useRef(null);
     const classes = useStyles();
-    const adUnitEnabled = useSelector(addUnitEnabledSelector);
-    const numUnits = useSelector(numUnitsSelector);
+    const adUnitEnabled = useSelector(addUnitEnabledSelector, shallowEqual);
+    const numUnits = useSelector(numUnitsSelector, shallowEqual);
+    const unitNames = useSelector(unitNamesSelector, shallowEqual);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -74,7 +75,12 @@ const Unit = React.memo(
     const numProfiles = unit.weapon_profiles ? unit.weapon_profiles.length : 0;
     const addProfileEnabled = numProfiles < appConfig.limits.profiles;
 
-    const unitNameError = !unit.name || unit.name === '';
+    const unitNameError = useMemo(() => {
+      if (!unit.name || unit.name === '') return 'Required';
+      if (unitNames.reduce((acc, n) => (n === unit.name ? acc + 1 : acc), 0) > 1)
+        return 'Unit names should be unique';
+      return undefined;
+    }, [unit, unitNames]);
 
     const copyUnit = () => {
       dispatch(
@@ -125,8 +131,8 @@ const Unit = React.memo(
             label="Unit Name"
             value={unit.name}
             onChange={handleEditName}
-            error={unitNameError}
-            helperText={unitNameError ? 'required' : null}
+            error={Boolean(unitNameError)}
+            helperText={unitNameError}
             fullWidth
           />
           <div className={classes.profiles}>
