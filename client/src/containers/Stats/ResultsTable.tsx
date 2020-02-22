@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   },
   skeleton: {},
   container: {
-    overflowX: 'scroll',
+    overflowX: 'auto',
   },
   sticky: {
     position: 'sticky',

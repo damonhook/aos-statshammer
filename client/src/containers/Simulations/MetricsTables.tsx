@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   table: {
     background: theme.palette.background.nested,
-    overflowX: 'scroll',
+    overflowX: 'auto',
   },
   header: {
     fontWeight: theme.typography.fontWeightBold,
