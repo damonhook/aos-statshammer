@@ -83,7 +83,8 @@ if (prod) {
   if (cluster.isMaster) {
     let numWorkers = 3;
     if (prod) {
-      numWorkers = os.cpus().length;
+      const maxWorkers = Math.max(Number(process.env.MAX_WORKERS ?? 8), 1);
+      numWorkers = Math.min(os.cpus().length, maxWorkers);
     }
     console.log(`Spawning ${numWorkers} workers ${prod ? 'in production mode' : ''}`);
     // Create a worker for each CPU
