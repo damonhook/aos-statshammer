@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         color: theme.palette.primary.dark,
       },
     },
+    '& p': {
+      fontSize: '0.75rem',
+    },
   },
   divider: {
     marginTop: theme.spacing(3),
