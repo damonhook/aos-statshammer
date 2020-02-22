@@ -9,3 +9,5 @@ export const desktopGraphListSelector = createSelector(
 );
 
 export const numSimulationsSelector = createSelector(configSelector, ({ numSimulations }) => numSimulations);
+
+export const useRailLgSelector = createSelector(configSelector, ({ useRailLg }) => useRailLg);

@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   closeIcon: {
     marginRight: theme.spacing(1),
   },
+  md: {
+    '& p': {
+      fontSize: '0.75rem',
+    },
+  },
 }));
 
 const SimulationInfoModal = () => {
@@ -67,7 +72,7 @@ const SimulationInfoModal = () => {
           <span>Simulation Info</span>
         </DialogTitle>
         <DialogContent>
-          <ReactMarkdown source={content} />
+          <ReactMarkdown source={content} className={classes.md} />
         </DialogContent>
         <DialogActions>
           <Button variant="contained" color="primary" startIcon={<Close />} onClick={handleClose}>

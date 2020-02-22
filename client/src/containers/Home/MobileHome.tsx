@@ -10,10 +10,12 @@ const useStyles = makeStyles(() => ({
   mobileHome: {
     display: 'flex',
     flex: 1,
+    height: '100%',
   },
   tabs: {
     marginTop: 0,
     maxWidth: '100vw',
+    height: '100%',
   },
   tab: {
     padding: '.5em',
