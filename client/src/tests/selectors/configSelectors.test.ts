@@ -14,4 +14,8 @@ describe('configSelectors', () => {
   test('numSimulationsSelector', () => {
     expect(selectors.numSimulationsSelector(state)).toEqual(5000);
   });
+
+  test('useRailLgSelector', () => {
+    expect(selectors.useRailLgSelector(state)).toEqual(false);
+  });
 });

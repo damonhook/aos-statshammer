@@ -45,6 +45,8 @@ export interface IConfigStore {
   desktopGraphList: boolean;
   /** The number of simulations to run */
   numSimulations: number;
+  /** Whether to use the rail version of the left navigation for lg breakpoints */
+  useRailLg: boolean;
 }
 
 export interface IStore {
