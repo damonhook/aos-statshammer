@@ -87,10 +87,6 @@ const Drawer = () => {
           mini
         />
         <MenuLinkItem to={ROUTES.ABOUT} label="About" icon={<Info />} selected={page === ROUTES.ABOUT} mini />
-        <Divider className={classes.divider} variant="middle" />
-        <ToggleDarkModeItem mini />
-        {isHome && !mobile && <ToggleGraphListItem mini />}
-        {isHome && <ClearUnitsItem mini />}
         {(isHome || page === ROUTES.IMPORT) && (
           <MenuLinkItem
             to={ROUTES.IMPORT}
@@ -101,6 +97,10 @@ const Drawer = () => {
             mini
           />
         )}
+        <Divider className={classes.divider} variant="middle" />
+        <ToggleDarkModeItem mini />
+        {isHome && !mobile && <ToggleGraphListItem mini />}
+        {isHome && <ClearUnitsItem mini />}
         {isHome && <ClearTargetItem mini />}
       </List>
     </AppDrawer>
