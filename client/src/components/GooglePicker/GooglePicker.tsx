@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import { CloudDownload } from '@material-ui/icons';
 import { useGoogleApi } from 'hooks';
 import React from 'react';
@@ -11,7 +11,7 @@ interface IGooglePickerProps {
 }
 
 const GooglePicker = ({ onUpload }: IGooglePickerProps) => {
-  const { state: gapiState, doAuth, gapi, createPicker } = useGoogleApi();
+  const { ready, doAuth, gapi, createPicker } = useGoogleApi();
 
   const onAuthed = () => {
     const picker = createPicker('import', (data: IDrivePickerAction) => {
@@ -30,16 +30,14 @@ const GooglePicker = ({ onUpload }: IGooglePickerProps) => {
     doAuth(onAuthed);
   };
 
-  const disabled = gapiState === 'loading' || gapiState === 'error';
-
   return (
     <Button
       onClick={handleClick}
-      disabled={disabled}
+      disabled={!ready}
       size="large"
       variant="contained"
       color="primary"
-      startIcon={<CloudDownload />}
+      startIcon={ready ? <CloudDownload /> : <CircularProgress size={22} color="inherit" />}
       fullWidth
     >
       Google Drive

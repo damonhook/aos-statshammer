@@ -1,7 +1,7 @@
 import { Divider, List, SwipeableDrawer as AppDrawer, Typography, useMediaQuery } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { GetApp, Home, Info, Timeline } from '@material-ui/icons';
+import { GetApp, Home, ImportExport, Info, Timeline } from '@material-ui/icons';
 import { useHashMatch, useRouteFind } from 'hooks';
 import React, { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,7 +12,6 @@ import { HASHES, ROUTES } from 'utils/urls';
 import DrawerLogo from './DrawerLogo';
 import ClearTargetItem from './items/ClearTargetItem';
 import ClearUnitsItem from './items/ClearUnitsItem';
-import ImportUnitItem from './items/ImportUnitItem';
 import SocialItems from './items/SocialItems';
 import ToggleDarkModeItem from './items/ToggleDarkModeItem';
 import ToggleGraphListItem from './items/ToggleGraphListItem';
@@ -113,13 +112,17 @@ const Drawer = () => {
           <Divider className={classes.divider} variant="middle" />
           <ToggleDarkModeItem />
           {isHome && !mobile && <ToggleGraphListItem />}
-          {isHome && (
-            <>
-              <ClearUnitsItem />
-              <ImportUnitItem onClick={handleClose} />
-              <ClearTargetItem />
-            </>
+          {isHome && <ClearUnitsItem />}
+          {(isHome || page === ROUTES.IMPORT) && (
+            <MenuLinkItem
+              to={ROUTES.IMPORT}
+              label="Import Unit"
+              icon={<ImportExport />}
+              selected={page === ROUTES.IMPORT}
+              disabled={numUnits <= 0}
+            />
           )}
+          {isHome && <ClearTargetItem />}
           <Divider className={classes.divider} variant="middle" />
           <SocialItems />
           <Divider className={classes.divider} variant="middle" />

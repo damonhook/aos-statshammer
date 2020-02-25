@@ -24,19 +24,29 @@ const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/r
 const SCOPE = 'https://www.googleapis.com/auth/drive.file';
 
 const useGoogleApi = () => {
-  const [state, setState] = useState<TGapiState>('loading');
+  const [ready, setReady] = useState(false);
 
-  const doAuth = useCallback((authCallback?: () => void) => {
+  const handleAuthorize = (immediate = true, authCallback?: () => void) => {
+    window.gapi.auth.authorize({ client_id: CLIENT_ID, scope: SCOPE, immediate }, result => {
+      if (result && !result.error) {
+        if (authCallback) authCallback();
+      } else if (immediate) handleAuthorize(false, authCallback);
+      else if (authCallback) authCallback();
+    });
+  };
+
+  const doAuth = (authCallback?: () => void) => {
     // console.log(window.gapi.auth.getToken().access_token, window.gapi.auth.getToken().expires_in);
     // if (state !== 'loading' && state !== 'authed') {
-    window.gapi.auth.authorize({ client_id: CLIENT_ID, scope: SCOPE, immediate: true }, result => {
-      if (result && !result.error) {
-        setState('authed');
-      } else setState('error');
-      if (authCallback) authCallback();
-    });
+    // window.gapi.auth.authorize({ client_id: CLIENT_ID, scope: SCOPE, immediate: false }, result => {
+    //   if (result && !result.error) {
+    //     setState('authed');
+    //   } else setState('error');
+    //   if (authCallback) authCallback();
+    // });
     // } else if (authCallback) authCallback();
-  }, []);
+    handleAuthorize(true, authCallback);
+  };
 
   const onClientLoad = useCallback(() => {
     window.gapi.client
@@ -47,7 +57,7 @@ const useGoogleApi = () => {
         scope: SCOPE,
       })
       .then(() => {
-        setState('ready');
+        setReady(true);
       });
   }, []);
 
@@ -82,7 +92,7 @@ const useGoogleApi = () => {
   };
 
   return {
-    state,
+    ready,
     doAuth,
     gapi: window.gapi,
     createPicker,

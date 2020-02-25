@@ -4,12 +4,13 @@ import {
   IconButton,
   Slide,
   Toolbar,
+  Tooltip,
   Typography,
   useMediaQuery,
   useScrollTrigger,
 } from '@material-ui/core';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { ChevronLeft as ShrinkIcon, ChevronRight as GrowIcon, Menu as MenuIcon } from '@material-ui/icons';
+import { ImportExport, Menu as MenuIcon } from '@material-ui/icons';
 import clsx from 'clsx';
 import Link from 'components/Link';
 import SimulationTabControls from 'components/SimulationTabControls';
@@ -44,11 +45,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'column',
     alignItems: 'initial',
   },
-  leftContent: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginLeft: theme.spacing(1),
+  content: {
+    padding: theme.spacing(0, 1),
   },
   menuButton: {
     color: theme.palette.getContrastText(theme.palette.primary.main),
@@ -103,6 +101,8 @@ const AppBar = () => {
     }, 200);
   }, [ref, breakpoints]);
 
+  const isHome = [ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS].includes(page);
+
   return (
     <div>
       <Slide appear={false} direction="down" in={!trigger}>
@@ -114,29 +114,31 @@ const AppBar = () => {
         >
           <div ref={ref}>
             <Toolbar variant="dense" className={classes.toolbar} disableGutters>
-              <div className={classes.leftContent}>
-                <Grid container spacing={1} alignItems="center">
-                  <Grid item>
-                    <IconButton onClick={handleDrawerOpen} className={classes.menuButton}>
-                      {/* eslint-disable-next-line no-nested-ternary */}
-                      {lg && leftNavVariant === 'large' ? (
-                        <ShrinkIcon />
-                      ) : lg && leftNavVariant === 'rail' ? (
-                        <GrowIcon />
-                      ) : (
-                        <MenuIcon />
-                      )}
-                    </IconButton>
-                  </Grid>
-                  <Grid item>
-                    <Link to={ROUTES.HOME} className={classes.link}>
-                      <Typography variant="h5" component="h1" className={classes.title}>
-                        AoS Statshammer
-                      </Typography>
-                    </Link>
-                  </Grid>
+              <Grid container spacing={1} alignItems="center" className={classes.content}>
+                <Grid item>
+                  <IconButton onClick={handleDrawerOpen} className={classes.menuButton}>
+                    <MenuIcon />
+                  </IconButton>
                 </Grid>
-              </div>
+                <Grid item style={{ flex: 1 }}>
+                  <Link to={ROUTES.HOME} className={classes.link}>
+                    <Typography variant="h5" component="h1" className={classes.title}>
+                      AoS Statshammer
+                    </Typography>
+                  </Link>
+                </Grid>
+                {isHome && (
+                  <Grid item>
+                    <Tooltip title="Import Unit">
+                      <Link to={ROUTES.IMPORT}>
+                        <IconButton>
+                          <ImportExport />
+                        </IconButton>
+                      </Link>
+                    </Tooltip>
+                  </Grid>
+                )}
+              </Grid>
               {page === ROUTES.SIMULATIONS && <SimulationTabControls pending={simulationsPending} />}
             </Toolbar>
           </div>
