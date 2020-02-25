@@ -5,6 +5,7 @@ export const ROUTES = {
   SIMULATIONS: '/simulations',
   PDF: '/pdf',
   ABOUT: '/about',
+  IMPORT: '/import',
 };
 
 export const HASHES = {

@@ -1,13 +1,13 @@
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add, ImportExport } from '@material-ui/icons';
-import Uploader from 'components/Uploader';
+import Link from 'components/Link';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUnitEnabledSelector } from 'store/selectors';
-import { notificationsStore, unitsStore } from 'store/slices';
+import { unitsStore } from 'store/slices';
 import { IUnitStore } from 'types/store';
-import { IUnit } from 'types/unit';
+import { ROUTES } from 'utils/urls';
 
 const useStyles = makeStyles({
   group: {
@@ -31,18 +31,6 @@ const AddUnitButton = ({ units }: IAddUnitButtonProps) => {
   const addUnitEnabled = useSelector(addUnitEnabledSelector);
   const dispatch = useDispatch();
 
-  const onUpload = (data: IUnit) => {
-    if (data && data.name && data.weapon_profiles) {
-      dispatch(
-        notificationsStore.actions.addNotification({
-          message: 'Successfully imported unit',
-          variant: 'success',
-        }),
-      );
-      dispatch(unitsStore.actions.addUnit({ unit: data }));
-    }
-  };
-
   const handleaddUnit = () => {
     dispatch(unitsStore.actions.addUnit({ unit: { name: `Unit ${units.length + 1}` } }));
   };
@@ -60,22 +48,17 @@ const AddUnitButton = ({ units }: IAddUnitButtonProps) => {
       >
         Add Unit
       </Button>
-      <Uploader
-        onUpload={onUpload}
-        disabled={!addUnitEnabled}
-        component={
-          <Button
-            variant="contained"
-            startIcon={<ImportExport />}
-            color="primary"
-            disabled={!addUnitEnabled}
-            className={classes.button}
-            component="span"
-          >
-            Import
-          </Button>
-        }
-      />
+      <Link to={ROUTES.IMPORT}>
+        <Button
+          variant="contained"
+          startIcon={<ImportExport />}
+          color="primary"
+          disabled={!addUnitEnabled}
+          className={classes.button}
+        >
+          Import
+        </Button>
+      </Link>
     </div>
   );
 };

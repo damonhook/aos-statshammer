@@ -1,21 +1,27 @@
 import { Button } from '@material-ui/core';
-import { ImportExport } from '@material-ui/icons';
+import { CloudDownload } from '@material-ui/icons';
 import { useGoogleApi } from 'hooks';
 import React from 'react';
+import { IDrivePickerAction } from 'types/gdrive';
 
-const GooglePicker = () => {
+const DRIVE_API = 'https://www.googleapis.com/drive/v2';
+
+interface IGooglePickerProps {
+  onUpload: (data: any) => void;
+}
+
+const GooglePicker = ({ onUpload }: IGooglePickerProps) => {
   const { state: gapiState, doAuth, gapi, createPicker } = useGoogleApi();
 
   const onAuthed = () => {
-    const picker = createPicker('import', (data: any) => {
-      const fileId = data?.docs?.[0]?.id;
-      if (fileId) {
-        gapi.client
-          .request({
-            path: `https://www.googleapis.com/drive/v2/files/${fileId}?alt=media`,
-          })
-          .then(res => alert(res.body));
-      }
+    const picker = createPicker('import', (data: IDrivePickerAction) => {
+      if (!data?.docs) return;
+      const promiseMap = data.docs.map(doc =>
+        gapi.client.request({ path: `${DRIVE_API}/files/${doc.id}?alt=media` }).then(res => res.body),
+      );
+      Promise.all(promiseMap).then(results => {
+        onUpload(results);
+      });
     });
     picker.setVisible(true);
   };
@@ -31,10 +37,10 @@ const GooglePicker = () => {
       onClick={handleClick}
       disabled={disabled}
       size="large"
-      style={{ margin: '2em' }}
       variant="contained"
       color="primary"
-      startIcon={<ImportExport />}
+      startIcon={<CloudDownload />}
+      fullWidth
     >
       Google Drive
     </Button>

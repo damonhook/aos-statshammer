@@ -1,5 +1,6 @@
 import loadScript from 'load-script';
 import { useCallback, useEffect, useState } from 'react';
+import { IDrivePickerAction } from 'types/gdrive';
 
 declare global {
   interface Window {
@@ -56,13 +57,15 @@ const useGoogleApi = () => {
     });
   }, [onClientLoad]);
 
-  const createPicker = (variant: TPickerVaraint, pickerCallback: (data: any) => void): IPicker => {
+  const createPicker = (
+    variant: TPickerVaraint,
+    pickerCallback: (data: IDrivePickerAction) => void,
+  ): IPicker => {
     const view = new window.google.picker.DocsView(window.google.picker.ViewId.DOCS)
       .setMimeTypes('application/json')
       .setIncludeFolders(true)
       .setParent('root');
     const token = window.gapi.client.getToken().access_token;
-    console.log(token);
     return (
       new window.google.picker.PickerBuilder()
         // .enableFeature(window.google.picker.Feature.NAV_HIDDEN)
