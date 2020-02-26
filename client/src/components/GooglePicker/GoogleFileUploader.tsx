@@ -1,6 +1,6 @@
 import { Button, CircularProgress } from '@material-ui/core';
 import { CloudUpload } from '@material-ui/icons';
-import { useGoogleApi } from 'hooks';
+import { useGoogleApi } from 'context/useGoogleApi';
 import React from 'react';
 import { IDrivePickerAction, IDriveUploadMetadata } from 'types/gdrive';
 

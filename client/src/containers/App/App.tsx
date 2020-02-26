@@ -5,12 +5,11 @@ import BottomNavigation from 'components/BottomNavigation';
 import Drawer from 'components/Drawer';
 import Footer from 'components/Footer';
 import About from 'containers/About';
-import ExportUnit from 'containers/ExportUnit';
 import FloatedContainer from 'containers/FloatedContainer';
 import Home from 'containers/Home';
-import ImportUnit from 'containers/ImportUnit';
 import PdfContainer from 'containers/PdfContainer';
 import Simulations from 'containers/Simulations';
+import { GoogleApiProvider } from 'context';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
@@ -47,31 +46,33 @@ const App = () => {
   return (
     <Router>
       <ThemeProvider theme={getTheme(config)}>
-        <CssBaseline />
-        <div className={classes.root}>
-          <AppBar />
-          <div className={classes.inner}>
-            <Drawer />
-            <div className={classes.contentWrapper}>
-              <Wrapper>
-                <Switch>
-                  <Route exact path={ROUTES.HOME} component={Home} />
-                  <Route exact path={ROUTES.SIMULATIONS} component={Simulations} />
-                  <Route exact path={ROUTES.PDF} component={PdfContainer} />
-                  <Route exact path={ROUTES.ABOUT} component={About} />
-                  <Route path={['/units', '/target', '/stats']} component={Home} />
+        <GoogleApiProvider>
+          <CssBaseline />
+          <div className={classes.root}>
+            <AppBar />
+            <div className={classes.inner}>
+              <Drawer />
+              <div className={classes.contentWrapper}>
+                <Wrapper>
+                  <Switch>
+                    <Route exact path={ROUTES.HOME} component={Home} />
+                    <Route exact path={ROUTES.SIMULATIONS} component={Simulations} />
+                    <Route exact path={ROUTES.PDF} component={PdfContainer} />
+                    <Route exact path={ROUTES.ABOUT} component={About} />
+                    <Route path={['/units', '/target', '/stats']} component={Home} />
 
-                  <Redirect exact from="/units" to={ROUTES.HOME} />
-                  <Redirect from="/advanced" to={ROUTES.SIMULATIONS} />
-                  <Redirect to={ROUTES.HOME} />
-                </Switch>
-              </Wrapper>
-              <FloatedContainer />
-              <Footer />
+                    <Redirect exact from="/units" to={ROUTES.HOME} />
+                    <Redirect from="/advanced" to={ROUTES.SIMULATIONS} />
+                    <Redirect to={ROUTES.HOME} />
+                  </Switch>
+                </Wrapper>
+                <FloatedContainer />
+                <Footer />
+              </div>
             </div>
+            <BottomNavigation />
           </div>
-          <BottomNavigation />
-        </div>
+        </GoogleApiProvider>
       </ThemeProvider>
     </Router>
   );

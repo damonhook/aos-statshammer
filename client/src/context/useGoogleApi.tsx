@@ -1,5 +1,5 @@
 import loadScript from 'load-script';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 const GOOGLE_SDK_URL = 'https://apis.google.com/js/api.js';
 const API_KEY = 'AIzaSyCrsTCtNSfZnWjklfG-gSXWDE-R2zX9K-Q';
@@ -7,7 +7,17 @@ const CLIENT_ID = '360651691028-ceuc9mee53gjhtmpoetsb58ac57lcbgo.apps.googleuser
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 const SCOPE = 'https://www.googleapis.com/auth/drive.file';
 
-const useGoogleApi = () => {
+interface IGoogleApiProvider {
+  ready: boolean;
+  checkAuth: (authCallback?: (() => void) | undefined) => void;
+  pickerBuilder: () => google.picker.PickerBuilder;
+  gapi: typeof window.gapi;
+  picker: typeof window.google.picker;
+}
+
+const GoogleApiContext = React.createContext<IGoogleApiProvider | void>(undefined);
+
+const GoogleApiProvider: React.FC = ({ children }) => {
   const [ready, setReady] = useState(false);
 
   const handleAuthorize = (immediate = true, authCallback?: () => void) => {
@@ -50,13 +60,27 @@ const useGoogleApi = () => {
       .setDeveloperKey(API_KEY);
   };
 
-  return {
-    ready,
-    checkAuth,
-    pickerBuilder,
-    gapi: window.gapi,
-    picker: window.google?.picker,
-  };
+  return (
+    <GoogleApiContext.Provider
+      value={{
+        ready,
+        checkAuth,
+        pickerBuilder,
+        gapi: window.gapi,
+        picker: window.google?.picker,
+      }}
+    >
+      {children}
+    </GoogleApiContext.Provider>
+  );
 };
 
-export default useGoogleApi;
+const useGoogleApi = () => {
+  const context = React.useContext(GoogleApiContext);
+  if (context === undefined) {
+    throw new Error('useGoogleApi must be used within a GoogleApiProvider');
+  }
+  return context;
+};
+
+export { GoogleApiProvider, useGoogleApi };
