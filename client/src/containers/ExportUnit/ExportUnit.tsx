@@ -1,21 +1,36 @@
-import { Button, Collapse, Grid, IconButton, Typography } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Collapse,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { ArrowBack, Close } from '@material-ui/icons';
+import { ArrowBack, Close, Computer, Refresh } from '@material-ui/icons';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { GoogleFileUploader } from 'components/GooglePicker';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { unitByUuidSelector } from 'store/selectors';
+import { notificationsStore } from 'store/slices';
 
 const useStyles = makeStyles((theme: Theme) => ({
   export: {
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2, 1),
+    overflow: 'hidden',
   },
   title: {
     marginBottom: theme.spacing(0.5),
   },
   desc: {
+    marginBottom: theme.spacing(1),
+  },
+  name: {
     marginBottom: theme.spacing(2),
   },
   error: {
@@ -26,7 +41,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ExportUnit = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
   const { unitUuid } = useParams();
+  const [name, setName] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
 
   const unit = useSelector(unitByUuidSelector)(unitUuid ?? 'no-match');
@@ -34,8 +51,36 @@ const ExportUnit = () => {
     history.replace('/');
   }
 
+  useEffect(() => {
+    setName(unit.name);
+  }, [unit.name]);
+
+  const handleResetName = () => {
+    setName(unit.name);
+  };
+
   const handleBack = () => {
     history.goBack();
+  };
+
+  const handleDownload = () => {
+    const data = encodeURIComponent(JSON.stringify(unit));
+    const a = document.createElement('a');
+    a.href = `data:text/json;charset=utf-8,${data}`;
+    a.download = `${name}.json`;
+    a.click();
+    const message = `Exported Unit: ${name}`;
+    dispatch(notificationsStore.actions.addNotification({ message, variant: 'success' }));
+    handleBack();
+  };
+
+  const onGdriveUpload = (err: string | undefined) => {
+    setError(err);
+    if (!err) {
+      const message = `Exported Unit: ${name}`;
+      dispatch(notificationsStore.actions.addNotification({ message, variant: 'success' }));
+      handleBack();
+    }
   };
 
   return (
@@ -43,7 +88,7 @@ const ExportUnit = () => {
       <Grid container spacing={2} justify="space-between" alignItems="center" className={classes.title}>
         <Grid item>
           <Typography variant="h6" component="h2">
-            Export Unit
+            {`Export Unit: ${unit.name}`}
           </Typography>
         </Grid>
         <Grid item>
@@ -52,7 +97,9 @@ const ExportUnit = () => {
           </Button>
         </Grid>
       </Grid>
-      <Typography className={classes.desc}>Import a unit from Google Drive, or your local machine</Typography>
+      <Typography className={classes.desc}>
+        Export the selected unit to Google Drive, or your local machine
+      </Typography>
       <Collapse in={Boolean(error)}>
         <Alert
           className={classes.error}
@@ -70,30 +117,52 @@ const ExportUnit = () => {
             </IconButton>
           }
         >
-          <AlertTitle>Error Importing Unit</AlertTitle>
+          <AlertTitle>Error Exporting Unit</AlertTitle>
           {error ?? 'Invalid Data Format'}
         </Alert>
       </Collapse>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <GoogleFileUploader fileName={`${unit.name}.json`} data={unit} />
+      <Grid container spacing={1} className={classes.name} alignItems="center">
+        <Grid item style={{ flex: 1 }}>
+          <TextField
+            fullWidth
+            variant="filled"
+            value={name}
+            onChange={e => {
+              setName(e.target.value);
+            }}
+            label="Filename"
+            InputProps={{
+              endAdornment: <span>.json</span>,
+            }}
+          />
         </Grid>
-        <Grid item xs={6}>
-          {/* <Uploader
-            onUpload={onUpload}
-            component={
+        <Grid item>
+          <IconButton onClick={handleResetName}>
+            <Refresh />
+          </IconButton>
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <GoogleFileUploader fileName={`${name}.json`} data={unit} onUpload={onGdriveUpload} />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Card>
+            <CardHeader title="Download Local" titleTypographyProps={{ align: 'center' }} />
+            <CardContent>
               <Button
                 variant="contained"
-                startIcon={<AttachFile />}
+                startIcon={<Computer />}
                 color="primary"
                 component="span"
                 size="large"
                 fullWidth
+                onClick={handleDownload}
               >
-                Import File
+                Save Local
               </Button>
-            }
-          /> */}
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </div>

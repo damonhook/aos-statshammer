@@ -1,5 +1,6 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import 'index.css';
 
 import App from 'containers/App';
 import React from 'react';

@@ -57,7 +57,9 @@ const GoogleApiProvider: React.FC = ({ children }) => {
     return new window.google.picker.PickerBuilder()
       .setAppId('360651691028')
       .setOAuthToken(token)
-      .setDeveloperKey(API_KEY);
+      .setDeveloperKey(API_KEY)
+      .setSize(760, 650)
+      .enableFeature(window.google.picker.Feature.NAV_HIDDEN);
   };
 
   return (

@@ -1,5 +1,15 @@
-import { Button, CircularProgress } from '@material-ui/core';
-import { CloudUpload } from '@material-ui/icons';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  Divider,
+  Grid,
+  Typography,
+} from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Folder, InsertDriveFile } from '@material-ui/icons';
 import { useGoogleApi } from 'context/useGoogleApi';
 import React from 'react';
 import { IDrivePickerAction, IDriveUploadMetadata } from 'types/gdrive';
@@ -7,13 +17,29 @@ import { IDrivePickerAction, IDriveUploadMetadata } from 'types/gdrive';
 const DRIVE_API = 'https://www.googleapis.com/upload/drive/v3';
 const BOUNDARY_KEY = 'multipart_boundary';
 
+const useStyles = makeStyles((theme: Theme) => ({
+  alt: {
+    margin: theme.spacing(1, 0),
+  },
+  divider: {
+    flex: 1,
+  },
+}));
+
 interface IGoogleFileUploaderProps {
   mimeType?: string;
   fileName: string;
   data: object;
+  onUpload?: (error: string | undefined) => void;
 }
 
-const GoogleFileUploader = ({ fileName, data, mimeType = 'application/json' }: IGoogleFileUploaderProps) => {
+const GoogleFileUploader = ({
+  fileName,
+  data,
+  mimeType = 'application/json',
+  onUpload,
+}: IGoogleFileUploaderProps) => {
+  const classes = useStyles();
   const { ready, checkAuth, gapi, pickerBuilder, picker } = useGoogleApi();
 
   const getRequestMetadata = (folderId?: string): IDriveUploadMetadata => {
@@ -25,9 +51,7 @@ const GoogleFileUploader = ({ fileName, data, mimeType = 'application/json' }: I
     return metadata;
   };
 
-  const onFolderPicked = (folderData: IDrivePickerAction) => {
-    if (!folderData?.docs?.length) return;
-    const folderId = folderData.docs[0].id;
+  const uploadFile = (folderId?: string) => {
     const metadata = getRequestMetadata(folderId);
 
     const body = `
@@ -46,7 +70,18 @@ const GoogleFileUploader = ({ fileName, data, mimeType = 'application/json' }: I
         headers: { 'Content-Type': `multipart/related; boundary=${BOUNDARY_KEY}` },
         body,
       })
-      .then(res => res.body);
+      .then(() => {
+        if (onUpload) onUpload(undefined);
+      })
+      .catch(err => {
+        if (onUpload) onUpload(err?.body ?? 'Unexpected Error');
+      });
+  };
+
+  const onFolderPicked = (folderData: IDrivePickerAction) => {
+    if (!folderData?.docs?.length) return;
+    const folderId = folderData.docs[0].id;
+    uploadFile(folderId);
   };
 
   const createPicker = () => {
@@ -60,27 +95,59 @@ const GoogleFileUploader = ({ fileName, data, mimeType = 'application/json' }: I
             .setParent('root'),
         )
         .setCallback(onFolderPicked)
+        .setTitle('Export Destination')
         .build()
         .setVisible(true);
     });
   };
 
-  const handleClick = () => {
+  const handleFolderClick = () => {
     createPicker();
   };
 
+  const handleRootClick = () => {
+    uploadFile();
+  };
+
   return (
-    <Button
-      onClick={handleClick}
-      disabled={!ready}
-      size="large"
-      variant="contained"
-      color="primary"
-      startIcon={ready ? <CloudUpload /> : <CircularProgress size={22} color="inherit" />}
-      fullWidth
-    >
-      Pick Folder
-    </Button>
+    <Card>
+      <CardHeader title="Upload to Google Drive" titleTypographyProps={{ align: 'center' }} />
+      <CardContent>
+        <Button
+          onClick={handleFolderClick}
+          disabled={!ready}
+          size="large"
+          variant="contained"
+          color="primary"
+          startIcon={ready ? <Folder /> : <CircularProgress size={22} color="inherit" />}
+          fullWidth
+        >
+          Pick Folder
+        </Button>
+        <Grid container spacing={1} className={classes.alt} alignItems="center">
+          <Grid item className={classes.divider}>
+            <Divider />
+          </Grid>
+          <Grid item>
+            <Typography>OR</Typography>
+          </Grid>
+          <Grid item className={classes.divider}>
+            <Divider />
+          </Grid>
+        </Grid>
+        <Button
+          onClick={handleRootClick}
+          disabled={!ready}
+          size="large"
+          variant="contained"
+          color="primary"
+          startIcon={ready ? <InsertDriveFile /> : <CircularProgress size={22} color="inherit" />}
+          fullWidth
+        >
+          Add at Root
+        </Button>
+      </CardContent>
+    </Card>
   );
 };
 

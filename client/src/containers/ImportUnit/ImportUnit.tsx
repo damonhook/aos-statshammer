@@ -13,7 +13,8 @@ import { validateUnit } from 'utils/validators';
 
 const useStyles = makeStyles((theme: Theme) => ({
   import: {
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2, 1),
+    overflow: 'hidden',
   },
   title: {
     marginBottom: theme.spacing(0.5),

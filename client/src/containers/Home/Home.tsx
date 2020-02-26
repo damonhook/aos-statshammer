@@ -40,7 +40,6 @@ const Home = () => {
         <Route path={UNIT_SUBROUTES.EXPORT} component={ExportUnit} />
         <Route path="/" component={mobile ? MobileHome : DesktopHome} />
       </Switch>
-      {/* {mobile ? <MobileHome /> : <DesktopHome />} */}
     </div>
   );
 };

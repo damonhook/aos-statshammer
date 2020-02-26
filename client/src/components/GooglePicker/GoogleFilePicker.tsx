@@ -37,6 +37,7 @@ const GoogleFilePicker = ({ onFilesPicked, mimeType = 'application/json' }: IGoo
           )
           .setSelectableMimeTypes(mimeType)
           .setCallback(onDownloaded)
+          .setTitle('Import Unit')
           .build()
           .setVisible(true);
       }

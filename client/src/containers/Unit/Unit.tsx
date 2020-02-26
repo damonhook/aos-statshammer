@@ -9,10 +9,12 @@ import WeaponProfile from 'containers/WeaponProfile';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { addUnitEnabledSelector, numUnitsSelector, unitNamesSelector } from 'store/selectors';
 import { notificationsStore, unitsStore } from 'store/slices';
 import { IUnit } from 'types/unit';
 import { scrollToRef } from 'utils/scrollIntoView';
+import { UNIT_SUBROUTES } from 'utils/urls';
 
 const useStyles = makeStyles(theme => ({
   unit: {
@@ -25,15 +27,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.primary.light,
   },
 }));
-
-const downloadUnit = (unit: IUnit) => {
-  const data = encodeURIComponent(JSON.stringify(unit));
-  // eslint-disable-next-line no-undef
-  const a = document.createElement('a');
-  a.href = `data:text/json;charset=utf-8,${data}`;
-  a.download = `${unit.name}.json`;
-  a.click();
-};
 
 interface IUnitProps {
   id: number;
@@ -49,6 +42,7 @@ const Unit = React.memo(
     const numUnits = useSelector(numUnitsSelector, shallowEqual);
     const unitNames = useSelector(unitNamesSelector, shallowEqual);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     useEffect(() => {
       scrollToRef(unitRef);
@@ -68,9 +62,8 @@ const Unit = React.memo(
     }, [dispatch, id, unit]);
 
     const exportUnit = useCallback(() => {
-      downloadUnit(unit);
-      dispatch(notificationsStore.actions.addNotification({ message: 'Exported Unit', variant: 'success' }));
-    }, [dispatch, unit]);
+      history.push(UNIT_SUBROUTES.EXPORT.replace(':unitUuid', unit.uuid));
+    }, [history, unit.uuid]);
 
     const numProfiles = unit.weapon_profiles ? unit.weapon_profiles.length : 0;
     const addProfileEnabled = numProfiles < appConfig.limits.profiles;
