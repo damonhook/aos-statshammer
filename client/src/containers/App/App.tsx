@@ -5,6 +5,7 @@ import BottomNavigation from 'components/BottomNavigation';
 import Drawer from 'components/Drawer';
 import Footer from 'components/Footer';
 import About from 'containers/About';
+import ExportUnit from 'containers/ExportUnit';
 import FloatedContainer from 'containers/FloatedContainer';
 import Home from 'containers/Home';
 import ImportUnit from 'containers/ImportUnit';
@@ -55,11 +56,11 @@ const App = () => {
               <Wrapper>
                 <Switch>
                   <Route exact path={ROUTES.HOME} component={Home} />
-                  <Route path={['/units', '/target', '/stats']} component={Home} />
                   <Route exact path={ROUTES.SIMULATIONS} component={Simulations} />
                   <Route exact path={ROUTES.PDF} component={PdfContainer} />
                   <Route exact path={ROUTES.ABOUT} component={About} />
-                  <Route exact path="/import" component={ImportUnit} />
+                  <Route path={['/units', '/target', '/stats']} component={Home} />
+
                   <Redirect exact from="/units" to={ROUTES.HOME} />
                   <Redirect from="/advanced" to={ROUTES.SIMULATIONS} />
                   <Redirect to={ROUTES.HOME} />

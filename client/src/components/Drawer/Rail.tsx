@@ -4,8 +4,8 @@ import { GetApp, Home, ImportExport, Info, Timeline } from '@material-ui/icons';
 import { useRouteFind } from 'hooks';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { numUnitsSelector } from 'store/selectors';
-import { ROUTES } from 'utils/urls';
+import { addUnitEnabledSelector, numUnitsSelector } from 'store/selectors';
+import { ROUTES, UNIT_SUBROUTES } from 'utils/urls';
 
 import DrawerLogo from './DrawerLogo';
 import ClearTargetItem from './items/ClearTargetItem';
@@ -42,6 +42,7 @@ const Drawer = () => {
   const classes = useStyles();
 
   const numUnits = useSelector(numUnitsSelector);
+  const adUnitEnabled = useSelector(addUnitEnabledSelector);
 
   const [, , page] = useRouteFind(Object.values(ROUTES));
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -87,13 +88,12 @@ const Drawer = () => {
           mini
         />
         <MenuLinkItem to={ROUTES.ABOUT} label="About" icon={<Info />} selected={page === ROUTES.ABOUT} mini />
-        {(isHome || page === ROUTES.IMPORT) && (
+        {isHome && (
           <MenuLinkItem
-            to={ROUTES.IMPORT}
+            to={UNIT_SUBROUTES.IMPORT}
             label="Import Unit"
             icon={<ImportExport />}
-            selected={page === ROUTES.IMPORT}
-            disabled={numUnits <= 0}
+            disabled={!adUnitEnabled}
             mini
           />
         )}

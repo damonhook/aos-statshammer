@@ -5,7 +5,11 @@ export const ROUTES = {
   SIMULATIONS: '/simulations',
   PDF: '/pdf',
   ABOUT: '/about',
-  IMPORT: '/import',
+};
+
+export const UNIT_SUBROUTES = {
+  IMPORT: '/units/import',
+  EXPORT: '/units/:unitUuid/export',
 };
 
 export const HASHES = {

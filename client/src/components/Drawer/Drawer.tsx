@@ -6,8 +6,8 @@ import { useHashMatch, useRouteFind } from 'hooks';
 import React, { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { numUnitsSelector, useRailLgSelector } from 'store/selectors';
-import { HASHES, ROUTES } from 'utils/urls';
+import { addUnitEnabledSelector, numUnitsSelector, useRailLgSelector } from 'store/selectors';
+import { HASHES, ROUTES, UNIT_SUBROUTES } from 'utils/urls';
 
 import DrawerLogo from './DrawerLogo';
 import ClearTargetItem from './items/ClearTargetItem';
@@ -47,6 +47,7 @@ const Drawer = () => {
 
   const numUnits = useSelector(numUnitsSelector);
   const useRailLg = useSelector(useRailLgSelector);
+  const adUnitEnabled = useSelector(addUnitEnabledSelector);
 
   const open = useHashMatch(HASHES.DRAWER);
   const [, , page] = useRouteFind(Object.values(ROUTES));
@@ -109,13 +110,12 @@ const Drawer = () => {
             disabled={numUnits <= 0}
           />
           <MenuLinkItem to={ROUTES.ABOUT} label="About" icon={<Info />} selected={page === ROUTES.ABOUT} />
-          {(isHome || page === ROUTES.IMPORT) && (
+          {isHome && (
             <MenuLinkItem
-              to={ROUTES.IMPORT}
+              to={UNIT_SUBROUTES.IMPORT}
               label="Import Unit"
               icon={<ImportExport />}
-              selected={page === ROUTES.IMPORT}
-              disabled={numUnits <= 0}
+              disabled={!adUnitEnabled}
             />
           )}
           <Divider className={classes.divider} variant="middle" />

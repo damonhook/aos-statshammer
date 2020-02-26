@@ -2,7 +2,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import useRouteFind from 'hooks/useRouteFind';
 import React from 'react';
-import { ROUTES } from 'utils/urls';
+import { ROUTES, UNIT_SUBROUTES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -39,9 +39,10 @@ interface IWrapperProps {
 const Wrapper = ({ children }: IWrapperProps) => {
   const classes = useStyles();
   const [, , page] = useRouteFind(Object.values(ROUTES));
+  const [, sub_match] = useRouteFind(Object.values(UNIT_SUBROUTES));
 
   const useFullWidth = [ROUTES.PDF, ROUTES.SIMULATIONS].includes(page);
-  const isHome = [ROUTES.HOME, ROUTES.TARGET].includes(page);
+  const isHome = [ROUTES.HOME, ROUTES.TARGET].includes(page) && !sub_match;
 
   return (
     <div

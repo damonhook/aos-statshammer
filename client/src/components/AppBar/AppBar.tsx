@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useRailLgSelector } from 'store/selectors';
 import { configStore } from 'store/slices';
-import { HASHES, ROUTES } from 'utils/urls';
+import { HASHES, ROUTES, UNIT_SUBROUTES } from 'utils/urls';
 
 import { IStore } from '../../types/store';
 
@@ -130,7 +130,7 @@ const AppBar = () => {
                 {isHome && (
                   <Grid item>
                     <Tooltip title="Import Unit">
-                      <Link to={ROUTES.IMPORT}>
+                      <Link to={UNIT_SUBROUTES.IMPORT}>
                         <IconButton>
                           <ImportExport />
                         </IconButton>

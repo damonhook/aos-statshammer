@@ -1,18 +1,15 @@
 import { Button, Collapse, Grid, IconButton, Typography } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { ArrowBack, AttachFile, Close } from '@material-ui/icons';
+import { ArrowBack, Close } from '@material-ui/icons';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import { GoogleFilePicker } from 'components/GooglePicker';
-import Uploader from 'components/Uploader';
+import { GoogleFileUploader } from 'components/GooglePicker';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { notificationsStore, unitsStore } from 'store/slices';
-import { IUnit } from 'types/unit';
-import { validateUnit } from 'utils/validators';
+import { useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
+import { unitByUuidSelector } from 'store/selectors';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  import: {
+  export: {
     marginTop: theme.spacing(2),
   },
   title: {
@@ -26,44 +23,27 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ImportUnit = () => {
+const ExportUnit = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const history = useHistory();
-
+  const { unitUuid } = useParams();
   const [error, setError] = useState<string | undefined>(undefined);
+
+  const unit = useSelector(unitByUuidSelector)(unitUuid ?? 'no-match');
+  if (!unit) {
+    history.replace('/');
+  }
 
   const handleBack = () => {
     history.goBack();
   };
 
-  const onUpload = (data: IUnit) => {
-    const err = validateUnit(data);
-    setError(err);
-    if (!err) {
-      dispatch(
-        notificationsStore.actions.addNotification({
-          message: 'Successfully imported unit',
-          variant: 'success',
-        }),
-      );
-      dispatch(unitsStore.actions.addUnit({ unit: data }));
-      handleBack();
-    }
-  };
-
-  const onGDriveFilesPicked = (data: string[]) => {
-    data.forEach(datum => {
-      onUpload(JSON.parse(datum));
-    });
-  };
-
   return (
-    <div className={classes.import}>
+    <div className={classes.export}>
       <Grid container spacing={2} justify="space-between" alignItems="center" className={classes.title}>
         <Grid item>
           <Typography variant="h6" component="h2">
-            Import Unit
+            Export Unit
           </Typography>
         </Grid>
         <Grid item>
@@ -96,10 +76,10 @@ const ImportUnit = () => {
       </Collapse>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <GoogleFilePicker onFilesPicked={onGDriveFilesPicked} />
+          <GoogleFileUploader fileName={`${unit.name}.json`} data={unit} />
         </Grid>
         <Grid item xs={6}>
-          <Uploader
+          {/* <Uploader
             onUpload={onUpload}
             component={
               <Button
@@ -113,11 +93,11 @@ const ImportUnit = () => {
                 Import File
               </Button>
             }
-          />
+          /> */}
         </Grid>
       </Grid>
     </div>
   );
 };
 
-export default ImportUnit;
+export default ExportUnit;

@@ -1,21 +1,5 @@
 import loadScript from 'load-script';
 import { useCallback, useEffect, useState } from 'react';
-import { IDrivePickerAction } from 'types/gdrive';
-
-declare global {
-  interface Window {
-    google: any;
-  }
-}
-
-type TGapiState = 'loading' | 'ready' | 'authed' | 'error';
-
-type TPickerVaraint = 'import' | 'export';
-
-interface IPicker {
-  variant: TPickerVaraint;
-  setVisible: (v: boolean) => void;
-}
 
 const GOOGLE_SDK_URL = 'https://apis.google.com/js/api.js';
 const API_KEY = 'AIzaSyCrsTCtNSfZnWjklfG-gSXWDE-R2zX9K-Q';
@@ -35,16 +19,7 @@ const useGoogleApi = () => {
     });
   };
 
-  const doAuth = (authCallback?: () => void) => {
-    // console.log(window.gapi.auth.getToken().access_token, window.gapi.auth.getToken().expires_in);
-    // if (state !== 'loading' && state !== 'authed') {
-    // window.gapi.auth.authorize({ client_id: CLIENT_ID, scope: SCOPE, immediate: false }, result => {
-    //   if (result && !result.error) {
-    //     setState('authed');
-    //   } else setState('error');
-    //   if (authCallback) authCallback();
-    // });
-    // } else if (authCallback) authCallback();
+  const checkAuth = (authCallback?: () => void) => {
     handleAuthorize(true, authCallback);
   };
 
@@ -67,35 +42,20 @@ const useGoogleApi = () => {
     });
   }, [onClientLoad]);
 
-  const createPicker = (
-    variant: TPickerVaraint,
-    pickerCallback: (data: IDrivePickerAction) => void,
-  ): IPicker => {
-    const view = new window.google.picker.DocsView(window.google.picker.ViewId.DOCS)
-      .setMimeTypes('application/json')
-      .setIncludeFolders(true)
-      .setParent('root');
-    const token = window.gapi.client.getToken().access_token;
-    return (
-      new window.google.picker.PickerBuilder()
-        // .enableFeature(window.google.picker.Feature.NAV_HIDDEN)
-        // .enableFeature(window.google.picker.Feature.MULTISELECT_ENABLED)
-        .setAppId('360651691028')
-        .setOAuthToken(token)
-        .addView(view)
-        // .addView(window.google.picker.ViewId.FOLDERS)
-        .setSelectableMimeTypes('application/json')
-        .setDeveloperKey(API_KEY)
-        .setCallback(pickerCallback)
-        .build()
-    );
+  const pickerBuilder = () => {
+    const token = window.gapi.client.getToken()?.access_token;
+    return new window.google.picker.PickerBuilder()
+      .setAppId('360651691028')
+      .setOAuthToken(token)
+      .setDeveloperKey(API_KEY);
   };
 
   return {
     ready,
-    doAuth,
+    checkAuth,
+    pickerBuilder,
     gapi: window.gapi,
-    createPicker,
+    picker: window.google?.picker,
   };
 };
 
