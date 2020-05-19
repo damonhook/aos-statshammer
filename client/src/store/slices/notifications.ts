@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import nanoid from 'nanoid';
-import { INotificationParameters } from 'types/notification';
-import { INotificationsStore } from 'types/store';
+import type { INotificationParameters } from 'types/notification';
+import type { INotificationsStore } from 'types/store';
 
 const INITIAL_STATE: INotificationsStore = [];
 
@@ -20,7 +20,7 @@ const dismissNotification = (
   state: INotificationsStore,
   action: { payload: { key: string } },
 ): INotificationsStore => {
-  return state.filter(n => n.key !== action.payload.key);
+  return state.filter((n) => n.key !== action.payload.key);
 };
 
 const dismissAllNotifications = (): INotificationsStore => {

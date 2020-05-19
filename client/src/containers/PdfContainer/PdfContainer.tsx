@@ -6,7 +6,7 @@ import PdfGenerator from 'pdf';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSanitizedTargetSelector, getSanitizedUnitsSelector } from 'store/selectors';
-import { IStore } from 'types/store';
+import type { IStore } from 'types/store';
 import { applyUnitNameMapping, getResultsMapping } from 'utils/mappers';
 
 const useStyles = makeStyles(() => ({
@@ -32,6 +32,7 @@ const PdfContainer = () => {
   const dispatch = useDispatch();
 
   const nameMapping = useMemo(() => applyUnitNameMapping(units), [units]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const resultsMapper = useCallback(getResultsMapping(nameMapping), [nameMapping]);
 
   const results = useMapping(stats.payload, resultsMapper, stats.pending);

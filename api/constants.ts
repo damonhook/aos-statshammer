@@ -7,8 +7,8 @@ export enum Characteristic {
   SAVE = 'save',
 }
 
-export const getCharacteristic = (val: string): Characteristic => {
-  const k = Object.keys(Characteristic).find(key => Characteristic[key] === val);
+export const getCharacteristic = (val: string): Characteristic | null => {
+  const k = Object.keys(Characteristic).find((key) => Characteristic[key] === val);
   if (k) {
     return Characteristic[k];
   }

@@ -16,7 +16,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { configStore } from 'store/slices';
-import { IStore } from 'types/store';
+import type { IStore } from 'types/store';
 import { HASHES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({

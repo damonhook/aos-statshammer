@@ -1,6 +1,6 @@
 import { Characteristic as C } from '../../constants';
 import { D6 } from '../dice';
-import WeaponProfile from '../weaponProfile';
+import type WeaponProfile from '../weaponProfile';
 import BaseModifier from './BaseModifier';
 
 export default class RerollOnes extends BaseModifier {

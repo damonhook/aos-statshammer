@@ -8,7 +8,7 @@ import React from 'react';
 import { Redirect, Switch } from 'react-router-dom';
 import { ROUTES } from 'utils/urls';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   desktopHome: {
     display: 'flex',
     flexDirection: 'row',

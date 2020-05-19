@@ -2,9 +2,9 @@ import { Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 
-import { ITooltipProps } from './types';
+import type { ITooltipProps } from './types';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   tooltip: {
     backgroundColor: theme.palette.graphs.tooltip,
     color: theme.palette.getContrastText(theme.palette.graphs.tooltip),

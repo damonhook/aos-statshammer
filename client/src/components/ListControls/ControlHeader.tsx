@@ -2,7 +2,7 @@ import { ButtonGroup, IconButton, Tooltip } from '@material-ui/core';
 import React from 'react';
 
 import ControlMenu from './ControlMenu';
-import { IPrimaryItem, ISecondaryItem } from './types';
+import type { IPrimaryItem, ISecondaryItem } from './types';
 
 interface IHeaderButtonProps {
   onClick: () => void;

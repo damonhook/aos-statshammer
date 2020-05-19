@@ -4,8 +4,7 @@ import { BarGraph } from 'components/Graphs';
 import { SaveTooltip } from 'components/GraphTooltips';
 import ListItem from 'components/ListItem';
 import React, { useCallback, useMemo } from 'react';
-
-import { ISimulationResult } from '../../types/simulations';
+import type { ISimulationResult } from 'types/simulations';
 
 const useStyles = makeStyles((theme: Theme) => ({
   metricsGraphs: {
@@ -28,7 +27,7 @@ interface IMetricsGraphsProps {
 const MetricsGraphs = ({ results, unitNames, pending }: IMetricsGraphsProps) => {
   const classes = useStyles();
   const firstLoad = (!results || !results.length) && pending;
-  const xAxisFormatter = useCallback(value => (!value ? '-' : `${value}+`), []);
+  const xAxisFormatter = useCallback((value) => (!value ? '-' : `${value}+`), []);
 
   const graphData = useMemo(
     () =>

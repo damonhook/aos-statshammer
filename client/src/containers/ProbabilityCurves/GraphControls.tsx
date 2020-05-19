@@ -6,7 +6,7 @@ import React from 'react';
 
 import { REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   controls: {
     display: 'flex',
     padding: theme.spacing(2),
@@ -66,7 +66,7 @@ const GraphControls = React.memo(
             label="Reference Lines"
             className={clsx(classes.field, classes.select)}
           >
-            {Object.values(REFERENCE_LINE_OPTIONS).map(option => (
+            {Object.values(REFERENCE_LINE_OPTIONS).map((option) => (
               <MenuItem value={option} key={option}>
                 {option}
               </MenuItem>

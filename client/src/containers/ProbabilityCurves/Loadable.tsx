@@ -4,9 +4,9 @@ import { SimulationsErrorCard } from 'components/ErrorCards';
 import { GraphSkeleton } from 'components/Skeletons';
 import _ from 'lodash';
 import React from 'react';
-import { TError } from 'types/store';
+import type { TError } from 'types/store';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   graphContainer: {
     height: '350px',
     marginBottom: theme.spacing(3),

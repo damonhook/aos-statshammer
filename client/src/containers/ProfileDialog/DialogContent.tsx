@@ -6,11 +6,11 @@ import ModifierList from 'components/ModifierList';
 import RollInput from 'components/RollInput';
 import _ from 'lodash';
 import React, { useCallback } from 'react';
-import { IWeaponProfile } from 'types/unit';
+import type { IWeaponProfile } from 'types/unit';
 
 import FormField from './FormField';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   form: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -64,6 +64,7 @@ const DialogContent: React.FC<IDialogContentProps> = React.memo(
   ({ profile, onChange, onSubmit, errorCallback, submitDisabled = false, dispatchState }) => {
     const classes = useStyles();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const getErrorCallback = useCallback(
       _.memoize((name: string) => (error: boolean) => {
         errorCallback(name, error);
@@ -71,6 +72,7 @@ const DialogContent: React.FC<IDialogContentProps> = React.memo(
       [],
     );
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const getHandler = useCallback(
       _.memoize((name: string) => (event: any) => {
         onChange(name, event.target.value);
@@ -83,7 +85,7 @@ const DialogContent: React.FC<IDialogContentProps> = React.memo(
         <Typography component="div">
           <form
             className={classes.form}
-            onSubmit={e => {
+            onSubmit={(e) => {
               onSubmit();
               e.preventDefault();
             }}

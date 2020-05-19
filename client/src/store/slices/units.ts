@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import nanoid from 'nanoid';
-import { IUnitStore } from 'types/store';
-import { IUnitParameter, IWeaponProfileParameter } from 'types/unit';
+import type { IUnitStore } from 'types/store';
+import type { IUnitParameter, IWeaponProfileParameter } from 'types/unit';
 import { moveItemInArray } from 'utils/arrayUpdates';
 
 const DEFAULT_WEAPON_PROFILE: IWeaponProfileParameter = {
@@ -33,7 +33,7 @@ export const addUnit = (
   const unit = {
     name,
     uuid: nanoid(),
-    weapon_profiles: profiles.map(profile => ({
+    weapon_profiles: profiles.map((profile) => ({
       ...profile,
       uuid: nanoid(),
     })),
@@ -64,7 +64,7 @@ export const clearAllUnits = () => {
 
 export const moveUnit = (state: IUnitStore, action: { payload: { index: number; newIndex: number } }) => {
   const { index, newIndex } = action.payload;
-  return moveItemInArray(state, index, newIndex, newState => {
+  return moveItemInArray(state, index, newIndex, (newState) => {
     return newState;
   });
 };
@@ -136,7 +136,7 @@ const moveWeaponProfile = (
   const { index, profileIndex, newProfileIndex } = action.payload;
   const unit = state.find((_, i) => i === index);
   if (unit) {
-    moveItemInArray(unit.weapon_profiles, profileIndex, newProfileIndex, newProfiles => {
+    moveItemInArray(unit.weapon_profiles, profileIndex, newProfileIndex, (newProfiles) => {
       unit.weapon_profiles = newProfiles;
     });
   }

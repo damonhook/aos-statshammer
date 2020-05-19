@@ -2,7 +2,7 @@ import { Characteristic as C, getCharacteristic } from '../../constants';
 import { booleanOption, choiceOption, numberOption, rollOption } from '../../utils/modifierUtils';
 import { D6 } from '../dice';
 import DiceValue from '../diceValue';
-import WeaponProfile from '../weaponProfile';
+import type WeaponProfile from '../weaponProfile';
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';
 
@@ -20,8 +20,10 @@ export default class ConditionalBonus extends BaseModifier {
     this.unmodified = Boolean(unmodified);
 
     const c = getCharacteristic(bonusToCharacteristic);
+    // @ts-ignore
     if (!this.constructor.availableBonusToCharacteristics.includes(c)) {
       throw new Error(
+        // @ts-ignore
         `Invalid 'bonusToCharacteristic' provided to ${this.constructor.name} (${characteristic})`,
       );
     }

@@ -3,7 +3,7 @@ import Notification from 'components/Notification';
 import { useIsMobile, useRouteFind } from 'hooks';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { IStore } from 'types/store';
+import type { IStore } from 'types/store';
 import { ROUTES } from 'utils/urls';
 
 /**

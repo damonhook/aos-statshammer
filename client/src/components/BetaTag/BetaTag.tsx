@@ -7,7 +7,7 @@ interface IStyleProps {
   variant: 'main' | 'light' | 'dark';
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   caption: ({ variant }: IStyleProps) => ({
     marginLeft: theme.spacing(0.5),
     verticalAlign: 'super',

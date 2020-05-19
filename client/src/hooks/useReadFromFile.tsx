@@ -20,7 +20,7 @@ const useReadFromFile = (filename: string, params?: TTextParams): string => {
   const [raw, setRaw] = useState('');
 
   useEffect(() => {
-    readFromFile(`/static/${filename}`).then(text => {
+    readFromFile(`/static/${filename}`).then((text) => {
       setRaw(text);
     });
   }, [filename]);

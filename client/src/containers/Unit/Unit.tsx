@@ -11,10 +11,10 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { addUnitEnabledSelector, numUnitsSelector, unitNamesSelector } from 'store/selectors';
 import { notificationsStore, unitsStore } from 'store/slices';
-import { IUnit } from 'types/unit';
+import type { IUnit } from 'types/unit';
 import { scrollToRef } from 'utils/scrollIntoView';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   unit: {
     marginBottom: '1em',
   },

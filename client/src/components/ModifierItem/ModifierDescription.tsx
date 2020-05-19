@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import formatUnicorn from 'format-unicorn/safe';
 import _ from 'lodash';
 import React, { useMemo } from 'react';
-import { IModifierDefinition, TOptionValue } from 'types/modifiers';
+import type { IModifierDefinition, TOptionValue } from 'types/modifiers';
 
 const useStyles = makeStyles({
   description: {
@@ -33,10 +33,7 @@ const getFormattedDescription = (
     }
     return acc;
   }, {});
-  const desc = formatUnicorn(definition.description, params)
-    .trim()
-    .replace(/\s+/g, ' ')
-    .replace(/_/g, ' ');
+  const desc = formatUnicorn(definition.description, params).trim().replace(/\s+/g, ' ').replace(/_/g, ' ');
   return desc[0].toUpperCase() + desc.slice(1);
 };
 

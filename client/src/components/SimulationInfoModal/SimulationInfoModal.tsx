@@ -15,7 +15,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { IStore } from 'types/store';
+import type { IStore } from 'types/store';
 import { HASHES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({

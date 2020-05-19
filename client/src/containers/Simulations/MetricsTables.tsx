@@ -5,8 +5,8 @@ import { SimulationsErrorCard } from 'components/ErrorCards';
 import ListItem from 'components/ListItem';
 import { TableSkeleton } from 'components/Skeletons';
 import React, { useMemo } from 'react';
-import { ISimulationResult } from 'types/simulations';
-import { TError } from 'types/store';
+import type { ISimulationResult } from 'types/simulations';
+import type { TError } from 'types/store';
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {},
@@ -100,7 +100,7 @@ const MetricsTables = ({ pending, results, unitNames, className, error }: IMetri
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {unitNames.map(name => {
+                      {unitNames.map((name) => {
                         return (
                           <TableRow key={name}>
                             <TableCell className={classes.sticky}>{name}</TableCell>

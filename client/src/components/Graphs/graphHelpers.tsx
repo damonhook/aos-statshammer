@@ -1,6 +1,6 @@
-import { Theme } from '@material-ui/core/styles';
+import type { Theme } from '@material-ui/core/styles';
 import React from 'react';
-import { AxisDomain, PositionType, TickFormatterFunction } from 'recharts';
+import type { AxisDomain, PositionType, TickFormatterFunction } from 'recharts';
 
 export type TOpacity = { [name: string]: number };
 

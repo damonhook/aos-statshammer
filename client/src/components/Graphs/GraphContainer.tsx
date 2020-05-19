@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { ResponsiveContainer } from 'recharts';
 
-const useSyles = makeStyles(theme => ({
+const useSyles = makeStyles((theme) => ({
   graphContainer: {
     width: '100%',
     height: '100%',

@@ -32,7 +32,7 @@ const ActionsDialog: React.FC<IActionsDialogProps> = ({ open, actions, target, o
         <Button variant="text" onClick={onClose} color="primary">
           Close
         </Button>
-        {actions.map(action => (
+        {actions.map((action) => (
           <Button
             variant="text"
             onClick={() => {

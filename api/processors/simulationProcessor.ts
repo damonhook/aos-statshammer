@@ -1,9 +1,9 @@
 import { Characteristic as C } from '../constants';
 import { D6 } from '../models/dice';
 import { MODIFIERS as m } from '../models/modifiers';
-import Target from '../models/target';
+import type Target from '../models/target';
 import { TARGET_MODIFIERS as t } from '../models/targetModifiers';
-import WeaponProfile from '../models/weaponProfile';
+import type WeaponProfile from '../models/weaponProfile';
 
 class SimulationProcessor {
   profile: WeaponProfile;
@@ -25,15 +25,15 @@ class SimulationProcessor {
       numModels = Math.max(numModels - numLeaders, 0);
       const leaderProfile = this.profile.getSplitProfile(
         leaderModifiers,
-        leaderModifiers.map(mod => mod.getAsBonusModifier()),
+        leaderModifiers.map((mod) => mod.getAsBonusModifier()),
       );
       leaderProfile.numModels = numLeaders;
       const leaderSim = new SimulationProcessor(leaderProfile, this.target);
       const leaderAttacks = numLeaders * leaderProfile.getAttacks(false, true);
-      leaderDamage += [...Array(leaderAttacks)].reduce(acc => acc + leaderSim.resolveHitRoll(), 0);
+      leaderDamage += [...Array(leaderAttacks)].reduce((acc) => acc + leaderSim.resolveHitRoll(), 0);
     }
     totalAttacks += numModels * this.profile.getAttacks(false, true);
-    return [...Array(totalAttacks)].reduce(acc => acc + this.resolveHitRoll(), 0) + leaderDamage;
+    return [...Array(totalAttacks)].reduce((acc) => acc + this.resolveHitRoll(), 0) + leaderDamage;
   }
 
   resolveHitRoll() {
@@ -42,7 +42,7 @@ class SimulationProcessor {
       const explodingModifier = this.profile.modifiers.getModifier(m.EXPLODING, C.TO_HIT);
       if (explodingModifier && hitRoll >= explodingModifier.on) {
         return [...Array(explodingModifier.getExtra(true) + 1)].reduce(
-          acc => acc + this.resolveWoundRoll(),
+          (acc) => acc + this.resolveWoundRoll(),
           0,
         );
       }
@@ -74,7 +74,7 @@ class SimulationProcessor {
       const explodingModifier = this.profile.modifiers.getModifier(m.EXPLODING, C.TO_WOUND);
       if (explodingModifier && woundRoll >= explodingModifier.on) {
         return [...Array(explodingModifier.getExtra(true) + 1)].reduce(
-          acc => acc + this.resolveSaveRoll(),
+          (acc) => acc + this.resolveSaveRoll(),
           0,
         );
       }
@@ -126,7 +126,7 @@ class SimulationProcessor {
   }
 
   performRerollSaves(roll, rend) {
-    if (roll < this.target.getSave(rend)) {
+    if (roll < (this.target.getSave(rend) ?? 0)) {
       const rerollModifier = this.target.modifiers.getRerollModifier();
       if (rerollModifier && rerollModifier.allowedReroll(this.profile, this.target, roll)) {
         return D6.roll();
@@ -139,7 +139,7 @@ class SimulationProcessor {
     const mortalModifiers = this.target.modifiers.getStackableModifier(t.TARGET_MORTAL_NEGATE);
     if (mortalModifiers && mortalModifiers.length) {
       return [...Array(damage)].reduce(
-        acc => (mortalModifiers.some(mod => D6.roll() >= mod.on) ? acc : acc + 1),
+        (acc) => (mortalModifiers.some((mod) => D6.roll() >= mod.on) ? acc : acc + 1),
         0,
       );
     }
@@ -150,7 +150,7 @@ class SimulationProcessor {
     const fnpModifiers = this.target.modifiers.getStackableModifier(t.TARGET_FNP);
     if (fnpModifiers && fnpModifiers.length) {
       return [...Array(damage)].reduce(
-        acc => (fnpModifiers.some(mod => D6.roll() >= mod.on) ? acc : acc + 1),
+        (acc) => (fnpModifiers.some((mod) => D6.roll() >= mod.on) ? acc : acc + 1),
         0,
       );
     }

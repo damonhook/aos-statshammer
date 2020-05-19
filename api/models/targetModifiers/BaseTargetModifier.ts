@@ -1,16 +1,16 @@
-import Target from '../target';
-import WeaponProfile from '../weaponProfile';
+import type Target from '../target';
+import type WeaponProfile from '../weaponProfile';
 
 export default class BaseTargetModifier {
   // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   constructor(data: any) {}
 
   static get displayName(): string {
-    return null;
+    return '';
   }
 
   static get description(): string {
-    return null;
+    return '';
   }
 
   static get availableCharacteristics() {
@@ -30,7 +30,7 @@ export default class BaseTargetModifier {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  resolve(profile: WeaponProfile, target: Target): number {
+  resolve(profile: WeaponProfile, target: Target): number | null {
     throw new Error('Resolve method not implemented');
   }
 }

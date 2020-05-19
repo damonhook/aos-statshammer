@@ -1,4 +1,4 @@
-import { IModifierInstance } from './modifiers';
+import type { IModifierInstance } from './modifiers';
 
 export interface IWeaponProfileParameter {
   name?: string;

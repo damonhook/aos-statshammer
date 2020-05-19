@@ -4,7 +4,7 @@ import DiceInput from 'components/DiceInput';
 import RollInput from 'components/RollInput';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
-import { TOptionTypes, TOptionValue } from 'types/modifiers';
+import type { TOptionTypes, TOptionValue } from 'types/modifiers';
 
 const useStyles = makeStyles(() => ({
   modifierInput: {
@@ -40,7 +40,7 @@ const ModifierInput: React.FC<IModifierInputProps> = React.memo(
     }, [val, option]);
 
     const handleChange = useCallback(
-      event => {
+      (event) => {
         const { value } = event.target;
         setError(!value);
         if (onOptionChange) onOptionChange(index, name, value);
@@ -49,13 +49,13 @@ const ModifierInput: React.FC<IModifierInputProps> = React.memo(
     );
 
     const handleChecked = useCallback(
-      event => {
+      (event) => {
         if (onOptionChange) onOptionChange(index, name, event.target.checked);
       },
       [index, name, onOptionChange],
     );
 
-    const childErrorCallback = useCallback(error => {
+    const childErrorCallback = useCallback((error) => {
       setError(error);
     }, []);
 
@@ -75,7 +75,7 @@ const ModifierInput: React.FC<IModifierInputProps> = React.memo(
             {...errorProps}
             onChange={handleChange}
           >
-            {option.items.map(item => (
+            {option.items.map((item) => (
               <MenuItem key={item} value={item}>
                 {item}
               </MenuItem>

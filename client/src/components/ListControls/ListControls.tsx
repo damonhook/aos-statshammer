@@ -4,7 +4,7 @@ import React from 'react';
 
 import ControlHeader from './ControlHeader';
 import ControlMenu from './ControlMenu';
-import { IPrimaryItem, ISecondaryItem } from './types';
+import type { IPrimaryItem, ISecondaryItem } from './types';
 
 interface IListControlsProps {
   primaryItems?: IPrimaryItem[];

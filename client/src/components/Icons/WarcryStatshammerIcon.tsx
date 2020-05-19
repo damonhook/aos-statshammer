@@ -1,7 +1,7 @@
 import { SvgIcon } from '@material-ui/core';
 import React from 'react';
 
-import { IIconProps } from './iconProps';
+import type { IIconProps } from './iconProps';
 
 const WarcryStatshammerIcon = (props: IIconProps) => {
   return (

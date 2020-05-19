@@ -2,7 +2,7 @@ import { Collapse } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card, { CardBody } from 'components/Card';
-import { IPrimaryItem, ISecondaryItem } from 'components/ListControls/types';
+import type { IPrimaryItem, ISecondaryItem } from 'components/ListControls/types';
 import LoadingBar from 'components/LoadingBar';
 import React, { useState } from 'react';
 

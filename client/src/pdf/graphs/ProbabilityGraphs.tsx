@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { LineGraph } from 'components/Graphs';
 import { getMaxDamage, getMaxProbability, getTicks } from 'containers/ProbabilityCurves/probabilityUtils';
 import React, { useCallback } from 'react';
-import { ISimulationResult } from 'types/simulations';
+import type { ISimulationResult } from 'types/simulations';
 
 import GraphWrapper from './GraphWrapper';
 
@@ -23,7 +23,7 @@ interface IProbabilityGraphsProps {
 }
 const ProbabilityGraphs = ({ probabilities, unitNames }: IProbabilityGraphsProps) => {
   const classes = useStyles();
-  const yAxisFormatter = useCallback(value => `${value}%`, []);
+  const yAxisFormatter = useCallback((value) => `${value}%`, []);
   const cols = 2;
   const rows = Math.ceil(probabilities.length / cols);
 

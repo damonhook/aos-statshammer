@@ -7,21 +7,23 @@ export default class BaseModifier {
 
   constructor({ characteristic }) {
     const c = getCharacteristic(characteristic);
+    // @ts-ignore
     if (!this.constructor.availableCharacteristics.includes(c)) {
+      // @ts-ignore
       throw new Error(`Invalid characteristic provided to ${this.constructor.name} (${characteristic})`);
     }
     this.characteristic = c;
   }
 
   static get displayName() {
-    return null;
+    return '';
   }
 
   static get description() {
-    return null;
+    return '';
   }
 
-  static get availableCharacteristics() {
+  static get availableCharacteristics(): Characteristic[] {
     return [];
   }
 

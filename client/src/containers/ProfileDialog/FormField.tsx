@@ -39,7 +39,7 @@ const FormField: React.FC<IFormFieldProps> = React.memo(
     }, [error, errorCallback]);
 
     const handleChange = useCallback(
-      event => {
+      (event) => {
         const val = event.target.value;
         setError(val == null || val === '');
         onChange(event);

@@ -1,7 +1,7 @@
 import { D6 } from './dice';
 import { TARGET_MODIFIERS as t, TargetModifierManager } from './targetModifiers';
-import BaseTargetModifier from './targetModifiers/BaseTargetModifier';
-import WeaponProfile from './weaponProfile';
+import type BaseTargetModifier from './targetModifiers/BaseTargetModifier';
+import type WeaponProfile from './weaponProfile';
 
 /**
  * A class used as a target for calculating average damage
@@ -18,7 +18,7 @@ class Target {
   /**
    * Get the targets save after rend has been applied
    */
-  getSave(rend: number = null): number | null {
+  getSave(rend: number | null = null): number | null {
     if (this.save) {
       let { save } = this;
       if (!this.modifiers.getModifier(t.TARGET_ETHEREAL)) {

@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { numSimulationsSelector, numUnitsSelector, unitNamesSelector } from 'store/selectors';
-import { IStore } from 'types/store';
+import type { IStore } from 'types/store';
 import { scrollToTop } from 'utils/scrollIntoView';
 
 import MetricsGraphs from './MetricsGraphs';

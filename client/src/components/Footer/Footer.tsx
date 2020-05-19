@@ -6,7 +6,7 @@ import { useRouteFind } from 'hooks';
 import React from 'react';
 import { ROUTES } from 'utils/urls';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   footer: {
     textAlign: 'center',
     width: '100%',

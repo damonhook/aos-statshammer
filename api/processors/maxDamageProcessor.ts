@@ -1,6 +1,6 @@
 import { Characteristic as C } from '../constants';
 import { MODIFIERS as m } from '../models/modifiers';
-import WeaponProfile from '../models/weaponProfile';
+import type WeaponProfile from '../models/weaponProfile';
 
 export default class MaxDamageProcessor {
   profile: WeaponProfile;
@@ -19,7 +19,7 @@ export default class MaxDamageProcessor {
       numModels = Math.max(numModels - numLeaders, 0);
       const leaderProfile = this.profile.getSplitProfile(
         leaderModifiers,
-        leaderModifiers.map(mod => mod.getAsBonusModifier()),
+        leaderModifiers.map((mod) => mod.getAsBonusModifier()),
       );
       leaderProfile.numModels = numLeaders;
       leaderMax = numLeaders * new MaxDamageProcessor(leaderProfile).getMaxDamageForModel();
@@ -43,7 +43,7 @@ export default class MaxDamageProcessor {
       bonus += modList.reduce((acc, mod) => acc + mod.bonus.max, 0);
     }
 
-    m.CONDITIONAL_BONUS.availableCharacteristics.forEach(c => {
+    m.CONDITIONAL_BONUS.availableCharacteristics.forEach((c) => {
       const mod = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, c);
       if (mod && mod.bonusToCharacteristic === characteristic) {
         bonus += mod.bonus.max;
@@ -64,7 +64,7 @@ export default class MaxDamageProcessor {
   private resolveMortalWounds(currentMax: number): number {
     let cumulativeMax = currentMax;
     let discreteMax = 0;
-    m.MORTAL_WOUNDS.availableCharacteristics.forEach(c => {
+    m.MORTAL_WOUNDS.availableCharacteristics.forEach((c) => {
       const mod = this.profile.modifiers.getModifier(m.MORTAL_WOUNDS, c);
       if (mod) {
         const modMax = mod.mortalWounds.max;

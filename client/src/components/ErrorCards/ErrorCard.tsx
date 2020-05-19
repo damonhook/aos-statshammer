@@ -6,7 +6,7 @@ import { ErrorOutline, Sync } from '@material-ui/icons';
 import clsx from 'clsx';
 import React from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   errorCard: {
     display: 'flex',
     flexDirection: 'column',

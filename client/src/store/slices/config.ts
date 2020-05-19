@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import appConfig from 'appConfig';
-import { IConfigStore } from 'types/store';
+import type { IConfigStore } from 'types/store';
 
 const INITIAL_STATE: IConfigStore = {
   darkMode: false,

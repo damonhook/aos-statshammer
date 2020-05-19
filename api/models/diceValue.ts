@@ -76,8 +76,8 @@ class DiceValue {
     const items = String(val)
       .replace(/\s/g, '')
       .split(/(?=[+-])/g)
-      .filter(item => item);
-    items.forEach(item => {
+      .filter((item) => item);
+    items.forEach((item) => {
       const acc = item.charAt(0) === '-' ? subtractions : additions;
       const val = item.replace(/^[+-]/, '');
       const multiDiceMatch = val.match(/^(\d+)([dD]\d+)$/);

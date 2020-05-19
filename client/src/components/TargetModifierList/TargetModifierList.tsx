@@ -13,7 +13,7 @@ import {
 } from 'store/selectors';
 import { targetStore } from 'store/slices';
 
-import { TOptionValue } from '../../types/modifiers';
+import type { TOptionValue } from '../../types/modifiers';
 import PendingModifiers from './PendingModifiers';
 
 const useStyles = makeStyles(() => ({
@@ -34,9 +34,9 @@ const TargetModifierList = () => {
   const dispatch = useDispatch();
 
   const addModifier = useCallback(
-    modifier => {
+    (modifier) => {
       const newModifier = { id: modifier.id, options: {} };
-      Object.keys(modifier.options).forEach(k => {
+      Object.keys(modifier.options).forEach((k) => {
         newModifier.options[k] = '';
         if (modifier.options[k].default != null) {
           newModifier.options[k] = modifier.options[k].default;
@@ -68,6 +68,7 @@ const TargetModifierList = () => {
     [dispatch],
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getErrorCallback = useCallback(
     _.memoize((index: number) => (error: boolean) => {
       dispatch(targetStore.actions.editTargetModifierError({ index, error }));

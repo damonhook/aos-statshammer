@@ -5,10 +5,10 @@ import jsPDF from 'jspdf';
 import autoTable, { RowInput } from 'jspdf-autotable';
 import store from 'store';
 import { ISanitizedUnit, modifierByIdSelector, targetModifierByIdSelector } from 'store/selectors';
-import { IModifierInstance } from 'types/modifiers';
-import { IJsPDF } from 'types/pdf';
-import { TResult } from 'types/stats';
-import { ITargetStore } from 'types/store';
+import type { IModifierInstance } from 'types/modifiers';
+import type { IJsPDF } from 'types/pdf';
+import type { TResult } from 'types/stats';
+import type { ITargetStore } from 'types/store';
 
 import cursor from './cursor';
 import { addGraphs, addHeader, addHR, addPage, addSubHeader, headerColor, margin } from './pdfUtils';
@@ -26,7 +26,7 @@ const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): Row
       }
       return null;
     })
-    .filter(item => item);
+    .filter((item) => item);
   if (modifierItems) {
     return [
       [
@@ -123,13 +123,13 @@ const generateTarget = (doc: IJsPDF, target: ITargetStore) => {
 };
 
 const transposeData = (unitNames: string[], results: TResult[]) =>
-  unitNames.map(name =>
+  unitNames.map((name) =>
     results.reduce((acc, { save, ...results }) => ({ ...acc, [save]: results[name] }), { name }),
   );
 
 const generateStatsTable = (doc: IJsPDF, results: TResult[], unitNames: string[]) => {
   const data = transposeData(unitNames, results);
-  const transformRow = ({ name, ...results }) => [name, ...Object.keys(results).map(k => results[k])];
+  const transformRow = ({ name, ...results }) => [name, ...Object.keys(results).map((k) => results[k])];
 
   autoTable(doc, {
     startY: cursor.pos,
@@ -137,7 +137,7 @@ const generateStatsTable = (doc: IJsPDF, results: TResult[], unitNames: string[]
       [{ content: 'Average Damage', colSpan: 7, styles: { halign: 'center' } }],
       ['Unit Name', ...results.map(({ save }) => (save !== 'None' ? `${save}+` : '-'))],
     ],
-    body: data.map(row => transformRow(row)),
+    body: data.map((row) => transformRow(row)),
     headStyles: { fillColor: headerColor },
     columnStyles: {
       1: { cellWidth: 40 },
