@@ -1,8 +1,10 @@
 import { combineReducers, configureStore as createStore, Middleware } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
+import { PersistPartial } from 'redux-persist/es/persistReducer';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import thunk from 'redux-thunk';
+import { IStore } from 'types/store';
 
 import {
   configStore,
@@ -39,7 +41,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, appReducer);
 
 const configureStore = () => {
-  const store = createStore({
+  const store = createStore<IStore & PersistPartial, any, any>({
     reducer: persistedReducer,
     middleware,
   });

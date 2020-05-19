@@ -41,7 +41,10 @@ export const getSanitizedUnitsSelector = createSelector(unitsSelector, units =>
       name: useUuidAsName ? unit.uuid : unit.name,
       weapon_profiles: unit.weapon_profiles
         .filter(profile => profile.active)
-        .map(profile => ({ ...profile, modifiers: profile.modifiers.filter(mod => mod.active ?? true) })),
+        .map(profile => ({
+          ...profile,
+          modifiers: (profile.modifiers ?? []).filter(mod => mod.active ?? true),
+        })),
     })),
   ),
 );
