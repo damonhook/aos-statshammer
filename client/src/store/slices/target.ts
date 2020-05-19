@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import nanoid from 'nanoid';
-import { IModifierInstanceParameter, TOptionValue } from 'types/modifiers';
-import { ITargetStore } from 'types/store';
+import type { IModifierInstanceParameter, TOptionValue } from 'types/modifiers';
+import type { ITargetStore } from 'types/store';
 import { moveItemInArray } from 'utils/arrayUpdates';
 
 const INITIAL_STATE: ITargetStore = {
@@ -33,7 +33,7 @@ const moveTargetModifier = (
   action: { payload: { index: number; newIndex: number } },
 ) => {
   const { index, newIndex } = action.payload;
-  moveItemInArray(state.modifiers, index, newIndex, newModifiers => {
+  moveItemInArray(state.modifiers, index, newIndex, (newModifiers) => {
     state.modifiers = newModifiers;
   });
 };

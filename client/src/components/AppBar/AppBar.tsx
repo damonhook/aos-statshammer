@@ -21,7 +21,7 @@ import { useRailLgSelector } from 'store/selectors';
 import { configStore } from 'store/slices';
 import { HASHES, ROUTES } from 'utils/urls';
 
-import { IStore } from '../../types/store';
+import type { IStore } from '../../types/store';
 
 interface StyleProps {
   height: number;

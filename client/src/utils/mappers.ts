@@ -1,7 +1,7 @@
-import { IUnit } from 'types/unit';
+import type { IUnit } from 'types/unit';
 
 const applyResultsMapping = (mapping: { [x: string]: any }, data: any[], fixedKey: string | null = 'save') =>
-  data.map(result =>
+  data.map((result) =>
     Object.keys(result).reduce(
       (acc, key) => {
         if (key == null || key === fixedKey) return acc;

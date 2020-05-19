@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import React from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'relative',
   },

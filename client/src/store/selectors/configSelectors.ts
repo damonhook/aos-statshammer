@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { IStore } from 'types/store';
+import type { IStore } from 'types/store';
 
 export const configSelector = (state: IStore) => state.config;
 

@@ -1,18 +1,18 @@
 import { Button, Dialog, DialogActions, Slide, useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { TransitionProps } from '@material-ui/core/transitions';
+import type { TransitionProps } from '@material-ui/core/transitions';
 import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { unitByUuidSelector, unitIndexByUuidSelector } from 'store/selectors';
 import { unitsStore } from 'store/slices';
-import { IWeaponProfile } from 'types/unit';
+import type { IWeaponProfile } from 'types/unit';
 
 import DialogContent from './DialogContent';
 import DialogTitle from './DialogTitle';
 import { errorReducer, profileReducer } from './reducers';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {},
   actions: {
     [theme.breakpoints.down('sm')]: {
@@ -97,7 +97,7 @@ const ProfileDialog = ({ open }: IProfileDialogProps) => {
     handleClose();
   }, [dispatch, handleClose, id, state, unitId]);
 
-  const submitDisabled = useMemo(() => Object.keys(errors).some(k => errors[k]), [errors]);
+  const submitDisabled = useMemo(() => Object.keys(errors).some((k) => errors[k]), [errors]);
 
   if (!profile) return null;
   return (

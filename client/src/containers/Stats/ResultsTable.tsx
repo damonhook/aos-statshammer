@@ -4,9 +4,9 @@ import clsx from 'clsx';
 import { StatsErrorCard } from 'components/ErrorCards';
 import TableSkeleton from 'components/Skeletons/TableSkeleton';
 import React from 'react';
-import { IStatsStore } from 'types/store';
+import type { IStatsStore } from 'types/store';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   table: {
     background: theme.palette.background.nested,
   },
@@ -59,7 +59,7 @@ const ResultsTable: React.FC<IResultsTableProps> = ({ stats, unitNames, classNam
         <TableHead>
           <TableRow className={classes.header}>
             <TableCell className={clsx(classes.sticky, classes.header)}>Save</TableCell>
-            {unitNames.map(name => (
+            {unitNames.map((name) => (
               <TableCell align="right" key={name} className={classes.header}>
                 {name}
               </TableCell>
@@ -67,7 +67,7 @@ const ResultsTable: React.FC<IResultsTableProps> = ({ stats, unitNames, classNam
           </TableRow>
         </TableHead>
         <TableBody>
-          {stats.payload.map(result => {
+          {stats.payload.map((result) => {
             const { save, ...unitResults } = result;
             return (
               // eslint-disable-next-line react/no-array-index-key
@@ -75,7 +75,7 @@ const ResultsTable: React.FC<IResultsTableProps> = ({ stats, unitNames, classNam
                 <TableCell className={clsx(classes.sticky, classes.cell)}>
                   {save && save !== 'None' ? `${save}+` : '-'}
                 </TableCell>
-                {unitNames.map(name => (
+                {unitNames.map((name) => (
                   <TableCell key={name} align="right">
                     {unitResults[name]}
                   </TableCell>

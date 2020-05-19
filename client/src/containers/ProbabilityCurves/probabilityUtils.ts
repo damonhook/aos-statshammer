@@ -1,4 +1,4 @@
-import { ISimulationResult } from 'types/simulations';
+import type { ISimulationResult } from 'types/simulations';
 
 export const REFERENCE_LINE_OPTIONS = {
   NONE: 'None',
@@ -7,14 +7,14 @@ export const REFERENCE_LINE_OPTIONS = {
 };
 
 export const getMaxDamage = (data: ISimulationResult[]) =>
-  Math.max(...data.map(({ metrics }) => Math.max(...Object.values(metrics.max).map(d => Number(d)))));
+  Math.max(...data.map(({ metrics }) => Math.max(...Object.values(metrics.max).map((d) => Number(d)))));
 
 export const getMaxProbability = (data: ISimulationResult[]) =>
   Math.max(
     ...data.map(({ discrete }) =>
       Math.max(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ...discrete.map(({ damage, ...other }) => Math.max(...Object.values(other).map(p => Number(p)))),
+        ...discrete.map(({ damage, ...other }) => Math.max(...Object.values(other).map((p) => Number(p)))),
       ),
     ),
   );

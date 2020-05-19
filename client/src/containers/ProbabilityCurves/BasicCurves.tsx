@@ -6,14 +6,14 @@ import { ProbabilityTooltip } from 'components/GraphTooltips';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import React, { useCallback, useState } from 'react';
-import { ISimulationResult } from 'types/simulations';
-import { TError } from 'types/store';
+import type { ISimulationResult } from 'types/simulations';
+import type { TError } from 'types/store';
 
 import GraphControls from './GraphControls';
 import Loadable from './Loadable';
 import { getMaxProbability, getTicks, REFERENCE_LINE_OPTIONS } from './probabilityUtils';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   probabilityCurves: {},
   content: {},
   graphContainer: {
@@ -68,7 +68,7 @@ const BasicCurves = React.memo(
       }
     }
 
-    const yAxisLabel = useCallback(value => `${value}%`, []);
+    const yAxisLabel = useCallback((value) => `${value}%`, []);
     let activeMetric: string | null = null;
     if (activeReferenceLine !== REFERENCE_LINE_OPTIONS.NONE) {
       activeMetric = activeReferenceLine.toLowerCase();
@@ -116,8 +116,8 @@ const BasicCurves = React.memo(
                   dotSize={1}
                   referenceLines={
                     activeMetric && activeMetric !== null
-                      ? Object.keys(metrics[activeMetric]).map(name => {
-                          const unitIndex = unitNames.findIndex(unitName => unitName === name);
+                      ? Object.keys(metrics[activeMetric]).map((name) => {
+                          const unitIndex = unitNames.findIndex((unitName) => unitName === name);
                           const stroke =
                             unitIndex >= 0
                               ? theme.palette.graphs.series[unitIndex]

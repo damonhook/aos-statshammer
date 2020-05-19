@@ -7,7 +7,7 @@ import TargetSummary from 'components/TargetSummary';
 import Graphs from 'containers/Graphs';
 import _ from 'lodash';
 import React from 'react';
-import { IStatsStore } from 'types/store';
+import type { IStatsStore } from 'types/store';
 import { ROUTES } from 'utils/urls';
 
 import ResultsTable from './ResultsTable';

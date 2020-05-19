@@ -1,8 +1,8 @@
 import { Characteristic as C, Characteristic } from '../constants';
 import DiceValue from './diceValue';
 import ModifierManager, { MODIFIERS as m } from './modifiers';
-import BaseModifier from './modifiers/BaseModifier';
-import LeaderBonus from './modifiers/LeaderBonus';
+import type BaseModifier from './modifiers/BaseModifier';
+import type LeaderBonus from './modifiers/LeaderBonus';
 
 /**
  * A class representing a single weapon profile belonging to a unit
@@ -161,9 +161,9 @@ class WeaponProfile {
       this.toWound,
       this.rend,
       this.damage,
-      this.modifiers.modifiers.filter(mod => !excludeModifiers.includes(mod)),
+      this.modifiers.modifiers.filter((mod) => !excludeModifiers.includes(mod)),
     );
-    extraModifiers.forEach(mod => {
+    extraModifiers.forEach((mod) => {
       newProfile.modifiers.addModifier(mod);
     });
     return newProfile;
@@ -174,7 +174,7 @@ class WeaponProfile {
    */
   getLeaderModifiers(): LeaderBonus[] {
     const modList: LeaderBonus[] = [];
-    m.LEADER_BONUS.availableCharacteristics.forEach(c => {
+    m.LEADER_BONUS.availableCharacteristics.forEach((c) => {
       const mod = this.modifiers.getModifier(m.LEADER_BONUS, c);
       if (mod) modList.push(mod);
     });

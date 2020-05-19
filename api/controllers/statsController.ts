@@ -1,9 +1,9 @@
 import { SAVES } from '../constants';
 import Target from '../models/target';
 import Unit from '../models/unit';
-import { IUnitSimulation } from '../types/models';
-import { ICompareResponse } from '../types/responses/compare';
-import {
+import type { IUnitSimulation } from '../types/models';
+import type { ICompareResponse } from '../types/responses/compare';
+import type {
   ISimulationResult,
   ISimulationsForSaveResponse,
   ISimulationsResponse,
@@ -33,7 +33,7 @@ export default class StatsController {
    */
   compareUnits({ units, target }): ICompareResponse {
     const unitList: Unit[] = units.map(({ name, weapon_profiles }) => new Unit(name, weapon_profiles));
-    const results = SAVES.map(save => {
+    const results = SAVES.map((save) => {
       const targetClass = new Target(save, target ? target.modifiers : []);
       return unitList.reduce(
         (acc, unit) => {
@@ -100,7 +100,7 @@ export default class StatsController {
     const initial: TMetrics = { mean: {}, max: {}, variance: {}, standardDeviation: {} };
     const metrics = Object.keys(initial);
     return Object.keys(data.results).reduce<TMetrics>((acc, name) => {
-      metrics.forEach(metric => {
+      metrics.forEach((metric) => {
         acc[metric][name] = data.results[name].metrics[metric];
       });
       return acc;
@@ -111,7 +111,7 @@ export default class StatsController {
     return Object.keys(probabilities)
       .map(Number)
       .sort((x, y) => x - y)
-      .map(damage => ({ damage, ...probabilities[damage] }));
+      .map((damage) => ({ damage, ...probabilities[damage] }));
   }
 
   private buildCumulativeProbabilities(
@@ -119,7 +119,7 @@ export default class StatsController {
     unitNames: string[],
     metrics: TMetrics,
   ): TProbabilityResult[] {
-    const maxDamage = Math.max(...Object.keys(probabilities).map(n => Number(n)));
+    const maxDamage = Math.max(...Object.keys(probabilities).map((n) => Number(n)));
     const sums = unitNames.reduce((acc, name) => ({ ...acc, [name]: 0 }), {});
     const cumulative = [...Array(maxDamage)].map((_, damage) => {
       const map = probabilities[damage] ?? {};

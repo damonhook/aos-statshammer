@@ -10,7 +10,7 @@ import React, { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import getTheme from 'themes';
-import { IStore } from 'types/store';
+import type { IStore } from 'types/store';
 import { ROUTES } from 'utils/urls';
 
 import Wrapper from './Wrapper';

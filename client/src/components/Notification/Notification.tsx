@@ -7,7 +7,7 @@ import { useIsMobile } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { notificationsStore } from 'store/slices';
-import { INotificationAction, TNotificationVariants } from 'types/notification';
+import type { INotificationAction, TNotificationVariants } from 'types/notification';
 
 const variantIcon = {
   success: CheckCircle,

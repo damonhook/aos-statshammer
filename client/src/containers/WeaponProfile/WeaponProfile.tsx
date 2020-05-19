@@ -10,12 +10,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { unitByIndexSelector } from 'store/selectors';
 import { notificationsStore, unitsStore } from 'store/slices';
-import { IWeaponProfile } from 'types/unit';
+import type { IWeaponProfile } from 'types/unit';
 import { scrollToRef } from 'utils/scrollIntoView';
 
 import Characteristics from './Characteristics';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   profile: {
     display: 'flex',
     background: theme.palette.background.nested,

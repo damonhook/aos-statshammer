@@ -7,7 +7,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { targetAppliedModifiersSelector } from 'store/selectors';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   noItems: {
     display: 'flex',
   },

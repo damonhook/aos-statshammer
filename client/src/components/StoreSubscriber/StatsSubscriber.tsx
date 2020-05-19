@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { targetSelector } from 'store/selectors/targetSelectors';
 import { unitsSelector } from 'store/selectors/unitsSelectors';
-import { IUnit } from 'types/unit';
+import type { IUnit } from 'types/unit';
 import { useDebouncedCallback } from 'use-debounce';
 
 /**
@@ -19,7 +19,7 @@ const filterNameFromUnit = (unit: IUnit) => {
   return rest;
 };
 
-const filteredUnitsSelector = createSelector(unitsSelector, units =>
+const filteredUnitsSelector = createSelector(unitsSelector, (units) =>
   units.map((u: IUnit) => filterNameFromUnit(u)),
 );
 

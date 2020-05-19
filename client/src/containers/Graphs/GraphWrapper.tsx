@@ -3,7 +3,7 @@ import { StatsErrorCard } from 'components/ErrorCards';
 import GraphSkeleton from 'components/Skeletons/GraphSkeleton';
 import React from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   graphWrapper: {
     height: '350px',
   },

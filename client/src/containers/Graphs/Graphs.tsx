@@ -4,7 +4,7 @@ import { BarGraph, LineGraph, RadarGraph } from 'components/Graphs';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { desktopGraphListSelector } from 'store/selectors';
-import { IStatsStore } from 'types/store';
+import type { IStatsStore } from 'types/store';
 
 import GraphList from './GraphList';
 import GraphTabbed from './GraphTabbed';

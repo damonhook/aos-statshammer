@@ -44,7 +44,7 @@ const Tabbed: React.FC<ITabbedProps> = ({ tabNames, tabContent, className, onTab
     setValue(newValue);
     if (onTabChange) onTabChange(newValue);
   };
-  const handleSwipe = index => {
+  const handleSwipe = (index) => {
     setValue(index);
     if (onTabChange) onTabChange(index);
   };

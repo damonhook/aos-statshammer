@@ -7,11 +7,13 @@
             "es2019"
         ],
         "noImplicitAny": false,
+        "importsNotUsedAsValues": "error",
         "moduleResolution": "node",
+        "strict": true,
         "sourceMap": true,
         "baseUrl": "."
     },
     "include": [
         "."
-    ]
+    ],
 }

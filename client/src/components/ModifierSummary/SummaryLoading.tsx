@@ -2,7 +2,7 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import React from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loader: {
     display: 'flex',
     margin: theme.spacing(0.5, 0, 0.5, 2),

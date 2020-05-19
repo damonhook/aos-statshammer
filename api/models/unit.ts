@@ -1,9 +1,9 @@
 import AverageDamageProcessor from '../processors/averageDamageProcessor';
 import MaxDamageProcessor from '../processors/maxDamageProcessor';
 import SimulationProcessor from '../processors/simulationProcessor';
-import { IUnitSimulation, TUnitSimulationBucket, TUnitSimulationMetrics } from '../types/models/unit';
+import type { IUnitSimulation, TUnitSimulationBucket, TUnitSimulationMetrics } from '../types/models/unit';
 import { range } from '../utils/mathUtils';
-import Target from './target';
+import type Target from './target';
 import WeaponProfile from './weaponProfile';
 
 type TFreqMap = { [damage: number]: number };
@@ -21,7 +21,7 @@ class Unit {
    */
   constructor(name: string, weaponProfiles: any) {
     this.name = name;
-    this.weaponProfiles = weaponProfiles.map(profile => {
+    this.weaponProfiles = weaponProfiles.map((profile) => {
       if (profile instanceof WeaponProfile) return profile;
       return new WeaponProfile(
         profile.num_models,
@@ -96,7 +96,7 @@ class Unit {
     const buckets = Object.keys(counts)
       .map(Number)
       .sort((x, y) => x - y)
-      .map(damage => ({
+      .map((damage) => ({
         damage,
         count: counts[damage],
         probability: parseFloat(((counts[damage] * 100) / numSimulations).toFixed(2)),
@@ -104,7 +104,7 @@ class Unit {
 
     const sampleMax = Math.max(...Object.keys(counts).map(Number));
     const step = Math.max(Math.floor(((max - sampleMax) / max) * 10), 1);
-    [...range(sampleMax + 1, max, step)].forEach(i => {
+    [...range(sampleMax + 1, max, step)].forEach((i) => {
       buckets.push({ damage: i, count: 0, probability: 0 });
     });
     buckets.push({ damage: max, count: 0, probability: 0 });

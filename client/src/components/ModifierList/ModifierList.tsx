@@ -8,8 +8,8 @@ import _ from 'lodash';
 import React, { useCallback, useEffect, useReducer } from 'react';
 import { useSelector } from 'react-redux';
 import { modifierByIdSelector, modifierItemsSelector } from 'store/selectors';
-import { IModifierInstance } from 'types/modifiers';
-import { IStore } from 'types/store';
+import type { IModifierInstance } from 'types/modifiers';
+import type { IStore } from 'types/store';
 
 import PendingModifiers from './PendingModifiers';
 import { errorReducer } from './reducers';
@@ -53,14 +53,14 @@ const ModifierList: React.FC<IModifierListProps> = ({
 
   useEffect(() => {
     if (errorCallback) {
-      errorCallback(errors.some(e => e));
+      errorCallback(errors.some((e) => e));
     }
   }, [errors, errorCallback]);
 
   const addModifier = useCallback(
-    modifier => {
+    (modifier) => {
       const newModifier = { id: modifier.id, options: {} };
-      Object.keys(modifier.options).forEach(k => {
+      Object.keys(modifier.options).forEach((k) => {
         newModifier.options[k] = '';
         if (modifier.options[k].default != null) {
           newModifier.options[k] = modifier.options[k].default;
@@ -73,7 +73,7 @@ const ModifierList: React.FC<IModifierListProps> = ({
   );
 
   const removeModifier = useCallback(
-    index => {
+    (index) => {
       dispatchModifiers({ type: 'REMOVE_MODIFIER', index });
       dispatchErrors({ type: 'REMOVE_ERROR', index });
     },
@@ -109,6 +109,7 @@ const ModifierList: React.FC<IModifierListProps> = ({
     [dispatchModifiers],
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getErrorCallback = useCallback(
     _.memoize((index: number) => (error: boolean) => {
       dispatchErrors({ type: 'SET_ERROR', index, error });

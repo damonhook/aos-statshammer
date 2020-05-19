@@ -4,7 +4,7 @@ import { MoreVert } from '@material-ui/icons';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 
-import { IPrimaryItem, ISecondaryItem } from './types';
+import type { IPrimaryItem, ISecondaryItem } from './types';
 
 const useStyles = makeStyles({
   menu: {},
@@ -24,7 +24,7 @@ const ControlMenu: React.FC<IControlMenuProps> = ({ primaryItems, secondaryItems
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -32,7 +32,7 @@ const ControlMenu: React.FC<IControlMenuProps> = ({ primaryItems, secondaryItems
     setAnchorEl(null);
   };
 
-  const menuItemClick = action => {
+  const menuItemClick = (action) => {
     if (typeof action !== 'string') {
       action();
     }

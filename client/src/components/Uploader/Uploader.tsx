@@ -24,9 +24,9 @@ const Uploader: React.FC<IUploaderProps> = ({ onUpload, disabled = false, compon
   const id = useMemo(() => nanoid(), []);
 
   const submitFiles = useCallback(
-    files => {
+    (files) => {
       if (!files) return;
-      Array.from(files).forEach(file => {
+      Array.from(files).forEach((file) => {
         const reader = new globalAny.FileReader();
         reader.onload = () => {
           const data = JSON.parse(reader.result);
@@ -45,7 +45,7 @@ const Uploader: React.FC<IUploaderProps> = ({ onUpload, disabled = false, compon
         className={classes.input}
         id={`upload-button-${id}`}
         type="file"
-        onChange={event => {
+        onChange={(event) => {
           submitFiles(event.target.files);
           // eslint-disable-next-line no-param-reassign
           event.target.value = '';

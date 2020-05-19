@@ -1,6 +1,6 @@
 import html2canvas from 'html2canvas';
 import nanoid from 'nanoid';
-import { IJsPDF } from 'types/pdf';
+import type { IJsPDF } from 'types/pdf';
 
 import cursor from './cursor';
 

@@ -21,12 +21,12 @@
         "noImplicitAny": false,
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "strict": true
     },
     "include": [
         "src"
     ],
     "exclude": [
         "node_modules"
-    ]
+    ],
+    "compileOnSave": true
 }

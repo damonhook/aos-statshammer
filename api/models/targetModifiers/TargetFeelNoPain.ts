@@ -1,7 +1,7 @@
 import { rollOption } from '../../utils/modifierUtils';
 import { D6 } from '../dice';
-import Target from '../target';
-import WeaponProfile from '../weaponProfile';
+import type Target from '../target';
+import type WeaponProfile from '../weaponProfile';
 import BaseTargetModifier from './BaseTargetModifier';
 
 export default class TargetFeelNoPain extends BaseTargetModifier {

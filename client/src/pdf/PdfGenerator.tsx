@@ -7,10 +7,10 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { ISanitizedUnit, unitNamesSelector } from 'store/selectors';
 import { lightTheme } from 'themes';
-import { IJsPDF } from 'types/pdf';
-import { ISimulationResult } from 'types/simulations';
-import { TResult } from 'types/stats';
-import { ITargetStore } from 'types/store';
+import type { IJsPDF } from 'types/pdf';
+import type { ISimulationResult } from 'types/simulations';
+import type { TResult } from 'types/stats';
+import type { ITargetStore } from 'types/store';
 
 import generate from './generator';
 import { CumulativeProbabilityGraphs, ProbabilityGraphs, StatsGraphs } from './graphs';
@@ -62,7 +62,7 @@ const PdfGenerator: React.FC<IPdfGeneratorProps> = ({ units, target, results, pr
 
   useLayoutEffect(() => {
     if (!loading) {
-      generatePdf().then(result => {
+      generatePdf().then((result) => {
         setDoc(result);
         if (mobile) {
           result.save('aos-statshammer.pdf');

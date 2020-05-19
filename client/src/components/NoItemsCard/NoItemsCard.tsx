@@ -4,7 +4,7 @@ import { InfoOutlined } from '@material-ui/icons';
 import clsx from 'clsx';
 import React from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   noItemsContainer: {
     padding: theme.spacing(3, 2),
     marginBottom: theme.spacing(2),
