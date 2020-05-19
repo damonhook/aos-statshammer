@@ -28,7 +28,7 @@ export const fetchStatsCompare = () => async (dispatch: TDispatch) => {
     dispatch(statsStore.actions.fetchStatsError({ error }));
     dispatch(
       notificationsStore.actions.addNotification({
-        message: `${error}`,
+        message: 'Failed to fetch stats',
         variant: 'error',
         action: {
           label: 'Retry',

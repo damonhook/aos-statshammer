@@ -45,8 +45,7 @@ export const fetchSimulations = () => async (dispatch: TDispatch) => {
   try {
     const state = store.getState();
     const units = getSanitizedUnitsSelector(state)(false);
-    if (!units)
-      dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
+    if (!units) dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: [] }));
     const target = getSanitizedTargetSelector(state);
     const numSimulations = verifyNumSimulations(state, dispatch);
 
