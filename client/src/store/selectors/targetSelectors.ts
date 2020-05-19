@@ -13,5 +13,5 @@ export const numTargetModifiersSelector = createSelector(
 
 export const getSanitizedTargetSelector = createSelector(targetSelector, target => ({
   ...target,
-  modifiers: target.modifiers.filter(modifier => (modifier.active ?? true) && !modifier.error),
+  modifiers: (target.modifiers ?? []).filter(modifier => (modifier.active ?? true) && !modifier.error),
 }));
