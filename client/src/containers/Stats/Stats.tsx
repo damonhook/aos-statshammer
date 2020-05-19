@@ -23,7 +23,7 @@ const Stats = ({ className }: IStatsProps) => {
   const mapper = useCallback(getResultsMapping(unitMapping), [unitMapping]);
   const results = useMapping(stats.payload, mapper, stats.pending);
 
-  const [setUnitMappingDebounced] = useDebouncedCallback(newValue => {
+  const [setUnitMappingDebounced] = useDebouncedCallback((newValue: { [uuid: string]: string }) => {
     setUnitMapping(newValue);
   }, appConfig.timers.debounce);
 

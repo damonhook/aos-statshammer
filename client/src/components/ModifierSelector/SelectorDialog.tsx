@@ -36,9 +36,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
-  <Slide direction="up" ref={ref} {...props} />
-));
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & { children?: React.ReactElement<any, any> },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 interface ISelectorDialogProps {
   modifiers: IModifierDefinition[];
