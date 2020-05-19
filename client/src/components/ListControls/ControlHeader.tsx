@@ -12,7 +12,7 @@ interface IHeaderButtonProps {
 }
 
 const HeaderButton: React.FC<IHeaderButtonProps> = ({ onClick, icon, tooltip, disabled }) => (
-  <Tooltip title={tooltip}>
+  <Tooltip title={tooltip ?? ''}>
     <span>
       <IconButton size="small" onClick={onClick} disabled={disabled}>
         {icon}
