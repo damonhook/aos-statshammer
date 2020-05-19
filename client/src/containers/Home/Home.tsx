@@ -1,11 +1,12 @@
 import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Loader from 'components/Loader';
 import StoreSubscriber from 'components/StoreSubscriber';
-import React, { useEffect } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { scrollToTop, setAutoScrollEnabled } from 'utils/scrollIntoView';
 
-import DesktopHome from './DesktopHome';
-import MobileHome from './MobileHome';
+const DesktopHome = lazy(() => import('./DesktopHome'));
+const MobileHome = lazy(() => import('./MobileHome'));
 
 const useStyles = makeStyles(() => ({
   home: {
@@ -31,7 +32,7 @@ const Home = () => {
   return (
     <div className={classes.home}>
       <StoreSubscriber />
-      {mobile ? <MobileHome /> : <DesktopHome />}
+      <Suspense fallback={<Loader />}>{mobile ? <MobileHome /> : <DesktopHome />}</Suspense>
     </div>
   );
 };
