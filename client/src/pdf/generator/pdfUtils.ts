@@ -1,5 +1,5 @@
 import html2canvas from 'html2canvas';
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import type { IJsPDF } from 'types/pdf';
 
 import cursor from './cursor';

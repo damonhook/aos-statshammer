@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import type { INotificationParameters } from 'types/notification';
 import type { INotificationsStore } from 'types/store';
 

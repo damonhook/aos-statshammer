@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import type { IUnitStore } from 'types/store';
 import type { IUnitParameter, IWeaponProfileParameter } from 'types/unit';
 import { moveItemInArray } from 'utils/arrayUpdates';
