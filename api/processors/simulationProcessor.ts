@@ -38,64 +38,68 @@ class SimulationProcessor {
 
   resolveHitRoll() {
     const hitRoll = this.performReroll(C.TO_HIT, D6.roll());
+    let extraDamage = 0;
     if (hitRoll >= this.profile.getToHit(false, true)) {
       const explodingModifier = this.profile.modifiers.getModifier(m.EXPLODING, C.TO_HIT);
       if (explodingModifier && hitRoll >= explodingModifier.on) {
-        return [...Array(explodingModifier.getExtra(true) + 1)].reduce(
+        extraDamage = [...Array(explodingModifier.getExtra(true))].reduce(
           (acc) => acc + this.resolveWoundRoll(),
           0,
         );
       }
 
       const mwModifier = this.profile.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_HIT);
-      let mortalDamage = 0;
       if (mwModifier && hitRoll >= mwModifier.on) {
+        let mortalDamage = 0;
         mortalDamage = mwModifier.getMortalWounds(true);
         mortalDamage = this.performMortalSaveRolls(mortalDamage);
         mortalDamage = this.performFNPRolls(mortalDamage);
-        if (!mwModifier.inAddition) return mortalDamage;
+        extraDamage += mortalDamage;
+        if (!mwModifier.inAddition) return extraDamage;
       }
 
       const cbModifier = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_HIT);
       if (cbModifier && hitRoll >= cbModifier.on) {
         const splitProfile = this.profile.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()]);
         const splitSimulation = new SimulationProcessor(splitProfile, this.target);
-        return splitSimulation.resolveWoundRoll() + mortalDamage;
+        return splitSimulation.resolveWoundRoll() + extraDamage;
       }
 
-      return this.resolveWoundRoll() + mortalDamage;
+      return this.resolveWoundRoll() + extraDamage;
     }
     return 0;
   }
 
   resolveWoundRoll() {
     const woundRoll = this.performReroll(C.TO_WOUND, D6.roll());
+    let extraDamage = 0;
     if (woundRoll >= this.profile.getToWound(false, true)) {
       const explodingModifier = this.profile.modifiers.getModifier(m.EXPLODING, C.TO_WOUND);
       if (explodingModifier && woundRoll >= explodingModifier.on) {
-        return [...Array(explodingModifier.getExtra(true) + 1)].reduce(
+        extraDamage = [...Array(explodingModifier.getExtra(true))].reduce(
           (acc) => acc + this.resolveSaveRoll(),
           0,
         );
       }
 
       const mwModifier = this.profile.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_WOUND);
-      let mortalDamage = 0;
       if (mwModifier && woundRoll >= mwModifier.on) {
+        let mortalDamage = 0;
         mortalDamage = mwModifier.getMortalWounds(true);
         mortalDamage = this.performMortalSaveRolls(mortalDamage);
         mortalDamage = this.performFNPRolls(mortalDamage);
-        if (!mwModifier.inAddition) return mortalDamage;
+        extraDamage += mortalDamage;
+        if (!mwModifier.inAddition) return extraDamage;
       }
 
       const cbModifier = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_WOUND);
       if (cbModifier && woundRoll >= cbModifier.on) {
         const splitProfile = this.profile.getSplitProfile([cbModifier], [cbModifier.getAsBonusModifier()]);
         const splitSimulation = new SimulationProcessor(splitProfile, this.target);
-        return splitSimulation.resolveSaveRoll() + mortalDamage;
+        return splitSimulation.resolveSaveRoll() + extraDamage;
       }
 
-      return this.resolveSaveRoll() + mortalDamage;
+      return this.resolveSaveRoll() + extraDamage;
     }
     return 0;
   }
