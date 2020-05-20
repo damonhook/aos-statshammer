@@ -1,22 +1,19 @@
 /* eslint-disable no-underscore-dangle */
-// eslint-disable-next-line import/no-duplicates
-import 'jspdf-autotable'; // Has to be separate import
 
 import { getFormattedDescription } from 'components/ModifierItem/ModifierDescription';
 import jsPDF from 'jspdf';
-// eslint-disable-next-line import/no-duplicates
-import { MultipleRowType } from 'jspdf-autotable';
+import autoTable, { RowInput } from 'jspdf-autotable';
 import store from 'store';
 import { ISanitizedUnit, modifierByIdSelector, targetModifierByIdSelector } from 'store/selectors';
-import { IModifierInstance } from 'types/modifiers';
-import { IJsPDF } from 'types/pdf';
-import { TResult } from 'types/stats';
-import { ITargetStore } from 'types/store';
+import type { IModifierInstance } from 'types/modifiers';
+import type { IJsPDF } from 'types/pdf';
+import type { TResult } from 'types/stats';
+import type { ITargetStore } from 'types/store';
 
 import cursor from './cursor';
 import { addGraphs, addHeader, addHR, addPage, addSubHeader, headerColor, margin } from './pdfUtils';
 
-const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): MultipleRowType => {
+const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): RowInput[] => {
   const state = store.getState();
   const getModifierById = modifierByIdSelector(state);
   const getTargetModifierById = targetModifierByIdSelector(state);
@@ -29,7 +26,7 @@ const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): Mul
       }
       return null;
     })
-    .filter(item => item);
+    .filter((item) => item);
   if (modifierItems) {
     return [
       [
@@ -40,7 +37,7 @@ const getModifierItems = (modifiers: IModifierInstance[], isTarget = false): Mul
         },
       ],
       ...modifierItems,
-    ] as MultipleRowType;
+    ] as RowInput[];
   }
   return [];
 };
@@ -58,7 +55,7 @@ const generateUnits = (doc: IJsPDF, units: ISanitizedUnit[]) => {
         body = [...body, ...modifierItems] as (string | number)[][];
       }
 
-      let head: MultipleRowType = [
+      let head: RowInput[] = [
         [{ content: profileName, colSpan: 6, styles: { halign: 'center' } }],
         ['# Models', 'Attacks', 'To Hit', 'To Wound', 'Rend', 'Damage'],
       ];
@@ -70,10 +67,10 @@ const generateUnits = (doc: IJsPDF, units: ISanitizedUnit[]) => {
           textColor: 20,
           fontSize: 12,
         };
-        head = [[{ content: name, colSpan: 6, styles: headStyle }], ...head] as MultipleRowType;
+        head = [[{ content: name, colSpan: 6, styles: headStyle }], ...head] as RowInput[];
       }
 
-      doc.autoTable({
+      autoTable(doc, {
         startY: cursor.pos,
         head,
         body,
@@ -100,9 +97,9 @@ const generateUnits = (doc: IJsPDF, units: ISanitizedUnit[]) => {
 
 const generateTarget = (doc: IJsPDF, target: ITargetStore) => {
   addSubHeader(doc, 'Target');
-  const head: MultipleRowType = [[{ content: 'Target', colSpan: 6, styles: { halign: 'center' } }]];
-  const body = [...getModifierItems(target.modifiers, true)] as MultipleRowType;
-  doc.autoTable({
+  const head: RowInput[] = [[{ content: 'Target', colSpan: 6, styles: { halign: 'center' } }]];
+  const body = [...getModifierItems(target.modifiers, true)] as RowInput[];
+  autoTable(doc, {
     startY: cursor.pos,
     head,
     body,
@@ -126,21 +123,21 @@ const generateTarget = (doc: IJsPDF, target: ITargetStore) => {
 };
 
 const transposeData = (unitNames: string[], results: TResult[]) =>
-  unitNames.map(name =>
+  unitNames.map((name) =>
     results.reduce((acc, { save, ...results }) => ({ ...acc, [save]: results[name] }), { name }),
   );
 
 const generateStatsTable = (doc: IJsPDF, results: TResult[], unitNames: string[]) => {
   const data = transposeData(unitNames, results);
-  const transformRow = ({ name, ...results }) => [name, ...Object.keys(results).map(k => results[k])];
+  const transformRow = ({ name, ...results }) => [name, ...Object.keys(results).map((k) => results[k])];
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: cursor.pos,
     head: [
       [{ content: 'Average Damage', colSpan: 7, styles: { halign: 'center' } }],
       ['Unit Name', ...results.map(({ save }) => (save !== 'None' ? `${save}+` : '-'))],
     ],
-    body: data.map(row => transformRow(row)),
+    body: data.map((row) => transformRow(row)),
     headStyles: { fillColor: headerColor },
     columnStyles: {
       1: { cellWidth: 40 },

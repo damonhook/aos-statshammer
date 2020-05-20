@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { IStore } from 'types/store';
+import type { IStore } from 'types/store';
 
 export const configSelector = (state: IStore) => state.config;
 
@@ -9,3 +9,5 @@ export const desktopGraphListSelector = createSelector(
 );
 
 export const numSimulationsSelector = createSelector(configSelector, ({ numSimulations }) => numSimulations);
+
+export const useRailLgSelector = createSelector(configSelector, ({ useRailLg }) => useRailLg);

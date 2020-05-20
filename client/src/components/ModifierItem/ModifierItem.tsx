@@ -1,11 +1,11 @@
 import { Grid, Switch } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { IPrimaryItem } from 'components/ListControls/types';
+import type { IPrimaryItem } from 'components/ListControls/types';
 import ListItem from 'components/ListItem';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useReducer, useRef } from 'react';
-import { IModifierDefinition, TModifierInstanceOptions, TOptionValue } from 'types/modifiers';
+import type { IModifierDefinition, TModifierInstanceOptions, TOptionValue } from 'types/modifiers';
 import { scrollToRef } from 'utils/scrollIntoView';
 
 import ModifierDescription from './ModifierDescription';
@@ -78,10 +78,11 @@ const ModifierItem = React.memo(
 
     useEffect(() => {
       if (errorCallback) {
-        errorCallback(Object.keys(errors).some(k => errors[k]));
+        errorCallback(Object.keys(errors).some((k) => errors[k]));
       }
     }, [errors, errorCallback]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const getErrorCallback = useCallback(
       _.memoize((name: string) => (error: boolean) => {
         dispatchErrors({ type: 'SET_ERROR', name, error });
@@ -114,7 +115,7 @@ const ModifierItem = React.memo(
             </Grid>
             {definition.options && Object.keys(definition.options).length ? (
               <div className={classes.modifierSettings}>
-                {Object.keys(definition.options).map(n => (
+                {Object.keys(definition.options).map((n) => (
                   <ModifierInput
                     index={index}
                     name={n}

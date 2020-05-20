@@ -63,7 +63,7 @@ const RollInput = React.memo(
     }
 
     const validate = useCallback(
-      val => {
+      (val) => {
         setError(validator(val));
       },
       [validator],
@@ -80,7 +80,7 @@ const RollInput = React.memo(
     }, [error, errorCallback]);
 
     const handleChange = useCallback(
-      event => {
+      (event) => {
         const val = event.target.value;
         if (value === undefined) validate(val); // uncontrolled
         if (onChange) onChange(event);

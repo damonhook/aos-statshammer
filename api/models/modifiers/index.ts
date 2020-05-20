@@ -1,4 +1,4 @@
-import { Characteristic } from 'api/constants';
+import type { Characteristic } from 'api/constants';
 
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';
@@ -32,15 +32,16 @@ export const MODIFIERS = {
 export default class ModifierManager {
   modifiers: BaseModifier[];
 
-  constructor(modifiers = []) {
-    this.modifiers = modifiers.map(m => {
+  constructor(modifiers: (BaseModifier | { id: string; options: any })[] = []) {
+    const mods = modifiers.map((m) => {
       if (m instanceof BaseModifier) return m;
       if (typeof m === 'object' && 'id' in m && 'options' in m) {
         if (MODIFIERS[m.id]) return this.parseModifier(MODIFIERS[m.id], m);
       }
       return null;
     });
-    this.modifiers.filter(m => m != null);
+
+    this.modifiers = mods.filter((m) => m != null) as BaseModifier[];
   }
 
   /**
@@ -62,7 +63,7 @@ export default class ModifierManager {
     characteristic: Characteristic,
   ): InstanceType<T> | null {
     return this.modifiers.find(
-      m => m instanceof modifier && m.characteristic === characteristic,
+      (m) => m instanceof modifier && m.characteristic === characteristic,
     ) as InstanceType<T> | null;
   }
 
@@ -71,7 +72,7 @@ export default class ModifierManager {
    * characteristic property
    * @param characteristic The characteristic to fetch the reroll modifiers for
    */
-  getRerollModifier(characteristic: Characteristic): RerollOnes | RerollFailed | Reroll {
+  getRerollModifier(characteristic: Characteristic): RerollOnes | RerollFailed | Reroll | null {
     return (
       this.getModifier(MODIFIERS.REROLL, characteristic) ||
       this.getModifier(MODIFIERS.REROLL_FAILED, characteristic) ||
@@ -90,7 +91,7 @@ export default class ModifierManager {
     characteristic: Characteristic,
   ): InstanceType<T>[] {
     return this.modifiers.filter(
-      m => m instanceof modifier && m.characteristic === characteristic,
+      (m) => m instanceof modifier && m.characteristic === characteristic,
     ) as InstanceType<T>[];
   }
 

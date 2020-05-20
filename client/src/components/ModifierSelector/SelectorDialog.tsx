@@ -10,16 +10,16 @@ import {
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { TransitionProps } from '@material-ui/core/transitions';
+import type { TransitionProps } from '@material-ui/core/transitions';
 import { Close } from '@material-ui/icons';
 import { useHashMatch } from 'hooks';
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { IModifierDefinition } from 'types/modifiers';
+import type { IModifierDefinition } from 'types/modifiers';
 
 import ModifierOption from './ModifierOption';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'relative',
   },
@@ -36,9 +36,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
-  <Slide direction="up" ref={ref} {...props} />
-));
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & { children?: React.ReactElement<any, any> },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 interface ISelectorDialogProps {
   modifiers: IModifierDefinition[];
@@ -69,7 +72,7 @@ const SelectorDialog: React.FC<ISelectorDialogProps> = ({ modifiers, addModifier
         </Toolbar>
       </AppBar>
       <DialogContent className={classes.content}>
-        {modifiers.map(modifier => (
+        {modifiers.map((modifier) => (
           <ModifierOption modifier={modifier} onClick={addModifier} key={modifier.id} />
         ))}
       </DialogContent>

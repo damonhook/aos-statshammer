@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IModifierDefinition } from 'types/modifiers';
-import { ITargetModifiersStore, TError } from 'types/store';
+import type { IModifierDefinition } from 'types/modifiers';
+import type { ITargetModifiersStore, TError } from 'types/store';
 
 const INITIAL_STATE: ITargetModifiersStore = {
   pending: false,

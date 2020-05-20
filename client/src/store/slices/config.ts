@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import appConfig from 'appConfig';
-import { IConfigStore } from 'types/store';
+import type { IConfigStore } from 'types/store';
 
 const INITIAL_STATE: IConfigStore = {
   darkMode: false,
   desktopGraphList: false,
   numSimulations: appConfig.simulations.default,
+  useRailLg: false,
 };
 
 const toggleDarkMode = (state: IConfigStore) => {
@@ -21,6 +22,10 @@ const changeNumSimulations = (state: IConfigStore, action: { payload: { newValue
   state.numSimulations = newValue;
 };
 
+const toggleUseRailLg = (state: IConfigStore) => {
+  state.useRailLg = !state.useRailLg;
+};
+
 export const configStore = createSlice({
   name: 'config',
   initialState: INITIAL_STATE,
@@ -28,5 +33,6 @@ export const configStore = createSlice({
     toggleDarkMode,
     toggleDesktopGraphList,
     changeNumSimulations,
+    toggleUseRailLg,
   },
 });

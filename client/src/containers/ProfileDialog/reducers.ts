@@ -1,4 +1,4 @@
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import { moveItemInArray, updateItemInArray } from 'utils/arrayUpdates';
 
 export const errorReducer = (state, action) => {
@@ -17,7 +17,7 @@ const modifiersReducer = (state, action) => {
   switch (action.type) {
     case 'INIT_PROFILE':
       if (action.modifiers && action.modifiers.length) {
-        return action.modifiers.map(mod => ({
+        return action.modifiers.map((mod) => ({
           ...mod,
           uuid: mod.uuid || nanoid(),
           active: mod.active ?? true,
@@ -32,19 +32,19 @@ const modifiersReducer = (state, action) => {
     case 'REMOVE_MODIFIER':
       return state.filter((_, index) => index !== action.index);
     case 'MOVE_MODIFIER':
-      return moveItemInArray(state, action.index, action.newIndex, state => state);
+      return moveItemInArray(state, action.index, action.newIndex, (state) => state);
     case 'EDIT_MODIFIER':
-      return updateItemInArray(state, action.index, item => ({
+      return updateItemInArray(state, action.index, (item) => ({
         ...item,
         ...action.item,
       }));
     case 'TOGGLE_MODIFIER_ACTIVE':
-      return updateItemInArray(state, action.index, item => ({
+      return updateItemInArray(state, action.index, (item) => ({
         ...item,
         active: !(item.active ?? true),
       }));
     case 'EDIT_MODIFIER_OPTION':
-      return updateItemInArray(state, action.index, item => ({
+      return updateItemInArray(state, action.index, (item) => ({
         ...item,
         options: {
           ...item.options,

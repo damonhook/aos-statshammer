@@ -6,7 +6,7 @@ import { useHashMatch, useRouteFind } from 'hooks';
 import React, { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { numUnitsSelector } from 'store/selectors';
+import { numUnitsSelector, useRailLgSelector } from 'store/selectors';
 import { HASHES, ROUTES } from 'utils/urls';
 
 import DrawerLogo from './DrawerLogo';
@@ -47,12 +47,13 @@ const Drawer = () => {
   const classes = useStyles();
 
   const numUnits = useSelector(numUnitsSelector);
+  const useRailLg = useSelector(useRailLgSelector);
 
   const open = useHashMatch(HASHES.DRAWER);
   const [, , page] = useRouteFind(Object.values(ROUTES));
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const lg = useMediaQuery(theme.breakpoints.up('lg'));
-  const hasRail = useMediaQuery(theme.breakpoints.only('md'));
+  const md = useMediaQuery(theme.breakpoints.only('md'));
 
   const onSwipeOpen = () => {
     history.push(HASHES.DRAWER);
@@ -70,13 +71,16 @@ const Drawer = () => {
 
   const isHome = [ROUTES.HOME, ROUTES.TARGET, ROUTES.STATS].includes(page);
 
+  const isPermanent = lg && !useRailLg;
+  const useRail = md || (lg && useRailLg);
+
   return (
     <>
-      {hasRail && <Rail />}
+      {useRail && <Rail />}
       <AppDrawer
         open={open}
         onOpen={onSwipeOpen}
-        variant={lg ? 'permanent' : 'temporary'}
+        variant={isPermanent ? 'permanent' : 'temporary'}
         anchor="left"
         onClose={handleClose}
         ModalProps={{

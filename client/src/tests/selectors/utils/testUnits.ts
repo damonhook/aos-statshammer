@@ -1,5 +1,5 @@
-import { ISanitizedUnit } from 'store/selectors';
-import { IUnit } from 'types/unit';
+import type { ISanitizedUnit } from 'store/selectors';
+import type { IUnit } from 'types/unit';
 
 export const unit1: IUnit = {
   name: 'Test Unit 1',

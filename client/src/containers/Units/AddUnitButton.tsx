@@ -6,8 +6,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUnitEnabledSelector } from 'store/selectors';
 import { notificationsStore, unitsStore } from 'store/slices';
-import { IUnitStore } from 'types/store';
-import { IUnit } from 'types/unit';
+import type { IUnitStore } from 'types/store';
+import type { IUnit } from 'types/unit';
 
 const useStyles = makeStyles({
   group: {

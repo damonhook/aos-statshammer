@@ -4,9 +4,9 @@ import { Add } from '@material-ui/icons';
 import clsx from 'clsx';
 import _ from 'lodash';
 import React from 'react';
-import { IModifierDefinition } from 'types/modifiers';
+import type { IModifierDefinition } from 'types/modifiers';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   body: {
     display: 'flex',
     flex: 1,

@@ -67,7 +67,7 @@ const Drawer = () => {
         paperAnchorLeft: classes.docked,
       }}
     >
-      <DrawerLogo />
+      <DrawerLogo mini />
       <Divider />
       <List className={classes.list}>
         <MenuLinkItem to={ROUTES.HOME} label="Home" icon={<Home />} selected={isHome} mini />

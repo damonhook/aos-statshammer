@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import thunk from 'redux-thunk';
+import type { IStore } from 'types/store';
 
 import {
   configStore,
@@ -35,8 +36,7 @@ const persistConfig = {
   whitelist: ['units', 'config', 'target'],
 };
 
-// @ts-ignore
-const persistedReducer = persistReducer(persistConfig, appReducer);
+const persistedReducer = persistReducer<IStore>(persistConfig, appReducer);
 
 const configureStore = () => {
   const store = createStore({

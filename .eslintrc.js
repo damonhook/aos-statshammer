@@ -1,6 +1,19 @@
 module.exports = {
-  extends: ['airbnb', 'plugin:@typescript-eslint/recommended', 'prettier'],
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'simple-import-sort', 'prettier'],
+  extends: [
+    'airbnb-typescript',
+    'airbnb/hooks',
+    'prettier',
+    'prettier/react',
+    'prettier/@typescript-eslint',
+  ],
+  plugins: [
+    'react',
+    'jsx-a11y',
+    'import',
+    'eslint-plugin-simple-import-sort',
+    'prettier',
+    '@typescript-eslint',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json',
@@ -30,7 +43,6 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': ['off'],
     'no-underscore-dangle': ['off'],
     '@typescript-eslint/camelcase': ['off'],
-    'import/no-cycle': ['off'],
     'simple-import-sort/sort': ['warn'],
     'sort-imports': ['off'],
     'import/order': ['off'],

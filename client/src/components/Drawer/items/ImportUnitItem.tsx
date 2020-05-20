@@ -21,7 +21,7 @@ const ImportUnitItem = ({ onClick, mini }: IImportUnitItemProps) => {
    * @param {object} data the JSON from the uploaded unit
    * */
   const onUnitUpload = useCallback(
-    data => {
+    (data) => {
       if (data && data.name && data.weapon_profiles) {
         dispatch(
           notificationsStore.actions.addNotification({

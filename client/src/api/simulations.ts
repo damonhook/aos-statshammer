@@ -8,10 +8,10 @@ import {
   numSimulationsSelector,
 } from 'store/selectors';
 import { configStore, notificationsStore, simulationsStore } from 'store/slices';
-import { ISimulation } from 'types/simulations';
-import { IStore, ITargetStore } from 'types/store';
+import type { ISimulation } from 'types/simulations';
+import type { IStore, ITargetStore } from 'types/store';
 
-import { TDispatch } from './api.types';
+import type { TDispatch } from './api.types';
 
 const verifyNumSimulations = (state: IStore, dispatch: TDispatch): number => {
   const storeNumSims = numSimulationsSelector(state);
@@ -45,14 +45,13 @@ export const fetchSimulations = () => async (dispatch: TDispatch) => {
   try {
     const state = store.getState();
     const units = getSanitizedUnitsSelector(state)(false);
-    if (!units)
-      dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: [], probabilities: [] }));
+    if (!units) dispatch(simulationsStore.actions.fetchSimulationsSuccess({ results: [] }));
     const target = getSanitizedTargetSelector(state);
     const numSimulations = verifyNumSimulations(state, dispatch);
 
     const responses = await Promise.all(
-      [2, 3, 4, 5, 6, 0].map(save =>
-        fetchSimulationForSave(units, target, save, numSimulations).then(data => data.json()),
+      [2, 3, 4, 5, 6, 0].map((save) =>
+        fetchSimulationForSave(units, target, save, numSimulations).then((data) => data.json()),
       ),
     );
 

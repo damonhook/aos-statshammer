@@ -1,5 +1,5 @@
-import Target from '../target';
-import WeaponProfile from '../weaponProfile';
+import type Target from '../target';
+import type WeaponProfile from '../weaponProfile';
 import BaseTargetModifier from './BaseTargetModifier';
 
 export default class TargetEthereal extends BaseTargetModifier {
@@ -12,6 +12,6 @@ export default class TargetEthereal extends BaseTargetModifier {
   }
 
   resolve(profile: WeaponProfile, target: Target) {
-    return target.getSave(null);
+    return target.getSave(undefined);
   }
 }

@@ -1,7 +1,7 @@
 import fetch from 'cross-fetch';
 import { modifiersStore, notificationsStore, targetModifiersStore } from 'store/slices';
 
-import { TDispatch } from './api.types';
+import type { TDispatch } from './api.types';
 
 export const fetchModifiers = () => async (dispatch: TDispatch) => {
   dispatch(modifiersStore.actions.fetchModifiersPending());

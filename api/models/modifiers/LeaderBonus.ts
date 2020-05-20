@@ -1,7 +1,7 @@
 import { Characteristic as C } from '../../constants';
 import { numberOption } from '../../utils/modifierUtils';
 import DiceValue from '../diceValue';
-import WeaponProfile from '../weaponProfile';
+import type WeaponProfile from '../weaponProfile';
 import BaseModifier from './BaseModifier';
 import Bonus from './Bonus';
 

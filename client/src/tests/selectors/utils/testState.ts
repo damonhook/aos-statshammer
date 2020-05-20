@@ -1,4 +1,4 @@
-import {
+import type {
   IConfigStore,
   IModifiersStore,
   INotificationsStore,
@@ -147,6 +147,7 @@ export const config: IConfigStore = {
   darkMode: false,
   desktopGraphList: false,
   numSimulations: 5000,
+  useRailLg: false,
 };
 
 export const state: IStore = {

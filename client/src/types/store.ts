@@ -1,8 +1,8 @@
-import { IModifierDefinition, IModifierInstance } from './modifiers';
-import { INotification } from './notification';
-import { ISimulationResult } from './simulations';
-import { TResults } from './stats';
-import { IUnit } from './unit';
+import type { IModifierDefinition, IModifierInstance } from './modifiers';
+import type { INotification } from './notification';
+import type { ISimulationResult } from './simulations';
+import type { TResults } from './stats';
+import type { IUnit } from './unit';
 
 export type TError = boolean | string | null;
 
@@ -45,6 +45,8 @@ export interface IConfigStore {
   desktopGraphList: boolean;
   /** The number of simulations to run */
   numSimulations: number;
+  /** Whether to use the rail version of the left navigation for lg breakpoints */
+  useRailLg: boolean;
 }
 
 export interface IStore {

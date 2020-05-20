@@ -5,8 +5,8 @@ import { useHashMatch } from 'hooks';
 import _ from 'lodash';
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { IModifierDefinition } from 'types/modifiers';
-import { TError } from 'types/store';
+import type { IModifierDefinition } from 'types/modifiers';
+import type { TError } from 'types/store';
 import { HASHES } from 'utils/urls';
 
 import ModifierOption from './ModifierOption';
@@ -47,7 +47,7 @@ const ModifierSelector: React.FC<IModifierSelectorProps> = React.memo(
     }, [history]);
 
     const addModifier = useCallback(
-      modifier => {
+      (modifier) => {
         handleClose();
         onClick(modifier);
       },
@@ -106,7 +106,7 @@ const ModifierSelector: React.FC<IModifierSelectorProps> = React.memo(
         ) : (
           <Collapse in={open} timeout={{ enter: 200, exit: 0 }}>
             <Paper className={classes.list} square>
-              {modifiers.map(modifier => (
+              {modifiers.map((modifier) => (
                 <ModifierOption modifier={modifier} onClick={addModifier} key={modifier.id} nested={nested} />
               ))}
             </Paper>

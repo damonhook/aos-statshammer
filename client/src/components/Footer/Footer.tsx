@@ -2,9 +2,11 @@ import { Paper, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { Github, Reddit, Releases, WarcryStatshammer } from 'components/SocialButtons';
+import { useRouteFind } from 'hooks';
 import React from 'react';
+import { ROUTES } from 'utils/urls';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   footer: {
     textAlign: 'center',
     width: '100%',
@@ -42,6 +44,9 @@ const Footer = () => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [, , page] = useRouteFind(Object.values(ROUTES));
+
+  if (page === ROUTES.PDF) return null;
 
   return (
     <footer className={classes.footer}>

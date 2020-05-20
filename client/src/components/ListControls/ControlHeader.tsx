@@ -2,7 +2,7 @@ import { ButtonGroup, IconButton, Tooltip } from '@material-ui/core';
 import React from 'react';
 
 import ControlMenu from './ControlMenu';
-import { IPrimaryItem, ISecondaryItem } from './types';
+import type { IPrimaryItem, ISecondaryItem } from './types';
 
 interface IHeaderButtonProps {
   onClick: () => void;
@@ -12,7 +12,7 @@ interface IHeaderButtonProps {
 }
 
 const HeaderButton: React.FC<IHeaderButtonProps> = ({ onClick, icon, tooltip, disabled }) => (
-  <Tooltip title={tooltip}>
+  <Tooltip title={tooltip ?? ''}>
     <span>
       <IconButton size="small" onClick={onClick} disabled={disabled}>
         {icon}

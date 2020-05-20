@@ -53,7 +53,7 @@ const DiceInput = React.memo(
     );
 
     const validate = useCallback(
-      val => {
+      (val) => {
         setError(validator(val));
       },
       [validator],
@@ -70,7 +70,7 @@ const DiceInput = React.memo(
     }, [error, errorCallback]);
 
     const handleChange = useCallback(
-      event => {
+      (event) => {
         const val = event.target.value;
         validate(val);
         if (onChange) onChange(event);

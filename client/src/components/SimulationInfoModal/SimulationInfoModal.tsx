@@ -15,7 +15,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { IStore } from 'types/store';
+import type { IStore } from 'types/store';
 import { HASHES } from 'utils/urls';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -25,6 +25,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   closeIcon: {
     marginRight: theme.spacing(1),
+  },
+  md: {
+    '& p': {
+      fontSize: '0.75rem',
+    },
   },
 }));
 
@@ -67,7 +72,7 @@ const SimulationInfoModal = () => {
           <span>Simulation Info</span>
         </DialogTitle>
         <DialogContent>
-          <ReactMarkdown source={content} />
+          <ReactMarkdown source={content} className={classes.md} />
         </DialogContent>
         <DialogActions>
           <Button variant="contained" color="primary" startIcon={<Close />} onClick={handleClose}>

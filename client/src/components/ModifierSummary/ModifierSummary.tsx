@@ -8,11 +8,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { modifiersSelector, targetModifiersSelector } from 'store/selectors';
-import { IModifierInstance } from 'types/modifiers';
+import type { IModifierInstance } from 'types/modifiers';
 
 import SummaryLoading from './SummaryLoading';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   modifiers: {
     marginTop: '1em',
   },
@@ -73,7 +73,7 @@ const ModifierSummary = ({
   const large = useMediaQuery(theme.breakpoints.up('lg'));
   const modifierState = useSelector(modifiersStateSelector)(isTarget);
 
-  const getModifierById = (id: string) => (modifierState?.items ?? []).find(mod => mod.id === id);
+  const getModifierById = (id: string) => (modifierState?.items ?? []).find((mod) => mod.id === id);
 
   return modifiers && modifiers.length ? (
     <div className={clsx(classes.modifiers, className)}>
@@ -112,7 +112,7 @@ const ModifierSummary = ({
                       className={classes.modifierTooltip}
                     />
                   }
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation();
                   }}
                   disableFocusListener

@@ -1,8 +1,8 @@
 import { Characteristic as C } from '../constants';
 import { D6 } from '../models/dice';
 import { MODIFIERS as m } from '../models/modifiers';
-import Target from '../models/target';
-import WeaponProfile from '../models/weaponProfile';
+import type Target from '../models/target';
+import type WeaponProfile from '../models/weaponProfile';
 
 export default class AverageDamageProcessor {
   profile: WeaponProfile;
@@ -27,7 +27,7 @@ export default class AverageDamageProcessor {
         numModels = Math.max(numModels - numLeaders, 0);
         const leaderProfile = this.profile.getSplitProfile(
           leaderModifiers,
-          leaderModifiers.map(mod => mod.getAsBonusModifier()),
+          leaderModifiers.map((mod) => mod.getAsBonusModifier()),
         );
         leaderProfile.numModels = numLeaders;
         const leaderProcessor = new AverageDamageProcessor(leaderProfile, this.target);

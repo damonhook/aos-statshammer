@@ -1,6 +1,6 @@
 import { amber, green, grey, red, teal } from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { IConfigStore } from 'types/store';
+import type { IConfigStore } from 'types/store';
 
 const commonOptions = {
   mixins: {

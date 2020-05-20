@@ -6,11 +6,11 @@ import clsx from 'clsx';
 import ActionsDialog from 'components/ActionsDialog';
 import { CardHeader } from 'components/Card';
 import ListControls from 'components/ListControls';
-import { IPrimaryItem, ISecondaryItem } from 'components/ListControls/types';
+import type { IPrimaryItem, ISecondaryItem } from 'components/ListControls/types';
 import useLongPress from 'hooks/useLongPress';
 import React, { useState } from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   header: {
     justifyContent: 'space-between',
     verticalAlign: 'middle',

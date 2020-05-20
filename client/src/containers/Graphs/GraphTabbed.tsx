@@ -4,7 +4,7 @@ import { SaveTooltip } from 'components/GraphTooltips';
 import ListItem from 'components/ListItem';
 import Tabbed from 'components/Tabbed';
 import React, { useCallback } from 'react';
-import { IStatsStore } from 'types/store';
+import type { IStatsStore } from 'types/store';
 
 import GraphWrapper from './GraphWrapper';
 
@@ -27,7 +27,7 @@ interface GraphTabbedProps {
 const GraphTabbed: React.FC<GraphTabbedProps> = ({ stats, unitNames, graphMap }) => {
   const classes = useStyles();
   const firstLoad = (!stats.payload || !stats.payload.length) && stats.pending;
-  const xAxisFormatter = useCallback(value => (value === 'None' ? '-' : `${value}+`), []);
+  const xAxisFormatter = useCallback((value) => (value === 'None' ? '-' : `${value}+`), []);
 
   return (
     <ListItem header="Graphs" collapsible loading={stats.pending} loaderDelay={firstLoad ? 0 : 350}>
