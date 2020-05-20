@@ -49,14 +49,14 @@ class SimulationProcessor {
       }
 
       const mwModifier = this.profile.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_HIT);
-      let mortalDamage = 0;
       if (mwModifier && hitRoll >= mwModifier.on) {
+        let mortalDamage = 0;
         mortalDamage = mwModifier.getMortalWounds(true);
         mortalDamage = this.performMortalSaveRolls(mortalDamage);
         mortalDamage = this.performFNPRolls(mortalDamage);
-        if (!mwModifier.inAddition) return extraDamage + mortalDamage;
+        extraDamage += mortalDamage;
+        if (!mwModifier.inAddition) return extraDamage;
       }
-      extraDamage += mortalDamage;
 
       const cbModifier = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_HIT);
       if (cbModifier && hitRoll >= cbModifier.on) {
@@ -83,14 +83,14 @@ class SimulationProcessor {
       }
 
       const mwModifier = this.profile.modifiers.getModifier(m.MORTAL_WOUNDS, C.TO_WOUND);
-      let mortalDamage = 0;
       if (mwModifier && woundRoll >= mwModifier.on) {
+        let mortalDamage = 0;
         mortalDamage = mwModifier.getMortalWounds(true);
         mortalDamage = this.performMortalSaveRolls(mortalDamage);
         mortalDamage = this.performFNPRolls(mortalDamage);
-        if (!mwModifier.inAddition) return extraDamage + mortalDamage;
+        extraDamage += mortalDamage;
+        if (!mwModifier.inAddition) return extraDamage;
       }
-      extraDamage += mortalDamage;
 
       const cbModifier = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_WOUND);
       if (cbModifier && woundRoll >= cbModifier.on) {
