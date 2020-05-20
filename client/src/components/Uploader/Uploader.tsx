@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import React, { useCallback, useMemo } from 'react';
 
 const globalAny: any = global;

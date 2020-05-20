@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import type { IModifierInstanceParameter, TOptionValue } from 'types/modifiers';
 import type { ITargetStore } from 'types/store';
 import { moveItemInArray } from 'utils/arrayUpdates';
