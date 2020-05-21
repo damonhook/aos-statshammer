@@ -1,4 +1,4 @@
-import { Characteristic as C } from '../constants';
+import { Characteristic as C, Characteristic, getCharacteristicsAfter } from '../constants';
 import { MODIFIERS as m } from '../models/modifiers';
 import type WeaponProfile from '../models/weaponProfile';
 
@@ -32,11 +32,21 @@ export default class MaxDamageProcessor {
   private getMaxDamageForModel(): number {
     const { attacks, damage } = this.profile;
     const baseAttacks = attacks.max + this.resolveBonusModifiers(C.ATTACKS);
-    const explodingAttacks = this.resolveExplodingModifiers(baseAttacks);
 
     const baseDamage = this.resolveMortalWounds(damage.max + this.resolveBonusModifiers(C.DAMAGE));
-    const conditionalDamage = baseDamage + this.resolveConditionalBonusModifiers(C.DAMAGE);
-    return explodingAttacks * baseDamage + baseAttacks * conditionalDamage;
+    const fullConditionalDamage = baseDamage + this.getConditionalBonusDamage(null, C.DAMAGE);
+
+    const baseAttacksDamage = baseAttacks * fullConditionalDamage;
+
+    return m.EXPLODING.availableCharacteristics.reduce((acc, c) => {
+      const mod = this.profile.modifiers.getModifier(m.EXPLODING, c);
+      if (mod && mod.extraHits.max > 0) {
+        const extraHits = baseAttacks * mod.extraHits.max;
+        const conditionalDamage = baseDamage + this.getConditionalBonusDamage(c, C.DAMAGE);
+        return acc + extraHits * conditionalDamage;
+      }
+      return acc;
+    }, baseAttacksDamage);
   }
 
   private resolveBonusModifiers(characteristic: C): number {
@@ -48,11 +58,17 @@ export default class MaxDamageProcessor {
     return bonus;
   }
 
-  private resolveConditionalBonusModifiers(characteristic: C): number {
+  private getConditionalBonusDamage(fromCharacteristic: C | null, forCharacteristic: C): number {
     let bonus = 0;
-    m.CONDITIONAL_BONUS.availableCharacteristics.forEach((c) => {
+    let { availableCharacteristics } = m.CONDITIONAL_BONUS;
+    if (fromCharacteristic !== null) {
+      availableCharacteristics = availableCharacteristics.filter((val) =>
+        getCharacteristicsAfter(fromCharacteristic).includes(val),
+      );
+    }
+    availableCharacteristics.forEach((c) => {
       const mod = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, c);
-      if (mod && mod.bonusToCharacteristic === characteristic) {
+      if (mod && mod.bonusToCharacteristic === forCharacteristic) {
         bonus += mod.bonus.max;
       }
     });
