@@ -52,4 +52,9 @@ describe('MaxDamageProcessor', () => {
   test('Rattling Gunners', () => {
     expect(u.rattlingGunners.maxDamage()).toEqual(12);
   });
+
+  test('Edge Cases', () => {
+    expect(u.explodingAndConditionalSame.maxDamage()).toEqual(21);
+    expect(u.explodingAndConditionalDifferent.maxDamage()).toEqual(27);
+  });
 });

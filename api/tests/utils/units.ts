@@ -130,3 +130,42 @@ export const plagueMonksOld = new Unit('Plague Monks (pre Dec 2019 FAQ)', [
 export const rattlingGunners = new Unit('Rattling Gunners', [
   new WeaponProfile(1, DiceValue.parse('2D6'), 4, 4, 1, 1, []),
 ]);
+
+// #region edge cases
+export const explodingAndConditionalSame = new Unit('Exploding And Conditional (Same Characteristic)', [
+  new WeaponProfile(1, 3, 3, 4, 1, 2, [
+    new m.EXPLODING({
+      characteristic: C.TO_HIT,
+      on: 6,
+      extraHits: 2,
+      unmodified: true,
+    }),
+    new m.CONDITIONAL_BONUS({
+      characteristic: C.TO_HIT,
+      bonus: 1,
+      unmodified: true,
+      bonusToCharacteristic: C.DAMAGE,
+    }),
+  ]),
+]);
+
+export const explodingAndConditionalDifferent = new Unit(
+  'Exploding And Conditional (Different Characteristic)',
+  [
+    new WeaponProfile(1, 3, 3, 4, 1, 2, [
+      new m.EXPLODING({
+        characteristic: C.TO_HIT,
+        on: 6,
+        extraHits: 2,
+        unmodified: true,
+      }),
+      new m.CONDITIONAL_BONUS({
+        characteristic: C.TO_WOUND,
+        bonus: 1,
+        unmodified: true,
+        bonusToCharacteristic: C.DAMAGE,
+      }),
+    ]),
+  ],
+);
+// #endregion
