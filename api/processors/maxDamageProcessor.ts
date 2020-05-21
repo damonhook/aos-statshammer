@@ -31,9 +31,12 @@ export default class MaxDamageProcessor {
 
   private getMaxDamageForModel(): number {
     const { attacks, damage } = this.profile;
-    const attacksMax = this.resolveExplodingModifiers(attacks.max + this.resolveBonusModifiers(C.ATTACKS));
-    const damageMax = this.resolveMortalWounds(damage.max + this.resolveBonusModifiers(C.DAMAGE));
-    return attacksMax * damageMax;
+    const baseAttacks = attacks.max + this.resolveBonusModifiers(C.ATTACKS);
+    const explodingAttacks = this.resolveExplodingModifiers(baseAttacks);
+
+    const baseDamage = this.resolveMortalWounds(damage.max + this.resolveBonusModifiers(C.DAMAGE));
+    const conditionalDamage = baseDamage + this.resolveConditionalBonusModifiers(C.DAMAGE);
+    return explodingAttacks * baseDamage + baseAttacks * conditionalDamage;
   }
 
   private resolveBonusModifiers(characteristic: C): number {
@@ -42,14 +45,17 @@ export default class MaxDamageProcessor {
     if (modList && modList.length) {
       bonus += modList.reduce((acc, mod) => acc + mod.bonus.max, 0);
     }
+    return bonus;
+  }
 
+  private resolveConditionalBonusModifiers(characteristic: C): number {
+    let bonus = 0;
     m.CONDITIONAL_BONUS.availableCharacteristics.forEach((c) => {
       const mod = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, c);
       if (mod && mod.bonusToCharacteristic === characteristic) {
         bonus += mod.bonus.max;
       }
     });
-
     return bonus;
   }
 
@@ -58,7 +64,7 @@ export default class MaxDamageProcessor {
       const mod = this.profile.modifiers.getModifier(m.EXPLODING, c);
       if (mod && mod.extraHits.max > 0) return acc + numAttacks * mod.extraHits.max;
       return acc;
-    }, numAttacks);
+    }, 0);
   }
 
   private resolveMortalWounds(currentMax: number): number {
