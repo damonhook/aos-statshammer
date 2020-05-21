@@ -1,4 +1,4 @@
-import { Characteristic as C, Characteristic, getCharacteristicsAfter } from '../constants';
+import { Characteristic as C, getCharacteristicsAfter } from '../constants';
 import { MODIFIERS as m } from '../models/modifiers';
 import type WeaponProfile from '../models/weaponProfile';
 
@@ -73,14 +73,6 @@ export default class MaxDamageProcessor {
       }
     });
     return bonus;
-  }
-
-  private resolveExplodingModifiers(numAttacks: number): number {
-    return m.EXPLODING.availableCharacteristics.reduce((acc, c) => {
-      const mod = this.profile.modifiers.getModifier(m.EXPLODING, c);
-      if (mod && mod.extraHits.max > 0) return acc + numAttacks * mod.extraHits.max;
-      return acc;
-    }, 0);
   }
 
   private resolveMortalWounds(currentMax: number): number {
