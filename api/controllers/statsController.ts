@@ -82,15 +82,17 @@ export default class StatsController {
 
   private buildSimulationResult(data: TMappedResult): ISimulationResult {
     const unitNames = Object.keys(data.results);
+    const metrics = this.buildSimulationMetrics(data);
+    const maxDamage = Math.max(...Object.keys(metrics.max).map((name) => metrics.max[name]));
     const mappedProbabilities = Object.keys(data.results).reduce<TMappedProbabilities>((acc, name) => {
       data.results[name].buckets.forEach(({ damage, probability }) => {
+        if (damage > maxDamage) return;
         if (acc[damage] == null) acc[damage] = {};
         acc[damage][name] = probability;
       });
       return acc;
     }, {});
 
-    const metrics = this.buildSimulationMetrics(data);
     const discrete = this.buildDiscreteProbabilities(mappedProbabilities);
     const cumulative = this.buildCumulativeProbabilities(mappedProbabilities, unitNames, metrics);
     return { save: data.save, discrete, cumulative, metrics };

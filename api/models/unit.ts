@@ -107,7 +107,10 @@ class Unit {
     [...range(sampleMax + 1, max, step)].forEach((i) => {
       buckets.push({ damage: i, count: 0, probability: 0 });
     });
-    buckets.push({ damage: max, count: 0, probability: 0 });
+    if (sampleMax < max) {
+      buckets.push({ damage: max, count: 0, probability: 0 });
+    }
+    buckets.push({ damage: max + 1, count: 0, probability: 0 });
 
     return buckets;
   }
