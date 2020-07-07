@@ -28,23 +28,34 @@ export const unitByUuidSelector = createSelector(unitsSelector, unitIndexByUuidS
   _.memoize((uuid: string) => units[findIndex(uuid)]),
 );
 
-/** Retrieve a list of the unit names */
-export const unitNamesSelector = createSelector(unitsSelector, (units) => units.map(({ name }) => name));
-
-export interface ISanitizedUnit {
-  name: string;
-  weapon_profiles: IWeaponProfile[];
-}
-export const getSanitizedUnitsSelector = createSelector(unitsSelector, (units) =>
-  _.memoize((useUuidAsName: boolean): ISanitizedUnit[] =>
-    units.map((unit) => ({
-      name: useUuidAsName ? unit.uuid : unit.name,
+export const activeUnitsSelector = createSelector(unitsSelector, (units) =>
+  units
+    .map((unit) => ({
+      ...unit,
       weapon_profiles: unit.weapon_profiles
         .filter((profile) => profile.active)
         .map((profile) => ({
           ...profile,
           modifiers: (profile.modifiers ?? []).filter((mod) => mod.active ?? true),
         })),
+    }))
+    .filter(({ weapon_profiles }) => weapon_profiles && weapon_profiles?.length),
+);
+
+/** Retrieve a list of the unit names */
+export const unitNamesSelector = createSelector(activeUnitsSelector, (units) =>
+  units.map(({ name }) => name),
+);
+
+export interface ISanitizedUnit {
+  name: string;
+  weapon_profiles: IWeaponProfile[];
+}
+export const getSanitizedUnitsSelector = createSelector(activeUnitsSelector, (units) =>
+  _.memoize((useUuidAsName: boolean): ISanitizedUnit[] =>
+    units.map(({ uuid, name, weapon_profiles }) => ({
+      name: useUuidAsName ? uuid : name,
+      weapon_profiles,
     })),
   ),
 );

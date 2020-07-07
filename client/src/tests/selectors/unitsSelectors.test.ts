@@ -16,7 +16,7 @@ describe('unitsSelectors', () => {
   });
 
   test('numUnitsSelector', () => {
-    expect(selectors.numUnitsSelector(state)).toEqual(3);
+    expect(selectors.numUnitsSelector(state)).toEqual(4);
   });
 
   test('addUnitEnabledSelector', () => {

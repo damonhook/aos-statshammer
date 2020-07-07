@@ -10,7 +10,7 @@ import type {
   IUnitStore,
 } from 'types/store';
 
-import { unit1, unit2, unit3 } from './testUnits';
+import { unit1, unit2, unit3, unit4 } from './testUnits';
 
 export const modifiers: IModifiersStore = {
   pending: false,
@@ -89,7 +89,7 @@ export const targetModifiers: ITargetModifiersStore = {
   ],
 };
 
-export const units: IUnitStore = [unit1, unit2, unit3];
+export const units: IUnitStore = [unit1, unit2, unit3, unit4];
 
 export const target: ITargetStore = {
   modifiers: [
