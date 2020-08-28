@@ -1,6 +1,5 @@
 export type TResult = {
-  save: string;
-} & {
+  save: number;
   [name: string]: number;
 };
 

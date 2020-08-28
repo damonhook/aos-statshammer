@@ -122,6 +122,12 @@ export const unit3: IUnit = {
   ],
 };
 
+export const unit4: IUnit = {
+  name: 'Test Unit 4',
+  uuid: 'unit-3',
+  weapon_profiles: [],
+};
+
 export const sanitizedUnit1Name: ISanitizedUnit = {
   name: 'Test Unit 1',
   weapon_profiles: [

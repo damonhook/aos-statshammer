@@ -73,7 +73,7 @@ const ResultsTable: React.FC<IResultsTableProps> = ({ stats, unitNames, classNam
               // eslint-disable-next-line react/no-array-index-key
               <TableRow key={save}>
                 <TableCell className={clsx(classes.sticky, classes.cell)}>
-                  {save && save !== 'None' ? `${save}+` : '-'}
+                  {save && save !== 0 ? `${save}+` : '-'}
                 </TableCell>
                 {unitNames.map((name) => (
                   <TableCell key={name} align="right">
