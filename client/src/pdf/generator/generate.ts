@@ -122,22 +122,18 @@ const generateTarget = (doc: IJsPDF, target: ITargetStore) => {
   cursor.incr(10);
 };
 
-const transposeData = (unitNames: string[], results: TResult[]) =>
-  unitNames.map((name) =>
-    results.reduce((acc, { save, ...results }) => ({ ...acc, [save]: results[name] }), { name }),
-  );
-
 const generateStatsTable = (doc: IJsPDF, results: TResult[], unitNames: string[]) => {
-  const data = transposeData(unitNames, results);
-  const transformRow = ({ name, ...results }) => [name, ...Object.keys(results).map((k) => results[k])];
+  const body = unitNames.map((name) =>
+    results.reduce<(string | number)[]>((acc, { save, ...results }) => [...acc, results[name]], [name]),
+  );
 
   autoTable(doc, {
     startY: cursor.pos,
     head: [
       [{ content: 'Average Damage', colSpan: 7, styles: { halign: 'center' } }],
-      ['Unit Name', ...results.map(({ save }) => (save !== 'None' ? `${save}+` : '-'))],
+      ['Unit Name', ...results.map(({ save }) => (save !== 0 ? `${save}+` : '-'))],
     ],
-    body: data.map((row) => transformRow(row)),
+    body,
     headStyles: { fillColor: headerColor },
     columnStyles: {
       1: { cellWidth: 40 },
