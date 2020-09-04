@@ -2,7 +2,6 @@ import { Characteristic as C } from '../constants';
 import { D6 } from '../models/dice';
 import { MODIFIERS as m } from '../models/modifiers';
 import type Target from '../models/target';
-import { TARGET_MODIFIERS as t } from '../models/targetModifiers';
 import type WeaponProfile from '../models/weaponProfile';
 
 class SimulationProcessor {
@@ -139,24 +138,18 @@ class SimulationProcessor {
     return roll;
   }
 
-  performMortalSaveRolls(damage) {
-    const mortalModifiers = this.target.modifiers.getStackableModifier(t.TARGET_MORTAL_NEGATE);
-    if (mortalModifiers && mortalModifiers.length) {
-      return [...Array(damage)].reduce(
-        (acc) => (mortalModifiers.some((mod) => D6.roll() >= mod.on) ? acc : acc + 1),
-        0,
-      );
+  performMortalSaveRolls(damage: number): number {
+    const mod = this.target.modifiers.getSaveAfterSaveModifier(true);
+    if (mod) {
+      return [...Array(damage)].reduce((acc) => (D6.roll() >= mod.on ? acc : acc + 1), 0);
     }
     return damage;
   }
 
-  performFNPRolls(damage) {
-    const fnpModifiers = this.target.modifiers.getStackableModifier(t.TARGET_FNP);
-    if (fnpModifiers && fnpModifiers.length) {
-      return [...Array(damage)].reduce(
-        (acc) => (fnpModifiers.some((mod) => D6.roll() >= mod.on) ? acc : acc + 1),
-        0,
-      );
+  performFNPRolls(damage: number): number {
+    const mod = this.target.modifiers.getSaveAfterSaveModifier(false);
+    if (mod) {
+      return [...Array(damage)].reduce((acc) => (D6.roll() >= mod.on ? acc : acc + 1), 0);
     }
     return damage;
   }

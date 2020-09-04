@@ -39,11 +39,13 @@ class Target {
   }
 
   resolveMortalSave(profile: WeaponProfile): number {
-    return this.resolveChainedModifier(profile, t.TARGET_MORTAL_NEGATE);
+    const mod = this.modifiers.getSaveAfterSaveModifier(true);
+    return mod ? mod.resolve(profile, this) : 0;
   }
 
   resolveFNP(profile: WeaponProfile): number {
-    return this.resolveChainedModifier(profile, t.TARGET_FNP);
+    const mod = this.modifiers.getSaveAfterSaveModifier(false);
+    return mod ? mod.resolve(profile, this) : 0;
   }
 
   resolveModifier(profile: WeaponProfile, modifier: typeof BaseTargetModifier): number {
