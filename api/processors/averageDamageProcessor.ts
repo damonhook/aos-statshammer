@@ -50,7 +50,6 @@ export default class AverageDamageProcessor {
       const mortalHits = attacks * mwModifier.resolve(this.profile);
       mortalDamage += mortalHits * mwModifier.getMortalWounds();
       mortalDamage -= mortalDamage * this.target.resolveMortalSave(this.profile);
-      mortalDamage -= mortalDamage * this.target.resolveFNP(this.profile);
       hits -= !mwModifier.inAddition ? mortalHits : 0;
     }
 
@@ -78,7 +77,6 @@ export default class AverageDamageProcessor {
       const mortalToWounds = hits * mwModifier.resolve(this.profile);
       mortalDamage += mortalToWounds * mwModifier.getMortalWounds();
       mortalDamage -= mortalDamage * this.target.resolveMortalSave(this.profile);
-      mortalDamage -= mortalDamage * this.target.resolveFNP(this.profile);
       wounds -= !mwModifier.inAddition ? mortalToWounds : 0;
     }
 

@@ -55,8 +55,7 @@ export class TargetModifierManager {
   }
 
   /**
-   * Fetch the most prominent reroll modifier from the list of managed modifiers based on its
-   * characteristic property
+   * Fetch the most prominent reroll modifier from the list of managed modifiers
    */
   getRerollModifier() {
     return (
@@ -64,6 +63,29 @@ export class TargetModifierManager {
       this.getModifier(TARGET_MODIFIERS.TARGET_REROLL_FAILED) ||
       this.getModifier(TARGET_MODIFIERS.TARGET_REROLL_ONES)
     );
+  }
+
+  getSaveAfterSaveModifier(mortalWounds: boolean): TargetFeelNoPain | TargetMortalNegate | null {
+    let maxModifier: TargetFeelNoPain | TargetMortalNegate | null = null;
+    const fnpModifiers = this.modifiers.filter((m) => m instanceof TargetFeelNoPain) as TargetFeelNoPain[];
+    if (fnpModifiers?.length) {
+      maxModifier = fnpModifiers.reduce<TargetFeelNoPain | null>(
+        (max, m) => (max === null || m.on < max.on ? m : max),
+        maxModifier,
+      );
+    }
+    if (mortalWounds) {
+      const mwModifiers = this.modifiers.filter(
+        (m) => m instanceof TargetMortalNegate,
+      ) as TargetMortalNegate[];
+      if (mwModifiers) {
+        maxModifier = mwModifiers.reduce<TargetFeelNoPain | TargetMortalNegate | null>(
+          (max, m) => (max === null || m.on < max.on ? m : max),
+          maxModifier,
+        );
+      }
+    }
+    return maxModifier;
   }
 
   /**
