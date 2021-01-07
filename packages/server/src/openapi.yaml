@@ -1,0 +1,141 @@
+openapi: 3.0.2
+info:
+  title: Statshammer
+  version: 1.0.0
+
+paths:
+  /status:
+    get:
+      summary: Get Status
+      operationId: getStatus
+      responses:
+        200:
+          $ref: "#/components/responses/StatusResponse"
+  /api/compare:
+    post:
+      summary: Compare the average damage outputs of the given units
+      operationId: getCompare
+      requestBody:
+        $ref: "#/components/requestBodies/CompareBody"
+      responses:
+        200:
+          $ref: "#/components/responses/CompareResponse"
+
+components:
+  requestBodies:
+    CompareBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              units:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Unit"
+
+  responses:
+    StatusResponse:
+      description: Get the status of the server
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              version:
+                type: string
+            required:
+              - status
+              - version
+
+    CompareResponse:
+      description: Compare the average damage outputs of the given units
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              units:
+                type: array
+                items:
+                  type: string
+              results:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AverageDamageResult"
+            required:
+              - units
+              - results
+
+  schemas:
+    Unit:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Unit 1
+        weapon_profiles:
+          type: array
+          items:
+            $ref: "#/components/schemas/WeaponProfile"
+      required:
+        - name
+        - weapon_profiles
+
+    WeaponProfile:
+      type: object
+      properties:
+        num_models:
+          type: integer
+          example: 5
+        attacks:
+          anyOf:
+            - type: integer
+            - type: string
+          example: 2
+        to_hit:
+          type: integer
+          example: 3
+        to_wound:
+          type: integer
+          example: 4
+        rend:
+          type: integer
+          example: 0
+        damage:
+          anyOf:
+            - type: integer
+            - type: string
+          example: 1
+        modifiers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Modifier"
+      required:
+        - num_models
+        - attacks
+        - to_hit
+        - to_wound
+        - rend
+        - damage
+
+    Modifier:
+      type: object
+      properties:
+        id:
+          type: string
+          example: REROLL_ONES
+        options:
+          type: object
+          properties:
+            characteristic:
+              type: string
+              example: to_hit
+      required:
+        - id
+        - options
+
+    AverageDamageResult:
+      type: object

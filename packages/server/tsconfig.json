@@ -1,0 +1,16 @@
+/* Visit https://aka.ms/tsconfig.json to read more about this file */
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "pretty": true,
+    "strict": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "target": "es6",
+    "noEmit": true,
+    "baseUrl": "src",
+    "rootDir": "src",
+  },
+  "include": ["src/*.ts"],
+}
