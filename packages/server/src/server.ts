@@ -7,7 +7,7 @@ import { readFileSync } from 'fs'
 import path from 'path'
 import AosController from './controller'
 import bodyParser from 'body-parser'
-import type { CompareRequest } from 'models/schema'
+import type { CompareRequest, ModifiersRequest } from 'models/schema'
 import { withCaseConversion } from 'utils/requestUtils'
 
 // @ts-ignore
@@ -24,6 +24,9 @@ initialize({
   operations: {
     getStatus: function (req, res) {
       res.send({ status: 'ok', version: '1.0.0' })
+    },
+    getModifiers: function (req, res) {
+      res.send(withCaseConversion(req.body, (data: ModifiersRequest) => controller.getModifiers(data)))
     },
     getCompare: function (req, res) {
       res.send(withCaseConversion(req.body, (data: CompareRequest) => controller.compareUnits(data)))

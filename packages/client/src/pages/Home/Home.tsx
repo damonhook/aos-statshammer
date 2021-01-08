@@ -31,6 +31,7 @@ const Units = () => {
   const [value, setValue] = useState(0)
   const classes = useStyles()
   const theme = useTheme()
+  console.log(theme.mixins.toolbar)
   const statsAsTab = useMediaQuery(theme.breakpoints.down('md'))
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const Units = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={1}>
-        <Grid item md={12} lg={6}>
+        <Grid item xs lg={6}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -72,7 +73,7 @@ const Units = () => {
             <TabPanel value={value} index={1} dir={theme.direction}>
               <StatsTab />
             </TabPanel>
-            {statsAsTab && (
+            {!!statsAsTab && (
               <TabPanel value={value} index={2} dir={theme.direction}>
                 <StatsTab />
               </TabPanel>

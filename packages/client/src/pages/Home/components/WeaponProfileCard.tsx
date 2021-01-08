@@ -9,13 +9,12 @@ import {
   TableRow,
   TableCell,
   Typography,
-  IconButton,
   makeStyles,
   Theme,
   Paper,
 } from '@material-ui/core'
-import { MoreVert } from '@material-ui/icons'
 import clsx from 'clsx'
+import Menu from 'components/Menu'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: { margin: theme.spacing(2, 0) },
@@ -35,6 +34,20 @@ const StyledTableCell = ({ disabled = false, children }: StyledTableCellProps) =
     <TableCell align="center" className={clsx({ [classes.disabled]: disabled })}>
       {children}
     </TableCell>
+  )
+}
+
+const WeaponProfileControls = () => {
+  const handleClick = () => {}
+
+  return (
+    <Menu
+      items={[
+        { name: 'Edit', onClick: handleClick },
+        { name: 'Copy', onClick: handleClick },
+        { name: 'Delete', onClick: handleClick },
+      ]}
+    />
   )
 }
 
@@ -87,11 +100,9 @@ const WeaponProfileCard = () => {
                         onClick={handleEnabledChange}
                         className={clsx({ [classes.disabled]: !enabled })}
                       >
-                        {name || 'Weapon Profile'}
+                        <strong>{name || 'Weapon Profile'}</strong>
                       </Typography>
-                      <IconButton size="small">
-                        <MoreVert />
-                      </IconButton>
+                      <WeaponProfileControls />
                     </span>
                   </TableCell>
                 </TableRow>

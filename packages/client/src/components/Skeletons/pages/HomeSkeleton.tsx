@@ -1,7 +1,7 @@
 import React from 'react'
 import UnitsSkeleton from './UnitsSkeleton'
 import StatsSkeleton from './StatsSkeleton'
-import { Grid, makeStyles, Theme } from '@material-ui/core'
+import { Grid, makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) => ({
   spacer: {
@@ -11,16 +11,20 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const HomeSkeleton = () => {
   const classes = useStyles()
+  const theme = useTheme()
+  const statsAsTab = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={6}>
+      <Grid item xs lg={6}>
         <UnitsSkeleton />
       </Grid>
-      <Grid item xs={6}>
-        <div className={classes.spacer} />
-        <StatsSkeleton />
-      </Grid>
+      {!statsAsTab && (
+        <Grid item xs>
+          <div className={classes.spacer} />
+          <StatsSkeleton />
+        </Grid>
+      )}
     </Grid>
   )
 }

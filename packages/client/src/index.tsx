@@ -3,10 +3,19 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from 'pages/App'
 import reportWebVitals from './reportWebVitals'
+import { CssBaseline, ThemeProvider } from '@material-ui/core'
+import { lightTheme } from 'themes'
+import { Provider } from 'react-redux'
+import store from './store'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <ThemeProvider theme={lightTheme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )

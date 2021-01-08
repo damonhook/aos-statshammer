@@ -1,3 +1,5 @@
+import type { ModifierDefinition } from 'models/schema'
+
 export default class BaseTargetModifier {
   static displayName = ''
   static description = ''
@@ -8,8 +10,9 @@ export default class BaseTargetModifier {
     return {}
   }
 
-  static get metadata() {
+  static get metadata(): ModifierDefinition {
     return {
+      id: this.name.toLowerCase(),
       name: this.displayName,
       description: this.description,
       options: this.options,

@@ -1,5 +1,6 @@
 import { choiceOption } from 'utils/modifierUtils'
 import { Characteristic as C } from 'common'
+import type { ModifierDefinition } from 'models/schema'
 
 interface BaseModifierParams {
   characteristic: C
@@ -26,8 +27,9 @@ export default class BaseModifier {
     }
   }
 
-  protected static get metadata() {
+  public static get metadata(): ModifierDefinition {
     return {
+      id: this.name.toLowerCase(),
       name: this.displayName,
       description: this.description,
       options: this.options,

@@ -1,10 +1,16 @@
-import { createMuiTheme, Theme } from '@material-ui/core/styles'
+import { createMuiTheme, Theme, ThemeOptions } from '@material-ui/core/styles'
+import { teal } from '@material-ui/core/colors'
 
-const commonOtions = {
+const commonOtions: Partial<ThemeOptions> = {
   typography: {
     htmlFontSize: 19,
     h6: {
       fontSize: '1rem',
+    },
+  },
+  mixins: {
+    toolbar: {
+      minHeight: 52,
     },
   },
   overrides: {
@@ -19,6 +25,7 @@ const commonOtions = {
 export const lightTheme: Theme = createMuiTheme({
   palette: {
     type: 'light',
+    primary: teal,
   },
   ...commonOtions,
 })

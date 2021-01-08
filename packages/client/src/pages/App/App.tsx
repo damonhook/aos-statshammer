@@ -1,13 +1,12 @@
 import React, { lazy, Suspense } from 'react'
-import { makeStyles, Theme, ThemeProvider } from '@material-ui/core/styles'
-import { CssBaseline } from '@material-ui/core'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import Header from 'components/Header'
-import { lightTheme } from 'themes'
-import HomeSkeleton from 'components/Skeletons/HomeSkeleton'
+import HomeSkeleton from 'components/Skeletons/pages/HomeSkeleton'
+import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
 
 // const Home = lazy(() => import('pages/Home'))
 const Home = lazy(() => {
-  return new Promise(r => setTimeout(r, 3000)).then(() => {
+  return new Promise(r => setTimeout(r, 1000)).then(() => {
     return import('pages/Home')
   })
 })
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
@@ -34,18 +32,19 @@ const App = () => {
   const classes = useStyles()
 
   return (
-    <ThemeProvider theme={lightTheme}>
-      <div className={classes.root}>
-        <CssBaseline />
+    <div className={classes.root}>
+      <Router>
         <Header />
         <main className={classes.content}>
           <div className={classes.appBarShift} />
           <Suspense fallback={<HomeSkeleton />}>
-            <Home />
+            <Switch>
+              <Route path="/" component={Home} />
+            </Switch>
           </Suspense>
         </main>
-      </div>
-    </ThemeProvider>
+      </Router>
+    </div>
   )
 }
 

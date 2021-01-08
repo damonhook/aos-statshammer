@@ -6,15 +6,24 @@ info:
 paths:
   /status:
     get:
-      summary: Get Status
       operationId: getStatus
+      summary: Get Status
       responses:
         200:
           $ref: "#/components/responses/StatusResponse"
+
+  /api/modifiers:
+    get:
+      operationId: getModifiers
+      summary: Fetch the list of modifiers for the weapon profiles and target
+      responses:
+        200:
+          $ref: "#/components/responses/ModifiersResponse"
+
   /api/compare:
     post:
-      summary: Compare the average damage outputs of the given units
       operationId: getCompare
+      summary: Compare the average damage outputs of the given units
       requestBody:
         $ref: "#/components/requestBodies/CompareBody"
       responses:
@@ -49,6 +58,25 @@ components:
             required:
               - status
               - version
+
+    ModifiersResponse:
+      description: The Returned list of available modifiers
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              modifiers:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ModifierDefinition"
+              target_modifiers:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ModifierDefinition"
+            required:
+              - modifiers
+              - target_modifiers
 
     CompareResponse:
       description: Compare the average damage outputs of the given units
@@ -136,6 +164,91 @@ components:
       required:
         - id
         - options
+
+    ModifierDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        options:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/ModifierDefinitionOption"
+      required:
+        - id
+        - name
+        - description
+        - options
+
+    ModifierDefinitionOption:
+      oneOf:
+        - $ref: "#/components/schemas/ChoiceOption"
+        - $ref: "#/components/schemas/NumberOption"
+        - $ref: "#/components/schemas/RollOption"
+        - $ref: "#/components/schemas/BooleanOption"
+      discriminator:
+        propertyName: type
+
+    ChoiceOption:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - choice
+        items:
+          type: array
+          items:
+            type: string
+        default:
+          type: string
+      required:
+        - type
+        - items
+
+    NumberOption:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - number
+        allow_dice:
+          type: boolean
+        default:
+          type: number
+      required:
+        - type
+
+    RollOption:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - roll
+        allow_ones:
+          type: boolean
+        default:
+          type: number
+      required:
+        - type
+
+    BooleanOption:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - boolean
+        default:
+          type: boolean
+      required:
+        - type
 
     AverageDamageResult:
       type: object

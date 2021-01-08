@@ -2,17 +2,17 @@ import {
   Divider,
   IconButton,
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   makeStyles,
   SwipeableDrawer,
   Theme,
+  useMediaQuery,
+  useTheme,
 } from '@material-ui/core'
-import { ChevronLeft, Home } from '@material-ui/icons'
+import { BarChart, ChevronLeft, Home, PictureAsPdf, Info, Timeline } from '@material-ui/icons'
 import clsx from 'clsx'
 import React from 'react'
 import { useIsMobile } from 'hooks'
+import ListItemLink from './ListItemLink'
 
 interface StyleProps {
   width: number
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: 'hidden',
-    width: theme.spacing(7.5),
+    width: theme.spacing(7),
     [theme.breakpoints.down('sm')]: {
       width: width,
     },
@@ -60,7 +60,9 @@ interface LeftNavigationProps {
 
 const LeftNavigation = ({ open, onOpen, onClose, width = 240 }: LeftNavigationProps) => {
   const classes = useStyles({ width })
+  const theme = useTheme()
   const isMobile = useIsMobile()
+  const showStatsLink = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
     <SwipeableDrawer
@@ -86,12 +88,11 @@ const LeftNavigation = ({ open, onOpen, onClose, width = 240 }: LeftNavigationPr
       </div>
       <Divider />
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <Home />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
+        <ListItemLink primary="Home" to="/" icon={<Home />} tooltip={!open} />
+        {showStatsLink && <ListItemLink primary="Stats" to="/" icon={<BarChart />} tooltip={!open} />}
+        <ListItemLink primary="Simulations" to="/" icon={<Timeline />} tooltip={!open} />
+        <ListItemLink primary="Download PDF" to="/" icon={<PictureAsPdf />} tooltip={!open} />
+        <ListItemLink primary="About" to="/" icon={<Info />} tooltip={!open} />
       </List>
     </SwipeableDrawer>
   )

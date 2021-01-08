@@ -1,13 +1,13 @@
 import { Skeleton } from '@material-ui/lab'
 import React from 'react'
-import GraphSkeleton from './GraphSkeleton'
-import CardSkeleton from './CardSkeleton'
-import TableSkeleton from './TableSkeleton'
+import GraphSkeleton from '../GraphSkeleton'
+import CardSkeleton from '../CardSkeleton'
+import TableSkeleton from '../TableSkeleton'
 import { Box } from '@material-ui/core'
 
 const StatsSkeleton = () => {
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" style={{ padding: '0 8px' }}>
       <CardSkeleton height={80} />
       <div style={{ marginBottom: 20 }}>
         <TableSkeleton rows={7} columns={3} dense />
