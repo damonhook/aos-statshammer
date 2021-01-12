@@ -10,11 +10,11 @@ const UnitsSkeleton = () => {
       <div style={{ padding: '0 8px' }}>
         <CardSkeleton height={225} />
         <CardSkeleton height={225} />
-        <Grid container spacing={1} style={{ marginTop: 2 }}>
-          <Grid item xs={10}>
+        <Grid container spacing={1} style={{ marginTop: 2, paddingBottom: 8 }}>
+          <Grid item xs={9} sm={10}>
             <Skeleton variant="rect" height={32}></Skeleton>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3} sm={2}>
             <Skeleton variant="rect" height={32}></Skeleton>
           </Grid>
         </Grid>

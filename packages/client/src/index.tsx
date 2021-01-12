@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from 'pages/App'
+import App from 'features/App'
 import reportWebVitals from './reportWebVitals'
 import { CssBaseline, ThemeProvider } from '@material-ui/core'
 import { lightTheme } from 'themes'

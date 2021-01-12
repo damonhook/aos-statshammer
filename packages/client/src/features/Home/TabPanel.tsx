@@ -15,6 +15,7 @@ const TabPanel = ({ index, value, children, ...other }: TabPanelProps) => {
       hidden={value !== index}
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
+      style={{ flexGrow: 1, maxWidth: '100vw' }}
       {...other}
     >
       {value === index && (

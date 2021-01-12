@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import UnitsTab from './tabs/UnitsTab'
-import TabPanel from './components/TabPanel'
+import Units from 'features/Units'
+import TabPanel from './TabPanel'
 import { Grid, Tab, Tabs, useTheme, makeStyles, Theme, useMediaQuery } from '@material-ui/core'
 import SwipeableViews from 'react-swipeable-views'
-import StatsTab from './tabs/StatsTab'
+import StatsTab from './stats/StatsTab'
+import { useDispatch, useSelector } from 'react-redux'
+import Store from 'types/store'
+import { getModifiers } from 'api/modifiers'
 
 function a11yProps(index: any) {
   return {
@@ -20,6 +23,8 @@ const tabConfig = {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+    display: 'flex',
+    flexDirection: 'column',
     flexGrow: 1,
   },
   statsAside: {
@@ -27,16 +32,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-const Units = () => {
+const Home = () => {
   const [value, setValue] = useState(0)
   const classes = useStyles()
   const theme = useTheme()
-  console.log(theme.mixins.toolbar)
   const statsAsTab = useMediaQuery(theme.breakpoints.down('md'))
+  const dispatch = useDispatch()
+
+  const { modifiers, targetModifiers } = useSelector((state: Store) => state.modifiers)
 
   useEffect(() => {
     if (!statsAsTab && value === 2) setValue(0)
   }, [statsAsTab, value, setValue])
+
+  useEffect(() => {
+    if (!modifiers || !modifiers.length || !targetModifiers || !targetModifiers.length) {
+      dispatch(getModifiers())
+    }
+  }, [dispatch, modifiers, targetModifiers])
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
@@ -47,8 +60,8 @@ const Units = () => {
   }
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={1}>
+    <div className={classes.root} style={{ padding: 4 }}>
+      <Grid container spacing={1} style={{ flex: 1 }}>
         <Grid item xs lg={6}>
           <Tabs
             value={value}
@@ -62,23 +75,27 @@ const Units = () => {
             <Tab label={tabConfig.target.title} {...a11yProps(1)} />
             {statsAsTab && <Tab label={tabConfig.stats.title} {...a11yProps(2)} />}
           </Tabs>
-          <SwipeableViews
-            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-            index={value}
-            onChangeIndex={handleChangeIndex}
-          >
-            <TabPanel value={value} index={0} dir={theme.direction}>
-              <UnitsTab />
-            </TabPanel>
-            <TabPanel value={value} index={1} dir={theme.direction}>
-              <StatsTab />
-            </TabPanel>
-            {!!statsAsTab && (
-              <TabPanel value={value} index={2} dir={theme.direction}>
+          <div>
+            <SwipeableViews
+              axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+              index={value}
+              onChangeIndex={handleChangeIndex}
+              style={{ height: '100%' }}
+              containerStyle={{ height: '100%' }}
+            >
+              <TabPanel value={value} index={0} dir={theme.direction}>
+                <Units />
+              </TabPanel>
+              <TabPanel value={value} index={1} dir={theme.direction}>
                 <StatsTab />
               </TabPanel>
-            )}
-          </SwipeableViews>
+              {!!statsAsTab && (
+                <TabPanel value={value} index={2} dir={theme.direction}>
+                  <StatsTab />
+                </TabPanel>
+              )}
+            </SwipeableViews>
+          </div>
         </Grid>
         {!statsAsTab && (
           <Grid item xs>
@@ -92,4 +109,4 @@ const Units = () => {
   )
 }
 
-export default Units
+export default Home

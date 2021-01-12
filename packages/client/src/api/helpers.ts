@@ -1,10 +1,18 @@
+import humps from 'humps'
+
 const API_URL = '/api'
 
-export const get = async <T>(
-  path: string,
-  query?: { [name: string]: any },
+interface GetParams {
+  path: string
+  query?: { [name: string]: any }
   extra?: Omit<RequestInit, 'method'>
-): Promise<T> => {
+}
+
+interface PostParams extends GetParams {
+  body: object
+}
+
+export const get = async <T extends object>({ path, query, extra }: GetParams): Promise<T> => {
   const request = await fetch(buildRequestUrl(path, query), {
     method: 'GET',
     ...extra,
@@ -12,63 +20,31 @@ export const get = async <T>(
   return parseResponse<T>(request)
 }
 
-export const post = async (
-  path: string,
-  query?: { [name: string]: any },
-  body?: BodyInit,
-  extra?: Omit<RequestInit, 'method' | 'body'>
-) => {
+export const post = async <T extends object>({ path, body, query, extra }: PostParams): Promise<T> => {
   const request = await fetch(buildRequestUrl(path, query), {
     method: 'POST',
-    body,
+    body: JSON.stringify(humps.decamelizeKeys(body)),
     ...extra,
   })
-  return parseResponse(request)
+  return parseResponse<T>(request)
 }
 
-export const put = async (
-  path: string,
-  query?: { [name: string]: any },
-  body?: BodyInit,
-  extra?: Omit<RequestInit, 'method' | 'body'>
-) => {
-  const request = await fetch(buildRequestUrl(path, query), {
-    method: 'PUT',
-    body,
-    ...extra,
-  })
-  return parseResponse(request)
-}
-
-export const del = async (
-  path: string,
-  query?: { [name: string]: any },
-  extra?: Omit<RequestInit, 'method'>
-) => {
-  const request = await fetch(buildRequestUrl(path, query), {
-    method: 'DELETE',
-    ...extra,
-  })
-  return parseResponse(request)
-}
-
-const buildRequestUrl = (path: string, query?: { [name: string]: any }) => {
+const buildRequestUrl = (path: string, query?: { [name: string]: any }): string => {
   const cleanPath = path.replace(/^\//, '')
-  const url = new URL(`${API_URL}/${cleanPath}`)
-  url.search = new URLSearchParams(query).toString()
-  return url.toString()
+  const url = `${API_URL}/${cleanPath}`
+  const params = new URLSearchParams(query).toString()
+  return params ? `${url}?${params}` : url
 }
 
-const parseResponse = async <T>(response: Response): Promise<T> => {
-  if (response.ok) return response.json()
-  if (response.headers.get('content-type')?.includes('application/json')) {
-    throw new Error(await extractErrorMessage(response))
+const parseResponse = async <T extends object>(response: Response, camelize: boolean = true): Promise<T> => {
+  if (response.ok) {
+    const json = await response.json()
+    return camelize ? humps.camelizeKeys(json) : json
   }
-  throw new Error('An unexpected error occured')
-}
-
-const extractErrorMessage = async (response: Response) => {
-  const data = await response.json()
-  const message = data.message || 'An unexpected error occured'
-  throw new Error(message)
+  let err = 'An unexpected error occured'
+  if (response.headers.get('content-type')?.includes('application/json')) {
+    const json = await response.json()
+    err = json.message || err
+  }
+  throw new Error(err)
 }

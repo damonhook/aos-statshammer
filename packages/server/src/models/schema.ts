@@ -19,7 +19,7 @@ export interface CompareRequest {
 }
 
 export interface CompareResponse {
-  units: string[]
+  units: { [id: string]: string }
   results: AverageDamageResult[]
 }
 

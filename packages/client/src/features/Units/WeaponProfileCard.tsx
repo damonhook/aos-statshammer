@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   Box,
   Checkbox,
@@ -15,9 +15,14 @@ import {
 } from '@material-ui/core'
 import clsx from 'clsx'
 import Menu from 'components/Menu'
+import { WeaponProfile } from 'types/store/units'
+import { useDispatch } from 'react-redux'
+import { unitsStore } from 'store/slices'
+import { useHistory } from 'react-router-dom'
+import { openProfileDialog } from '../WeaponProfileDialog'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: { margin: theme.spacing(2, 0) },
+  root: { margin: theme.spacing(0, 0, 2) },
   weaponProfile: { display: 'flex', alignItems: 'center', cursor: 'pointer' },
   disabled: { color: theme.palette.action.disabled },
 }))
@@ -37,40 +42,56 @@ const StyledTableCell = ({ disabled = false, children }: StyledTableCellProps) =
   )
 }
 
-const WeaponProfileControls = () => {
-  const handleClick = () => {}
+interface WeaponProfileControlsProps {
+  unitId: string
+  profile: WeaponProfile
+}
+
+const WeaponProfileControls = ({ unitId, profile }: WeaponProfileControlsProps) => {
+  const dispatch = useDispatch()
+
+  const handleEdit = useCallback(() => {
+    alert(`Unit: ${unitId}\nProfile: ${profile.id}`)
+  }, [unitId, profile.id])
+
+  const handleCopy = useCallback(() => {
+    dispatch(unitsStore.actions.addWeaponProfile({ unitId, weaponProfile: profile }))
+  }, [unitId, profile, dispatch])
+
+  const handleDelete = useCallback(() => {
+    dispatch(unitsStore.actions.deleteWeaponProfile({ unitId, id: profile.id }))
+  }, [unitId, profile.id, dispatch])
 
   return (
     <Menu
       items={[
-        { name: 'Edit', onClick: handleClick },
-        { name: 'Copy', onClick: handleClick },
-        { name: 'Delete', onClick: handleClick },
+        { name: 'Edit', onClick: handleEdit },
+        { name: 'Copy', onClick: handleCopy },
+        { name: 'Delete', onClick: handleDelete },
       ]}
     />
   )
 }
 
-const WeaponProfileCard = () => {
+interface WeaponProfileCardProps {
+  unitId: string
+  profile: WeaponProfile
+}
+
+const WeaponProfileCard = ({ unitId, profile }: WeaponProfileCardProps) => {
   const [enabled, setEnabled] = useState(true)
   const classes = useStyles()
+  const history = useHistory()
 
   const name = undefined
-  const { numModels, attacks, toHit, toWound, rend, damage } = {
-    numModels: 10,
-    attacks: 2,
-    toHit: 3,
-    toWound: 4,
-    rend: 0,
-    damage: 1,
-  }
+  const { numModels, attacks, toHit, toWound, rend, damage } = profile
 
   const handleEnabledChange = () => {
     setEnabled(!enabled)
   }
 
   const handleProfileClicked = () => {
-    alert('Test')
+    openProfileDialog(history, unitId, profile.id)
   }
 
   return (
@@ -102,7 +123,7 @@ const WeaponProfileCard = () => {
                       >
                         <strong>{name || 'Weapon Profile'}</strong>
                       </Typography>
-                      <WeaponProfileControls />
+                      <WeaponProfileControls unitId={unitId} profile={profile} />
                     </span>
                   </TableCell>
                 </TableRow>

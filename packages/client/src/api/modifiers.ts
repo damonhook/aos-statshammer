@@ -7,7 +7,7 @@ export const getModifiers = () => async (dispatch: Dispatch) => {
   const { modifiersPending, modifiersSucess, modifiersError } = modifiersStore.actions
   dispatch(modifiersPending())
   try {
-    const res = await get<ModifiersResponse>('/modifiers')
+    const res = await get<ModifiersResponse>({ path: '/modifiers' })
     dispatch(modifiersSucess(res))
   } catch (error) {
     console.error(error)

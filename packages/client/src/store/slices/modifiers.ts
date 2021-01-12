@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import ModifiersStore, { ModifiersData } from 'types/store/modifiers'
+import ModifiersStore, { ModifiersResponse } from 'types/store/modifiers'
 
 const INITIAL_STATE: ModifiersStore = {
   pending: false,
@@ -14,8 +14,10 @@ export default createSlice({
     modifiersPending(state: ModifiersStore) {
       state.pending = true
     },
-    modifiersSucess(state: ModifiersStore, action: PayloadAction<ModifiersData>) {
-      Object.assign(state, action.payload)
+    modifiersSucess(state: ModifiersStore, action: PayloadAction<ModifiersResponse>) {
+      const { modifiers, targetModifiers } = action.payload
+      state.modifiers = modifiers
+      state.targetModifiers = targetModifiers
       state.pending = false
     },
     modifiersError(state: ModifiersStore) {

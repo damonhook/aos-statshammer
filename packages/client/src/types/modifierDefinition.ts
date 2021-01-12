@@ -2,7 +2,7 @@ export interface ModifierDefinition {
   id: string
   name: string
   description: string
-  options: ModifierOption[]
+  options: { [key: string]: ModifierOption }
 }
 
 export type ModifierOption = ChoiceOption | RollOption | NumberOption | BooleanOption

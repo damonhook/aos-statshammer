@@ -15,7 +15,7 @@ const HomeSkeleton = () => {
   const statsAsTab = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={1} style={{ paddingBottom: 8 }}>
       <Grid item xs lg={6}>
         <UnitsSkeleton />
       </Grid>

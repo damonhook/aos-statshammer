@@ -5,7 +5,7 @@ export interface ModifiersResponse {
   targetModifiers: ModifierDefinition[]
 }
 
-export interface ModifiersStore extends ModifiersResponse {
+interface ModifiersStore extends ModifiersResponse {
   pending: boolean
 }
 

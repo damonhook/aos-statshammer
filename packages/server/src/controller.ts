@@ -30,12 +30,12 @@ export default class AosController {
           const processor = new AverageDamageProcessor(profile, target)
           return sum + processor.calculateAverageDamage()
         }, 0)
-        return { ...acc, [unit.name]: Math.round(value * 1000) / 1000 }
+        return { ...acc, [unit.id]: Math.round(value * 1000) / 1000 }
       }, {} as { string: number })
       results.push({ save: target.save, values })
     })
     return {
-      units: units.map(u => u.name),
+      units: units.reduce((acc, { id, name }) => ({ ...acc, [id]: name }), {}),
       results: results,
     }
   }

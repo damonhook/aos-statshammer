@@ -75,7 +75,7 @@ const GraphSkeleton = ({ series, groups, className, height = 300, includeTitle }
           </div>
         ))}
       </div>
-      <Grid container spacing={1} justify="center" alignItems="center">
+      <Grid container spacing={1} justify="center" alignItems="center" style={{ paddingBottom: 8 }}>
         {[...Array(groups)].map((_, seriesKey) => (
           <Grid item key={seriesKey}>
             <Box display="flex" alignItems="center">

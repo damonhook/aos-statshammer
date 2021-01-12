@@ -86,8 +86,8 @@ components:
             type: object
             properties:
               units:
-                type: array
-                items:
+                type: object
+                additionalProperties:
                   type: string
               results:
                 type: array
@@ -101,6 +101,8 @@ components:
     Unit:
       type: object
       properties:
+        id:
+          type: string
         name:
           type: string
           example: Unit 1
@@ -109,6 +111,7 @@ components:
           items:
             $ref: "#/components/schemas/WeaponProfile"
       required:
+        - id
         - name
         - weapon_profiles
 
@@ -252,3 +255,5 @@ components:
 
     AverageDamageResult:
       type: object
+      additionalProperties:
+        type: number

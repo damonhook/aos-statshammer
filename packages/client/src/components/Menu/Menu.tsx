@@ -24,7 +24,7 @@ const Menu = ({ id, items }: MenuProps) => {
 
   const handleItemClick = (index: number) => (event: React.MouseEvent<{}>) => {
     items[index].onClick()
-    event.stopPropagation()
+    handleClose(event)
   }
 
   return (

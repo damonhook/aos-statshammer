@@ -4,10 +4,10 @@ import Header from 'components/Header'
 import HomeSkeleton from 'components/Skeletons/pages/HomeSkeleton'
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
 
-// const Home = lazy(() => import('pages/Home'))
+// const Home = lazy(() => import('features/Home'))
 const Home = lazy(() => {
   return new Promise(r => setTimeout(r, 1000)).then(() => {
-    return import('pages/Home')
+    return import('features/Home')
   })
 })
 
