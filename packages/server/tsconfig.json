@@ -3,14 +3,14 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
-    "pretty": true,
+    // "pretty": true,
     "strict": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "target": "es6",
+    "target": "es5",
     "noEmit": true,
     "baseUrl": "src",
     "rootDir": "src",
   },
-  "include": ["src/*.ts"],
+  "include": ["src"],
 }

@@ -10,7 +10,8 @@ interface TabPanelProps {
 
 const TabPanel = ({ index, value, children, ...other }: TabPanelProps) => {
   return (
-    <div
+    <Typography
+      component="div"
       role="tabpanel"
       hidden={value !== index}
       id={`full-width-tabpanel-${index}`}
@@ -18,12 +19,10 @@ const TabPanel = ({ index, value, children, ...other }: TabPanelProps) => {
       style={{ flexGrow: 1, maxWidth: '100vw' }}
       {...other}
     >
-      {value === index && (
-        <Box p={1}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
+      <Box p={1}>
+        <Typography>{children}</Typography>
+      </Box>
+    </Typography>
   )
 }
 

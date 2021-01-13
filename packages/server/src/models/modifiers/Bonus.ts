@@ -1,5 +1,5 @@
 import { Characteristic as C } from 'common'
-import { numberOption } from 'utils/modifierUtils'
+import { choiceOption, numberOption } from 'utils/modifierUtils'
 import DiceValue from '../diceValue'
 import BaseModifier from './BaseModifier'
 
@@ -22,7 +22,7 @@ export default class Bonus extends BaseModifier {
 
   static get options() {
     return {
-      ...BaseModifier.options,
+      characteristic: choiceOption({ items: this.availableCharacteristics }),
       bonus: numberOption({ defaultVal: 1, allowDice: true }),
     }
   }

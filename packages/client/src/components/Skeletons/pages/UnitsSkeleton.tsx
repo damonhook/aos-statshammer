@@ -23,4 +23,4 @@ const UnitsSkeleton = () => {
   )
 }
 
-export default UnitsSkeleton
+export default React.memo(UnitsSkeleton)

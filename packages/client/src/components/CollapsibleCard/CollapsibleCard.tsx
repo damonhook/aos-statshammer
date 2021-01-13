@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   controls: {},
   accorionSummaryContent: {
     margin: '10px 0px !important',
+    alignItems: 'center',
   },
   accorionSummaryExpanded: {
     minHeight: '48px !important',
@@ -60,7 +61,7 @@ const CollapsibleCard = ({ title, children, startCollapsed = false, controls }: 
         <Typography className={classes.heading}>{title}</Typography>
         <span className={classes.controls}>{controls}</span>
       </AccordionSummary>
-      <AccordionDetails>{children}</AccordionDetails>
+      <AccordionDetails style={{ flexDirection: 'column' }}>{children}</AccordionDetails>
     </Accordion>
   )
 }

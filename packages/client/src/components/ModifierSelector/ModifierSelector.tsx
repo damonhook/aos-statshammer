@@ -1,22 +1,22 @@
-import { Dialog, Button, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
+import { Button, DialogContent, DialogActions } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
-import { nanoid } from 'nanoid'
+import DialogAppBar from 'components/DialogAppBar'
 import React, { useCallback, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { ModifierDefinition } from 'types/modifierDefinition'
 import { Modifier } from 'types/store/units'
 import ModifierItems from './ModifierItems'
+import SideSheet from 'components/SideSheet'
 
 interface ModifierSelectorProps {
   modifiers: ModifierDefinition[]
-  onConfirm: (m: Modifier[]) => void
+  onConfirm: (m: Omit<Modifier, 'id'>[]) => void
 }
 
-function buildNewModifier(definition: ModifierDefinition): Modifier {
+function buildNewModifier(definition: ModifierDefinition) {
   const { id, options } = definition
   return {
-    id,
-    key: nanoid(),
+    type: id,
     options: Object.keys(options).reduce((acc, key) => ({ ...acc, [key]: options[key].default }), {}),
   }
 }
@@ -45,7 +45,7 @@ const ModifierSelector = ({ modifiers, onConfirm }: ModifierSelectorProps) => {
   const handleConfirm = useCallback(() => {
     const newMods = Object.keys(selected)
       .filter(key => selected[key])
-      .reduce<Modifier[]>((acc, id) => {
+      .reduce<Omit<Modifier, 'id'>[]>((acc, id) => {
         const definition = modifiers.find(mod => mod.id === id)
         if (definition) acc.push(buildNewModifier(definition))
         return acc
@@ -59,8 +59,8 @@ const ModifierSelector = ({ modifiers, onConfirm }: ModifierSelectorProps) => {
       <Button onClick={handleChange} startIcon={<Add />} fullWidth color="primary" variant="contained">
         Add Modifiers
       </Button>
-      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-        <DialogTitle>Add Modifiers</DialogTitle>
+      <SideSheet open={open} aria-labelledby="modifier-selector-title" onClose={handleClose} maxWidth={900}>
+        <DialogAppBar title="Add Modifiers" onClose={handleClose} id="modifier-selector-title" />
         <DialogContent>
           <ModifierItems modifiers={modifiers} selected={selected} setSelected={setSelected} />
         </DialogContent>
@@ -68,9 +68,21 @@ const ModifierSelector = ({ modifiers, onConfirm }: ModifierSelectorProps) => {
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleConfirm}>Confirm</Button>
         </DialogActions>
-      </Dialog>
+      </SideSheet>
     </div>
   )
 }
 
 export default ModifierSelector
+
+// === Alternate ===
+// <Dialog open={open} onClose={handleClose} maxWidth="md" fullScreen={isMobile} scroll="paper" fullWidth>
+//   <DialogAppBar title="Add Modifiers" onClose={handleClose} />
+//   <DialogContent>
+//     <ModifierItems modifiers={modifiers} selected={selected} setSelected={setSelected} />
+//   </DialogContent>
+//   <DialogActions>
+//     <Button onClick={handleClose}>Cancel</Button>
+//     <Button onClick={handleConfirm}>Confirm</Button>
+//   </DialogActions>
+// </Dialog>

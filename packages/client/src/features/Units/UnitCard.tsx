@@ -65,7 +65,7 @@ const UnitCard = ({ unit }: UnitCardProps) => {
 
   return (
     <CollapsibleCard title={unit.name} controls={<UnitListControls unit={unit} />}>
-      <Box flex={1}>
+      <Box flex={1} style={{ maxWidth: '100%' }}>
         <form noValidate autoComplete="off" className={classes.form}>
           <TextField
             id="name"
@@ -89,4 +89,4 @@ const UnitCard = ({ unit }: UnitCardProps) => {
   )
 }
 
-export default UnitCard
+export default React.memo(UnitCard)

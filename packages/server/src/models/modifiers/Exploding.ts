@@ -1,5 +1,5 @@
 import { Characteristic as C } from 'common'
-import { booleanOption, numberOption, rollOption } from 'utils/modifierUtils'
+import { booleanOption, choiceOption, numberOption, rollOption } from 'utils/modifierUtils'
 import DiceValue from '../diceValue'
 import BaseModifier from './BaseModifier'
 
@@ -28,7 +28,7 @@ export default class Exploding extends BaseModifier {
 
   static get options() {
     return {
-      ...BaseModifier.options,
+      characteristic: choiceOption({ items: this.availableCharacteristics }),
       on: rollOption({ defaultVal: 6 }),
       extraHits: numberOption({ defaultVal: 1, allowDice: true }),
       unmodified: booleanOption({ defaultVal: true }),

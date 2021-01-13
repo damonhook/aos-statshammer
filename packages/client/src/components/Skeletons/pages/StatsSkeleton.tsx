@@ -21,4 +21,4 @@ const StatsSkeleton = () => {
   )
 }
 
-export default StatsSkeleton
+export default React.memo(StatsSkeleton)

@@ -6,7 +6,7 @@ import TargetRerollOnes from './TargetRerollOnes'
 import TargetMortalNegate from './TargetMortalNegate'
 import TargetEthereal from './TargetEthereal'
 
-export type TargetModifierData = (BaseTargetModifier | { id: string; options: any })[]
+export type TargetModifierData = (BaseTargetModifier | { type: string; options: any })[]
 
 export class TargetModifierList<T extends BaseTargetModifier> extends Array<T> {
   public get(): T | undefined {
@@ -42,7 +42,7 @@ export class TargetModifierLookup {
     return data.reduce<TargetModifierList<T>>((acc, d) => {
       if (d instanceof BaseTargetModifier) {
         if (d instanceof modifierClass) acc.push(d)
-      } else if (d?.id.toLowerCase().replace(/_/g, '') === target_id && 'options' in d) {
+      } else if (d?.type.toLowerCase().replace(/_/g, '') === target_id && 'options' in d) {
         acc.push(new modifierClass(d.options))
       }
       return acc

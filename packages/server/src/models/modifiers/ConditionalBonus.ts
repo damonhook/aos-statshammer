@@ -45,7 +45,7 @@ export default class ConditionalBonus extends BaseModifier {
 
   static get options() {
     return {
-      ...BaseModifier.options,
+      characteristic: choiceOption({ items: this.availableCharacteristics }),
       on: rollOption({ defaultVal: 6 }),
       bonus: numberOption({ defaultVal: 1, allowDice: true }),
       unmodified: booleanOption({ defaultVal: true }),

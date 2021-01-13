@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Store from 'types/store'
 import { profileFormStore } from 'store/slices'
 import { Modifier } from 'types/store/units'
+import ModifierList from 'components/ModifierList'
 
 const useStyles = makeStyles((theme: Theme) => ({
   nameField: {
@@ -27,19 +28,17 @@ const ProfileContent = ({ data }: ProfileContentProps) => {
   const theme = useTheme()
 
   const handleAddModifiers = useCallback(
-    (newModifiers: Modifier[]) => {
-      dispatch(
-        profileFormStore.actions.editData({ key: 'modifiers', value: [...data.modifiers, ...newModifiers] })
-      )
+    (newModifiers: Omit<Modifier, 'id'>[]) => {
+      dispatch(profileFormStore.actions.addModifiers({ modifiers: newModifiers }))
     },
-    [dispatch, data.modifiers]
+    [dispatch]
   )
 
   return (
     <DialogContent>
       <TextField label="Profile Name" fullWidth variant="outlined" className={classes.nameField} />
       <div style={{ paddingBottom: theme.spacing(2) }}>
-        <Grid container spacing={2} style={{ paddingBottom: theme.spacing(2) }}>
+        <Grid container spacing={2} style={{ paddingBottom: theme.spacing(2) }} alignItems="flex-start">
           <Grid container item xs={12} md={2} spacing={2}>
             <Grid item xs={12} spacing={0}>
               <Typography>Characteristics:</Typography>
@@ -53,9 +52,7 @@ const ProfileContent = ({ data }: ProfileContentProps) => {
           </Grid>
           <Grid item xs>
             <Typography style={{ paddingBottom: theme.spacing(2) }}>Modifiers:</Typography>
-            {data.modifiers.map(mod => (
-              <p key={mod.key}>{mod.id}</p>
-            ))}
+            <ModifierList definitions={modifiers} modifiers={data.modifiers} />
             <ModifierSelector modifiers={modifiers} onConfirm={handleAddModifiers} />
           </Grid>
         </Grid>
@@ -64,4 +61,4 @@ const ProfileContent = ({ data }: ProfileContentProps) => {
   )
 }
 
-export default ProfileContent
+export default React.memo(ProfileContent)

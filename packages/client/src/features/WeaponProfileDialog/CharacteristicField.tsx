@@ -1,7 +1,7 @@
 import { TextField, Grid, InputAdornment } from '@material-ui/core'
 import React, { useCallback, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { profileFormStore, unitsStore } from 'store/slices'
+import { profileFormStore } from 'store/slices'
 import { ProfileFormData } from 'types/store/profileForm'
 
 interface FieldConfig {
@@ -66,4 +66,4 @@ const CharacteristicField = ({ data, characteristic }: CharacteristicFieldProps)
   )
 }
 
-export default CharacteristicField
+export default React.memo(CharacteristicField)

@@ -1,4 +1,3 @@
-import CollapsibleCard from 'components/CollapsibleCard'
 import React from 'react'
 import StatsSkeleton from 'components/Skeletons/pages/StatsSkeleton'
 

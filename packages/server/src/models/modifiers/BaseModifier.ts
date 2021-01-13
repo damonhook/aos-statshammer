@@ -21,10 +21,8 @@ export default class BaseModifier {
     this.characteristic = characteristic
   }
 
-  protected static get options() {
-    return {
-      characteristic: choiceOption({ items: this.availableCharacteristics }),
-    }
+  protected static get options(): object {
+    throw new Error('Not Implemented!')
   }
 
   public static get metadata(): ModifierDefinition {

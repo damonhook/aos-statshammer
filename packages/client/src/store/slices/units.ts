@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import UnitsStore, { UnitParams, WeaponProfile, WeaponProfileParams } from 'types/store/units'
+import UnitsStore, { UnitParams, WeaponProfileParams } from 'types/store/units'
 import { nanoid } from 'nanoid'
 
 const INITIAL_STATE: UnitsStore = {

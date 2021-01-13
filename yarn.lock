@@ -1804,6 +1804,11 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/format-unicorn@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/format-unicorn/-/format-unicorn-1.1.2.tgz#af65af7747a5cf862471b532c4d6d52b7c0c43be"
+  integrity sha512-RjsAjUsSu0J1OPjRnYXhN2g6zdP1mxgCZff0ZaKVjixuN92d7K7HBqXj+lTy+aUs28puGgRNFB1rme1uXTH3ew==
+
 "@types/glob@^7.1.1":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.3.tgz#e6ba80f36b7daad2c685acd9266382e68985c183"
@@ -5385,6 +5390,11 @@ form-data@~2.3.2:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
+
+format-unicorn@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/format-unicorn/-/format-unicorn-1.1.1.tgz#533423f9c6bdb261bf508fff54f2d7a9b27a2251"
+  integrity sha1-UzQj+ca9smG/UI//VPLXqbJ6IlE=
 
 forwarded@~0.1.2:
   version "0.1.2"

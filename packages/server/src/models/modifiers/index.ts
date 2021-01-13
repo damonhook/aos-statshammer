@@ -10,7 +10,7 @@ import Reroll from './Reroll'
 import RerollFailed from './RerollFailed'
 import RerollOnes from './RerollOnes'
 
-export type ModifierData = (BaseModifier | { id: string; options: any })[]
+export type ModifierData = (BaseModifier | { type: string; options: any })[]
 
 export class ModifierList<T extends BaseModifier> extends Array<T> {
   public get(characteristic: C): T | undefined {
@@ -51,7 +51,7 @@ export class ModifierLookup {
     return data.reduce((acc, d) => {
       if (d instanceof BaseModifier) {
         if (d instanceof modifierClass) acc.push(d)
-      } else if (d?.id.toLowerCase().replace(/_/g, '') === target_id && 'options' in d) {
+      } else if (d?.type.toLowerCase().replace(/_/g, '') === target_id && 'options' in d) {
         acc.push(new modifierClass(d.options))
       }
       return acc

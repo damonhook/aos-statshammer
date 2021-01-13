@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import Units from 'features/Units'
+import React, { useState, useEffect, lazy, Suspense } from 'react'
 import TabPanel from './TabPanel'
 import { Grid, Tab, Tabs, useTheme, makeStyles, Theme, useMediaQuery } from '@material-ui/core'
 import SwipeableViews from 'react-swipeable-views'
-import StatsTab from './stats/StatsTab'
 import { useDispatch, useSelector } from 'react-redux'
 import Store from 'types/store'
 import { getModifiers } from 'api/modifiers'
+import UnitsSkeleton from 'components/Skeletons/pages/UnitsSkeleton'
+import StatsSkeleton from 'components/Skeletons/pages/StatsSkeleton'
 
 function a11yProps(index: any) {
   return {
@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: theme.spacing(4),
   },
 }))
+
+const Units = lazy(() => import('features/Units'))
+const Stats = lazy(() => import('./stats/StatsTab'))
 
 const Home = () => {
   const [value, setValue] = useState(0)
@@ -62,7 +65,7 @@ const Home = () => {
   return (
     <div className={classes.root} style={{ padding: 4 }}>
       <Grid container spacing={1} style={{ flex: 1 }}>
-        <Grid item xs lg={6}>
+        <Grid item xs={12} lg={6}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -84,14 +87,20 @@ const Home = () => {
               containerStyle={{ height: '100%' }}
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
-                <Units />
+                <Suspense fallback={<UnitsSkeleton />}>
+                  <Units />
+                </Suspense>
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
-                <StatsTab />
+                <Suspense fallback={<StatsSkeleton />}>
+                  <Stats />
+                </Suspense>
               </TabPanel>
               {!!statsAsTab && (
                 <TabPanel value={value} index={2} dir={theme.direction}>
-                  <StatsTab />
+                  <Suspense fallback={<StatsSkeleton />}>
+                    <Stats />
+                  </Suspense>
                 </TabPanel>
               )}
             </SwipeableViews>
@@ -100,7 +109,9 @@ const Home = () => {
         {!statsAsTab && (
           <Grid item xs>
             <div className={classes.statsAside}>
-              <StatsTab />
+              <Suspense fallback={<StatsSkeleton />}>
+                <Stats />
+              </Suspense>
             </div>
           </Grid>
         )}

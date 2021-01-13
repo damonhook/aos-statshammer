@@ -155,7 +155,7 @@ components:
     Modifier:
       type: object
       properties:
-        id:
+        type:
           type: string
           example: REROLL_ONES
         options:
@@ -165,7 +165,7 @@ components:
               type: string
               example: to_hit
       required:
-        - id
+        - type
         - options
 
     ModifierDefinition:

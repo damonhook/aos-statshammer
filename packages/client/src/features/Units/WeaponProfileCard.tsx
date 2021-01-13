@@ -24,6 +24,7 @@ import { openProfileDialog } from '../WeaponProfileDialog'
 const useStyles = makeStyles((theme: Theme) => ({
   root: { margin: theme.spacing(0, 0, 2) },
   weaponProfile: { display: 'flex', alignItems: 'center', cursor: 'pointer' },
+  cell: { padding: theme.spacing(1, 0.25) },
   disabled: { color: theme.palette.action.disabled },
 }))
 
@@ -36,7 +37,7 @@ const StyledTableCell = ({ disabled = false, children }: StyledTableCellProps) =
   const classes = useStyles()
 
   return (
-    <TableCell align="center" className={clsx({ [classes.disabled]: disabled })}>
+    <TableCell align="center" className={clsx(classes.cell, { [classes.disabled]: disabled })}>
       {children}
     </TableCell>
   )
@@ -63,13 +64,15 @@ const WeaponProfileControls = ({ unitId, profile }: WeaponProfileControlsProps) 
   }, [unitId, profile.id, dispatch])
 
   return (
-    <Menu
-      items={[
-        { name: 'Edit', onClick: handleEdit },
-        { name: 'Copy', onClick: handleCopy },
-        { name: 'Delete', onClick: handleDelete },
-      ]}
-    />
+    <span style={{ marginRight: 5 }}>
+      <Menu
+        items={[
+          { name: 'Edit', onClick: handleEdit },
+          { name: 'Copy', onClick: handleCopy },
+          { name: 'Delete', onClick: handleDelete },
+        ]}
+      />
+    </span>
   )
 }
 
@@ -95,62 +98,60 @@ const WeaponProfileCard = ({ unitId, profile }: WeaponProfileCardProps) => {
   }
 
   return (
-    <Box flex={1} className={classes.root}>
+    <div className={classes.root}>
       <form noValidate autoComplete="off" className={classes.weaponProfile}>
-        <Box flex={1}>
-          <TableContainer component={Paper} variant="outlined">
-            <Table size="small" padding="default">
-              <TableHead>
-                <TableRow>
-                  <TableCell colSpan={6} align="center">
-                    <span
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Checkbox
-                        checked={enabled}
-                        onChange={handleEnabledChange}
-                        inputProps={{ 'aria-label': 'primary checkbox' }}
-                        size="small"
-                      />
-                      <Typography
-                        style={{ flex: 1 }}
-                        onClick={handleEnabledChange}
-                        className={clsx({ [classes.disabled]: !enabled })}
-                      >
-                        <strong>{name || 'Weapon Profile'}</strong>
-                      </Typography>
-                      <WeaponProfileControls unitId={unitId} profile={profile} />
-                    </span>
-                  </TableCell>
-                </TableRow>
-                <TableRow onClick={handleProfileClicked}>
-                  <StyledTableCell disabled={!enabled}>Models</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>Attacks</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>To Hit</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>To Wound</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>Rend</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>Damage</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody onClick={handleProfileClicked}>
-                <TableRow>
-                  <StyledTableCell disabled={!enabled}>{numModels}</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>{attacks}</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>{toHit}+</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>{toWound}+</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>{rend ? `-${rend}` : 0}</StyledTableCell>
-                  <StyledTableCell disabled={!enabled}>{damage}</StyledTableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+        <Box flex={1} maxWidth="100%">
+          <Paper variant="outlined">
+            <span
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Checkbox
+                checked={enabled}
+                onChange={handleEnabledChange}
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+                size="small"
+              />
+              <Typography
+                style={{ flex: 1, textAlign: 'left' }}
+                onClick={handleEnabledChange}
+                className={clsx({ [classes.disabled]: !enabled })}
+              >
+                <strong>{name || 'Weapon Profile'}</strong>
+              </Typography>
+              <WeaponProfileControls unitId={unitId} profile={profile} />
+            </span>
+            <TableContainer>
+              <Table size="small" padding="none" onClick={handleProfileClicked}>
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell disabled={!enabled}>Models</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>Attacks</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>To Hit</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>To Wound</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>Rend</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>Damage</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <StyledTableCell disabled={!enabled}>{numModels}</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>{attacks}</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>{toHit}+</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>{toWound}+</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>{rend ? `-${rend}` : 0}</StyledTableCell>
+                    <StyledTableCell disabled={!enabled}>{damage}</StyledTableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
         </Box>
       </form>
-    </Box>
+    </div>
   )
 }
 

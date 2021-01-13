@@ -1,7 +1,7 @@
 export interface Modifier {
   id: string
-  key: string
-  options: { [name: string]: string | number }
+  type: string
+  options: { [name: string]: string | number | boolean }
 }
 
 export interface WeaponProfile {
