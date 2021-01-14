@@ -22,19 +22,22 @@ const BottomNavigation = () => {
   const isMobile = useIsMobile()
 
   return isMobile ? (
-    <MuiBottomNavigation
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue)
-      }}
-      className={classes.bottomNav}
-      showLabels
-    >
-      <BottomNavigationAction label="Home" />
-      <BottomNavigationAction label="Stats" />
-      <BottomNavigationAction label="Simulations" />
-      <BottomNavigationAction label="About" />
-    </MuiBottomNavigation>
+    <>
+      <div style={{ paddingTop: 56 }}></div>
+      <MuiBottomNavigation
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue)
+        }}
+        className={classes.bottomNav}
+        showLabels
+      >
+        <BottomNavigationAction label="Home" />
+        <BottomNavigationAction label="Stats" />
+        <BottomNavigationAction label="Simulations" />
+        <BottomNavigationAction label="About" />
+      </MuiBottomNavigation>
+    </>
   ) : null
 }
 

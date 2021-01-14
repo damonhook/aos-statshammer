@@ -1,0 +1,35 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { nanoid } from 'nanoid'
+import TargetStore from 'types/store/target'
+import { Modifier } from 'types/modifierInstance'
+
+const INITIAL_STATE: TargetStore = {
+  modifiers: [],
+}
+
+export default createSlice({
+  name: 'target',
+  initialState: INITIAL_STATE,
+  reducers: {
+    addModifier(state: TargetStore, action: PayloadAction<{ modifier: Omit<Modifier, 'id'> }>) {
+      const { modifier } = action.payload
+      state.modifiers.push({ ...modifier, id: nanoid() })
+    },
+    addModifiers(state: TargetStore, action: PayloadAction<{ modifiers: Omit<Modifier, 'id'>[] }>) {
+      const { modifiers } = action.payload
+      state.modifiers.push(...modifiers.map(m => ({ ...m, id: nanoid() })))
+    },
+    editModifier(
+      state: TargetStore,
+      action: PayloadAction<{ id: string; key: string; value: string | number | boolean }>
+    ) {
+      const { id, key, value } = action.payload
+      const mod = state.modifiers.find(m => m.id === id)
+      if (mod) mod.options[key] = value
+    },
+    deleteModifier(state: TargetStore, action: PayloadAction<{ id: string }>) {
+      const { id } = action.payload
+      state.modifiers = state.modifiers.filter(m => m.id !== id)
+    },
+  },
+})

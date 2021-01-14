@@ -2,7 +2,7 @@ import { makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useMemo } from 'react'
 import { ModifierDefinition } from 'types/modifierDefinition'
-import { Modifier } from 'types/store/units'
+import { Modifier } from 'types/modifierInstance'
 import ModifierItem from './ModifierItem'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -14,9 +14,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface ModifierListProps {
   definitions: ModifierDefinition[]
   modifiers: Modifier[]
+  addModifiers: (modifiers: Omit<Modifier, 'id'>[]) => void
+  editModifier: (id: string, key: string, value: string | number | boolean) => void
+  deleteModifier: (id: string) => void
 }
 
-const ModifierList = ({ definitions, modifiers }: ModifierListProps) => {
+const ModifierList = ({
+  definitions,
+  modifiers,
+  addModifiers,
+  editModifier,
+  deleteModifier,
+}: ModifierListProps) => {
   const classes = useStyles()
 
   const data = useMemo(
@@ -31,7 +40,14 @@ const ModifierList = ({ definitions, modifiers }: ModifierListProps) => {
   return (
     <div className={clsx({ [classes.items]: data && data.length })}>
       {data.map(({ definition, modifier }) => (
-        <ModifierItem definition={definition} modifier={modifier} key={modifier.id} />
+        <ModifierItem
+          definition={definition}
+          modifier={modifier}
+          key={modifier.id}
+          addModifiers={addModifiers}
+          editModifier={editModifier}
+          deleteModifier={deleteModifier}
+        />
       ))}
     </div>
   )

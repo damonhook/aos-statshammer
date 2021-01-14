@@ -6,12 +6,18 @@ import ModifierSelector from 'components/ModifierSelector'
 import { useDispatch, useSelector } from 'react-redux'
 import Store from 'types/store'
 import { profileFormStore } from 'store/slices'
-import { Modifier } from 'types/store/units'
+import { Modifier } from 'types/modifierInstance'
 import ModifierList from 'components/ModifierList'
+import { HASH_ROUTES } from 'utils/routes'
 
 const useStyles = makeStyles((theme: Theme) => ({
   nameField: {
     paddingBottom: theme.spacing(3),
+  },
+  content: {
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(1, 2),
+    },
   },
 }))
 
@@ -34,8 +40,22 @@ const ProfileContent = ({ data }: ProfileContentProps) => {
     [dispatch]
   )
 
+  const handleEditModifier = useCallback(
+    (id: string, key: string, value: string | number | boolean) => {
+      dispatch(profileFormStore.actions.editModifier({ id, key, value }))
+    },
+    [dispatch]
+  )
+
+  const handleDeleteModifier = useCallback(
+    (id: string) => {
+      dispatch(profileFormStore.actions.deleteModifier({ id }))
+    },
+    [dispatch]
+  )
+
   return (
-    <DialogContent>
+    <DialogContent classes={{ root: classes.content }}>
       <TextField label="Profile Name" fullWidth variant="outlined" className={classes.nameField} />
       <div style={{ paddingBottom: theme.spacing(2) }}>
         <Grid container spacing={2} style={{ paddingBottom: theme.spacing(2) }} alignItems="flex-start">
@@ -52,8 +72,18 @@ const ProfileContent = ({ data }: ProfileContentProps) => {
           </Grid>
           <Grid item xs>
             <Typography style={{ paddingBottom: theme.spacing(2) }}>Modifiers:</Typography>
-            <ModifierList definitions={modifiers} modifiers={data.modifiers} />
-            <ModifierSelector modifiers={modifiers} onConfirm={handleAddModifiers} />
+            <ModifierList
+              definitions={modifiers}
+              modifiers={data.modifiers}
+              addModifiers={handleAddModifiers}
+              editModifier={handleEditModifier}
+              deleteModifier={handleDeleteModifier}
+            />
+            <ModifierSelector
+              modifiers={modifiers}
+              onConfirm={handleAddModifiers}
+              hash={HASH_ROUTES.MODIFIERS}
+            />
           </Grid>
         </Grid>
       </div>

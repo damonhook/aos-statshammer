@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from 'nanoid'
 import ProfileFormStore, { ProfileFormData } from 'types/store/profileForm'
-import { Modifier } from 'types/store/units'
+import { Modifier } from 'types/modifierInstance'
 
 const INITIAL_STATE: ProfileFormStore = {
   data: undefined,

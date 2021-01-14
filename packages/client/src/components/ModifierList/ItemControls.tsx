@@ -1,23 +1,21 @@
 import React, { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
 import Menu from 'components/Menu'
-import { Modifier } from 'types/store/units'
-import { profileFormStore } from 'store/slices'
+import { Modifier } from 'types/modifierInstance'
 
 interface ItemControlsProps {
   modifier: Modifier
+  addModifiers: (modifiers: Omit<Modifier, 'id'>[]) => void
+  deleteModifier: (id: string) => void
 }
 
-const ItemControls = ({ modifier }: ItemControlsProps) => {
-  const dispatch = useDispatch()
-
+const ItemControls = ({ modifier, addModifiers, deleteModifier }: ItemControlsProps) => {
   const handleCopy = useCallback(() => {
-    dispatch(profileFormStore.actions.addModifier({ modifier }))
-  }, [dispatch, modifier])
+    addModifiers([modifier])
+  }, [addModifiers, modifier])
 
   const handleDelete = useCallback(() => {
-    dispatch(profileFormStore.actions.deleteModifier({ id: modifier.id }))
-  }, [dispatch, modifier.id])
+    deleteModifier(modifier.id)
+  }, [deleteModifier, modifier.id])
 
   return (
     <Menu
@@ -29,4 +27,4 @@ const ItemControls = ({ modifier }: ItemControlsProps) => {
   )
 }
 
-export default ItemControls
+export default React.memo(ItemControls)

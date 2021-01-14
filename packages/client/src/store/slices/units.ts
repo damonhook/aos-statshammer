@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import UnitsStore, { UnitParams, WeaponProfileParams } from 'types/store/units'
+import UnitsStore, { Unit, UnitParams, WeaponProfileParams } from 'types/store/units'
 import { nanoid } from 'nanoid'
 
 const INITIAL_STATE: UnitsStore = {
@@ -32,6 +32,14 @@ export default createSlice({
         id: nanoid(),
         weaponProfiles: unit.weaponProfiles.map(profile => ({ ...profile, id: nanoid() })),
       })
+    },
+    editUnit(state: UnitsStore, action: PayloadAction<{ id: string; newUnit: Omit<Unit, 'id'> }>) {
+      const { id, newUnit } = action.payload
+      const index = state.items.findIndex(u => u.id === id)
+      if (index !== -1) {
+        const unit = state.items[index]
+        state.items[index] = { ...newUnit, id: unit.id }
+      }
     },
     editUnitName(state: UnitsStore, action: PayloadAction<{ id: string; name: string }>) {
       const { id, name } = action.payload

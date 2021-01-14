@@ -7,6 +7,7 @@ import Store from 'types/store'
 import { getModifiers } from 'api/modifiers'
 import UnitsSkeleton from 'components/Skeletons/pages/UnitsSkeleton'
 import StatsSkeleton from 'components/Skeletons/pages/StatsSkeleton'
+import TargetSkeleton from 'components/Skeletons/pages/TargetSkeleton'
 
 function a11yProps(index: any) {
   return {
@@ -32,14 +33,30 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-const Units = lazy(() => import('features/Units'))
-const Stats = lazy(() => import('./stats/StatsTab'))
+// const Units = lazy(() => import('features/Units'))
+// const Target = lazy(() => import('features/Target'))
+// const Stats = lazy(() => import('features/Stats'))
+
+const Units = lazy(async () => {
+  await new Promise(r => setTimeout(r, 500))
+  return await import('features/Units')
+})
+
+const Target = lazy(async () => {
+  await new Promise(r => setTimeout(r, 2000))
+  return await import('features/Target')
+})
+
+const Stats = lazy(async () => {
+  await new Promise(r => setTimeout(r, 2000))
+  return await import('features/Stats')
+})
 
 const Home = () => {
   const [value, setValue] = useState(0)
   const classes = useStyles()
   const theme = useTheme()
-  const statsAsTab = useMediaQuery(theme.breakpoints.down('md'))
+  const statsAsTab = useMediaQuery(theme.breakpoints.down('sm'))
   const dispatch = useDispatch()
 
   const { modifiers, targetModifiers } = useSelector((state: Store) => state.modifiers)
@@ -65,7 +82,7 @@ const Home = () => {
   return (
     <div className={classes.root} style={{ padding: 4 }}>
       <Grid container spacing={1} style={{ flex: 1 }}>
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} md={6}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -92,8 +109,8 @@ const Home = () => {
                 </Suspense>
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
-                <Suspense fallback={<StatsSkeleton />}>
-                  <Stats />
+                <Suspense fallback={<TargetSkeleton />}>
+                  <Target />
                 </Suspense>
               </TabPanel>
               {!!statsAsTab && (

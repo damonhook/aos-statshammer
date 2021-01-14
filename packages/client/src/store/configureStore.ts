@@ -1,13 +1,27 @@
 import { combineReducers, configureStore as createStore, Middleware } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk'
+import Store, { FormsStore } from 'types/store'
 
-import { modifiersStore, comparisonStore, unitsStore, profileFormStore } from './slices'
+import {
+  modifiersStore,
+  comparisonStore,
+  unitsStore,
+  targetStore,
+  profileFormStore,
+  unitFormStore,
+} from './slices'
 
-export const appReducer = combineReducers({
+const formsReducer = combineReducers<FormsStore>({
+  unit: unitFormStore.reducer,
+  weaponProfile: profileFormStore.reducer,
+})
+
+export const appReducer = combineReducers<Store>({
   modifiers: modifiersStore.reducer,
   units: unitsStore.reducer,
+  target: targetStore.reducer,
   comparison: comparisonStore.reducer,
-  profileForm: profileFormStore.reducer,
+  forms: formsReducer,
 })
 
 const middleware: Middleware[] = [thunk]

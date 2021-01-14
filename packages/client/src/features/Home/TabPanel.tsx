@@ -19,7 +19,7 @@ const TabPanel = ({ index, value, children, ...other }: TabPanelProps) => {
       style={{ flexGrow: 1, maxWidth: '100vw' }}
       {...other}
     >
-      <Box p={1}>
+      <Box p={1} marginTop={1}>
         <Typography>{children}</Typography>
       </Box>
     </Typography>

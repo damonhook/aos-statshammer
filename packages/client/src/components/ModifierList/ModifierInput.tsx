@@ -7,8 +7,6 @@ import {
   NumberOption,
   RollOption,
 } from 'types/modifierDefinition'
-import { useDispatch } from 'react-redux'
-import { profileFormStore } from 'store/slices'
 import humps from 'humps'
 import { titleCase } from 'utils/stringUtils'
 
@@ -45,7 +43,8 @@ const ChoiceInput = ({ option, name, value, onChange }: InputComponentProps<Choi
 
 const NumberInput = ({ name, value, onChange }: InputComponentProps<NumberOption>) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value)
+    const value = event.target.value
+    onChange(value !== '' ? Number(value) : '')
   }
 
   return <TextField variant="outlined" label={name} value={value} onChange={handleChange} fullWidth />
@@ -53,7 +52,8 @@ const NumberInput = ({ name, value, onChange }: InputComponentProps<NumberOption
 
 const RollInput = ({ name, value, onChange }: InputComponentProps<RollOption>) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value)
+    const value = event.target.value
+    onChange(value !== '' ? Number(value) : '')
   }
 
   return <TextField variant="outlined" label={name} value={value} onChange={handleChange} fullWidth />
@@ -64,16 +64,15 @@ interface ModifierInputProps {
   modifierId: string
   name: string
   value: string | number | boolean
+  editModifier: (id: string, key: string, value: string | number | boolean) => void
 }
 
-const ModifierInput = ({ option, modifierId, name, value }: ModifierInputProps) => {
-  const dispatch = useDispatch()
-
+const ModifierInput = ({ option, modifierId, name, value, editModifier }: ModifierInputProps) => {
   const handleChange = useCallback(
     (newValue: string | number | boolean) => {
-      dispatch(profileFormStore.actions.editModifier({ id: modifierId, key: name, value: newValue }))
+      editModifier(modifierId, name, newValue)
     },
-    [dispatch, name, modifierId]
+    [editModifier, name, modifierId]
   )
 
   const PartialComponent = <T extends ModifierOption>(

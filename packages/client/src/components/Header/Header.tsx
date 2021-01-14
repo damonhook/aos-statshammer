@@ -24,7 +24,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }),
   },
   menuButton: {
-    marginRight: 36,
+    marginRight: theme.spacing(3),
+    [theme.breakpoints.down('sm')]: {
+      marginRight: theme.spacing(2),
+    },
   },
   hide: {
     display: 'none',
@@ -59,7 +62,7 @@ const Header = () => {
             <Menu />
           </IconButton>
           <Typography variant="h6" style={{ cursor: 'pointer' }}>
-            Title
+            AoS Statshammer
           </Typography>
         </Toolbar>
       </AppBar>

@@ -1,15 +1,16 @@
 import React, { useCallback } from 'react'
 import CollapsibleCard from 'components/CollapsibleCard'
-import { Box, TextField, Button, makeStyles, Theme } from '@material-ui/core'
-import WeaponProfileCard from './WeaponProfileCard'
-import { Add } from '@material-ui/icons'
+import { Box, makeStyles, Theme } from '@material-ui/core'
 import Menu from 'components/Menu'
 import { Unit } from 'types/store/units'
 import { useDispatch } from 'react-redux'
 import { unitsStore } from 'store/slices'
+import { openUnitDialog } from 'features/Forms/UnitDialog/UnitDialog'
+import { useHistory } from 'react-router-dom'
+import WeaponProfileInfo from 'components/WeaponProfileInfo'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  form: {
+  content: {
     display: 'flex',
     flexDirection: 'column',
   },
@@ -50,40 +51,20 @@ interface UnitCardProps {
 
 const UnitCard = ({ unit }: UnitCardProps) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
+  const history = useHistory()
 
-  const handleNameChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(unitsStore.actions.editUnitName({ id: unit.id, name: event.target.value }))
-    },
-    [dispatch, unit.id]
-  )
-
-  const handleAddProfile = useCallback(() => {
-    dispatch(unitsStore.actions.addWeaponProfile({ unitId: unit.id }))
-  }, [dispatch, unit.id])
+  const handleUnitClicked = () => {
+    openUnitDialog(history, unit.id)
+  }
 
   return (
     <CollapsibleCard title={unit.name} controls={<UnitListControls unit={unit} />}>
       <Box flex={1} style={{ maxWidth: '100%' }}>
-        <form noValidate autoComplete="off" className={classes.form}>
-          <TextField
-            id="name"
-            label="Unit Name"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={unit.name}
-            onChange={handleNameChange}
-            className={classes.nameField}
-          />
+        <div className={classes.content} onClick={handleUnitClicked}>
           {unit.weaponProfiles.map(profile => (
-            <WeaponProfileCard unitId={unit.id} profile={profile} key={profile.id} />
+            <WeaponProfileInfo profile={profile} key={profile.id} />
           ))}
-          <Button variant="contained" fullWidth startIcon={<Add />} onClick={handleAddProfile}>
-            Add Profile
-          </Button>
-        </form>
+        </div>
       </Box>
     </CollapsibleCard>
   )

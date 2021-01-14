@@ -1,8 +1,4 @@
-export interface Modifier {
-  id: string
-  type: string
-  options: { [name: string]: string | number | boolean }
-}
+import { Modifier } from '../modifierInstance'
 
 export interface WeaponProfile {
   id: string

@@ -5,8 +5,7 @@ import { Add, ImportExport } from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { unitsSelector } from 'store/selectors/unitsSelectors'
 import { unitsStore } from 'store/slices'
-import WeaponProfileDialog from '../WeaponProfileDialog'
-import { Route } from 'react-router-dom'
+import UnitDialog from 'features/Forms/UnitDialog'
 
 const useStyles = makeStyles((theme: Theme) => ({
   addButton: { marginRight: theme.spacing(1) },
@@ -26,7 +25,7 @@ const Units = () => {
       {units.map(unit => (
         <UnitCard key={unit.id} unit={unit} />
       ))}
-      <Box display="flex" marginTop={1}>
+      <Box display="flex">
         <Button
           variant="contained"
           fullWidth
@@ -41,7 +40,9 @@ const Units = () => {
           Import
         </Button>
       </Box>
-      <Route path="/units/:unitId/edit/:id" component={WeaponProfileDialog} />
+      {/* <Route path="/units/:unitId/edit/:id" component={WeaponProfileDialog} /> */}
+      <UnitDialog />
+      {/* <WeaponProfileDialog /> */}
     </div>
   )
 }

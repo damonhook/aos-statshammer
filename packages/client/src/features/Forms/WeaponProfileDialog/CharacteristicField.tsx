@@ -37,7 +37,7 @@ const CharacteristicField = ({ data, characteristic }: CharacteristicFieldProps)
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       let value: string | number = event.target.value
-      if (config.type === 'number') value = Number(value)
+      if (config.type === 'number') value = value !== '' ? Number(value) : ''
       dispatch(profileFormStore.actions.editData({ key: characteristic, value }))
     },
     [dispatch, config, characteristic]

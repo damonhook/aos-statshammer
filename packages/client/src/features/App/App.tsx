@@ -3,7 +3,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import Header from 'components/Header'
 import HomeSkeleton from 'components/Skeletons/pages/HomeSkeleton'
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
-import BottomNavigation from 'components/BottomNavigation/BottomNavigation'
+import BottomNavigation from 'components/BottomNavigation'
 
 // const Home = lazy(() => import('features/Home'))
 const Home = lazy(async () => {

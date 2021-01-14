@@ -3,12 +3,13 @@ import type Store from 'types/store'
 
 export const unitsSelector = (state: Store) => state.units.items
 
-// export const weaponProfileSelector = (store: Store, props: { unitId: string; id: string }) => {
-//   const unit = store.units.items.find(({ id }) => id === props.unitId)
-//   return unit ? unit.weaponProfiles.find(({ id }) => id === props.id) : undefined
-// }
+export const findUnitSelector = createSelector(
+  unitsSelector,
+  (_: any, props: { unitId?: string }) => props,
+  (units, { unitId }) => units.find(unit => unit.id === unitId)
+)
 
-export const weaponProfileSelector = createSelector(
+export const findWeaponProfileSelector = createSelector(
   unitsSelector,
   (_: any, props: { unitId?: string; id?: string }) => props,
   (units, { unitId, id }) => {
