@@ -7,13 +7,14 @@ interface ListItemLinkProps {
   to: string
   icon: React.ReactNode
   tooltip?: boolean
+  selected?: boolean
 }
 
-const ListItemLink = ({ primary, to, icon, tooltip = false }: ListItemLinkProps) => {
+const ListItemLink = ({ primary, to, icon, tooltip, selected }: ListItemLinkProps) => {
   return (
     <li>
       <Tooltip title={tooltip ? primary : ''} placement="right">
-        <ListItem button component={Link} to={to}>
+        <ListItem button component={Link} to={to} selected={selected}>
           <ListItemIcon>{icon}</ListItemIcon>
           <ListItemText primary={primary} />
         </ListItem>

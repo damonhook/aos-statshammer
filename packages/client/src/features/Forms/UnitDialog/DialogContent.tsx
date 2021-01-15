@@ -10,7 +10,7 @@ import {
 import { Add } from '@material-ui/icons'
 import WeaponProfileInfo from 'components/WeaponProfileInfo'
 import WeaponProfileDialog, { openProfileDialog } from 'features/Forms/WeaponProfileDialog'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { unitFormStore } from 'store/slices'
@@ -61,6 +61,13 @@ const DialogContent = ({ unitId, data }: DialogContentProps) => {
     openProfileDialog(history, unitId, id)
   }
 
+  const handleProfileEnabledChanged = useCallback(
+    (id: string) => (newValue: boolean) => {
+      dispatch(unitFormStore.actions.editWeaponProfile({ id, newProfile: { disabled: !newValue } }))
+    },
+    [dispatch]
+  )
+
   const handleAddProfile = useCallback(() => {
     dispatch(unitFormStore.actions.addWeaponProfile({ weaponProfile: DEFAULT_PROFILE }))
   }, [dispatch])
@@ -83,6 +90,7 @@ const DialogContent = ({ unitId, data }: DialogContentProps) => {
             profile={profile}
             key={profile.id}
             onClick={handleProfileClicked(profile.id)}
+            onEnabledChanged={handleProfileEnabledChanged(profile.id)}
             controls={<ProfileControls unitId={unitId} profile={profile} />}
           />
         ))}

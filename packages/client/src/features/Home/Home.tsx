@@ -29,28 +29,29 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexGrow: 1,
   },
   statsAside: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
 }))
 
-// const Units = lazy(() => import('features/Units'))
-// const Target = lazy(() => import('features/Target'))
-// const Stats = lazy(() => import('features/Stats'))
+const Units = lazy(() => import('features/Units'))
+const Target = lazy(() => import('features/Target'))
+const Stats = lazy(() => import('features/Stats'))
 
-const Units = lazy(async () => {
-  await new Promise(r => setTimeout(r, 500))
-  return await import('features/Units')
-})
+// const Units = lazy(async () => {
+//   await new Promise(r => setTimeout(r, 500))
+//   return await import('features/Units')
+// })
 
-const Target = lazy(async () => {
-  await new Promise(r => setTimeout(r, 2000))
-  return await import('features/Target')
-})
+// const Target = lazy(async () => {
+//   await new Promise(r => setTimeout(r, 2000))
+//   return await import('features/Target')
+// })
 
-const Stats = lazy(async () => {
-  await new Promise(r => setTimeout(r, 2000))
-  return await import('features/Stats')
-})
+// const Stats = lazy(async () => {
+//   await new Promise(r => setTimeout(r, 2000))
+//   return await import('features/Stats')
+// })
 
 const Home = () => {
   const [value, setValue] = useState(0)
@@ -102,6 +103,7 @@ const Home = () => {
               onChangeIndex={handleChangeIndex}
               style={{ height: '100%' }}
               containerStyle={{ height: '100%' }}
+              disableLazyLoading
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
                 <Suspense fallback={<UnitsSkeleton />}>
@@ -124,7 +126,7 @@ const Home = () => {
           </div>
         </Grid>
         {!statsAsTab && (
-          <Grid item xs>
+          <Grid item xs md={6}>
             <div className={classes.statsAside}>
               <Suspense fallback={<StatsSkeleton />}>
                 <Stats />

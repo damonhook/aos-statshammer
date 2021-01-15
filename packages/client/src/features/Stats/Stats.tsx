@@ -2,28 +2,43 @@ import { Skeleton } from '@material-ui/lab'
 import CollapsibleCard from 'components/CollapsibleCard'
 import GraphSkeleton from 'components/Skeletons/GraphSkeleton'
 import TableSkeleton from 'components/Skeletons/TableSkeleton'
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Store from 'types/store'
 import TargetSummary from './TargetSummary'
+import { getComparison } from 'api/comparison'
+import isEqual from 'lodash/isEqual'
+import ComparisonTable from './ComparisonTable'
+import { NameMapping, Unit } from 'types/store/units'
+import ComparisonGraphs from './ComparisonGraphs'
+
+function getNameMapping(units: Unit[]): NameMapping {
+  return units.reduce<NameMapping>((acc, { id, name }) => ({ ...acc, [id]: name }), {})
+}
 
 const Stats = () => {
-  const units = useSelector((state: Store) => state.units.items)
-  const target = useSelector((state: Store) => state.target)
+  const units = useSelector((state: Store) => state.units.items, isEqual)
+  const target = useSelector((state: Store) => state.target, isEqual)
+  const { results, pending } = useSelector((state: Store) => state.comparison)
+  const dispatch = useDispatch()
+  const nameMapping = useMemo(() => getNameMapping(units), [units])
 
   useEffect(() => {
-    console.log('Stats Call')
-  }, [units, target])
+    dispatch(getComparison({ units: units }))
+  }, [dispatch, units, target])
 
   return (
-    <div style={{ marginRight: '10px' }}>
+    <div>
       <TargetSummary />
       <CollapsibleCard title="Average Damage Table">
-        <TableSkeleton rows={7} columns={3} dense />
+        {pending ? (
+          <TableSkeleton rows={units.length + 1} columns={3} dense />
+        ) : (
+          <ComparisonTable nameMapping={nameMapping} results={results} />
+        )}
       </CollapsibleCard>
       <CollapsibleCard title="Graphs">
-        <Skeleton variant="rect" height={48} style={{ marginBottom: 10 }} />
-        <GraphSkeleton series={6} groups={2} includeTitle />
+        <ComparisonGraphs nameMapping={nameMapping} results={results} pending={pending} />
       </CollapsibleCard>
     </div>
   )

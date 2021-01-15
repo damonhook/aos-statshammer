@@ -6,7 +6,7 @@ import { Grid, makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/c
 
 const useStyles = makeStyles((theme: Theme) => ({
   spacer: {
-    marginBottom: theme.spacing(4),
+    marginBottom: theme.spacing(2),
   },
 }))
 
@@ -17,9 +17,9 @@ const HomeSkeleton = () => {
 
   return (
     <div>
-      <Skeleton variant="rect" height={48} style={{ marginBottom: 10 }}></Skeleton>
       <Grid container spacing={1} style={{ padding: 8 }}>
         <Grid item xs md={6}>
+          <Skeleton variant="rect" height={48} style={{ marginBottom: 10 }}></Skeleton>
           <UnitsSkeleton />
         </Grid>
         {!statsAsTab && (

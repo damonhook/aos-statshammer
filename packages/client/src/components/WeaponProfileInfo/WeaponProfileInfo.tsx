@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import {
   Box,
   Checkbox,
@@ -26,19 +26,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface WeaponProfileInfoProps {
   profile: WeaponProfile
   onClick?: () => void
+  onEnabledChanged?: (val: boolean) => void
   controls?: React.ReactNode
 }
 
-const WeaponProfileInfo = ({ profile, onClick, controls }: WeaponProfileInfoProps) => {
-  const [enabled, setEnabled] = useState(true)
+const WeaponProfileInfo = ({ profile, onClick, onEnabledChanged, controls }: WeaponProfileInfoProps) => {
   const classes = useStyles()
 
-  const name = undefined
-  const { numModels, attacks, toHit, toWound, rend, damage } = profile
+  const { name, numModels, attacks, toHit, toWound, rend, damage } = profile
 
-  const handleEnabledChange = (event: React.MouseEvent<{}>) => {
-    event.stopPropagation()
-    setEnabled(!enabled)
+  const handleEnabledChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (onEnabledChanged) onEnabledChanged(event.target.checked)
   }
 
   const handleProfileClicked = useCallback(() => {
@@ -58,17 +56,17 @@ const WeaponProfileInfo = ({ profile, onClick, controls }: WeaponProfileInfoProp
               }}
             >
               <Checkbox
-                checked={enabled}
-                onClick={handleEnabledChange}
+                checked={!profile.disabled}
+                onClick={event => event.stopPropagation()}
+                onChange={handleEnabledChange}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
-                // size="small"
+                disabled={!onEnabledChanged}
               />
               <Typography
                 variant="body1"
                 style={{ flex: 1, textAlign: 'left' }}
-                className={clsx({ [classes.disabled]: !enabled })}
+                className={clsx({ [classes.disabled]: profile.disabled })}
               >
-                {/* <strong>{name || 'Weapon Profile'}</strong> */}
                 {name || 'Weapon Profile'}
               </Typography>
               {controls}
@@ -77,22 +75,22 @@ const WeaponProfileInfo = ({ profile, onClick, controls }: WeaponProfileInfoProp
               <Table size="small" padding="none">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell disabled={!enabled}>Models</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>Attacks</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>To Hit</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>To Wound</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>Rend</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>Damage</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>Models</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>Attacks</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>To Hit</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>To Wound</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>Rend</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>Damage</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <StyledTableCell disabled={!enabled}>{numModels}</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>{attacks}</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>{toHit}+</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>{toWound}+</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>{rend ? `-${rend}` : 0}</StyledTableCell>
-                    <StyledTableCell disabled={!enabled}>{damage}</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>{numModels}</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>{attacks}</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>{toHit}+</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>{toWound}+</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>{rend ? `-${rend}` : 0}</StyledTableCell>
+                    <StyledTableCell disabled={profile.disabled}>{damage}</StyledTableCell>
                   </TableRow>
                 </TableBody>
               </Table>

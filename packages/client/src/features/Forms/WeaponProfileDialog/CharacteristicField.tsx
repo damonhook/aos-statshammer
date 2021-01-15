@@ -26,7 +26,7 @@ const fieldConfigLookup: FieldConfigLookup = {
 
 interface CharacteristicFieldProps {
   data: ProfileFormData
-  characteristic: keyof Omit<ProfileFormData, 'modifiers'>
+  characteristic: keyof Omit<ProfileFormData, 'modifiers' | 'name' | 'disabled'>
 }
 
 const CharacteristicField = ({ data, characteristic }: CharacteristicFieldProps) => {

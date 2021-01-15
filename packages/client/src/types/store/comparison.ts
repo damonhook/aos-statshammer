@@ -1,5 +1,12 @@
+import { Unit } from './units'
+
+export interface ComparisonRequest {
+  units: Unit[]
+}
+
 export interface ComparisonResult {
   save: number
+  displaySave: string
   values: { [id: string]: number }
 }
 

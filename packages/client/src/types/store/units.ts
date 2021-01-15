@@ -2,6 +2,7 @@ import { Modifier } from '../modifierInstance'
 
 export interface WeaponProfile {
   id: string
+  name?: string
   numModels: number
   attacks: number | string
   toHit: number
@@ -9,6 +10,7 @@ export interface WeaponProfile {
   rend: number
   damage: number | string
   modifiers: Modifier[]
+  disabled?: boolean
 }
 
 export interface Unit {
@@ -19,6 +21,7 @@ export interface Unit {
 
 export type WeaponProfileParams = Omit<WeaponProfile, 'id'>
 export type UnitParams = Omit<Unit, 'id' | 'weaponProfiles'> & { weaponProfiles: WeaponProfileParams[] }
+export type NameMapping = { [id: string]: string }
 
 interface UnitsStore {
   items: Unit[]

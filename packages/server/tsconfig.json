@@ -7,7 +7,7 @@
     "strict": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "target": "es5",
+    "target": "es6",
     "noEmit": true,
     "baseUrl": "src",
     "rootDir": "src",

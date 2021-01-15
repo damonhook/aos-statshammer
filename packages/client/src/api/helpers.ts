@@ -1,4 +1,5 @@
-import humps from 'humps'
+import humps, { HumpsProcessor, HumpsProcessorParameter } from 'humps'
+import { Unit } from 'types/store/units'
 
 const API_URL = '/api'
 
@@ -8,9 +9,12 @@ interface GetParams {
   extra?: Omit<RequestInit, 'method'>
 }
 
-interface PostParams extends GetParams {
-  body: object
+interface PostParams<T extends object> extends GetParams {
+  body: T
+  responseProcessor?: (request: T) => HumpsProcessor
 }
+
+// === Methods ===
 
 export const get = async <T extends object>({ path, query, extra }: GetParams): Promise<T> => {
   const request = await fetch(buildRequestUrl(path, query), {
@@ -20,14 +24,35 @@ export const get = async <T extends object>({ path, query, extra }: GetParams): 
   return parseResponse<T>(request)
 }
 
-export const post = async <T extends object>({ path, body, query, extra }: PostParams): Promise<T> => {
+export const post = async <R extends object, T extends object>({
+  path,
+  body,
+  query,
+  responseProcessor,
+  extra,
+}: PostParams<R>): Promise<T> => {
   const request = await fetch(buildRequestUrl(path, query), {
     method: 'POST',
     body: JSON.stringify(humps.decamelizeKeys(body)),
+    headers: {
+      'Content-Type': 'application/json',
+    },
     ...extra,
   })
-  return parseResponse<T>(request)
+  const processor = responseProcessor ? responseProcessor(body) : undefined
+  return parseResponse<T>(request, processor)
 }
+
+// === Processors ===
+
+export const unitIdResponseProcessor = <T extends { units: Unit[] }>(request: T) => {
+  const unitIds = request.units.map(u => u.id)
+  return (key: string, convert: HumpsProcessorParameter) => {
+    return unitIds.includes(key) ? key : convert(key)
+  }
+}
+
+// === Parsing ===
 
 const buildRequestUrl = (path: string, query?: { [name: string]: any }): string => {
   const cleanPath = path.replace(/^\//, '')
@@ -36,10 +61,13 @@ const buildRequestUrl = (path: string, query?: { [name: string]: any }): string 
   return params ? `${url}?${params}` : url
 }
 
-const parseResponse = async <T extends object>(response: Response, camelize: boolean = true): Promise<T> => {
+const parseResponse = async <T extends object>(
+  response: Response,
+  processor?: HumpsProcessor
+): Promise<T> => {
   if (response.ok) {
     const json = await response.json()
-    return camelize ? humps.camelizeKeys(json) : json
+    return humps.camelizeKeys(json, processor) as T
   }
   let err = 'An unexpected error occured'
   if (response.headers.get('content-type')?.includes('application/json')) {

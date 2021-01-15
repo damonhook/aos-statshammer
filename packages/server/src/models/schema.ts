@@ -29,6 +29,7 @@ export interface CompareResponse {
 
 export interface AverageDamageResult {
   save: number
+  displaySave: string
   values: { string: number }
 }
 
@@ -46,6 +47,7 @@ export interface SimulationsResponse {
 
 export interface SumulationResult {
   save: number
+  displaySave: string
   discrete: { string: number }[]
   cumulative: { string: number }[]
   metrics: { string: Metric }

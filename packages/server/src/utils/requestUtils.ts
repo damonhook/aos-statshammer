@@ -1,10 +1,19 @@
-import humps from 'humps'
+import humps, { HumpsProcessor } from 'humps'
+
+interface CaseConversionOptions<T> {
+  requestProcessor?: HumpsProcessor
+  responseProcessor?: (request: T) => HumpsProcessor
+}
 
 export function withCaseConversion<T extends object, R extends object>(
   request: object,
-  fetchResponse: (arg0: T) => R
+  fetchResponse: (arg0: T) => R,
+  options?: CaseConversionOptions<T>
 ): object {
-  const requestData = humps.camelizeKeys(request) as T
+  const requestData = humps.camelizeKeys(request, options?.requestProcessor) as T
   const responseData = fetchResponse(requestData)
-  return humps.decamelizeKeys(responseData)
+  return humps.decamelizeKeys(
+    responseData,
+    options?.responseProcessor ? options.responseProcessor(requestData) : undefined
+  )
 }

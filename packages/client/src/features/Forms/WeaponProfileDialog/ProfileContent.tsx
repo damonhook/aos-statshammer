@@ -33,6 +33,10 @@ const ProfileContent = ({ data }: ProfileContentProps) => {
   const classes = useStyles()
   const theme = useTheme()
 
+  const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(profileFormStore.actions.editData({ key: 'name', value: event.target.value }))
+  }
+
   const handleAddModifiers = useCallback(
     (newModifiers: Omit<Modifier, 'id'>[]) => {
       dispatch(profileFormStore.actions.addModifiers({ modifiers: newModifiers }))
@@ -56,7 +60,14 @@ const ProfileContent = ({ data }: ProfileContentProps) => {
 
   return (
     <DialogContent classes={{ root: classes.content }}>
-      <TextField label="Profile Name" fullWidth variant="outlined" className={classes.nameField} />
+      <TextField
+        label="Profile Name"
+        fullWidth
+        variant="outlined"
+        className={classes.nameField}
+        value={data.name}
+        onChange={handleChangeName}
+      />
       <div style={{ paddingBottom: theme.spacing(2) }}>
         <Grid container spacing={2} style={{ paddingBottom: theme.spacing(2) }} alignItems="flex-start">
           <Grid container item xs={12} md={2} spacing={2}>

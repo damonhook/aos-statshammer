@@ -32,7 +32,8 @@ export default class AosController {
         }, 0)
         return { ...acc, [unit.id]: Math.round(value * 1000) / 1000 }
       }, {} as { string: number })
-      results.push({ save: target.save, values })
+      const displaySave = target.save && target.save <= 6 ? `${target.save}+` : `-`
+      results.push({ save: target.save, displaySave, values })
     })
     return {
       units: units.reduce((acc, { id, name }) => ({ ...acc, [id]: name }), {}),

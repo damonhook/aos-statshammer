@@ -9,6 +9,8 @@ import AosController from './controller'
 import bodyParser from 'body-parser'
 import type { CompareRequest, ModifiersRequest } from 'models/schema'
 import { withCaseConversion } from 'utils/requestUtils'
+import { UnitParams } from 'models/unit'
+import { HumpsProcessorParameter } from 'humps'
 
 // @ts-ignore
 const app = express()
@@ -16,6 +18,13 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 const controller = new AosController()
+
+const unitIdResponseProcessor = <T extends { units: UnitParams[] }>(request: T) => {
+  const unitIds = request.units.map(u => u.id)
+  return (key: string, convert: HumpsProcessorParameter) => {
+    return unitIds.includes(key) ? key : convert(key)
+  }
+}
 
 initialize({
   app,
@@ -29,7 +38,11 @@ initialize({
       res.send(withCaseConversion(req.body, (data: ModifiersRequest) => controller.getModifiers(data)))
     },
     getCompare: function (req, res) {
-      res.send(withCaseConversion(req.body, (data: CompareRequest) => controller.compareUnits(data)))
+      res.send(
+        withCaseConversion(req.body, (data: CompareRequest) => controller.compareUnits(data), {
+          responseProcessor: unitIdResponseProcessor,
+        })
+      )
     },
   },
 })

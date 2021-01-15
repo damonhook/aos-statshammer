@@ -43,7 +43,6 @@ const WeaponProfileDialog = () => {
   }, [open, unit, dispatch])
 
   const saveForm = useCallback(() => {
-    console.log(data)
     if (data) dispatch(unitsStore.actions.editUnit({ id: unitId, newUnit: data }))
     handleBack()
   }, [dispatch, unitId, data, handleBack])

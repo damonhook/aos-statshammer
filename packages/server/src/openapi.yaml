@@ -103,6 +103,7 @@ components:
       properties:
         id:
           type: string
+          example: unit-1
         name:
           type: string
           example: Unit 1

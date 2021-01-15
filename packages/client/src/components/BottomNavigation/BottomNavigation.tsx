@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
   BottomNavigation as MuiBottomNavigation,
   BottomNavigationAction,
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { useIsMobile } from 'hooks'
+import { useCurrentRoute, useIsMobile } from 'hooks'
+import { PageRoute, PAGE_ROUTES } from 'utils/routes'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) => ({
   bottomNav: {
@@ -16,26 +18,44 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
+interface NavItemConfig {
+  label: string
+  route: PageRoute
+  icon?: React.ReactNode
+}
+
+const navConfig: NavItemConfig[] = [
+  { label: 'Home', route: PAGE_ROUTES.HOME },
+  { label: 'Stats', route: PAGE_ROUTES.STATS },
+  { label: 'Simulations', route: PAGE_ROUTES.SIMULATIONS },
+  { label: 'About', route: PAGE_ROUTES.ABOUT },
+]
+
 const BottomNavigation = () => {
-  const [value, setValue] = useState(0)
   const classes = useStyles()
   const isMobile = useIsMobile()
+  const history = useHistory()
+  const route = useCurrentRoute()
+
+  const value = useMemo(() => {
+    let index = navConfig.findIndex(n => n.route === route)
+    return index !== -1 ? index : 0
+  }, [route])
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<{}>, newIndex: number) => {
+      history.push(navConfig[newIndex].route)
+    },
+    [history]
+  )
 
   return isMobile ? (
     <>
       <div style={{ paddingTop: 56 }}></div>
-      <MuiBottomNavigation
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue)
-        }}
-        className={classes.bottomNav}
-        showLabels
-      >
-        <BottomNavigationAction label="Home" />
-        <BottomNavigationAction label="Stats" />
-        <BottomNavigationAction label="Simulations" />
-        <BottomNavigationAction label="About" />
+      <MuiBottomNavigation value={value} onChange={handleChange} className={classes.bottomNav} showLabels>
+        {navConfig.map(({ label }) => (
+          <BottomNavigationAction label={label} key={label} />
+        ))}
       </MuiBottomNavigation>
     </>
   ) : null

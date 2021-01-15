@@ -1,4 +1,4 @@
-import type { Characteristic as C } from 'common'
+import { Characteristic as C } from 'common'
 
 import BaseModifier from './BaseModifier'
 import Bonus from './Bonus'
@@ -48,14 +48,15 @@ export class ModifierLookup {
     modifierClass: new (data: any) => T
   ): ModifierList<T> {
     const target_id = modifierClass.name.toLowerCase()
-    return data.reduce((acc, d) => {
+    const list = new ModifierList<T>()
+    data.forEach(d => {
       if (d instanceof BaseModifier) {
-        if (d instanceof modifierClass) acc.push(d)
+        if (d instanceof modifierClass) list.push(d)
       } else if (d?.type.toLowerCase().replace(/_/g, '') === target_id && 'options' in d) {
-        acc.push(new modifierClass(d.options))
+        list.push(new modifierClass(d.options))
       }
-      return acc
-    }, new ModifierList<T>())
+    })
+    return list
   }
 
   public items(): BaseModifier[] {
