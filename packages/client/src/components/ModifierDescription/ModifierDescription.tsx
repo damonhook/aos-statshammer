@@ -4,7 +4,7 @@ import { ModifierDefinition } from 'types/modifierDefinition'
 import { Modifier } from 'types/modifierInstance'
 import formatUnicorn from 'format-unicorn/safe'
 import humps from 'humps'
-import { startWithUppercase } from 'utils/stringUtils'
+import { startWithUppercase } from 'utils/helpers'
 
 function formatPlaceholder(key: string, simple: boolean) {
   return simple ? `${key}` : `<i>{${key}}</i>`

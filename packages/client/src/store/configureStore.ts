@@ -1,6 +1,7 @@
 import { combineReducers, configureStore as createStore, Middleware } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk'
 import Store, { FormsStore } from 'types/store'
+import customMiddleware from './middleware'
 
 import {
   modifiersStore,
@@ -24,7 +25,7 @@ export const appReducer = combineReducers<Store>({
   forms: formsReducer,
 })
 
-const middleware: Middleware[] = [thunk]
+const middleware: Middleware[] = [thunk, ...customMiddleware]
 
 const configureStore = () => {
   const store = createStore({

@@ -1,7 +1,7 @@
 import { Box, Checkbox, makeStyles, Theme } from '@material-ui/core'
 import React, { useState } from 'react'
 import { ModifierDefinition } from 'types/modifierDefinition'
-import { Modifier } from 'types/modifierInstance'
+import { Modifier, ModifierFieldErrors } from 'types/modifierInstance'
 import CollapsibleCard from 'components/CollapsibleCard'
 import ModifierInput from './ModifierInput'
 import ItemControls from './ItemControls'
@@ -19,6 +19,7 @@ interface ModifierItemProps {
   addModifiers: (modifiers: Omit<Modifier, 'id'>[]) => void
   editModifier: (id: string, key: string, value: string | number | boolean) => void
   deleteModifier: (id: string) => void
+  errors?: ModifierFieldErrors
 }
 
 const ModifierItem = ({
@@ -27,6 +28,7 @@ const ModifierItem = ({
   addModifiers,
   editModifier,
   deleteModifier,
+  errors,
 }: ModifierItemProps) => {
   const classes = useStyles()
   const [enabled, setEnabled] = useState(true)
@@ -56,6 +58,7 @@ const ModifierItem = ({
               value={modifier.options[key]}
               key={key}
               editModifier={editModifier}
+              error={errors?.[key]}
             />
           ))}
         </Box>

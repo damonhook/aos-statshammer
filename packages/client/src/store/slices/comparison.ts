@@ -13,11 +13,13 @@ export default createSlice({
     comparisonPending(state: ComparisonStore) {
       state.pending = true
     },
+
     comparisonSucess(state: ComparisonStore, action: PayloadAction<{ results: ComparisonResult[] }>) {
       const { results } = action.payload
       state.results = results
       state.pending = false
     },
+
     comparisonError(state: ComparisonStore) {
       Object.assign(state, INITIAL_STATE)
     },

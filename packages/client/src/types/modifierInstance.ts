@@ -4,3 +4,10 @@ export interface Modifier {
   options: { [name: string]: string | number | boolean }
   disabled?: boolean
 }
+
+export type ModifierFieldErrors = {
+  [field: string]: string | undefined
+}
+export type ModifierErrors = {
+  [id: string]: ModifierFieldErrors | undefined
+}

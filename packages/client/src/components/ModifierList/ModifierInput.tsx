@@ -1,63 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
-import { Box, Checkbox, FormControlLabel, MenuItem, TextField } from '@material-ui/core'
-import {
-  BooleanOption,
-  ChoiceOption,
-  ModifierOption,
-  NumberOption,
-  RollOption,
-} from 'types/modifierDefinition'
+import { Box } from '@material-ui/core'
+import { ModifierOption } from 'types/modifierDefinition'
 import humps from 'humps'
-import { titleCase } from 'utils/stringUtils'
-
-interface InputComponentProps<T extends ModifierOption> {
-  option: T
-  name: string
-  value: string | number | boolean
-  onChange: (newValue: string | number | boolean) => void
-}
-
-const BooleanInput = ({ name, value, onChange }: InputComponentProps<BooleanOption>) => {
-  const handleChange = (event: React.ChangeEvent<{}>) => {
-    onChange(!value)
-  }
-
-  return <FormControlLabel label={name} control={<Checkbox checked={!!value} onChange={handleChange} />} />
-}
-
-const ChoiceInput = ({ option, name, value, onChange }: InputComponentProps<ChoiceOption>) => {
-  const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
-    onChange(event.target.value)
-  }
-
-  return (
-    <TextField variant="outlined" label={name} value={value ?? ''} onChange={handleChange} fullWidth select>
-      {option.items.map(i => (
-        <MenuItem key={i} value={i}>
-          {titleCase(i.replace(/_/g, ' '))}
-        </MenuItem>
-      ))}
-    </TextField>
-  )
-}
-
-const NumberInput = ({ name, value, onChange }: InputComponentProps<NumberOption>) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
-    onChange(value !== '' ? Number(value) : '')
-  }
-
-  return <TextField variant="outlined" label={name} value={value} onChange={handleChange} fullWidth />
-}
-
-const RollInput = ({ name, value, onChange }: InputComponentProps<RollOption>) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
-    onChange(value !== '' ? Number(value) : '')
-  }
-
-  return <TextField variant="outlined" label={name} value={value} onChange={handleChange} fullWidth />
-}
+import { BooleanInput, ChoiceInput, RollInput, NumberInput, InputComponentProps } from './inputs'
 
 interface ModifierInputProps {
   option: ModifierOption
@@ -65,22 +10,25 @@ interface ModifierInputProps {
   name: string
   value: string | number | boolean
   editModifier: (id: string, key: string, value: string | number | boolean) => void
+  error?: string
 }
 
-const ModifierInput = ({ option, modifierId, name, value, editModifier }: ModifierInputProps) => {
+function PartialComponent<T extends ModifierOption>(
+  Component: (props: InputComponentProps<T>) => React.ReactElement,
+  option: T
+) {
+  return ({ ...props }: Omit<InputComponentProps<T>, 'option'>) => (
+    <Component option={option} {...props}></Component>
+  )
+}
+
+const ModifierInput = ({ option, modifierId, name, value, editModifier, error }: ModifierInputProps) => {
   const handleChange = useCallback(
     (newValue: string | number | boolean) => {
       editModifier(modifierId, name, newValue)
     },
     [editModifier, name, modifierId]
   )
-
-  const PartialComponent = <T extends ModifierOption>(
-    Component: (props: InputComponentProps<T>) => React.ReactElement,
-    option: any
-  ) => ({ ...props }: Omit<InputComponentProps<T>, 'option'>) => {
-    return <Component option={option} {...props}></Component>
-  }
 
   const InputComponent = useMemo(() => {
     switch (option.type) {
@@ -101,6 +49,7 @@ const ModifierInput = ({ option, modifierId, name, value, editModifier }: Modifi
         name: humps.decamelize(name, { separator: ' ' }),
         value,
         onChange: handleChange,
+        error,
       })}
     </Box>
   )

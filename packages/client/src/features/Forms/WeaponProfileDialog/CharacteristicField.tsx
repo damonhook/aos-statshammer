@@ -2,7 +2,7 @@ import { TextField, Grid, InputAdornment } from '@material-ui/core'
 import React, { useCallback, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { profileFormStore } from 'store/slices'
-import { ProfileFormData } from 'types/store/profileForm'
+import { ProfileFormCharacteristicErrors, ProfileFormData, ProfileFormErrors } from 'types/store/profileForm'
 
 interface FieldConfig {
   label: string
@@ -27,12 +27,14 @@ const fieldConfigLookup: FieldConfigLookup = {
 interface CharacteristicFieldProps {
   data: ProfileFormData
   characteristic: keyof Omit<ProfileFormData, 'modifiers' | 'name' | 'disabled'>
+  errors?: ProfileFormCharacteristicErrors
 }
 
-const CharacteristicField = ({ data, characteristic }: CharacteristicFieldProps) => {
+const CharacteristicField = ({ data, characteristic, errors }: CharacteristicFieldProps) => {
   const dispatch = useDispatch()
 
   const config = useMemo(() => fieldConfigLookup[characteristic], [characteristic])
+  const error = useMemo(() => (errors ? errors[characteristic] : undefined), [characteristic, errors])
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +63,8 @@ const CharacteristicField = ({ data, characteristic }: CharacteristicFieldProps)
             <InputAdornment position="end">{config.endAdornment}</InputAdornment>
           ),
         }}
+        error={!!error}
+        helperText={error}
       />
     </Grid>
   )

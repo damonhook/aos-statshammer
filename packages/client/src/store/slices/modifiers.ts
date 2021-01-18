@@ -14,12 +14,14 @@ export default createSlice({
     modifiersPending(state: ModifiersStore) {
       state.pending = true
     },
+
     modifiersSucess(state: ModifiersStore, action: PayloadAction<ModifiersResponse>) {
       const { modifiers, targetModifiers } = action.payload
       state.modifiers = modifiers
       state.targetModifiers = targetModifiers
       state.pending = false
     },
+
     modifiersError(state: ModifiersStore) {
       Object.assign(state, INITIAL_STATE)
     },

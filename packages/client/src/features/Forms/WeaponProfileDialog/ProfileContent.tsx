@@ -26,7 +26,7 @@ interface ProfileContentProps {
   errors?: ProfileFormErrors
 }
 
-const ProfileContent = ({ data }: ProfileContentProps) => {
+const ProfileContent = ({ data, errors }: ProfileContentProps) => {
   const modifiers = useSelector((state: Store) => state.modifiers.modifiers)
 
   const dispatch = useDispatch()
@@ -65,21 +65,21 @@ const ProfileContent = ({ data }: ProfileContentProps) => {
         fullWidth
         variant="outlined"
         className={classes.nameField}
-        value={data.name}
+        value={data.name ?? ''}
         onChange={handleChangeName}
       />
       <div style={{ paddingBottom: theme.spacing(2) }}>
         <Grid container spacing={2} style={{ paddingBottom: theme.spacing(2) }} alignItems="flex-start">
-          <Grid container item xs={12} md={2} spacing={2}>
+          <Grid container item xs={12} md={3} spacing={2}>
             <Grid item xs={12} spacing={0}>
               <Typography>Characteristics:</Typography>
             </Grid>
-            <CharacteristicField data={data} characteristic="numModels" />
-            <CharacteristicField data={data} characteristic="attacks" />
-            <CharacteristicField data={data} characteristic="toHit" />
-            <CharacteristicField data={data} characteristic="toWound" />
-            <CharacteristicField data={data} characteristic="rend" />
-            <CharacteristicField data={data} characteristic="damage" />
+            <CharacteristicField data={data} errors={errors} characteristic="numModels" />
+            <CharacteristicField data={data} errors={errors} characteristic="attacks" />
+            <CharacteristicField data={data} errors={errors} characteristic="toHit" />
+            <CharacteristicField data={data} errors={errors} characteristic="toWound" />
+            <CharacteristicField data={data} errors={errors} characteristic="rend" />
+            <CharacteristicField data={data} errors={errors} characteristic="damage" />
           </Grid>
           <Grid item xs>
             <Typography style={{ paddingBottom: theme.spacing(2) }}>Modifiers:</Typography>
@@ -89,6 +89,7 @@ const ProfileContent = ({ data }: ProfileContentProps) => {
               addModifiers={handleAddModifiers}
               editModifier={handleEditModifier}
               deleteModifier={handleDeleteModifier}
+              errors={errors?.modifiers}
             />
             <ModifierSelector
               modifiers={modifiers}

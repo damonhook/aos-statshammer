@@ -15,10 +15,12 @@ export default createSlice({
       const { modifier } = action.payload
       state.modifiers.push({ ...modifier, id: nanoid() })
     },
+
     addModifiers(state: TargetStore, action: PayloadAction<{ modifiers: Omit<Modifier, 'id'>[] }>) {
       const { modifiers } = action.payload
       state.modifiers.push(...modifiers.map(m => ({ ...m, id: nanoid() })))
     },
+
     editModifier(
       state: TargetStore,
       action: PayloadAction<{ id: string; key: string; value: string | number | boolean }>
@@ -27,6 +29,7 @@ export default createSlice({
       const mod = state.modifiers.find(m => m.id === id)
       if (mod) mod.options[key] = value
     },
+
     deleteModifier(state: TargetStore, action: PayloadAction<{ id: string }>) {
       const { id } = action.payload
       state.modifiers = state.modifiers.filter(m => m.id !== id)

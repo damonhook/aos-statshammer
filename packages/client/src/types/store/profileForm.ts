@@ -1,16 +1,13 @@
+import { ModifierErrors } from 'types/modifierInstance'
 import { WeaponProfileParams } from './units'
 
 export type ProfileFormData = WeaponProfileParams
 
-type CharacteristicErrors = {
-  [key in keyof Omit<ProfileFormData, 'modifiers'>]?: string
+export type ProfileFormCharacteristicErrors = {
+  [key in keyof Omit<ProfileFormData, 'modifiers' | 'disabled'>]?: string
 }
 
-type ModifierErrors = {
-  modifiers?: { [field: string]: string }
-}
-
-export type ProfileFormErrors = Partial<CharacteristicErrors & ModifierErrors>
+export type ProfileFormErrors = Partial<ProfileFormCharacteristicErrors & { modifiers: ModifierErrors }>
 
 interface ProfileFormStore {
   data?: ProfileFormData

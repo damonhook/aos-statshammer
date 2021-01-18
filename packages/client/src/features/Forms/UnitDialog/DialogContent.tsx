@@ -14,7 +14,7 @@ import React, { useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { unitFormStore } from 'store/slices'
-import { UnitFormData } from 'types/store/unitForm'
+import { UnitFormData, UnitFormErrors } from 'types/store/unitForm'
 import { WeaponProfileParams } from 'types/store/units'
 import ProfileControls from './ProfileControls'
 
@@ -42,9 +42,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface DialogContentProps {
   unitId: string
   data: UnitFormData
+  errors?: UnitFormErrors
 }
 
-const DialogContent = ({ unitId, data }: DialogContentProps) => {
+const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const theme = useTheme()
@@ -82,6 +83,8 @@ const DialogContent = ({ unitId, data }: DialogContentProps) => {
           className={classes.nameField}
           value={data.name}
           onChange={handleNameChange}
+          error={!!errors?.name}
+          helperText={errors?.name}
         />
         <Typography>Weapon Profiles:</Typography>
         <div style={{ paddingBottom: theme.spacing(1) }} />

@@ -21,7 +21,6 @@ const WeaponProfileDialog = () => {
   const location = useLocation<{ modal: boolean }>()
   const history = useHistory()
 
-  // // const { unitId, id } = useParams<{ unitId: string; id: string }>()
   const open = !!match
   const { unitId = '' } = match?.params ?? {}
   const unit = useSelector((state: Store) => findUnitSelector(state, { unitId }))
@@ -51,7 +50,7 @@ const WeaponProfileDialog = () => {
     <SideSheet open={open} aria-labelledby="unit-dialog-title" keepMounted>
       <DialogAppBar id="unit-dialog-title" title="Edit Unit" onClose={handleBack} />
       <div style={{ marginBottom: 10 }}></div>
-      {data && <DialogContent unitId={unitId} data={data} />}
+      {data && <DialogContent unitId={unitId} data={data} errors={errors} />}
       <DialogActions>
         <Button onClick={handleBack}>Cancel</Button>
         <Button onClick={saveForm} disabled={!!errors}>

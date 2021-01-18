@@ -33,6 +33,7 @@ export default createSlice({
         weaponProfiles: unit.weaponProfiles.map(profile => ({ ...profile, id: nanoid() })),
       })
     },
+
     editUnit(state: UnitsStore, action: PayloadAction<{ id: string; newUnit: Omit<Unit, 'id'> }>) {
       const { id, newUnit } = action.payload
       const index = state.items.findIndex(u => u.id === id)
@@ -41,15 +42,18 @@ export default createSlice({
         state.items[index] = { ...newUnit, id: unit.id }
       }
     },
+
     editUnitName(state: UnitsStore, action: PayloadAction<{ id: string; name: string }>) {
       const { id, name } = action.payload
       const unit = state.items.find(u => u.id === id)
       if (unit) unit.name = name
     },
+
     deleteUnit(state: UnitsStore, action: PayloadAction<{ id: string }>) {
       const { id } = action.payload
       state.items = state.items.filter(u => u.id !== id)
     },
+
     addWeaponProfile(
       state: UnitsStore,
       action: PayloadAction<{ unitId: string; weaponProfile?: WeaponProfileParams }>
@@ -61,6 +65,7 @@ export default createSlice({
         unit.weaponProfiles.push({ ...weaponProfile, id: nanoid() })
       }
     },
+
     editWeaponProfile(
       state: UnitsStore,
       action: PayloadAction<{ unitId: string; id: string; newProfile: Partial<WeaponProfileParams> }>
@@ -73,6 +78,7 @@ export default createSlice({
         unit.weaponProfiles[index] = { ...weaponProfile, ...newProfile, id: weaponProfile.id }
       }
     },
+
     deleteWeaponProfile(state: UnitsStore, action: PayloadAction<{ unitId: string; id: string }>) {
       const { unitId, id } = action.payload
       const unit = state.items.find(u => u.id === unitId)

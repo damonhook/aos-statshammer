@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from 'nanoid'
-import UnitFormStore, { UnitFormData } from 'types/store/unitForm'
+import UnitFormStore, { UnitFormData, UnitFormErrors } from 'types/store/unitForm'
 import { WeaponProfileParams } from 'types/store/units'
+import { removeEmpty } from 'utils/helpers'
 
 const INITIAL_STATE: UnitFormStore = {
   data: undefined,
@@ -17,6 +18,7 @@ export default createSlice({
       state.data = unit ? { ...unit } : undefined
       state.errors = undefined
     },
+
     editData<T extends keyof UnitFormData>(
       state: UnitFormStore,
       action: PayloadAction<{ key: T; value: UnitFormData[T] }>
@@ -24,10 +26,12 @@ export default createSlice({
       const { key, value } = action.payload
       if (state.data) state.data[key] = value
     },
+
     addWeaponProfile(state: UnitFormStore, action: PayloadAction<{ weaponProfile: WeaponProfileParams }>) {
       const { weaponProfile } = action.payload
       if (state.data) state.data.weaponProfiles.push({ ...weaponProfile, id: nanoid() })
     },
+
     addWeaponProfiles(
       state: UnitFormStore,
       action: PayloadAction<{ weaponProfiles: WeaponProfileParams[] }>
@@ -35,6 +39,7 @@ export default createSlice({
       const { weaponProfiles } = action.payload
       if (state.data) state.data.weaponProfiles.push(...weaponProfiles.map(p => ({ ...p, id: nanoid() })))
     },
+
     editWeaponProfile(
       state: UnitFormStore,
       action: PayloadAction<{ id: string; newProfile: Partial<WeaponProfileParams> }>
@@ -48,14 +53,28 @@ export default createSlice({
         }
       }
     },
+
     deleteWeaponProfile(state: UnitFormStore, action: PayloadAction<{ id: string }>) {
       const { id } = action.payload
       if (state.data) {
         state.data.weaponProfiles = state.data.weaponProfiles.filter(profile => profile.id !== id)
       }
     },
+
     clearForm(state: UnitFormStore) {
       state.data = undefined
+      state.errors = undefined
+    },
+
+    setErrors(state: UnitFormStore, action: PayloadAction<{ errors?: Partial<UnitFormErrors> }>) {
+      const { errors } = action.payload
+      if (errors) {
+        const cleaned = removeEmpty({ ...state.errors, ...errors })
+        if (cleaned && Object.keys(cleaned).length) {
+          state.errors = cleaned
+          return
+        }
+      }
       state.errors = undefined
     },
   },
