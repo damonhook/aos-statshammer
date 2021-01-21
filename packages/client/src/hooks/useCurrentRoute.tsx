@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useLocation, matchPath } from 'react-router-dom'
-import { PageRoute, PAGE_ROUTES } from 'utils/routes'
+import { matchPath,useLocation } from 'react-router-dom'
+import { PAGE_ROUTES,PageRoute } from 'utils/routes'
 
 const useCurrentRoute = () => {
   const [route, setRoute] = useState<PageRoute>(PAGE_ROUTES.HOME)

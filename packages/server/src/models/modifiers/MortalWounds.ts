@@ -13,7 +13,7 @@ interface MortalWoundsParams {
 
 export default class MortalWounds extends BaseModifier {
   static displayName = 'Mortal Wounds'
-  static description = `{unmodified} rolls of {on}+ for {characteristic} result
+  static description = `{unmodified} rolls of {on}+ {characteristic} result
   in {mortalWounds} mortal wounds {inAddition}`
   static availableCharacteristics = [C.TO_HIT, C.TO_WOUND]
 

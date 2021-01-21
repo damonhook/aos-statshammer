@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from 'nanoid'
-import ProfileFormStore, { ProfileFormData, ProfileFormErrors } from 'types/store/profileForm'
 import { Modifier } from 'types/modifierInstance'
+import ProfileFormStore, { ProfileFormData } from 'types/store/forms/profileForm'
+import { ProfileErrors } from 'types/validation'
 import { removeEmpty } from 'utils/helpers'
 
 const INITIAL_STATE: ProfileFormStore = {
@@ -37,7 +38,15 @@ export default createSlice({
       if (state.data) state.data.modifiers.push(...modifiers.map(m => ({ ...m, id: nanoid() })))
     },
 
-    editModifier(
+    setModifierDisabled(state: ProfileFormStore, action: PayloadAction<{ id: string; disabled: boolean }>) {
+      const { id, disabled } = action.payload
+      if (state.data) {
+        const mod = state.data.modifiers.find(m => m.id === id)
+        if (mod) mod.disabled = disabled
+      }
+    },
+
+    editModifierOption(
       state: ProfileFormStore,
       action: PayloadAction<{ id: string; key: string; value: string | number | boolean }>
     ) {
@@ -60,7 +69,7 @@ export default createSlice({
       state.errors = undefined
     },
 
-    setErrors(state: ProfileFormStore, action: PayloadAction<{ errors?: Partial<ProfileFormErrors> }>) {
+    setErrors(state: ProfileFormStore, action: PayloadAction<{ errors?: Partial<ProfileErrors> }>) {
       const { errors } = action.payload
       if (errors) {
         const cleaned = removeEmpty({ ...state.errors, ...errors })

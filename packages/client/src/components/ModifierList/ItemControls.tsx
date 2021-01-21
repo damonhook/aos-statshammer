@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
 import Menu from 'components/Menu'
+import React, { useCallback } from 'react'
 import { Modifier } from 'types/modifierInstance'
 
 interface ItemControlsProps {

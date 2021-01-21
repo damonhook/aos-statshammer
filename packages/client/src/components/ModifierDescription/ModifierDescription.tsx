@@ -1,9 +1,9 @@
 import { Typography, TypographyProps } from '@material-ui/core'
+import formatUnicorn from 'format-unicorn/safe'
+import humps from 'humps'
 import React, { useMemo } from 'react'
 import { ModifierDefinition } from 'types/modifierDefinition'
 import { Modifier } from 'types/modifierInstance'
-import formatUnicorn from 'format-unicorn/safe'
-import humps from 'humps'
 import { startWithUppercase } from 'utils/helpers'
 
 function formatPlaceholder(key: string, simple: boolean) {
@@ -42,8 +42,7 @@ const ModifierDescription = ({ definition, modifier, simple, ...props }: Modifie
     let desc = formatUnicorn(definition.description, formatOptions(definition, modifier.options, !!simple))
       .trim()
       .replace(/\s+/g, ' ')
-      .replace(/_/g, ' ')
-    desc = humps.decamelize(desc, { separator: ' ' })
+    desc = humps.decamelize(desc, { separator: ' ' }).replace(/_/g, ' ')
     return startWithUppercase(desc)
   }, [definition, modifier.options, simple])
 

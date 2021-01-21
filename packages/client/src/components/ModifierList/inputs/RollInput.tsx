@@ -1,6 +1,7 @@
-import React from 'react'
 import { InputAdornment, TextField } from '@material-ui/core'
+import React from 'react'
 import { RollOption } from 'types/modifierDefinition'
+
 import { InputComponentProps } from './types'
 
 type RollInputProps = InputComponentProps<RollOption>

@@ -1,8 +1,9 @@
-import { Modifier, ModifierErrors, ModifierFieldErrors } from 'types/modifierInstance'
 import { ModifierDefinition, ModifierOption } from 'types/modifierDefinition'
+import { Modifier } from 'types/modifierInstance'
+import { ModifierFieldErrors, ModifierListErrors, ValidationOptions } from 'types/validation'
 import * as yup from 'yup'
 
-type ModifierData = { definition: ModifierDefinition; modifier: Modifier }
+// === Schema ===
 
 const getChoiceOptionSchema = (choices: string[]) => yup.string().required('Required').oneOf(choices)
 
@@ -33,7 +34,39 @@ const getRollOptionSchema = (allowOnes: boolean) => {
     .max(6, `Must be between ${min} and 6`)
 }
 
-export const validateModifierOption = (
+// === Validators ===
+
+export const validateModifiers = (modifiers: Modifier[], options?: ValidationOptions) => {
+  const definitions = options?.modifierDefinitions
+  if (definitions && definitions.length) {
+    return modifiers.reduce<ModifierListErrors>(
+      (acc, modifier) => ({
+        ...acc,
+        [modifier.id]: validateModifier(modifier, definitions),
+      }),
+      {}
+    )
+  }
+  if (options?.total)
+    throw new Error('Cannot do `total` validation of modifiers without providing `modifierDefinitions`')
+  return {}
+}
+
+const validateModifier = (
+  modifier: Modifier,
+  definitions: ModifierDefinition[]
+): ModifierFieldErrors | string => {
+  const definition = definitions.find(d => d.id === modifier.type)
+  if (definition) {
+    return Object.keys(definition.options).reduce<ModifierFieldErrors>((acc, k) => {
+      acc[k] = validateModifierOption(modifier.options[k], definition.options[k])
+      return acc
+    }, {})
+  }
+  return 'Unkown modifier type (delete and re-create)'
+}
+
+const validateModifierOption = (
   option: string | number | boolean,
   definition: ModifierOption
 ): string | undefined => {
@@ -56,25 +89,4 @@ export const validateModifierOption = (
   } catch (err) {
     return err.errors[0] ?? 'Invalid value'
   }
-}
-
-export const validateModifier = (modifier: Modifier, definition: ModifierDefinition) => {
-  return Object.keys(definition.options).reduce<ModifierFieldErrors>((acc, k) => {
-    acc[k] = validateModifierOption(modifier.options[k], definition.options[k])
-    return acc
-  }, {})
-}
-
-export const validateModifiers = (modifiers: Modifier[], definitions: ModifierDefinition[]) => {
-  const data = modifiers.reduce((acc, m) => {
-    const def = definitions.find(d => d.id === m.type)
-    return def ? [...acc, { definition: def, modifier: m }] : acc
-  }, new Array<ModifierData>())
-  return data.reduce<ModifierErrors>(
-    (acc, { modifier, definition }) => ({
-      ...acc,
-      [modifier.id]: validateModifier(modifier, definition),
-    }),
-    {}
-  )
 }

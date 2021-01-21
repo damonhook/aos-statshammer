@@ -13,7 +13,7 @@ interface ConditionalBonusParams {
 
 export default class ConditionalBonus extends BaseModifier {
   static displayName = 'Conditional Bonus'
-  static description = `{unmodified} rolls of {on} for {characteristic} result in a bonus
+  static description = `{unmodified} rolls of {on}+ {characteristic} result in a bonus
   of {bonus} to {bonusToCharacteristic}`
   static availableCharacteristics = [C.TO_HIT, C.TO_WOUND]
   static availableBonusToCharacteristics = [C.TO_WOUND, C.REND, C.DAMAGE]

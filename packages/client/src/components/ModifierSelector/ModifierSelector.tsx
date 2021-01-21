@@ -1,12 +1,13 @@
-import { Button, DialogContent, DialogActions, makeStyles, Theme } from '@material-ui/core'
+import { Button, DialogActions, DialogContent, List, makeStyles, Theme } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import DialogAppBar from 'components/DialogAppBar'
+import SideSheet from 'components/SideSheet'
 import React, { useCallback, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { ModifierDefinition } from 'types/modifierDefinition'
 import { Modifier } from 'types/modifierInstance'
-import ModifierItems from './ModifierItems'
-import SideSheet from 'components/SideSheet'
+
+import ModifierItem from './ModifierItem'
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -53,6 +54,10 @@ const ModifierSelector = ({ hash, modifiers, onConfirm }: ModifierSelectorProps)
     else handleOpen()
   }, [open, handleOpen, handleClose])
 
+  const handleSelection = (id: string) => () => {
+    setSelected({ ...selected, [id]: !selected[id] })
+  }
+
   const handleConfirm = useCallback(() => {
     const newMods = Object.keys(selected)
       .filter(key => selected[key])
@@ -79,7 +84,17 @@ const ModifierSelector = ({ hash, modifiers, onConfirm }: ModifierSelectorProps)
       >
         <DialogAppBar title="Add Modifiers" onClose={handleClose} id="modifier-selector-title" />
         <DialogContent classes={{ root: classes.content }}>
-          <ModifierItems modifiers={modifiers} selected={selected} setSelected={setSelected} />
+          <List>
+            {modifiers.map(({ id, name, description }) => (
+              <ModifierItem
+                id={id}
+                name={name}
+                description={description}
+                selected={selected[id]}
+                onSelected={handleSelection(id)}
+              />
+            ))}
+          </List>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

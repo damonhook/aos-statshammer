@@ -1,6 +1,7 @@
-import React from 'react'
 import { TextField } from '@material-ui/core'
+import React from 'react'
 import { NumberOption } from 'types/modifierDefinition'
+
 import { InputComponentProps } from './types'
 
 type NumberInputProps = InputComponentProps<NumberOption>

@@ -1,5 +1,6 @@
+import { red, teal } from '@material-ui/core/colors'
 import { createMuiTheme, Theme, ThemeOptions } from '@material-ui/core/styles'
-import { teal } from '@material-ui/core/colors'
+import ConfigStore from 'types/store/config'
 
 const commonOtions: Partial<ThemeOptions> = {
   typography: {
@@ -33,6 +34,12 @@ export const lightTheme: Theme = createMuiTheme({
 export const darkTheme: Theme = createMuiTheme({
   palette: {
     type: 'dark',
+    primary: { main: teal[500] },
+    secondary: { main: red[500] },
   },
   ...commonOtions,
 })
+
+const getTheme = (config: ConfigStore) => (config.darkMode ? darkTheme : lightTheme)
+
+export default getTheme

@@ -1,6 +1,7 @@
-import React from 'react'
 import { Checkbox, FormControlLabel } from '@material-ui/core'
+import React from 'react'
 import { BooleanOption } from 'types/modifierDefinition'
+
 import { InputComponentProps } from './types'
 
 type BooleanInputProps = InputComponentProps<BooleanOption>

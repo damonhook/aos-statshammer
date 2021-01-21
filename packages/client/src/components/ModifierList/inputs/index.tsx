@@ -1,5 +1,5 @@
-export { default as RollInput } from './RollInput'
+export { default as BooleanInput } from './BooleanInput'
 export { default as ChoiceInput } from './ChoiceInput'
 export { default as NumberInput } from './NumberInput'
-export { default as BooleanInput } from './BooleanInput'
+export { default as RollInput } from './RollInput'
 export type { InputComponentProps } from './types'

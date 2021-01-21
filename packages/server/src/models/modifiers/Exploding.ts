@@ -12,7 +12,7 @@ interface ExplodingParams {
 
 export default class Exploding extends BaseModifier {
   static displayName = 'Exploding'
-  static description = '{unmodified} rolls of {on} for {characteristic} result in {extraHits} additional'
+  static description = '{unmodified} rolls of {on}+ {characteristic} result in {extraHits} additional'
   static availableCharacteristics = [C.TO_HIT, C.TO_WOUND]
 
   on: number

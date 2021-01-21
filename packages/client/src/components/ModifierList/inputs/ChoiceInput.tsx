@@ -1,8 +1,9 @@
-import React from 'react'
 import { MenuItem, TextField } from '@material-ui/core'
+import React from 'react'
 import { ChoiceOption } from 'types/modifierDefinition'
-import { InputComponentProps } from './types'
 import { titleCase } from 'utils/helpers'
+
+import { InputComponentProps } from './types'
 
 type ChoiceInputProps = InputComponentProps<ChoiceOption>
 

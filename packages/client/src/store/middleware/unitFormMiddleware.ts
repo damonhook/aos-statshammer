@@ -1,6 +1,7 @@
-import { unitFormStore } from 'store/slices'
-import { createMiddleware } from './utils'
+import { unitFormStore } from 'store/slices/forms'
 import { validateUnit } from 'utils/validators/unit'
+
+import { createMiddleware } from './utils'
 
 const actions = unitFormStore.actions
 

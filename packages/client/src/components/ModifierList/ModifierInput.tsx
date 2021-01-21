@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from 'react'
 import { Box } from '@material-ui/core'
-import { ModifierOption } from 'types/modifierDefinition'
 import humps from 'humps'
-import { BooleanInput, ChoiceInput, RollInput, NumberInput, InputComponentProps } from './inputs'
+import React, { useCallback, useMemo } from 'react'
+import { ModifierOption } from 'types/modifierDefinition'
+
+import { BooleanInput, ChoiceInput, InputComponentProps,NumberInput, RollInput } from './inputs'
 
 interface ModifierInputProps {
   option: ModifierOption

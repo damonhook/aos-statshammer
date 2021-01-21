@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react'
 import Menu from 'components/Menu'
-import { WeaponProfile } from 'types/store/units'
+import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { unitFormStore } from 'store/slices'
-import { openProfileDialog } from '../WeaponProfileDialog'
 import { useHistory } from 'react-router-dom'
+import { unitFormStore } from 'store/slices/forms'
+import { WeaponProfile } from 'types/store/units'
+
+import { openProfileDialog } from '../WeaponProfileDialog'
 
 interface ProfileControlsProps {
   unitId: string

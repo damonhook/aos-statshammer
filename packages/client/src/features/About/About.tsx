@@ -1,6 +1,8 @@
-import { Link, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
+import { IconButton, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
+import { LogoIcon } from 'components/Icons'
 import React from 'react'
-import { EXTERNAL_LINKS } from 'utils/routes'
+import { EXTERNAL_LINKS, PAGE_ROUTES } from 'utils/routes'
+
 import AboutLink from './AboutLink'
 import Section from './Section'
 
@@ -11,12 +13,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 10,
   },
   about: { margin: theme.spacing(0, 1) },
-  header: { marginBottom: theme.spacing(2) },
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: theme.spacing(2),
+  },
   content: {
     padding: theme.spacing(2, 6),
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(2, 4),
     },
+  },
+  logoButton: {
+    fontSize: '7rem',
   },
 }))
 
@@ -27,9 +37,14 @@ const About = () => {
     <div className={classes.root}>
       <Paper className={classes.about}>
         <div className={classes.content}>
-          <Typography component="h2" variant="h5" align="center" className={classes.header}>
-            AoS Statshammer
-          </Typography>
+          <div className={classes.header}>
+            <IconButton href={PAGE_ROUTES.HOME} className={classes.logoButton}>
+              <LogoIcon color="primary" fontSize="inherit" />
+            </IconButton>
+            <Typography component="h2" variant="h5" align="center">
+              AoS Statshammer
+            </Typography>
+          </div>
           <Section title="Overview">
             A tool for calculating and comparing damage outputs for <strong>Warhammer Age of Sigmar </strong>
             units (also referred to as Mathhammer). If you are interested in Warcry calculations, see the
@@ -45,11 +60,11 @@ const About = () => {
             <ul>
               <li>
                 <strong>Reroll Ones: </strong>
-                Reroll Ones for <i>to hit</i>
+                Reroll Ones <i>to hit</i>
               </li>
               <li>
                 <strong>Mortal Wounds: </strong>
-                <i>Unmodified</i> rolls of <i>6</i>+ for <i>to hit</i> result in <i>1</i> mortal wounds
+                <i>Unmodified</i> rolls of <i>6</i>+ <i>to hit</i> result in <i>1</i> mortal wounds
               </li>
               <li>
                 <strong>Leader Bonus: </strong>

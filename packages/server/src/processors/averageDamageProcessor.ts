@@ -13,10 +13,10 @@ export default class AverageDamageProcessor {
   }
 
   public calculateAverageDamage(): number {
-    let attacks = this.profile.numModels * this.profile.attacks.average
-    attacks += this.resolveBonusModifier(C.ATTACKS)
-
+    let numModels = this.profile.numModels
+    let attacks = 0
     let extraDamage = 0
+
     const leaderMods = this.profile.modifiers.leaderBonus
     if (leaderMods && leaderMods.length) {
       if (leaderMods.length == 1 && leaderMods[0].characteristic === C.ATTACKS) {
@@ -25,10 +25,11 @@ export default class AverageDamageProcessor {
         const leaderProfile = this.profile.getLeaderProfile()
         const leaderProcessor = new AverageDamageProcessor(leaderProfile, this.target)
         extraDamage += leaderProcessor.calculateAverageDamage()
-        attacks = Math.max(attacks - leaderProfile.numModels, 0)
+        numModels = Math.max(numModels - leaderProfile.numModels, 0)
       }
     }
 
+    attacks += numModels * (this.profile.attacks.average + this.resolveBonusModifier(C.ATTACKS))
     return this.calculateHitsStep(attacks) + extraDamage
   }
 
@@ -95,6 +96,7 @@ export default class AverageDamageProcessor {
   private getNumRerolls(base: number, key: C, value: number, unmodifiedValue: number): number {
     const getModifier = (name: 'reroll' | 'rerollFailed' | 'rerollOnes', key: C) =>
       key !== C.SAVE ? this.profile.modifiers[name].get(key) : this.target.modifiers[name].get()
+
     if (getModifier('reroll', key)) return base * D6.getInverseProbability(value)
     if (getModifier('rerollFailed', key))
       return base * D6.getInverseProbability(Math.min(value, unmodifiedValue))

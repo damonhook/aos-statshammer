@@ -1,8 +1,9 @@
-import { TextField, Grid, InputAdornment } from '@material-ui/core'
+import { Grid, InputAdornment, TextField } from '@material-ui/core'
 import React, { useCallback, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { profileFormStore } from 'store/slices'
-import { ProfileFormCharacteristicErrors, ProfileFormData, ProfileFormErrors } from 'types/store/profileForm'
+import { profileFormStore } from 'store/slices/forms'
+import { ProfileFormData } from 'types/store/forms/profileForm'
+import { ProfileCharacteristicErrors } from 'types/validation'
 
 interface FieldConfig {
   label: string
@@ -27,7 +28,7 @@ const fieldConfigLookup: FieldConfigLookup = {
 interface CharacteristicFieldProps {
   data: ProfileFormData
   characteristic: keyof Omit<ProfileFormData, 'modifiers' | 'name' | 'disabled'>
-  errors?: ProfileFormCharacteristicErrors
+  errors?: ProfileCharacteristicErrors
 }
 
 const CharacteristicField = ({ data, characteristic, errors }: CharacteristicFieldProps) => {
@@ -39,7 +40,7 @@ const CharacteristicField = ({ data, characteristic, errors }: CharacteristicFie
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       let value: string | number = event.target.value
-      if (config.type === 'number') value = value !== '' ? Number(value) : ''
+      if (config.type === 'number' || config.type === 'roll') value = value !== '' ? Number(value) : ''
       dispatch(profileFormStore.actions.editData({ key: characteristic, value }))
     },
     [dispatch, config, characteristic]

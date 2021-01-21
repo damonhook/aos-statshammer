@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from 'nanoid'
-import TargetStore from 'types/store/target'
 import { Modifier } from 'types/modifierInstance'
+import TargetStore from 'types/store/target'
 
 const INITIAL_STATE: TargetStore = {
   modifiers: [],
@@ -21,7 +21,13 @@ export default createSlice({
       state.modifiers.push(...modifiers.map(m => ({ ...m, id: nanoid() })))
     },
 
-    editModifier(
+    setModifierDisabled(state: TargetStore, action: PayloadAction<{ id: string; disabled: boolean }>) {
+      const { id, disabled } = action.payload
+      const mod = state.modifiers.find(m => m.id === id)
+      if (mod) mod.disabled = disabled
+    },
+
+    editModifierOption(
       state: TargetStore,
       action: PayloadAction<{ id: string; key: string; value: string | number | boolean }>
     ) {

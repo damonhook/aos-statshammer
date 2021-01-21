@@ -1,7 +1,7 @@
 // eslint-disable react/no-array-index-key
-import React from 'react'
-import { Table, TableRow, TableCell, Box } from '@material-ui/core'
+import { Box,Table, TableCell, TableRow } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
+import React from 'react'
 
 interface TableSkeletonProps {
   rows?: number

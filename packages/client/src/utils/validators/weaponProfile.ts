@@ -1,7 +1,7 @@
-import { ModifierDefinition } from 'types/modifierDefinition'
-import { ProfileFormCharacteristicErrors, ProfileFormErrors } from 'types/store/profileForm'
 import { WeaponProfileParams } from 'types/store/units'
+import { ProfileCharacteristicErrors, ProfileErrors, ValidationOptions } from 'types/validation'
 import * as yup from 'yup'
+
 import { validateModifiers } from './modifiers'
 
 const diceValueSchema = yup
@@ -36,32 +36,29 @@ const validators: Record<string, yup.AnySchema<any, any>> = {
 
 type CharacteristicData = Omit<WeaponProfileParams, 'modifiers'>
 
-export const validateCharacteristics = (data: Partial<CharacteristicData>) => {
-  return (Object.keys(data) as (keyof CharacteristicData)[]).reduce<ProfileFormCharacteristicErrors>(
-    (acc, k) => {
-      const validator = validators[k]
-      if (k !== 'disabled' && validator) {
-        try {
-          validator.validateSync(data[k])
-          acc[k] = undefined
-        } catch (err) {
-          acc[k] = err.errors[0] ?? 'Invalid value'
-        }
+export const validateCharacteristics = (
+  data: Partial<CharacteristicData>,
+  options?: ValidationOptions
+): ProfileCharacteristicErrors => {
+  return (Object.keys(data) as (keyof CharacteristicData)[]).reduce<ProfileCharacteristicErrors>((acc, k) => {
+    const validator = validators[k]
+    if (k !== 'disabled' && validator) {
+      try {
+        validator.validateSync(data[k])
+        acc[k] = undefined
+      } catch (err) {
+        acc[k] = err.errors[0] ?? 'Invalid value'
       }
-      return acc
-    },
-    {}
-  )
+    }
+    return acc
+  }, {})
 }
 
-export const validateProfile = (
-  data: WeaponProfileParams,
-  modifierDefinitions: ModifierDefinition[] = []
-) => {
+export const validateProfile = (data: WeaponProfileParams, options?: ValidationOptions): ProfileErrors => {
   const { modifiers, ...rest } = data
-  const errors: ProfileFormErrors = validateCharacteristics(rest)
+  const errors: ProfileErrors = validateCharacteristics(rest, options)
   if (modifiers) {
-    errors.modifiers = validateModifiers(modifiers, modifierDefinitions)
+    errors.modifiers = validateModifiers(modifiers, options)
   }
   return errors
 }

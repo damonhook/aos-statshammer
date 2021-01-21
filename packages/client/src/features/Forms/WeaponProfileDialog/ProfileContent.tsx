@@ -1,14 +1,26 @@
-import { TextField, DialogContent, Grid, makeStyles, Theme, Typography, useTheme } from '@material-ui/core'
-import React, { useCallback } from 'react'
-import CharacteristicField from './CharacteristicField'
-import { ProfileFormData, ProfileFormErrors } from 'types/store/profileForm'
-import ModifierSelector from 'components/ModifierSelector'
-import { useDispatch, useSelector } from 'react-redux'
-import Store from 'types/store'
-import { profileFormStore } from 'store/slices'
-import { Modifier } from 'types/modifierInstance'
+import {
+  Box,
+  DialogContent,
+  Grid,
+  makeStyles,
+  TextField,
+  Theme,
+  Typography,
+  useTheme,
+} from '@material-ui/core'
 import ModifierList from 'components/ModifierList'
+import ModifierSelector from 'components/ModifierSelector'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { profileFormStore } from 'store/slices/forms'
+import { Modifier } from 'types/modifierInstance'
+import Store from 'types/store'
+import { ProfileFormData } from 'types/store/forms/profileForm'
+import { ProfileErrors } from 'types/validation'
 import { HASH_ROUTES } from 'utils/routes'
+
+import CharacteristicField from './CharacteristicField'
+import ProfileToolBar from './ProfileToolBar'
 
 const useStyles = makeStyles((theme: Theme) => ({
   nameField: {
@@ -22,11 +34,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface ProfileContentProps {
+  unitId: string
   data: ProfileFormData
-  errors?: ProfileFormErrors
+  errors?: ProfileErrors
 }
 
-const ProfileContent = ({ data, errors }: ProfileContentProps) => {
+const ProfileContent = ({ unitId, data, errors }: ProfileContentProps) => {
   const modifiers = useSelector((state: Store) => state.modifiers.modifiers)
 
   const dispatch = useDispatch()
@@ -46,7 +59,7 @@ const ProfileContent = ({ data, errors }: ProfileContentProps) => {
 
   const handleEditModifier = useCallback(
     (id: string, key: string, value: string | number | boolean) => {
-      dispatch(profileFormStore.actions.editModifier({ id, key, value }))
+      dispatch(profileFormStore.actions.editModifierOption({ id, key, value }))
     },
     [dispatch]
   )
@@ -58,8 +71,16 @@ const ProfileContent = ({ data, errors }: ProfileContentProps) => {
     [dispatch]
   )
 
+  const handleModifierEnabledChanged = useCallback(
+    (id: string, newValue: boolean) => {
+      dispatch(profileFormStore.actions.setModifierDisabled({ id, disabled: !newValue }))
+    },
+    [dispatch]
+  )
+
   return (
     <DialogContent classes={{ root: classes.content }}>
+      <ProfileToolBar unitId={unitId} />
       <TextField
         label="Profile Name"
         fullWidth
@@ -89,13 +110,16 @@ const ProfileContent = ({ data, errors }: ProfileContentProps) => {
               addModifiers={handleAddModifiers}
               editModifier={handleEditModifier}
               deleteModifier={handleDeleteModifier}
+              onEnabledChanged={handleModifierEnabledChanged}
               errors={errors?.modifiers}
             />
-            <ModifierSelector
-              modifiers={modifiers}
-              onConfirm={handleAddModifiers}
-              hash={HASH_ROUTES.MODIFIERS}
-            />
+            <Box paddingTop={2}>
+              <ModifierSelector
+                modifiers={modifiers}
+                onConfirm={handleAddModifiers}
+                hash={HASH_ROUTES.MODIFIERS}
+              />
+            </Box>
           </Grid>
         </Grid>
       </div>

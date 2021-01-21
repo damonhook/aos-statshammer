@@ -1,22 +1,25 @@
 import {
-  TextField,
+  Button,
   DialogContent as MuiDialogContent,
   makeStyles,
+  TextField,
   Theme,
-  useTheme,
-  Button,
   Typography,
+  useTheme,
 } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import WeaponProfileInfo from 'components/WeaponProfileInfo'
 import WeaponProfileDialog, { openProfileDialog } from 'features/Forms/WeaponProfileDialog'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { unitFormStore } from 'store/slices'
-import { UnitFormData, UnitFormErrors } from 'types/store/unitForm'
+import { unitFormStore } from 'store/slices/forms'
+import { UnitFormData } from 'types/store/forms/unitForm'
 import { WeaponProfileParams } from 'types/store/units'
+import { UnitErrors } from 'types/validation'
+
 import ProfileControls from './ProfileControls'
+import UnitToolBar from './UnitToolBar'
 
 const DEFAULT_PROFILE: WeaponProfileParams = {
   numModels: 10,
@@ -29,20 +32,20 @@ const DEFAULT_PROFILE: WeaponProfileParams = {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-  nameField: {
-    paddingBottom: theme.spacing(3),
-  },
   content: {
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1, 2),
     },
+  },
+  nameField: {
+    paddingBottom: theme.spacing(3),
   },
 }))
 
 interface DialogContentProps {
   unitId: string
   data: UnitFormData
-  errors?: UnitFormErrors
+  errors?: UnitErrors
 }
 
 const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
@@ -76,6 +79,7 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
   return (
     <>
       <MuiDialogContent classes={{ root: classes.content }}>
+        <UnitToolBar />
         <TextField
           label="Unit Name"
           fullWidth
@@ -97,7 +101,7 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
             controls={<ProfileControls unitId={unitId} profile={profile} />}
           />
         ))}
-        <Button variant="contained" fullWidth startIcon={<Add />} onClick={handleAddProfile}>
+        <Button variant="contained" fullWidth startIcon={<Add />} onClick={handleAddProfile} color="primary">
           Add Profile
         </Button>
       </MuiDialogContent>

@@ -1,6 +1,6 @@
-import React from 'react'
-import { TableCell, makeStyles, Theme } from '@material-ui/core'
+import { makeStyles, TableCell, Theme } from '@material-ui/core'
 import clsx from 'clsx'
+import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) => ({
   cell: { padding: theme.spacing(1, 0.25) },

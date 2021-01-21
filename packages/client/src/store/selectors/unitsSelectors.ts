@@ -17,3 +17,19 @@ export const findWeaponProfileSelector = createSelector(
     return unit ? unit.weaponProfiles.find(profile => profile.id === id) : undefined
   }
 )
+
+export const activeUnitsSelector = createSelector(
+  unitsSelector,
+  units =>
+    units
+      .map(unit => ({
+        ...unit,
+        weaponProfiles: unit.weaponProfiles
+          .filter(p => !p.disabled) // Filter out disabled weapon profiles
+          .map(p => ({
+            ...p,
+            modifiers: p.modifiers.filter(m => !m.disabled), // Filter out disabled modifiers
+          })),
+      }))
+      .filter(unit => unit.weaponProfiles && unit.weaponProfiles.length) // Filter out units with no profiles
+)

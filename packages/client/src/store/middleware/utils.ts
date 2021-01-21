@@ -1,10 +1,10 @@
 import {
+  ActionCreatorWithPayload,
+  AnyAction,
   Dispatch,
   Middleware,
   MiddlewareAPI,
   PayloadAction,
-  ActionCreatorWithPayload,
-  AnyAction,
 } from '@reduxjs/toolkit'
 import Store from 'types/store'
 

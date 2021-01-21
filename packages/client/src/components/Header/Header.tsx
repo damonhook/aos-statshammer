@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import LeftNavigation from 'components/LeftNavigation'
-import { AppBar, Toolbar, Typography, IconButton, makeStyles, Theme } from '@material-ui/core'
+import { AppBar, IconButton, Link, makeStyles, Theme, Toolbar, Typography } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
 import clsx from 'clsx'
+import LeftNavigation from 'components/LeftNavigation'
 import { useIsMobile } from 'hooks'
+import React, { useState } from 'react'
+import { PAGE_ROUTES } from 'utils/routes'
 
 const drawerWidth = 220
 
@@ -61,8 +62,10 @@ const Header = () => {
           >
             <Menu />
           </IconButton>
-          <Typography variant="h6" style={{ cursor: 'pointer' }}>
-            AoS Statshammer
+          <Typography variant="h6">
+            <Link href={PAGE_ROUTES.HOME} color="inherit" underline="none">
+              AoS Statshammer
+            </Link>
           </Typography>
         </Toolbar>
       </AppBar>

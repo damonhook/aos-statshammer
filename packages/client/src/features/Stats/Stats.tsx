@@ -1,23 +1,31 @@
-import { Skeleton } from '@material-ui/lab'
+import { makeStyles, Theme } from '@material-ui/core'
+import { getComparison } from 'api/comparison'
 import CollapsibleCard from 'components/CollapsibleCard'
-import GraphSkeleton from 'components/Skeletons/GraphSkeleton'
 import TableSkeleton from 'components/Skeletons/TableSkeleton'
+import isEqual from 'lodash/isEqual'
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { activeUnitsSelector } from 'store/selectors/unitsSelectors'
 import Store from 'types/store'
-import TargetSummary from './TargetSummary'
-import { getComparison } from 'api/comparison'
-import isEqual from 'lodash/isEqual'
-import ComparisonTable from './ComparisonTable'
 import { NameMapping, Unit } from 'types/store/units'
+
 import ComparisonGraphs from './ComparisonGraphs'
+import ComparisonTable from './ComparisonTable'
+import TargetSummary from './TargetSummary'
 
 function getNameMapping(units: Unit[]): NameMapping {
   return units.reduce<NameMapping>((acc, { id, name }) => ({ ...acc, [id]: name }), {})
 }
 
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    marginTop: theme.spacing(1),
+  },
+}))
+
 const Stats = () => {
-  const units = useSelector((state: Store) => state.units.items, isEqual)
+  const classes = useStyles()
+  const units = useSelector(activeUnitsSelector, isEqual)
   const target = useSelector((state: Store) => state.target, isEqual)
   const { results, pending } = useSelector((state: Store) => state.comparison)
   const dispatch = useDispatch()
@@ -28,7 +36,7 @@ const Stats = () => {
   }, [dispatch, units, target])
 
   return (
-    <div>
+    <div className={classes.root}>
       <TargetSummary />
       <CollapsibleCard title="Average Damage Table">
         {pending ? (

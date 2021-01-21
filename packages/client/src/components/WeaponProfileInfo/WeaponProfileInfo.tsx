@@ -1,21 +1,22 @@
-import React, { useCallback } from 'react'
 import {
   Box,
   Checkbox,
-  TableBody,
-  TableHead,
-  Table,
-  TableContainer,
-  TableRow,
-  Typography,
   makeStyles,
-  Theme,
   Paper,
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Theme,
+  Typography,
 } from '@material-ui/core'
 import clsx from 'clsx'
+import React, { useCallback } from 'react'
 import { WeaponProfile } from 'types/store/units'
-import StyledTableCell from './StyledTableCell'
+
 import ModifierSummary from './ModifierSummary'
+import StyledTableCell from './StyledTableCell'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: { margin: theme.spacing(0, 0, 2) },
@@ -95,7 +96,9 @@ const WeaponProfileInfo = ({ profile, onClick, onEnabledChanged, controls }: Wea
                 </TableBody>
               </Table>
             </TableContainer>
-            <ModifierSummary modifiers={profile.modifiers} />
+            <div className={clsx({ [classes.disabled]: profile.disabled })}>
+              <ModifierSummary modifiers={profile.modifiers} />
+            </div>
           </Paper>
         </Box>
       </div>

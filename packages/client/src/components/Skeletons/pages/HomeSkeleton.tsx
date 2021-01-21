@@ -1,8 +1,9 @@
-import React from 'react'
-import UnitsSkeleton from './UnitsSkeleton'
-import StatsSkeleton from './StatsSkeleton'
-import { Skeleton } from '@material-ui/lab'
 import { Grid, makeStyles, Theme, useMediaQuery, useTheme } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
+import React from 'react'
+
+import StatsSkeleton from './StatsSkeleton'
+import UnitsSkeleton from './UnitsSkeleton'
 
 const useStyles = makeStyles((theme: Theme) => ({
   spacer: {

@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react'
-import CollapsibleCard from 'components/CollapsibleCard'
 import { Box, makeStyles, Theme } from '@material-ui/core'
+import CollapsibleCard from 'components/CollapsibleCard'
 import Menu from 'components/Menu'
-import { Unit } from 'types/store/units'
-import { useDispatch } from 'react-redux'
-import { unitsStore } from 'store/slices'
-import { openUnitDialog } from 'features/Forms/UnitDialog/UnitDialog'
-import { useHistory } from 'react-router-dom'
 import WeaponProfileInfo from 'components/WeaponProfileInfo'
+import { openUnitDialog } from 'features/Forms/UnitDialog/UnitDialog'
+import React, { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { unitsStore } from 'store/slices'
+import { Unit } from 'types/store/units'
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {

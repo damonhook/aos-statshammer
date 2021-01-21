@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react'
 import { makeStyles, Theme, Typography } from '@material-ui/core'
+import clsx from 'clsx'
+import ModifierDescription from 'components/ModifierDescription'
+import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import Store from 'types/store'
 import { ModifierDefinition } from 'types/modifierDefinition'
 import { Modifier } from 'types/modifierInstance'
-import ModifierDescription from 'components/ModifierDescription'
+import Store from 'types/store'
 
 const useStyles = makeStyles((theme: Theme) => ({
   modifier: {
@@ -12,6 +13,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:last-child': {
       paddingBottom: theme.spacing(1),
     },
+  },
+  disabled: {
+    color: theme.palette.text.disabled,
   },
 }))
 
@@ -35,7 +39,7 @@ const ModifierSummary = ({ modifiers }: ModifierSummaryProps) => {
   return (
     <div>
       {data.map(({ modifier, definition }) => (
-        <Typography className={classes.modifier}>
+        <Typography className={clsx(classes.modifier, { [classes.disabled]: !!modifier.disabled })}>
           <strong>{definition.name}</strong>
           <ModifierDescription modifier={modifier} definition={definition} variant="body2" simple />
         </Typography>

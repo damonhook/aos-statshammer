@@ -1,5 +1,5 @@
 import configureStore from './configureStore'
 
-const store = configureStore()
+const { store, persistor } = configureStore()
 
-export { store as default }
+export { store as default, persistor }

@@ -1,29 +1,15 @@
+import { Typography } from '@material-ui/core'
 import React, { useMemo } from 'react'
+import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { ComparisonResult } from 'types/store/comparison'
 import { NameMapping } from 'types/store/units'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { Typography } from '@material-ui/core'
+
+import { transformData } from './transform'
 // import { BarExtendedDatum, BarTooltipDatum, ResponsiveBar } from '@nivo/bar'
 
 interface ComparisonBarGraphProps {
   nameMapping: NameMapping
   results: ComparisonResult[]
-}
-
-type TransformedData = {
-  save: string
-  [name: string]: string
-}
-
-function transformData(results: ComparisonResult[], nameMapping: NameMapping): TransformedData[] {
-  return results.map(({ displaySave, values }) => {
-    const data: TransformedData = { save: displaySave }
-    Object.keys(values).forEach(id => {
-      const name = nameMapping[id] ?? 'Unknown'
-      data[name] = `${values[id]}`
-    })
-    return data
-  })
 }
 
 const ComparisonBarGraph = ({ nameMapping, results }: ComparisonBarGraphProps) => {

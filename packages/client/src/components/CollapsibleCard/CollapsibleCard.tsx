@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import {
   Accordion,
   AccordionDetails,
@@ -9,6 +8,7 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import clsx from 'clsx'
+import React, { useState } from 'react'
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {

@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from 'nanoid'
-import UnitFormStore, { UnitFormData, UnitFormErrors } from 'types/store/unitForm'
+import UnitFormStore, { UnitFormData } from 'types/store/forms/unitForm'
 import { WeaponProfileParams } from 'types/store/units'
+import { UnitErrors } from 'types/validation'
 import { removeEmpty } from 'utils/helpers'
 
 const INITIAL_STATE: UnitFormStore = {
@@ -66,7 +67,7 @@ export default createSlice({
       state.errors = undefined
     },
 
-    setErrors(state: UnitFormStore, action: PayloadAction<{ errors?: Partial<UnitFormErrors> }>) {
+    setErrors(state: UnitFormStore, action: PayloadAction<{ errors?: Partial<UnitErrors> }>) {
       const { errors } = action.payload
       if (errors) {
         const cleaned = removeEmpty({ ...state.errors, ...errors })

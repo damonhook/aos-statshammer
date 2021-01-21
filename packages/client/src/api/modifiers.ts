@@ -1,7 +1,8 @@
-import { modifiersStore } from 'store/slices'
 import { Dispatch } from '@reduxjs/toolkit'
-import { get } from './helpers'
+import { modifiersStore } from 'store/slices'
 import { ModifiersResponse } from 'types/store/modifiers'
+
+import { get } from './helpers'
 
 export const getModifiers = () => async (dispatch: Dispatch) => {
   const { modifiersPending, modifiersSucess, modifiersError } = modifiersStore.actions

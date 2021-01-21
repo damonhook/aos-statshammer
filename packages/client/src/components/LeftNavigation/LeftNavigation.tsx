@@ -1,10 +1,24 @@
 import { Divider, IconButton, List, makeStyles, SwipeableDrawer, Theme } from '@material-ui/core'
-import { BarChart, ChevronLeft, Home, PictureAsPdf, Info, Timeline } from '@material-ui/icons'
+import {
+  BarChart,
+  Brightness4 as DarkModeIcon,
+  Brightness7 as LightModeIcon,
+  ChevronLeft,
+  Home,
+  Info,
+  PictureAsPdf,
+  Timeline,
+} from '@material-ui/icons'
 import clsx from 'clsx'
-import React, { useMemo } from 'react'
 import { useCurrentRoute, useIsMobile } from 'hooks'
+import React, { useCallback, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { configStore } from 'store/slices'
+import Store from 'types/store'
+import { PAGE_ROUTES, PageRoute } from 'utils/routes'
+
+import ListItem from './ListItem'
 import ListItemLink from './ListItemLink'
-import { PageRoute, PAGE_ROUTES } from 'utils/routes'
 
 interface StyleProps {
   width: number
@@ -70,10 +84,17 @@ const LeftNavigation = ({ open, onOpen, onClose, width = 240 }: LeftNavigationPr
   const isMobile = useIsMobile()
   const route = useCurrentRoute()
 
+  const { darkMode } = useSelector((state: Store) => state.config)
+  const dispatch = useDispatch()
+
   const value = useMemo(() => {
     let index = navConfig.findIndex(n => (!n.onlyMobile || isMobile) && n.route === route)
     return index !== -1 ? index : 0
   }, [route, isMobile])
+
+  const handleDarkModeToggle = useCallback(() => {
+    dispatch(configStore.actions.setDarkMode({ darkMode: !darkMode }))
+  }, [dispatch, darkMode])
 
   return (
     <SwipeableDrawer
@@ -109,9 +130,17 @@ const LeftNavigation = ({ open, onOpen, onClose, width = 240 }: LeftNavigationPr
                 tooltip={!open}
                 selected={index === value}
                 key={label}
+                onClose={onClose}
               />
             )
         )}
+        <Divider />
+        <ListItem
+          primary={darkMode ? 'Light Mode' : 'Dark Mode'}
+          onClick={handleDarkModeToggle}
+          icon={darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+          tooltip={!open}
+        />
       </List>
     </SwipeableDrawer>
   )

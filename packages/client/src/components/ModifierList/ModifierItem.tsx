@@ -1,12 +1,14 @@
 import { Box, Checkbox, makeStyles, Theme } from '@material-ui/core'
-import React, { useState } from 'react'
-import { ModifierDefinition } from 'types/modifierDefinition'
-import { Modifier, ModifierFieldErrors } from 'types/modifierInstance'
-import CollapsibleCard from 'components/CollapsibleCard'
-import ModifierInput from './ModifierInput'
-import ItemControls from './ItemControls'
 import clsx from 'clsx'
+import CollapsibleCard from 'components/CollapsibleCard'
 import ModifierDescription from 'components/ModifierDescription'
+import React, { useCallback, useMemo } from 'react'
+import { ModifierDefinition } from 'types/modifierDefinition'
+import { Modifier } from 'types/modifierInstance'
+import { ModifierError } from 'types/validation'
+
+import ItemControls from './ItemControls'
+import ModifierInput from './ModifierInput'
 
 const useStyles = makeStyles((theme: Theme) => ({
   checkbox: { marginRight: theme.spacing(1) },
@@ -19,7 +21,8 @@ interface ModifierItemProps {
   addModifiers: (modifiers: Omit<Modifier, 'id'>[]) => void
   editModifier: (id: string, key: string, value: string | number | boolean) => void
   deleteModifier: (id: string) => void
-  errors?: ModifierFieldErrors
+  onEnabledChanged: (id: string, value: boolean) => void
+  errors?: ModifierError
 }
 
 const ModifierItem = ({
@@ -28,14 +31,19 @@ const ModifierItem = ({
   addModifiers,
   editModifier,
   deleteModifier,
+  onEnabledChanged,
   errors,
 }: ModifierItemProps) => {
   const classes = useStyles()
-  const [enabled, setEnabled] = useState(true)
 
-  const handleEnabledChange = (event: React.ChangeEvent<{}>) => {
-    setEnabled(!enabled)
-  }
+  const handleEnabledChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onEnabledChanged(modifier.id, event.target.checked)
+    },
+    [onEnabledChanged, modifier.id]
+  )
+
+  const fieldErrors = useMemo(() => (errors && typeof errors !== 'string' ? errors : undefined), [errors])
 
   return (
     <CollapsibleCard
@@ -44,9 +52,13 @@ const ModifierItem = ({
         <ItemControls modifier={modifier} addModifiers={addModifiers} deleteModifier={deleteModifier} />
       }
     >
-      <div className={clsx({ [classes.disabled]: !enabled })}>
+      <div className={clsx({ [classes.disabled]: !!modifier.disabled })}>
         <Box display="flex" alignItems="center">
-          <Checkbox checked={enabled} onChange={handleEnabledChange} className={classes.checkbox} />
+          <Checkbox
+            checked={!modifier.disabled}
+            onChange={handleEnabledChange}
+            className={classes.checkbox}
+          />
           <ModifierDescription modifier={modifier} definition={definition} />
         </Box>
         <Box display="flex" flexDirection="column" style={{ paddingTop: '10px' }}>
@@ -58,7 +70,7 @@ const ModifierItem = ({
               value={modifier.options[key]}
               key={key}
               editModifier={editModifier}
-              error={errors?.[key]}
+              error={fieldErrors?.[key]}
             />
           ))}
         </Box>

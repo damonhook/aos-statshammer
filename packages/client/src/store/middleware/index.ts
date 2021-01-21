@@ -1,6 +1,7 @@
 import { Middleware } from '@reduxjs/toolkit'
-import validateUnitFormMiddleware from './validateUnitFormMiddleware'
+
 import profileFormMiddleware from './profileFormMiddleware'
+import validateUnitFormMiddleware from './unitFormMiddleware'
 
 const customMiddleware: Middleware[] = [validateUnitFormMiddleware, profileFormMiddleware]
 

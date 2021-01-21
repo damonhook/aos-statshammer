@@ -1,5 +1,5 @@
-import React from 'react'
 import { Box, Typography } from '@material-ui/core'
+import React from 'react'
 
 interface TabPanelProps {
   index: any
@@ -14,8 +14,8 @@ const TabPanel = ({ index, value, children, ...other }: TabPanelProps) => {
       component="div"
       role="tabpanel"
       hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
+      id={`home-tabpanel-${index}`}
+      aria-labelledby={`home-tab-${index}`}
       style={{ flexGrow: 1, maxWidth: '100vw' }}
       {...other}
     >

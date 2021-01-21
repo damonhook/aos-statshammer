@@ -1,11 +1,14 @@
-import React, { useCallback } from 'react'
-import UnitCard from './UnitCard'
 import { Box, Button, makeStyles, Theme } from '@material-ui/core'
-import { Add, ImportExport } from '@material-ui/icons'
+import { Add } from '@material-ui/icons'
+import NoItemsCard from 'components/NoItemsCard'
+import UnitDialog from 'features/Forms/UnitDialog'
+import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { unitsSelector } from 'store/selectors/unitsSelectors'
 import { unitsStore } from 'store/slices'
-import UnitDialog from 'features/Forms/UnitDialog'
+
+import ImportUnitButton from './ImportUnitButton'
+import UnitCard from './UnitCard'
 
 const useStyles = makeStyles((theme: Theme) => ({
   addButton: { marginRight: theme.spacing(1) },
@@ -22,10 +25,14 @@ const Units = () => {
 
   return (
     <div>
-      {units.map(unit => (
-        <UnitCard key={unit.id} unit={unit} />
-      ))}
-      <Box display="flex">
+      <div>
+        {units && units.length ? (
+          units.map(unit => <UnitCard key={unit.id} unit={unit} />)
+        ) : (
+          <NoItemsCard title="It's lonely here" description="There are no units here, try adding some" />
+        )}
+      </div>
+      <Box display="flex" paddingTop={2}>
         <Button
           variant="contained"
           fullWidth
@@ -36,13 +43,9 @@ const Units = () => {
         >
           Add Unit
         </Button>
-        <Button variant="contained" startIcon={<ImportExport />} color="primary">
-          Import
-        </Button>
+        <ImportUnitButton />
       </Box>
-      {/* <Route path="/units/:unitId/edit/:id" component={WeaponProfileDialog} /> */}
       <UnitDialog />
-      {/* <WeaponProfileDialog /> */}
     </div>
   )
 }

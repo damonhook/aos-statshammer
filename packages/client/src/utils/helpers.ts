@@ -22,3 +22,9 @@ export const removeEmpty = (obj: Record<string, any>) => {
   })
   return finalObj
 }
+
+export const getLoopingArray = (orig: any[], length: number) => {
+  const newList = new Array(Math.floor(length / orig.length)).fill(orig).flat()
+  newList.push(...orig.slice(0, length % orig.length))
+  return newList
+}

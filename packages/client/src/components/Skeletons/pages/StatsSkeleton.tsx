@@ -1,9 +1,10 @@
+import { Box } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 import React from 'react'
-import GraphSkeleton from '../GraphSkeleton'
+
 import CardSkeleton from '../CardSkeleton'
+import GraphSkeleton from '../GraphSkeleton'
 import TableSkeleton from '../TableSkeleton'
-import { Box } from '@material-ui/core'
 
 const StatsSkeleton = () => {
   return (

@@ -4,7 +4,7 @@ import BaseModifier from './BaseModifier'
 
 export default class Reroll extends BaseModifier {
   static displayName = 'Reroll'
-  static description = 'Reroll rolls for {characteristic}'
+  static description = 'Reroll rolls {characteristic}'
   static availableCharacteristics = [C.TO_HIT, C.TO_WOUND]
 
   protected static get options() {

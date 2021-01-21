@@ -1,25 +1,28 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react'
-import TabPanel from './TabPanel'
-import { Grid, Tab, Tabs, useTheme, makeStyles, Theme, useMediaQuery } from '@material-ui/core'
-import SwipeableViews from 'react-swipeable-views'
-import { useDispatch, useSelector } from 'react-redux'
-import Store from 'types/store'
+import { Grid, makeStyles, Tab, Tabs, Theme, useTheme } from '@material-ui/core'
 import { getModifiers } from 'api/modifiers'
-import UnitsSkeleton from 'components/Skeletons/pages/UnitsSkeleton'
 import StatsSkeleton from 'components/Skeletons/pages/StatsSkeleton'
 import TargetSkeleton from 'components/Skeletons/pages/TargetSkeleton'
+import UnitsSkeleton from 'components/Skeletons/pages/UnitsSkeleton'
+import { useIsMobile } from 'hooks'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import SwipeableViews from 'react-swipeable-views'
+import Store from 'types/store'
+import { PAGE_ROUTES } from 'utils/routes'
+
+import TabPanel from './TabPanel'
 
 function a11yProps(index: any) {
   return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
+    id: `home-tab-${index}`,
+    'aria-controls': `home-tabpanel-${index}`,
   }
 }
 
 const tabConfig = {
   units: { title: 'Units', route: '/' },
   target: { title: 'Target', route: '/target' },
-  stats: { title: 'Stats', route: '/stats' },
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -29,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexGrow: 1,
   },
   statsAside: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
 }))
@@ -57,14 +60,10 @@ const Home = () => {
   const [value, setValue] = useState(0)
   const classes = useStyles()
   const theme = useTheme()
-  const statsAsTab = useMediaQuery(theme.breakpoints.down('sm'))
+  const isMobile = useIsMobile()
   const dispatch = useDispatch()
 
   const { modifiers, targetModifiers } = useSelector((state: Store) => state.modifiers)
-
-  useEffect(() => {
-    if (!statsAsTab && value === 2) setValue(0)
-  }, [statsAsTab, value, setValue])
 
   useEffect(() => {
     if (!modifiers || !modifiers.length || !targetModifiers || !targetModifiers.length) {
@@ -82,6 +81,7 @@ const Home = () => {
 
   return (
     <div className={classes.root} style={{ padding: 4 }}>
+      <Redirect from={PAGE_ROUTES.STATS} to={PAGE_ROUTES.HOME} />
       <Grid container spacing={1} style={{ flex: 1 }}>
         <Grid item xs={12} md={6}>
           <Tabs
@@ -90,11 +90,10 @@ const Home = () => {
             indicatorColor="primary"
             textColor="primary"
             variant="fullWidth"
-            aria-label="full width tabs example"
+            aria-label="home tabs"
           >
             <Tab label={tabConfig.units.title} {...a11yProps(0)} />
             <Tab label={tabConfig.target.title} {...a11yProps(1)} />
-            {statsAsTab && <Tab label={tabConfig.stats.title} {...a11yProps(2)} />}
           </Tabs>
           <div>
             <SwipeableViews
@@ -115,17 +114,10 @@ const Home = () => {
                   <Target />
                 </Suspense>
               </TabPanel>
-              {!!statsAsTab && (
-                <TabPanel value={value} index={2} dir={theme.direction}>
-                  <Suspense fallback={<StatsSkeleton />}>
-                    <Stats />
-                  </Suspense>
-                </TabPanel>
-              )}
             </SwipeableViews>
           </div>
         </Grid>
-        {!statsAsTab && (
+        {!isMobile && (
           <Grid item xs md={6}>
             <div className={classes.statsAside}>
               <Suspense fallback={<StatsSkeleton />}>

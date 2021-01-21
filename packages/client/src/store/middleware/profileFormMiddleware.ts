@@ -1,7 +1,8 @@
-import { profileFormStore } from 'store/slices'
-import { createMiddleware } from './utils'
-import { validateCharacteristics, validateProfile } from 'utils/validators/weaponProfile'
+import { profileFormStore } from 'store/slices/forms'
 import { validateModifiers } from 'utils/validators/modifiers'
+import { validateCharacteristics, validateProfile } from 'utils/validators/weaponProfile'
+
+import { createMiddleware } from './utils'
 
 const actions = profileFormStore.actions
 
@@ -11,7 +12,7 @@ export default createMiddleware((store, action) => {
       const state = store.getState()
       const data = state.forms.weaponProfile.data
       const definitions = state.modifiers.modifiers
-      const errors = data ? validateProfile(data, definitions) : undefined
+      const errors = data ? validateProfile(data, { modifierDefinitions: definitions }) : undefined
       store.dispatch(actions.setErrors({ errors }))
       break
     }
@@ -23,13 +24,16 @@ export default createMiddleware((store, action) => {
     case actions.addModifiers.type:
     case actions.addModifier.type:
     case actions.deleteModifier.type:
-    case actions.editModifier.type: {
+    case actions.setModifierDisabled.type:
+    case actions.editModifierOption.type: {
       const state = store.getState()
       const formData = state.forms.weaponProfile.data
       const definitions = state.modifiers.modifiers
       store.dispatch(
         actions.setErrors({
-          errors: { modifiers: validateModifiers(formData?.modifiers ?? [], definitions) },
+          errors: {
+            modifiers: validateModifiers(formData?.modifiers ?? [], { modifierDefinitions: definitions }),
+          },
         })
       )
       break

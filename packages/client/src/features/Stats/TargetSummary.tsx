@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react'
-import CollapsibleCard from 'components/CollapsibleCard'
-import { useSelector } from 'react-redux'
-import Store from 'types/store'
 import { Typography } from '@material-ui/core'
+import CollapsibleCard from 'components/CollapsibleCard'
+import ModifierDescription from 'components/ModifierDescription'
+import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { ModifierDefinition } from 'types/modifierDefinition'
 import { Modifier } from 'types/modifierInstance'
-import ModifierDescription from 'components/ModifierDescription'
+import Store from 'types/store'
 
 const TargetSummary = () => {
   const definitions = useSelector((state: Store) => state.modifiers.targetModifiers)
-  const { modifiers } = useSelector((state: Store) => state.target)
+  const modifiers = useSelector((state: Store) => state.target.modifiers.filter(m => !m.disabled))
 
   const data = useMemo(
     () =>
@@ -19,6 +19,8 @@ const TargetSummary = () => {
       }, new Array<{ definition: ModifierDefinition; modifier: Modifier }>()),
     [definitions, modifiers]
   )
+
+  if (!modifiers || !modifiers.length) return null
 
   return (
     <CollapsibleCard title="Target Summary">

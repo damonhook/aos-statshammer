@@ -1,11 +1,13 @@
-import React, { useCallback } from 'react'
-import ModifierSelector from 'components/ModifierSelector'
-import { useDispatch, useSelector } from 'react-redux'
-import Store from 'types/store'
-import { Modifier } from 'types/modifierInstance'
+import { Box } from '@material-ui/core'
 import ModifierList from 'components/ModifierList'
-import { HASH_ROUTES } from 'utils/routes'
+import ModifierSelector from 'components/ModifierSelector'
+import NoItemsCard from 'components/NoItemsCard'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { targetStore } from 'store/slices'
+import { Modifier } from 'types/modifierInstance'
+import Store from 'types/store'
+import { HASH_ROUTES } from 'utils/routes'
 
 const Target = () => {
   const modifiers = useSelector((state: Store) => state.modifiers.targetModifiers)
@@ -21,7 +23,7 @@ const Target = () => {
 
   const handleEditModifier = useCallback(
     (id: string, key: string, value: string | number | boolean) => {
-      dispatch(targetStore.actions.editModifier({ id, key, value }))
+      dispatch(targetStore.actions.editModifierOption({ id, key, value }))
     },
     [dispatch]
   )
@@ -33,20 +35,34 @@ const Target = () => {
     [dispatch]
   )
 
+  const handleModifierEnabledChanged = useCallback(
+    (id: string, newValue: boolean) => {
+      dispatch(targetStore.actions.setModifierDisabled({ id, disabled: !newValue }))
+    },
+    [dispatch]
+  )
+
   return (
     <div>
-      <ModifierList
-        definitions={modifiers}
-        modifiers={data}
-        addModifiers={handleAddModifiers}
-        editModifier={handleEditModifier}
-        deleteModifier={handleDeleteModifier}
-      />
-      <ModifierSelector
-        modifiers={modifiers}
-        onConfirm={handleAddModifiers}
-        hash={HASH_ROUTES.TARGET_MODIFIERS}
-      />
+      {data && data.length ? (
+        <ModifierList
+          definitions={modifiers}
+          modifiers={data}
+          addModifiers={handleAddModifiers}
+          editModifier={handleEditModifier}
+          deleteModifier={handleDeleteModifier}
+          onEnabledChanged={handleModifierEnabledChanged}
+        />
+      ) : (
+        <NoItemsCard title="No modifiers" description="No target modifiers are present (Basic target)" />
+      )}
+      <Box paddingTop={2}>
+        <ModifierSelector
+          modifiers={modifiers}
+          onConfirm={handleAddModifiers}
+          hash={HASH_ROUTES.TARGET_MODIFIERS}
+        />
+      </Box>
     </div>
   )
 }

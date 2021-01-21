@@ -22,6 +22,9 @@ export const DIALOG_ROUTES = {
 type DialogRouteKeys = keyof typeof DIALOG_ROUTES
 export type DialogRoute = typeof DIALOG_ROUTES[DialogRouteKeys]
 
+export const getDialogRoute = (path: DialogRoute, params: { [name: string]: string }) =>
+  Object.keys(params).reduce((acc, key) => acc.replace(`:${key}`, params[key]), path)
+
 // === Hashes ===
 
 export const HASH_ROUTES = {
