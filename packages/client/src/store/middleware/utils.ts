@@ -13,7 +13,7 @@ export type MiddlewareStore = MiddlewareAPI<Dispatch<AnyAction>, Store>
 export const createMiddleware = <T = any>(
   callback: (store: MiddlewareStore, action: PayloadAction<T>) => void,
   onAction?: ActionCreatorWithPayload<T>
-): Middleware<{}, Store> => {
+): Middleware<unknown, Store> => {
   return store => next => action => {
     const result = next(action)
     if (!onAction || action.type === onAction.type) {

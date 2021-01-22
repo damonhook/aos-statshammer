@@ -8,12 +8,12 @@ export interface ModifierDefinition {
   id: string
   name: string
   description: string
-  options: object
+  options: Record<string, any>
 }
 
 export interface ModifiersResponse {
   modifiers: ModifierDefinition[]
-  target_modifiers: ModifierDefinition[]
+  targetModifiers: ModifierDefinition[]
 }
 
 // === Comparison ===

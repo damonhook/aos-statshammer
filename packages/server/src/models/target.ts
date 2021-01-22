@@ -1,4 +1,4 @@
-import { TargetModifierLookup, TargetModifierData } from './targetModifiers'
+import { TargetModifierData,TargetModifierLookup } from './targetModifiers'
 
 export interface TargetParams {
   save?: number | null

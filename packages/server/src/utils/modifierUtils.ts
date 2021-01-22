@@ -23,7 +23,7 @@ export const choiceOption = ({ defaultVal = null, items }: IChoiceOption) => {
   let option = { type: 'choice', items }
   let newDefaultVal = defaultVal
   if (newDefaultVal == null && items && items.length === 1) {
-    ;[newDefaultVal] = items
+    [newDefaultVal] = items
   }
   option = addDefault(option, newDefaultVal)
   return option

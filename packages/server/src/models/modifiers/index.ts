@@ -47,12 +47,12 @@ export class ModifierLookup {
     data: ModifierData,
     modifierClass: new (data: any) => T
   ): ModifierList<T> {
-    const target_id = modifierClass.name.toLowerCase()
+    const targetId = modifierClass.name.toLowerCase()
     const list = new ModifierList<T>()
     data.forEach(d => {
       if (d instanceof BaseModifier) {
         if (d instanceof modifierClass) list.push(d)
-      } else if (d?.type.toLowerCase().replace(/_/g, '') === target_id && 'options' in d) {
+      } else if (d?.type.toLowerCase().replace(/_/g, '') === targetId && 'options' in d) {
         list.push(new modifierClass(d.options))
       }
     })

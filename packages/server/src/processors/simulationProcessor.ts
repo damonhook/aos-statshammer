@@ -1,7 +1,7 @@
-import { WeaponProfile } from 'models/weaponProfile'
-import { Target } from 'models/target'
 import { Characteristic as C } from 'common'
 import { D6 } from 'models/dice'
+import { Target } from 'models/target'
+import { WeaponProfile } from 'models/weaponProfile'
 
 export default class SimulationProcessor {
   profile: WeaponProfile
@@ -96,7 +96,7 @@ export default class SimulationProcessor {
     return mods.reduce((acc, m) => acc + m.bonus.roll(), 0)
   }
 
-  private withRerolls(key: C, target: number, bonuses: number = 0): number {
+  private withRerolls(key: C, target: number, bonuses = 0): number {
     const getModifier = (name: 'reroll' | 'rerollFailed' | 'rerollOnes', key: C) =>
       key !== C.SAVE ? this.profile.modifiers[name].get(key) : this.target.modifiers[name].get()
 
@@ -111,12 +111,12 @@ export default class SimulationProcessor {
     return roll
   }
 
-  private resolveFNPRoll(damage: number, isMortalWounds: boolean = false): number {
+  private resolveFNPRoll(damage: number, isMortalWounds = false): number {
     const mods = this.target.modifiers.fnp.getAll()
     mods.push(...(isMortalWounds ? this.target.modifiers.mortalNegate.getAll() : []))
     if (mods && mods.length) {
       const mod = mods.reduce((acc, m) => (m.on < acc.on ? m : acc), mods[0])
-      return Array.from({ length: damage }).reduce<number>(acc => (D6.roll() >= mod.on ? 0 : 1), 0)
+      return Array.from({ length: damage }).reduce<number>(acc => acc + (D6.roll() >= mod.on ? 0 : 1), 0)
     }
     return damage
   }

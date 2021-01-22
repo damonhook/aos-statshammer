@@ -1,5 +1,6 @@
 import { Characteristic as C } from 'common'
 import { booleanOption, choiceOption, numberOption, rollOption } from 'utils/modifierUtils'
+
 import DiceValue from '../diceValue'
 import BaseModifier from './BaseModifier'
 

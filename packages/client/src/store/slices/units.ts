@@ -72,7 +72,7 @@ export default createSlice({
     ) {
       const { unitId, id, newProfile } = action.payload
       const unit = state.items.find(u => u.id === unitId)
-      let index = unit ? unit.weaponProfiles.findIndex(p => p.id === id) : -1
+      const index = unit ? unit.weaponProfiles.findIndex(p => p.id === id) : -1
       if (unit && index !== -1) {
         const weaponProfile = unit.weaponProfiles[index]
         unit.weaponProfiles[index] = { ...weaponProfile, ...newProfile, id: weaponProfile.id }

@@ -6,9 +6,12 @@ import { ModifierDefinition } from 'types/modifierDefinition'
 import { removeEmpty } from './helpers'
 import { validateUnit } from './validators/unit'
 
-export const convertUnitJson = (json: object, definitions: ModifierDefinition[]): ExportedUnitData => {
+export const convertUnitJson = (
+  json: Record<string, unknown>,
+  definitions: ModifierDefinition[]
+): ExportedUnitData => {
   const metadata = getMetadata(json)
-  const unit = cleanData(json, definitions)
+  const unit = cleanData(json)
   const errors = removeEmpty(validateUnit(unit, { total: true, modifierDefinitions: definitions }))
   if (!errors || !Object.keys(errors).length) {
     return { metadata, unit }
@@ -17,7 +20,7 @@ export const convertUnitJson = (json: object, definitions: ModifierDefinition[])
   throw new Error('Invalid Import')
 }
 
-const cleanData = (json: Record<string, any>, definitions: ModifierDefinition[]): ExportedUnit => {
+const cleanData = (json: Record<string, any>): ExportedUnit => {
   const data: Record<string, any> = humps.camelizeKeys(json)
   return {
     name: data.name,

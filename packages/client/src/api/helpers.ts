@@ -9,14 +9,18 @@ interface GetParams {
   extra?: Omit<RequestInit, 'method'>
 }
 
-interface PostParams<T extends object> extends GetParams {
+interface PostParams<T extends Record<string, unknown>> extends GetParams {
   body: T
   responseProcessor?: (request: T) => HumpsProcessor
 }
 
 // === Methods ===
 
-export const get = async <T extends object>({ path, query, extra }: GetParams): Promise<T> => {
+export const get = async <T extends Record<string, unknown>>({
+  path,
+  query,
+  extra,
+}: GetParams): Promise<T> => {
   const request = await fetch(buildRequestUrl(path, query), {
     method: 'GET',
     ...extra,
@@ -24,7 +28,7 @@ export const get = async <T extends object>({ path, query, extra }: GetParams): 
   return parseResponse<T>(request)
 }
 
-export const post = async <R extends object, T extends object>({
+export const post = async <R extends Record<string, unknown>, T extends Record<string, unknown>>({
   path,
   body,
   query,
@@ -61,12 +65,12 @@ const buildRequestUrl = (path: string, query?: { [name: string]: any }): string 
   return params ? `${url}?${params}` : url
 }
 
-const parseResponse = async <T extends object>(
+const parseResponse = async <T extends Record<string, unknown>>(
   response: Response,
   processor?: HumpsProcessor
 ): Promise<T> => {
   if (response.ok) {
-    const json = await response.json()
+    const json: Record<string, unknown> = await response.json()
     return humps.camelizeKeys(json, processor) as T
   }
   let err = 'An unexpected error occured'

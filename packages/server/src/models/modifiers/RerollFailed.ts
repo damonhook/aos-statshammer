@@ -1,5 +1,6 @@
 import { Characteristic as C } from 'common'
 import { choiceOption } from 'utils/modifierUtils'
+
 import BaseModifier from './BaseModifier'
 
 export default class RerollFailed extends BaseModifier {

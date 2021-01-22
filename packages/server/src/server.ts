@@ -1,18 +1,18 @@
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
+import bodyParser from 'body-parser'
 import express from 'express'
 import { initialize } from 'express-openapi'
 import { readFileSync } from 'fs'
-import path from 'path'
-import AosController from './controller'
-import bodyParser from 'body-parser'
-import type { CompareRequest, ModifiersRequest } from 'models/schema'
-import { withCaseConversion } from 'utils/requestUtils'
-import { UnitParams } from 'models/unit'
 import { HumpsProcessorParameter } from 'humps'
+import type { CompareRequest, ModifiersRequest } from 'models/schema'
+import { UnitParams } from 'models/unit'
+import path from 'path'
+import { withCaseConversion } from 'utils/requestUtils'
 
-// @ts-ignore
+import AosController from './controller'
+
 const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))

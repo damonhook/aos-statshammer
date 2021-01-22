@@ -1,4 +1,3 @@
-import { choiceOption } from 'utils/modifierUtils'
 import { Characteristic as C } from 'common'
 import type { ModifierDefinition } from 'models/schema'
 
@@ -21,7 +20,7 @@ export default class BaseModifier {
     this.characteristic = characteristic
   }
 
-  protected static get options(): object {
+  protected static get options(): Record<string, unknown> {
     throw new Error('Not Implemented!')
   }
 

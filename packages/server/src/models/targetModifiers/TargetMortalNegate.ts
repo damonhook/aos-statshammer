@@ -1,4 +1,5 @@
 import { rollOption } from 'utils/modifierUtils'
+
 import BaseTargetModifier from './BaseTargetModifier'
 
 export default class TargetMortalNegate extends BaseTargetModifier {

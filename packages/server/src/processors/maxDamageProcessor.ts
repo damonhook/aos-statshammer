@@ -1,5 +1,5 @@
-import { WeaponProfile } from 'models/weaponProfile'
 import { Characteristic as C } from 'common'
+import { WeaponProfile } from 'models/weaponProfile'
 
 export default class MaxDamageProcessor {
   profile: WeaponProfile

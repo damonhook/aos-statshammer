@@ -5,19 +5,23 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.18.3]
+        node-version: [12.18]
+        yarn-version: [1.22]
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout
+      uses: actions/checkout@v1
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install -g yarn@1.22.4
+
+    - name: Install Yarn ${{ matrix.yarn-version }}
+      run: npm install -g yarn@1.22.4
+
     - name: Install Dependencies
-      run: yarn setup
-    - name: Build
-      run: yarn heroku-postbuild
+      run: yarn install
+
     - name: Lint and Test
       run: |
         yarn lint
-        yarn test

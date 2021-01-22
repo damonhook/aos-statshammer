@@ -8,7 +8,7 @@ import { BarChart, Home, Info, Timeline } from '@material-ui/icons'
 import { useCurrentRoute, useIsMobile } from 'hooks'
 import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
-import { PAGE_ROUTES,PageRoute } from 'utils/routes'
+import { PAGE_ROUTES, PageRoute } from 'utils/routes'
 
 const useStyles = makeStyles((theme: Theme) => ({
   bottomNav: {
@@ -39,7 +39,7 @@ const BottomNavigation = () => {
   const route = useCurrentRoute()
 
   const value = useMemo(() => {
-    let index = navConfig.findIndex(n => n.route === route)
+    const index = navConfig.findIndex(n => n.route === route)
     return index !== -1 ? index : 0
   }, [route])
 

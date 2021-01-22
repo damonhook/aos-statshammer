@@ -1,7 +1,7 @@
 export const startWithUppercase = (str: string) => (str ? str[0].toUpperCase() + str.slice(1) : str)
 
 export const titleCase = (str: string) => {
-  var words = str
+  const words = str
     .toLowerCase()
     .split(' ')
     .map(w => startWithUppercase(w))
@@ -9,7 +9,7 @@ export const titleCase = (str: string) => {
 }
 
 export const removeEmpty = (obj: Record<string, any>) => {
-  let finalObj: Record<string, any> = {}
+  const finalObj: Record<string, any> = {}
   Object.keys(obj).forEach(key => {
     if (obj[key] && typeof obj[key] === 'object') {
       const nestedObj = removeEmpty(obj[key])

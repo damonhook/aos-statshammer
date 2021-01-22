@@ -66,4 +66,4 @@ const D3 = new Dice(3)
 /** A 6 sided dice */
 const D6 = new Dice(6)
 
-export { Dice as default, D3, D6 }
+export { D3, D6, Dice as default }

@@ -1,7 +1,7 @@
-import { WeaponProfile } from 'models/weaponProfile'
-import { Target } from 'models/target'
 import { Characteristic as C } from 'common'
 import { D6 } from 'models/dice'
+import { Target } from 'models/target'
+import { WeaponProfile } from 'models/weaponProfile'
 
 export default class AverageDamageProcessor {
   profile: WeaponProfile
@@ -62,7 +62,7 @@ export default class AverageDamageProcessor {
     return this.resolveFNP(damagePerWound * unsavedWounds)
   }
 
-  private resolveFNP(damage: number, isMortalWounds: boolean = false): number {
+  private resolveFNP(damage: number, isMortalWounds = false): number {
     const mods = this.target.modifiers.fnp.getAll()
     mods.push(...(isMortalWounds ? this.target.modifiers.mortalNegate.getAll() : []))
     if (mods && mods.length) {

@@ -1,3 +1,5 @@
+import { SAVES } from 'common'
+import { ModifierLookup } from 'models/modifiers'
 import type {
   AverageDamageResult,
   CompareRequest,
@@ -5,18 +7,17 @@ import type {
   ModifiersRequest,
   ModifiersResponse,
 } from 'models/schema'
-import { Unit } from './models/unit'
-import AverageDamageProcessor from 'processors/averageDamageProcessor'
-import { SAVES } from 'common'
 import { Target } from 'models/target'
-import { ModifierLookup } from 'models/modifiers'
 import { TargetModifierLookup } from 'models/targetModifiers'
+import AverageDamageProcessor from 'processors/averageDamageProcessor'
+
+import { Unit } from './models/unit'
 
 export default class AosController {
   public getModifiers({}: ModifiersRequest): ModifiersResponse {
     return {
       modifiers: ModifierLookup.availableModifiers.map(mod => mod.metadata),
-      target_modifiers: TargetModifierLookup.availableModifiers.map(mod => mod.metadata),
+      targetModifiers: TargetModifierLookup.availableModifiers.map(mod => mod.metadata),
     }
   }
 

@@ -1,0 +1,14 @@
+root: true
+extends:
+  - plugin:@typescript-eslint/recommended
+  - prettier
+plugins:
+  - simple-import-sort
+rules:
+  camelcase: "warn"
+  simple-import-sort/imports: "warn"
+  simple-import-sort/exports: "warn"
+  "@typescript-eslint/explicit-function-return-type": "off"
+  "@typescript-eslint/explicit-module-boundary-types": "off"
+  "@typescript-eslint/no-explicit-any": "off"
+  "@typescript-eslint/no-inferrable-types": "off"

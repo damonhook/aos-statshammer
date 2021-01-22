@@ -11,9 +11,13 @@
   "scripts": {
     "server": "yarn workspace server",
     "client": "yarn workspace client",
-    "start": "run-p \"server dev\" \"client start\""
+    "start": "run-p \"server dev\" \"client start\"",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx. ."
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
+    "eslint-config-prettier": "^7.2.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1"
   }

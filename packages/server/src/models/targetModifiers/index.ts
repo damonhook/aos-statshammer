@@ -1,10 +1,10 @@
 import BaseTargetModifier from './BaseTargetModifier'
+import TargetEthereal from './TargetEthereal'
 import TargetFeelNoPain from './TargetFeelNoPain'
+import TargetMortalNegate from './TargetMortalNegate'
 import TargetReroll from './TargetReroll'
 import TargetRerollFailed from './TargetRerollFailed'
 import TargetRerollOnes from './TargetRerollOnes'
-import TargetMortalNegate from './TargetMortalNegate'
-import TargetEthereal from './TargetEthereal'
 
 export type TargetModifierData = (BaseTargetModifier | { type: string; options: any })[]
 
@@ -38,11 +38,11 @@ export class TargetModifierLookup {
     data: TargetModifierData,
     modifierClass: new (data: any) => T
   ): TargetModifierList<T> {
-    const target_id = modifierClass.name.toLowerCase()
+    const targetId = modifierClass.name.toLowerCase()
     return data.reduce<TargetModifierList<T>>((acc, d) => {
       if (d instanceof BaseTargetModifier) {
         if (d instanceof modifierClass) acc.push(d)
-      } else if (d?.type.toLowerCase().replace(/_/g, '') === target_id && 'options' in d) {
+      } else if (d?.type.toLowerCase().replace(/_/g, '') === targetId && 'options' in d) {
         acc.push(new modifierClass(d.options))
       }
       return acc
