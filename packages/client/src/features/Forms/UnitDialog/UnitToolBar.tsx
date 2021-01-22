@@ -1,7 +1,13 @@
 import { Breadcrumbs, Button, Divider, Link, makeStyles, Theme, Typography } from '@material-ui/core'
 import { ImportExport, Save } from '@material-ui/icons'
-import React from 'react'
+import ImportButton from 'components/ImportButton'
+import { nanoid } from 'nanoid'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { unitFormStore } from 'store/slices/forms'
+import Store from 'types/store'
+import { convertUnitJson } from 'utils/exported'
 import { PAGE_ROUTES } from 'utils/routes'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -31,12 +37,32 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const UnitToolBar = () => {
   const classes = useStyles()
+  const definitions = useSelector((state: Store) => state.modifiers.modifiers)
   const history = useHistory()
+  const dispatch = useDispatch()
 
-  const onHomeClick = (event: React.MouseEvent<{}>) => {
+  const onHomeClick = (event: React.MouseEvent<any>) => {
     event.preventDefault()
     history.goBack()
   }
+
+  const handleUpload = useCallback(
+    (data: any) => {
+      try {
+        const imported = convertUnitJson(data, definitions)
+        // Add `id` to weapon profiles
+        const unit = {
+          ...imported.unit,
+          weaponProfiles: imported.unit.weaponProfiles.map(p => ({ ...p, id: nanoid() })),
+        }
+        console.log(unit)
+        dispatch(unitFormStore.actions.initForm({ unit }))
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [dispatch, definitions]
+  )
 
   return (
     <div className={classes.toolbar}>
@@ -49,9 +75,14 @@ const UnitToolBar = () => {
             <Typography color="textPrimary">Edit Unit</Typography>
           </Breadcrumbs>
         </div>
-        <Button startIcon={<ImportExport />} size="small">
+        <ImportButton
+          id="import-unit-dialog"
+          startIcon={<ImportExport />}
+          onImport={handleUpload}
+          size="small"
+        >
           Import
-        </Button>
+        </ImportButton>
         <Button startIcon={<Save />} size="small">
           Export
         </Button>

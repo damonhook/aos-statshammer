@@ -1,8 +1,17 @@
-import { AppBar, IconButton, Link, makeStyles, Theme, Toolbar, Typography } from '@material-ui/core'
+import {
+  AppBar,
+  IconButton,
+  Link,
+  makeStyles,
+  Theme,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
 import clsx from 'clsx'
 import LeftNavigation from 'components/LeftNavigation'
-import { useIsMobile } from 'hooks'
 import React, { useState } from 'react'
 import { PAGE_ROUTES } from 'utils/routes'
 
@@ -38,7 +47,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Header = () => {
   const [open, setOpen] = useState(false)
   const classes = useStyles()
-  const isMobile = useIsMobile()
+  const theme = useTheme()
+  const isMd = useMediaQuery(theme.breakpoints.down('md'))
 
   const handleDrawerOpen = () => setOpen(true)
   const handleDrawerClose = () => setOpen(false)
@@ -49,7 +59,7 @@ const Header = () => {
         position="fixed"
         elevation={1}
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open && !isMobile,
+          [classes.appBarShift]: open && !isMd,
         })}
       >
         <Toolbar>
@@ -58,7 +68,7 @@ const Header = () => {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, { [classes.hide]: open && !isMobile })}
+            className={clsx(classes.menuButton, { [classes.hide]: open && !isMd })}
           >
             <Menu />
           </IconButton>

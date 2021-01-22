@@ -35,18 +35,20 @@ const Stats = () => {
     dispatch(getComparison({ units: units }))
   }, [dispatch, units, target])
 
+  const loading = useMemo(() => pending && (!results || !results.length), [pending, results])
+
   return (
     <div className={classes.root}>
       <TargetSummary />
       <CollapsibleCard title="Average Damage Table">
-        {pending ? (
+        {loading ? (
           <TableSkeleton rows={units.length + 1} columns={3} dense />
         ) : (
           <ComparisonTable nameMapping={nameMapping} results={results} />
         )}
       </CollapsibleCard>
       <CollapsibleCard title="Graphs">
-        <ComparisonGraphs nameMapping={nameMapping} results={results} pending={pending} />
+        <ComparisonGraphs nameMapping={nameMapping} results={results} loading={loading} />
       </CollapsibleCard>
     </div>
   )

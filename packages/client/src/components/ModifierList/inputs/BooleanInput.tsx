@@ -7,7 +7,7 @@ import { InputComponentProps } from './types'
 type BooleanInputProps = InputComponentProps<BooleanOption>
 
 const BooleanInput = ({ name, value, onChange }: BooleanInputProps) => {
-  const handleChange = (event: React.ChangeEvent<{}>) => {
+  const handleChange = (event: React.ChangeEvent<any>) => {
     onChange(!value)
   }
 

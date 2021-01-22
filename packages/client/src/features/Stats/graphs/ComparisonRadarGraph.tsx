@@ -1,6 +1,7 @@
-import { Typography } from '@material-ui/core'
+import { Typography, useTheme } from '@material-ui/core'
 import React, { useMemo } from 'react'
 import {
+  Legend,
   PolarAngleAxis,
   PolarGrid,
   PolarRadiusAxis,
@@ -11,6 +12,7 @@ import {
 } from 'recharts'
 import { ComparisonResult } from 'types/store/comparison'
 import { NameMapping } from 'types/store/units'
+import { getLoopingArray } from 'utils/helpers'
 
 import { transformData } from './transform'
 
@@ -20,7 +22,13 @@ interface ComparisonRadarGraphProps {
 }
 
 const ComparisonRadarGraph = ({ nameMapping, results }: ComparisonRadarGraphProps) => {
+  const theme = useTheme()
   const data = useMemo(() => transformData(results, nameMapping), [results, nameMapping])
+  const colors = useMemo(
+    () => getLoopingArray(theme.palette.graphs.series, Object.keys(nameMapping).length),
+    [theme.palette.graphs.series, nameMapping]
+  )
+
   return (
     <div>
       <Typography align="center" variant="h6" style={{ fontWeight: 'normal' }}>
@@ -28,12 +36,13 @@ const ComparisonRadarGraph = ({ nameMapping, results }: ComparisonRadarGraphProp
       </Typography>
       <ResponsiveContainer height={300} width="100%">
         <RadarChart data={data}>
-          <PolarGrid />
-          <PolarAngleAxis dataKey="save" />
-          <PolarRadiusAxis />
-          <Tooltip />
-          {Object.values(nameMapping).map(name => (
-            <Radar dataKey={name} fill="#8884d8" />
+          <PolarGrid stroke={theme.palette.graphs.grid} />
+          <PolarAngleAxis dataKey="save" stroke={theme.palette.graphs.axis} />
+          <PolarRadiusAxis stroke={theme.palette.graphs.axis} />
+          <Tooltip cursor={{ stroke: theme.palette.graphs.axis }} />
+          <Legend />
+          {Object.values(nameMapping).map((name, index) => (
+            <Radar dataKey={name} fill={colors[index]} fillOpacity={0.1} stroke={colors[index]} />
           ))}
         </RadarChart>
       </ResponsiveContainer>

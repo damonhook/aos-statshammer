@@ -44,7 +44,7 @@ const BottomNavigation = () => {
   }, [route])
 
   const handleChange = useCallback(
-    (event: React.ChangeEvent<{}>, newIndex: number) => {
+    (event: React.ChangeEvent<any>, newIndex: number) => {
       history.push(navConfig[newIndex].route)
     },
     [history]

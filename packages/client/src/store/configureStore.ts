@@ -6,7 +6,14 @@ import Store from 'types/store'
 import FormsStore from 'types/store/forms'
 
 import customMiddleware from './middleware'
-import { comparisonStore, configStore, modifiersStore, targetStore, unitsStore } from './slices'
+import {
+  comparisonStore,
+  configStore,
+  modifiersStore,
+  notificationsStore,
+  targetStore,
+  unitsStore,
+} from './slices'
 import { profileFormStore, unitFormStore } from './slices/forms'
 
 export const formsReducer = combineReducers<FormsStore>({
@@ -20,6 +27,7 @@ export const appReducer = combineReducers<Store>({
   target: targetStore.reducer,
   comparison: comparisonStore.reducer,
   config: configStore.reducer,
+  notifications: notificationsStore.reducer,
   forms: formsReducer,
 })
 

@@ -1,24 +1,26 @@
-import { Divider, IconButton, List, makeStyles, SwipeableDrawer, Theme } from '@material-ui/core'
 import {
-  BarChart,
-  Brightness4 as DarkModeIcon,
-  Brightness7 as LightModeIcon,
-  ChevronLeft,
-  Home,
-  Info,
-  PictureAsPdf,
-  Timeline,
-} from '@material-ui/icons'
+  Divider,
+  IconButton,
+  List,
+  makeStyles,
+  SwipeableDrawer,
+  Theme,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core'
+import { Brightness4 as DarkModeIcon, Brightness7 as LightModeIcon, ChevronLeft } from '@material-ui/icons'
 import clsx from 'clsx'
+import { LogoIcon } from 'components/Icons'
 import { useCurrentRoute, useIsMobile } from 'hooks'
 import React, { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { configStore } from 'store/slices'
 import Store from 'types/store'
-import { PAGE_ROUTES, PageRoute } from 'utils/routes'
+import { PAGE_ROUTES } from 'utils/routes'
 
-import ListItem from './ListItem'
-import ListItemLink from './ListItemLink'
+import ClearUnitsItem from './ClearUnitsItem'
+import ListItem from './components/ListItem'
+import NavItems from './NavItems'
 
 interface StyleProps {
   width: number
@@ -47,30 +49,27 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: width,
     },
   }),
+  spacer: {
+    width: theme.spacing(7),
+  },
   toolbar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
+  logo: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    display: 'flex',
+    height: '100%',
+    paddingLeft: theme.spacing(5) + 2,
+    // paddingLeft: '44.2px',
+  },
 }))
-
-interface NavItemConfig {
-  label: string
-  route: PageRoute
-  icon: React.ReactNode
-  onlyMobile?: boolean
-}
-
-const navConfig: NavItemConfig[] = [
-  { label: 'Home', route: PAGE_ROUTES.HOME, icon: <Home /> },
-  { label: 'Stats', route: PAGE_ROUTES.STATS, icon: <BarChart />, onlyMobile: true },
-  { label: 'Simulations', route: PAGE_ROUTES.SIMULATIONS, icon: <Timeline /> },
-  { label: 'Download PDF', route: PAGE_ROUTES.EXPORT, icon: <PictureAsPdf /> },
-  { label: 'About', route: PAGE_ROUTES.ABOUT, icon: <Info /> },
-]
 
 interface LeftNavigationProps {
   open: boolean
@@ -81,68 +80,67 @@ interface LeftNavigationProps {
 
 const LeftNavigation = ({ open, onOpen, onClose, width = 240 }: LeftNavigationProps) => {
   const classes = useStyles({ width })
-  const isMobile = useIsMobile()
+  const theme = useTheme()
   const route = useCurrentRoute()
+  const isMobile = useIsMobile()
+  const isMd = useMediaQuery(theme.breakpoints.down('md'))
 
   const { darkMode } = useSelector((state: Store) => state.config)
   const dispatch = useDispatch()
-
-  const value = useMemo(() => {
-    let index = navConfig.findIndex(n => (!n.onlyMobile || isMobile) && n.route === route)
-    return index !== -1 ? index : 0
-  }, [route, isMobile])
 
   const handleDarkModeToggle = useCallback(() => {
     dispatch(configStore.actions.setDarkMode({ darkMode: !darkMode }))
   }, [dispatch, darkMode])
 
+  const drawerVariant = useMemo(() => {
+    return isMobile || (isMd && open) ? 'temporary' : 'permanent'
+  }, [isMd, isMobile, open])
+
+  const handleItemClick = useCallback(() => {
+    if (isMd || isMobile) onClose()
+  }, [isMd, isMobile, onClose])
+
   return (
-    <SwipeableDrawer
-      variant={isMobile ? 'temporary' : 'permanent'}
-      open={open}
-      onOpen={onOpen}
-      onClose={onClose}
-      className={clsx(classes.drawer, {
-        [classes.drawerOpen]: open,
-        [classes.drawerClose]: !open,
-      })}
-      classes={{
-        paper: clsx({
+    <>
+      {!isMobile && isMd && open && <div className={classes.spacer}></div>}
+      <SwipeableDrawer
+        variant={drawerVariant}
+        open={open}
+        onOpen={onOpen}
+        onClose={onClose}
+        className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,
-        }),
-      }}
-    >
-      <div className={classes.toolbar}>
-        <IconButton onClick={onClose}>
-          <ChevronLeft />
-        </IconButton>
-      </div>
-      <Divider />
-      <List>
-        {navConfig.map(
-          ({ label, route, icon, onlyMobile }, index) =>
-            (!onlyMobile || isMobile) && (
-              <ListItemLink
-                primary={label}
-                to={route}
-                icon={icon}
-                tooltip={!open}
-                selected={index === value}
-                key={label}
-                onClose={onClose}
-              />
-            )
-        )}
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+      >
+        <div className={classes.toolbar}>
+          <div className={classes.logo}>
+            <LogoIcon color="primary" fontSize="large" />
+          </div>
+          <IconButton onClick={onClose}>
+            <ChevronLeft />
+          </IconButton>
+        </div>
         <Divider />
-        <ListItem
-          primary={darkMode ? 'Light Mode' : 'Dark Mode'}
-          onClick={handleDarkModeToggle}
-          icon={darkMode ? <LightModeIcon /> : <DarkModeIcon />}
-          tooltip={!open}
-        />
-      </List>
-    </SwipeableDrawer>
+        <List>
+          <NavItems route={route} open={open} onClose={handleItemClick} />
+          <Divider />
+          <ListItem
+            primary={darkMode ? 'Light Mode' : 'Dark Mode'}
+            onClick={handleDarkModeToggle}
+            icon={darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+            tooltip={!open}
+          />
+          {route === PAGE_ROUTES.HOME && <ClearUnitsItem open={open} onClose={handleItemClick} />}
+        </List>
+      </SwipeableDrawer>
+    </>
   )
 }
 

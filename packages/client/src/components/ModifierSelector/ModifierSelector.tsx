@@ -6,6 +6,7 @@ import React, { useCallback, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { ModifierDefinition } from 'types/modifierDefinition'
 import { Modifier } from 'types/modifierInstance'
+import { HashRoute } from 'utils/routes'
 
 import ModifierItem from './ModifierItem'
 
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface ModifierSelectorProps {
-  hash: string
+  hash: HashRoute
   modifiers: ModifierDefinition[]
   onConfirm: (m: Omit<Modifier, 'id'>[]) => void
 }

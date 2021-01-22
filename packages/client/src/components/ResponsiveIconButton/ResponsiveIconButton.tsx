@@ -5,7 +5,7 @@ import React from 'react'
 interface ResponsiveIconButtonProps {
   text?: string
   icon: React.ReactNode
-  onClick?: (event: React.MouseEvent<{}>) => void
+  onClick?: (event: React.MouseEvent<any>) => void
 }
 
 const ResponsiveIconButton = ({ text, icon, onClick }: ResponsiveIconButtonProps) => {

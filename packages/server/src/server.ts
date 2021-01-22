@@ -6,7 +6,7 @@ import express from 'express'
 import { initialize } from 'express-openapi'
 import { readFileSync } from 'fs'
 import { HumpsProcessorParameter } from 'humps'
-import type { CompareRequest, ModifiersRequest } from 'models/schema'
+import type { CompareRequest, ModifiersRequest, SimulationsRequest } from 'models/schema'
 import { UnitParams } from 'models/unit'
 import path from 'path'
 import { withCaseConversion } from 'utils/requestUtils'
@@ -42,6 +42,18 @@ initialize({
         withCaseConversion(req.body, (data: CompareRequest) => controller.compareUnits(data), {
           responseProcessor: unitIdResponseProcessor,
         })
+      )
+    },
+    getSimulate: function (req, res) {
+      console.log(req.query)
+      res.send(
+        withCaseConversion(
+          { ...req.body, ...req.query },
+          (data: SimulationsRequest) => controller.simulateUnits(data),
+          {
+            responseProcessor: unitIdResponseProcessor,
+          }
+        )
       )
     },
   },

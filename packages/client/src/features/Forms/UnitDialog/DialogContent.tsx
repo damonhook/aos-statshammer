@@ -99,6 +99,7 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
             onClick={handleProfileClicked(profile.id)}
             onEnabledChanged={handleProfileEnabledChanged(profile.id)}
             controls={<ProfileControls unitId={unitId} profile={profile} />}
+            hover
           />
         ))}
         <Button variant="contained" fullWidth startIcon={<Add />} onClick={handleAddProfile} color="primary">

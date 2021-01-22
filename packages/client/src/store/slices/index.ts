@@ -1,5 +1,6 @@
 export { default as comparisonStore } from './comparison'
 export { default as configStore } from './config'
 export { default as modifiersStore } from './modifiers'
+export { default as notificationsStore } from './notifications'
 export { default as targetStore } from './target'
 export { default as unitsStore } from './units'

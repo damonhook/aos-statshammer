@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Collapse, Typography } from '@material-ui/core'
 import CollapsibleCard from 'components/CollapsibleCard'
 import ModifierDescription from 'components/ModifierDescription'
 import React, { useMemo } from 'react'
@@ -20,19 +20,19 @@ const TargetSummary = () => {
     [definitions, modifiers]
   )
 
-  if (!modifiers || !modifiers.length) return null
-
   return (
-    <CollapsibleCard title="Target Summary">
-      <div>
-        {data.map(({ modifier, definition }) => (
-          <Typography style={{ paddingBottom: '10px' }}>
-            <strong>{definition.name}</strong>
-            <ModifierDescription modifier={modifier} definition={definition} variant="body2" simple />
-          </Typography>
-        ))}
-      </div>
-    </CollapsibleCard>
+    <Collapse in={!!modifiers && !!modifiers.length}>
+      <CollapsibleCard title="Target Summary">
+        <div>
+          {data.map(({ modifier, definition }) => (
+            <Typography style={{ paddingBottom: '10px' }}>
+              <strong>{definition.name}</strong>
+              <ModifierDescription modifier={modifier} definition={definition} variant="body2" simple />
+            </Typography>
+          ))}
+        </div>
+      </CollapsibleCard>
+    </Collapse>
   )
 }
 

@@ -12,7 +12,10 @@ import { DIALOG_ROUTES, getDialogRoute } from 'utils/routes'
 
 import DialogContent from './DialogContent'
 
-export function openUnitDialog(history: { push: (path: string, state?: object) => void }, unitId: string) {
+export function openUnitDialog(
+  history: { push: (path: string, state?: Record<string, unknown>) => void },
+  unitId: string
+) {
   const path = getDialogRoute(DIALOG_ROUTES.EDIT_UNIT, { unitId })
   history.push(path, { modal: true })
 }
@@ -44,7 +47,7 @@ const WeaponProfileDialog = () => {
   }, [open, unit, dispatch])
 
   const saveForm = useCallback(
-    (event: React.MouseEvent<{}>) => {
+    (event: React.MouseEvent<any>) => {
       event.preventDefault()
       if (data) dispatch(unitsStore.actions.editUnit({ id: unitId, newUnit: data }))
       handleBack()

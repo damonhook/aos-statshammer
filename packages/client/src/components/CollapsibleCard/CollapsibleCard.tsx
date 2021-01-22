@@ -11,6 +11,12 @@ import clsx from 'clsx'
 import React, { useState } from 'react'
 
 const useStyles = makeStyles((theme: Theme) => ({
+  hover: {
+    '&:hover': { boxShadow: theme.shadows[3] },
+    transition: theme.transitions.create(['box-shadow'], {
+      duration: theme.transitions.duration.standard,
+    }),
+  },
   heading: {
     flex: 1,
   },
@@ -19,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: theme.spacing(1),
     transition: theme.transitions.create(['transform'], {
       duration: theme.transitions.duration.shortest,
+      delay: 300,
     }),
     '&$expanded': {
       transform: 'rotate(180deg)',
@@ -38,20 +45,21 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface CollapsibleCardProps {
   title: string
   startCollapsed?: boolean
+  hover?: boolean
   controls?: React.ReactNode
   children?: React.ReactNode
 }
 
-const CollapsibleCard = ({ title, children, startCollapsed = false, controls }: CollapsibleCardProps) => {
+const CollapsibleCard = ({ title, children, startCollapsed, hover, controls }: CollapsibleCardProps) => {
   const [open, setOpen] = useState(!startCollapsed)
   const classes = useStyles()
 
-  const handleChange = (e: React.ChangeEvent<{}>, isExpanded: boolean) => {
+  const handleChange = (e: React.ChangeEvent<any>, isExpanded: boolean) => {
     setOpen(isExpanded)
   }
 
   return (
-    <Accordion expanded={open} onChange={handleChange}>
+    <Accordion expanded={open} onChange={handleChange} className={clsx({ [classes.hover]: !!hover })}>
       <AccordionSummary
         aria-controls={`${title}-content`}
         id={`${title}-header`}

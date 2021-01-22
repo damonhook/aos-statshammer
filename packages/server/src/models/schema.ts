@@ -1,3 +1,5 @@
+import { SumulationResult } from 'types/simulations'
+
 import type { UnitParams } from './unit'
 
 // === Modifiers ===
@@ -30,7 +32,7 @@ export interface CompareResponse {
 export interface AverageDamageResult {
   save: number
   displaySave: string
-  values: { string: number }
+  values: { [name: string]: number }
 }
 
 // === Simulations ===
@@ -43,17 +45,4 @@ export interface SimulationsRequest {
 export interface SimulationsResponse {
   units: { [id: string]: string }
   results: SumulationResult[]
-}
-
-export interface SumulationResult {
-  save: number
-  displaySave: string
-  discrete: { string: number }[]
-  cumulative: { string: number }[]
-  metrics: { string: Metric }
-}
-
-export interface Metric {
-  max: number
-  average: number
 }

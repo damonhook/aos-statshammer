@@ -1,4 +1,4 @@
-import { IconButton, Menu as MuiMenu,MenuItem } from '@material-ui/core'
+import { IconButton, Menu as MuiMenu, MenuItem } from '@material-ui/core'
 import { MoreVert } from '@material-ui/icons'
 import React from 'react'
 
@@ -17,12 +17,12 @@ const Menu = ({ id, items }: MenuProps) => {
     event.stopPropagation()
   }
 
-  const handleClose = (event: React.MouseEvent<{}>) => {
+  const handleClose = (event: React.MouseEvent<any>) => {
     setAnchorEl(null)
     event.stopPropagation()
   }
 
-  const handleItemClick = (index: number) => (event: React.MouseEvent<{}>) => {
+  const handleItemClick = (index: number) => (event: React.MouseEvent<any>) => {
     items[index].onClick()
     handleClose(event)
   }

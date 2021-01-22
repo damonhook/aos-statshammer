@@ -71,7 +71,7 @@ const Home = () => {
     }
   }, [dispatch, modifiers, targetModifiers])
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     setValue(newValue)
   }
 

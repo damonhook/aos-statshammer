@@ -8,10 +8,11 @@ interface ListItemLinkProps {
   icon: React.ReactNode
   tooltip?: boolean
   selected?: boolean
+  disabled?: boolean
   onClose?: () => void
 }
 
-const ListItemLink = ({ primary, to, icon, tooltip, selected, onClose }: ListItemLinkProps) => {
+const ListItemLink = ({ primary, to, icon, tooltip, selected, onClose, disabled }: ListItemLinkProps) => {
   const handleClick = () => {
     if (onClose) onClose()
   }
@@ -19,7 +20,14 @@ const ListItemLink = ({ primary, to, icon, tooltip, selected, onClose }: ListIte
   return (
     <li>
       <Tooltip title={tooltip ? primary : ''} placement="right">
-        <ListItem button component={Link} to={to} selected={selected} onClick={handleClick}>
+        <ListItem
+          button
+          component={Link}
+          to={to}
+          selected={selected}
+          onClick={handleClick}
+          disabled={disabled}
+        >
           <ListItemIcon>{icon}</ListItemIcon>
           <ListItemText primary={primary} />
         </ListItem>

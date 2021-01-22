@@ -5,15 +5,15 @@ interface CaseConversionOptions<T> {
   responseProcessor?: (request: T) => HumpsProcessor
 }
 
-export function withCaseConversion<T extends Record<string, unknown>, R extends Record<string, unknown>>(
-  request: Record<string, unknown>,
+export function withCaseConversion<T extends Record<any, any>, R extends Record<any, any>>(
+  request: Record<any, any>,
   fetchResponse: (arg0: T) => R,
   options?: CaseConversionOptions<T>
-): Record<string, unknown> {
+): Record<string, any> {
   const requestData = humps.camelizeKeys(request, options?.requestProcessor) as T
   const responseData = fetchResponse(requestData)
   return humps.decamelizeKeys(
     responseData,
     options?.responseProcessor ? options.responseProcessor(requestData) : undefined
-  ) as Record<string, unknown>
+  ) as Record<string, any>
 }

@@ -11,8 +11,8 @@
   "scripts": {
     "server": "yarn workspace server",
     "client": "yarn workspace client",
-    "start": "run-p \"server dev\" \"client start\"",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx. ."
+    "start": "FORCE_COLOR=1 npm-run-all -l -p \"server dev\" \"client start\"",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.14.0",

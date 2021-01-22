@@ -35,11 +35,11 @@ export default class SimulationProcessor {
   }
 
   private simulateHitRoll(): number {
-    return this.simulateRollStep(C.TO_HIT, this.simulateWoundRoll)
+    return this.simulateRollStep(C.TO_HIT, () => this.simulateWoundRoll())
   }
 
   private simulateWoundRoll(): number {
-    return this.simulateRollStep(C.TO_WOUND, this.simulateSaveRoll)
+    return this.simulateRollStep(C.TO_WOUND, () => this.simulateSaveRoll())
   }
 
   private simulateSaveRoll(): number {

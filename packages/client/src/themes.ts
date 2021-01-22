@@ -1,4 +1,4 @@
-import { red, teal } from '@material-ui/core/colors'
+import { grey, red, teal } from '@material-ui/core/colors'
 import { createMuiTheme, Theme, ThemeOptions } from '@material-ui/core/styles'
 import ConfigStore from 'types/store/config'
 
@@ -11,7 +11,7 @@ const commonOtions: Partial<ThemeOptions> = {
   },
   mixins: {
     toolbar: {
-      minHeight: 52,
+      minHeight: 48,
     },
   },
   overrides: {
@@ -27,6 +27,12 @@ export const lightTheme: Theme = createMuiTheme({
   palette: {
     type: 'light',
     primary: teal,
+    graphs: {
+      grid: grey[300],
+      axis: grey[700],
+      tooltip: grey[50],
+      series: ['#8884d8', '#82ca9d', '#ff7300', teal[400], '#f50057'],
+    },
   },
   ...commonOtions,
 })
@@ -36,6 +42,12 @@ export const darkTheme: Theme = createMuiTheme({
     type: 'dark',
     primary: { main: teal[500] },
     secondary: { main: red[500] },
+    graphs: {
+      grid: grey[700],
+      axis: grey[400],
+      tooltip: grey[900],
+      series: ['#8884d8', '#82ca9d', '#ff7300', teal[400], '#ff5252'],
+    },
   },
   ...commonOtions,
 })

@@ -34,12 +34,16 @@ const UnitListControls = ({ unit }: UnitListControlsProps) => {
     dispatch(unitsStore.actions.deleteUnit({ id: unit.id }))
   }, [unit.id, dispatch])
 
+  const handleExport = useCallback(() => {
+    console.log('export')
+  }, [])
+
   return (
     <Menu
       items={[
         { name: 'Copy', onClick: handleCopy },
         { name: 'Delete', onClick: handleDelete },
-        { name: 'Export', onClick: () => {} },
+        { name: 'Export', onClick: handleExport },
       ]}
     />
   )
@@ -68,7 +72,7 @@ const UnitCard = ({ unit }: UnitCardProps) => {
   )
 
   return (
-    <CollapsibleCard title={unit.name} controls={<UnitListControls unit={unit} />}>
+    <CollapsibleCard title={unit.name} controls={<UnitListControls unit={unit} />} hover>
       <Box flex={1} style={{ maxWidth: '100%' }}>
         <div className={classes.content} onClick={handleUnitClicked}>
           {unit.weaponProfiles.map(profile => (

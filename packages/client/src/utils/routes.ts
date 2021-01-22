@@ -30,6 +30,7 @@ export const getDialogRoute = (path: DialogRoute, params: { [name: string]: stri
 export const HASH_ROUTES = {
   MODIFIERS: '#modifiers',
   TARGET_MODIFIERS: '#target-modifiers',
+  CLEAR_UNITS: '#clear-units',
 } as const
 
 type HashRouteKeys = keyof typeof HASH_ROUTES

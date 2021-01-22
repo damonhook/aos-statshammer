@@ -11,7 +11,7 @@ import { DIALOG_ROUTES, getDialogRoute } from 'utils/routes'
 import ProfileContent from './ProfileContent'
 
 export function openProfileDialog(
-  history: { push: (path: string, state?: object) => void },
+  history: { push: (path: string, state?: Record<string, unknown>) => void },
   unitId: string,
   id: string
 ) {
@@ -38,7 +38,7 @@ const WeaponProfileDialog = () => {
   }, [open, profile, dispatch])
 
   const saveForm = useCallback(
-    (event: React.MouseEvent<{}>) => {
+    (event: React.MouseEvent<any>) => {
       event.preventDefault()
       if (data) dispatch(unitFormStore.actions.editWeaponProfile({ id, newProfile: data }))
       handleBack()

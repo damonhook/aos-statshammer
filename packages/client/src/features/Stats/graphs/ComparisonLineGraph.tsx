@@ -1,8 +1,9 @@
-import { Typography } from '@material-ui/core'
+import { Typography, useTheme } from '@material-ui/core'
 import React, { useMemo } from 'react'
-import { Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { ComparisonResult } from 'types/store/comparison'
 import { NameMapping } from 'types/store/units'
+import { getLoopingArray } from 'utils/helpers'
 
 import { transformData } from './transform'
 
@@ -12,7 +13,13 @@ interface ComparisonLineGraphProps {
 }
 
 const ComparisonLineGraph = ({ nameMapping, results }: ComparisonLineGraphProps) => {
+  const theme = useTheme()
   const data = useMemo(() => transformData(results, nameMapping), [results, nameMapping])
+  const colors = useMemo(
+    () => getLoopingArray(theme.palette.graphs.series, Object.keys(nameMapping).length),
+    [theme.palette.graphs.series, nameMapping]
+  )
+
   return (
     <div>
       <Typography align="center" variant="h6" style={{ fontWeight: 'normal' }}>
@@ -20,12 +27,19 @@ const ComparisonLineGraph = ({ nameMapping, results }: ComparisonLineGraphProps)
       </Typography>
       <ResponsiveContainer height={300} width="100%">
         <LineChart data={data}>
-          <XAxis dataKey="save" />
-          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
+          <XAxis dataKey="save" stroke={theme.palette.graphs.axis} />
+          <YAxis stroke={theme.palette.graphs.axis} />
           <Tooltip />
           <Legend />
-          {Object.values(nameMapping).map(name => (
-            <Line dataKey={name} fill="#8884d8" />
+          {Object.values(nameMapping).map((name, index) => (
+            <Line
+              type="monotone"
+              dataKey={name}
+              stroke={colors[index]}
+              dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: 2 }}
+              activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 4 }}
+            />
           ))}
         </LineChart>
       </ResponsiveContainer>

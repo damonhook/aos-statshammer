@@ -34,14 +34,14 @@ const TabPanel = ({ children, value, index }: TabPanelProps) => {
 interface ComparisonGraphsProps {
   nameMapping: NameMapping
   results: ComparisonResult[]
-  pending: boolean
+  loading: boolean
 }
 
-const ComparisonGraphs = ({ nameMapping, results, pending }: ComparisonGraphsProps) => {
+const ComparisonGraphs = ({ nameMapping, results, loading }: ComparisonGraphsProps) => {
   const [value, setValue] = useState(0)
   const theme = useTheme()
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     setValue(newValue)
   }
 
@@ -57,7 +57,7 @@ const ComparisonGraphs = ({ nameMapping, results, pending }: ComparisonGraphsPro
     []
   )
 
-  if (pending)
+  if (loading)
     return (
       <div>
         <Skeleton variant="rect" height={48} style={{ marginBottom: 10 }} />

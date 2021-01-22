@@ -36,12 +36,12 @@ const ProfileToolBar = ({ unitId }: ProfileToolBarProps) => {
   const classes = useStyles()
   const history = useHistory()
 
-  const onUnitClick = (event: React.MouseEvent<{}>) => {
+  const onUnitClick = (event: React.MouseEvent<any>) => {
     event.preventDefault()
     history.goBack()
   }
 
-  const onHomeClick = (event: React.MouseEvent<{}>) => {
+  const onHomeClick = (event: React.MouseEvent<any>) => {
     event.preventDefault()
     history.goBack()
     history.goBack()

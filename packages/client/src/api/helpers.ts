@@ -16,11 +16,7 @@ interface PostParams<T extends Record<string, unknown>> extends GetParams {
 
 // === Methods ===
 
-export const get = async <T extends Record<string, unknown>>({
-  path,
-  query,
-  extra,
-}: GetParams): Promise<T> => {
+export const get = async <T extends Record<any, any>>({ path, query, extra }: GetParams): Promise<T> => {
   const request = await fetch(buildRequestUrl(path, query), {
     method: 'GET',
     ...extra,
@@ -28,7 +24,7 @@ export const get = async <T extends Record<string, unknown>>({
   return parseResponse<T>(request)
 }
 
-export const post = async <R extends Record<string, unknown>, T extends Record<string, unknown>>({
+export const post = async <R extends Record<any, any>, T extends Record<any, any>>({
   path,
   body,
   query,

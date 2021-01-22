@@ -116,7 +116,7 @@ const About = () => {
           <Section title="Notes">
             This is a free community tool built by Damon Hook (<i>NoMaDhOoK</i>).
             <br />
-            Keep an eye on the <AboutLink href={EXTERNAL_LINKS.RELEASES}>Github Releases</AboutLink>, or the
+            Keep an eye on the <AboutLink href={EXTERNAL_LINKS.RELEASES}>Github Releases</AboutLink>, or{' '}
             <AboutLink href={EXTERNAL_LINKS.REDDIT}>Reddit page</AboutLink> to get notified of new additions.
             <br />
             <br />

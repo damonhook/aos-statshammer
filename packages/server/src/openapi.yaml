@@ -30,6 +30,18 @@ paths:
         200:
           $ref: "#/components/responses/CompareResponse"
 
+  /api/simulate:
+    post:
+      operationId: getSimulate
+      summary: Perform a number of damage simulations for the given units
+      requestBody:
+        $ref: "#/components/requestBodies/CompareBody"
+      parameters:
+        - $ref: "#/components/parameters/limit"
+      responses:
+        200:
+          $ref: "#/components/responses/SimulationResponse"
+
 components:
   requestBodies:
     CompareBody:
@@ -42,6 +54,16 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/Unit"
+
+  parameters:
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100000
+        default: 5000
 
   responses:
     StatusResponse:
@@ -93,6 +115,25 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/AverageDamageResult"
+            required:
+              - units
+              - results
+
+    SimulationResponse:
+      description: Perform a number of damage simulations for the given units
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              units:
+                type: object
+                additionalProperties:
+                  type: string
+              results:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SimulationResult"
             required:
               - units
               - results
@@ -256,5 +297,61 @@ components:
 
     AverageDamageResult:
       type: object
+      properties:
+        save:
+          type: number
+        displaySave:
+          type: string
+        values:
+          type: object
+          additionalProperties:
+            type: number
+      required:
+        - save
+        - displaySave
+        - values
+
+    SimulationResult:
+      type: object
+      properties:
+        save:
+          type: number
+        displaySave:
+          type: string
+        discrete:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProbabilityData"
+        cumulative:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProbabilityData"
+        metrics:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/Metric"
+      required:
+        - save
+        - displaySave
+        - discrete
+        - cumulative
+        - metrics
+
+    ProbabilityData:
+      type: object
+      properties:
+        damage:
+          type: number
       additionalProperties:
         type: number
+
+    Metric:
+      type: object
+      properties:
+        max:
+          type: number
+        average:
+          type: number
+      required:
+        - max
+        - average

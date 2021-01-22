@@ -1,11 +1,11 @@
-import { Typography } from '@material-ui/core'
+import { Typography, useTheme } from '@material-ui/core'
 import React, { useMemo } from 'react'
-import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { ComparisonResult } from 'types/store/comparison'
 import { NameMapping } from 'types/store/units'
+import { getLoopingArray } from 'utils/helpers'
 
 import { transformData } from './transform'
-// import { BarExtendedDatum, BarTooltipDatum, ResponsiveBar } from '@nivo/bar'
 
 interface ComparisonBarGraphProps {
   nameMapping: NameMapping
@@ -13,7 +13,13 @@ interface ComparisonBarGraphProps {
 }
 
 const ComparisonBarGraph = ({ nameMapping, results }: ComparisonBarGraphProps) => {
+  const theme = useTheme()
   const data = useMemo(() => transformData(results, nameMapping), [results, nameMapping])
+  const colors = useMemo(
+    () => getLoopingArray(theme.palette.graphs.series, Object.keys(nameMapping).length),
+    [theme.palette.graphs.series, nameMapping]
+  )
+
   return (
     <div>
       <Typography align="center" variant="h6" style={{ fontWeight: 'normal' }}>
@@ -21,65 +27,17 @@ const ComparisonBarGraph = ({ nameMapping, results }: ComparisonBarGraphProps) =
       </Typography>
       <ResponsiveContainer height={300} width="100%">
         <BarChart data={data}>
-          <XAxis dataKey="save" />
-          <YAxis />
-          <Tooltip />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
+          <XAxis dataKey="save" stroke={theme.palette.graphs.axis} />
+          <YAxis stroke={theme.palette.graphs.axis} />
+          <Tooltip cursor={{ fill: theme.palette.action.focus, strokeWidth: 2 }} />
           <Legend />
-          {Object.values(nameMapping).map(name => (
-            <Bar dataKey={name} fill="#8884d8" />
+          {Object.values(nameMapping).map((name, index) => (
+            <Bar dataKey={name} fill={colors[index]} />
           ))}
         </BarChart>
       </ResponsiveContainer>
     </div>
   )
 }
-
-// const NivoTooltip = ({ id, value, color, data }: BarTooltipDatum) => {
-//   const { save, ...values } = data
-//   return (
-//     <div>
-//       <Typography>
-//         <strong>Save: {save}</strong>
-//       </Typography>
-//       {Object.keys(values).map(name => (
-//         <Typography variant="body2" key={name}>
-//           {id === name ? (
-//             <strong>
-//               {name}: {values[name]}
-//             </strong>
-//           ) : (
-//             `${name}: ${values[name]}`
-//           )}
-//         </Typography>
-//       ))}
-//     </div>
-//   )
-// }
-
-// const NivoComparisonBarGraph = ({ nameMapping, results }: ComparisonBarGraphProps) => {
-//   const data = useMemo(() => transformData(results, nameMapping), [results, nameMapping])
-
-//   return (
-//     <div>
-//       <Typography align="center" variant="h6" style={{ fontWeight: 'normal' }}>
-//         Average Damage
-//       </Typography>
-//       <div style={{ height: 300 }}>
-//         <ResponsiveBar
-//           data={data}
-//           indexBy="save"
-//           keys={Object.values(nameMapping)}
-//           groupMode="grouped"
-//           tooltip={NivoTooltip}
-//           // innerPadding={3}
-//           animate
-//           enableLabel={false}
-//           enableGridX
-//         />
-//       </div>
-//     </div>
-//   )
-// }
-
 export default ComparisonBarGraph
-// export default NivoComparisonBarGraph

@@ -59,7 +59,7 @@ const ComparisonTable = ({ nameMapping, results }: ComparisonTableProps) => {
         </TableHead>
         <TableBody>
           {data.map(({ id, values }) => (
-            <TableRow>
+            <TableRow hover>
               <TableCell className={clsx(classes.cell, classes.nameCell)} component="th" scope="row">
                 {nameMapping[id] ?? 'Unknown'}
               </TableCell>

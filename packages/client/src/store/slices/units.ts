@@ -25,6 +25,9 @@ export default createSlice({
   name: 'units',
   initialState: INITIAL_STATE,
   reducers: {
+    /**
+     * Add a single unit to the store. If you do not pass a `unit` in the payload, it will add a default one
+     */
     addUnit(state: UnitsStore, action: PayloadAction<{ unit?: UnitParams }>) {
       const unit = action.payload.unit ?? getDefaultUnit(`Unit ${state.items.length + 1}`)
       state.items.push({
@@ -34,6 +37,10 @@ export default createSlice({
       })
     },
 
+    /**
+     * Edit a specific unit from the store. You do this by passing an `id` and a partially complete
+     * unit object (which it will use to replace the fields which appear in the `newUnit` object)
+     */
     editUnit(state: UnitsStore, action: PayloadAction<{ id: string; newUnit: Omit<Unit, 'id'> }>) {
       const { id, newUnit } = action.payload
       const index = state.items.findIndex(u => u.id === id)
@@ -52,6 +59,10 @@ export default createSlice({
     deleteUnit(state: UnitsStore, action: PayloadAction<{ id: string }>) {
       const { id } = action.payload
       state.items = state.items.filter(u => u.id !== id)
+    },
+
+    clearUnits(state: UnitsStore) {
+      state.items = []
     },
 
     addWeaponProfile(

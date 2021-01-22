@@ -22,16 +22,29 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: { margin: theme.spacing(0, 0, 2) },
   weaponProfile: { display: 'flex', alignItems: 'center', cursor: 'pointer' },
   disabled: { color: theme.palette.action.disabled },
+  hover: {
+    '&:hover': { boxShadow: theme.shadows[3] },
+    transition: theme.transitions.create(['box-shadow'], {
+      duration: theme.transitions.duration.standard,
+    }),
+  },
 }))
 
 interface WeaponProfileInfoProps {
   profile: WeaponProfile
+  hover?: boolean
   onClick?: () => void
   onEnabledChanged?: (val: boolean) => void
   controls?: React.ReactNode
 }
 
-const WeaponProfileInfo = ({ profile, onClick, onEnabledChanged, controls }: WeaponProfileInfoProps) => {
+const WeaponProfileInfo = ({
+  profile,
+  hover,
+  onClick,
+  onEnabledChanged,
+  controls,
+}: WeaponProfileInfoProps) => {
   const classes = useStyles()
 
   const { name, numModels, attacks, toHit, toWound, rend, damage } = profile
@@ -48,7 +61,7 @@ const WeaponProfileInfo = ({ profile, onClick, onEnabledChanged, controls }: Wea
     <div className={classes.root} onClick={handleProfileClicked}>
       <div className={classes.weaponProfile}>
         <Box flex={1} maxWidth="100%">
-          <Paper variant="outlined">
+          <Paper variant="outlined" className={clsx({ [classes.hover]: !!hover })}>
             <span
               style={{
                 display: 'flex',

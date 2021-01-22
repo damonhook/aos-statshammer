@@ -2,6 +2,7 @@ import { CssBaseline } from '@material-ui/core'
 import { makeStyles, Theme, ThemeProvider } from '@material-ui/core/styles'
 import BottomNavigation from 'components/BottomNavigation'
 import Header from 'components/Header'
+import Notifier from 'components/Notifier'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -35,6 +36,7 @@ const App = () => {
           <Header />
           <div className={classes.inner}>
             <AppContent />
+            <Notifier />
             <BottomNavigation />
           </div>
         </Router>
