@@ -11,6 +11,7 @@ import {
   configStore,
   modifiersStore,
   notificationsStore,
+  simulationsStore,
   targetStore,
   unitsStore,
 } from './slices'
@@ -26,6 +27,7 @@ export const appReducer = combineReducers<Store>({
   units: unitsStore.reducer,
   target: targetStore.reducer,
   comparison: comparisonStore.reducer,
+  simulations: simulationsStore.reducer,
   config: configStore.reducer,
   notifications: notificationsStore.reducer,
   forms: formsReducer,

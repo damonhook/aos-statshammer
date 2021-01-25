@@ -1,4 +1,4 @@
-export interface SumulationResult {
+export interface SimulationResult {
   save: number
   displaySave: string
   discrete: ProbabilityData[]

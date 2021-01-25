@@ -34,7 +34,7 @@ const TabPanel = ({ children, value, index }: TabPanelProps) => {
 interface ComparisonGraphsProps {
   nameMapping: NameMapping
   results: ComparisonResult[]
-  loading: boolean
+  loading?: boolean
 }
 
 const ComparisonGraphs = ({ nameMapping, results, loading }: ComparisonGraphsProps) => {

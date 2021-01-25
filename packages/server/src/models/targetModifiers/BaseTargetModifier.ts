@@ -1,4 +1,4 @@
-import type { ModifierDefinition } from 'models/schema'
+import type { ModifierDefinition } from 'types/modifiers'
 
 export default class BaseTargetModifier {
   static displayName = ''

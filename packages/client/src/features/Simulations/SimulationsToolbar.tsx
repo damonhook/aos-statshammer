@@ -1,8 +1,12 @@
 import { Button, makeStyles, Theme } from '@material-ui/core'
 import { ArrowBack, InfoOutlined, Refresh } from '@material-ui/icons'
+import { getSimulations } from 'api/simulations'
 import ResponsiveIconButton from 'components/ResponsiveIconButton'
 import React, { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { Modifier } from 'types/modifierInstance'
+import { Unit } from 'types/store/units'
 import { PAGE_ROUTES } from 'utils/routes'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -22,22 +26,38 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-const SimulationsToolbar = () => {
+interface SimulationsToolbarProps {
+  units: Unit[]
+  targetModifiers: Modifier[]
+  loading?: boolean
+}
+
+const SimulationsToolbar = ({ units, targetModifiers, loading }: SimulationsToolbarProps) => {
   const classes = useStyles()
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const handleReturn = useCallback(() => {
     history.replace(PAGE_ROUTES.HOME)
   }, [history])
 
+  const handleRerun = useCallback(() => {
+    dispatch(getSimulations({ units: units }))
+  }, [dispatch, units])
+
   return (
     <div className={classes.toolbar}>
       <div className={classes.section}>
         <ResponsiveIconButton icon={<ArrowBack />} text="Return" onClick={handleReturn} />
-        <ResponsiveIconButton icon={<Refresh />} text="Rerun Simulations" />
+        <ResponsiveIconButton
+          icon={<Refresh />}
+          text="Rerun Simulations"
+          onClick={handleRerun}
+          disabled={!!loading}
+        />
       </div>
       <div className={classes.section}>
-        <Button># Simulations: 5000</Button>
+        <Button disabled={!!loading}># Simulations: 5000</Button>
         <ResponsiveIconButton icon={<InfoOutlined />} text="Info" />
       </div>
     </div>

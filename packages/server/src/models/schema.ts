@@ -1,17 +1,11 @@
-import { SumulationResult } from 'types/simulations'
+import { ModifierDefinition } from 'types/modifiers'
+import { SimulationResult } from 'types/simulations'
 
 import type { UnitParams } from './unit'
 
 // === Modifiers ===
 
 export interface ModifiersRequest {}
-
-export interface ModifierDefinition {
-  id: string
-  name: string
-  description: string
-  options: Record<string, any>
-}
 
 export interface ModifiersResponse {
   modifiers: ModifierDefinition[]
@@ -44,5 +38,5 @@ export interface SimulationsRequest {
 
 export interface SimulationsResponse {
   units: { [id: string]: string }
-  results: SumulationResult[]
+  results: SimulationResult[]
 }

@@ -18,9 +18,9 @@ import SimulationProcessor from 'processors/simulationProcessor'
 import {
   transformToCumulative,
   transformToDiscrete,
-  transformToSumulationResult,
+  transformToSimulationResult,
 } from 'transformers/probabilities'
-import { Metric, SumulationResult, UnitResultsLookup, UnitSimulationData } from 'types/simulations'
+import { Metric, SimulationResult, UnitResultsLookup, UnitSimulationData } from 'types/simulations'
 
 import { Unit } from './models/unit'
 
@@ -62,7 +62,7 @@ export default class AosController {
       return acc
     }, {})
 
-    const results: SumulationResult[] = []
+    const results: SimulationResult[] = []
     targets.forEach(target => {
       const unitResults: UnitResultsLookup = {}
       units.forEach(unit => {
@@ -72,7 +72,7 @@ export default class AosController {
         const cumulative = transformToCumulative(simResults)
         unitResults[unit.id] = { discrete, cumulative, metrics }
       })
-      results.push(transformToSumulationResult(unitResults, target.save, this.getDisplaySave(target.save)))
+      results.push(transformToSimulationResult(unitResults, target.save, this.getDisplaySave(target.save)))
     })
 
     return {

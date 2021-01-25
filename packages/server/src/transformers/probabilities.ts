@@ -2,7 +2,7 @@ import _ from 'lodash'
 import {
   Metric,
   ProbabilityData,
-  SumulationResult,
+  SimulationResult,
   UnitResultsLookup,
   UnitSimulationData,
 } from 'types/simulations'
@@ -36,11 +36,11 @@ export const transformToCumulative = (data: UnitSimulationData): UnitSimulationD
 
 type ProbabilityLookup = { [damage: number]: { [id: string]: number } }
 
-export const transformToSumulationResult = (
+export const transformToSimulationResult = (
   data: UnitResultsLookup,
   save: number,
   displaySave: string
-): SumulationResult => {
+): SimulationResult => {
   const discreteLookup: ProbabilityLookup = {}
   const cumulativeLookup: ProbabilityLookup = {}
   const metrics: { [id: string]: Metric } = {}

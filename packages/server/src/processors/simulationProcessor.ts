@@ -44,7 +44,7 @@ export default class SimulationProcessor {
 
   private simulateSaveRoll(): number {
     const etherealMod = this.target.modifiers.ethereal.get()
-    const rend = etherealMod ? Math.max(this.profile.rend + this.resolveBonusModifier(C.REND), 0) : 0
+    const rend = !etherealMod ? Math.max(this.profile.rend + this.resolveBonusModifier(C.REND), 0) : 0
     const target = Math.max(this.target.save, 2)
     const bonuses = this.resolveBonusModifier(C.SAVE) - rend
     const unmodifiedRoll = this.withRerolls(C.SAVE, target, bonuses)
@@ -108,7 +108,7 @@ export default class SimulationProcessor {
       if (getModifier('rerollFailed', key)) return unmodifiedRoll < target ? D6.roll() : roll
       if (getModifier('rerollOnes', key)) return roll === 1 ? D6.roll() : roll
     }
-    return roll
+    return unmodifiedRoll
   }
 
   private resolveFNPRoll(damage: number, isMortalWounds = false): number {

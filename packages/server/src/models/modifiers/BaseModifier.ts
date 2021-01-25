@@ -1,5 +1,5 @@
 import { Characteristic as C } from 'common'
-import type { ModifierDefinition } from 'models/schema'
+import type { ModifierDefinition } from 'types/modifiers'
 
 interface BaseModifierParams {
   characteristic: C

@@ -55,7 +55,6 @@ const UnitToolBar = () => {
           ...imported.unit,
           weaponProfiles: imported.unit.weaponProfiles.map(p => ({ ...p, id: nanoid() })),
         }
-        console.log(unit)
         dispatch(unitFormStore.actions.initForm({ unit }))
       } catch (err) {
         console.error(err)

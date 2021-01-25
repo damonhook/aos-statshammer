@@ -45,7 +45,7 @@ export default class AverageDamageProcessor {
 
   private calculateSavesStep(wounds: number): number {
     const etherealMod = this.target.modifiers.ethereal.get()
-    const rend = etherealMod ? Math.max(this.profile.rend + this.resolveBonusModifier(C.REND), 0) : 0
+    const rend = !etherealMod ? Math.max(this.profile.rend + this.resolveBonusModifier(C.REND), 0) : 0
     const unmodifiedSave = Math.max(this.target.save, 2)
     const save = Math.max(unmodifiedSave + this.resolveBonusModifier(C.SAVE) + rend, 2)
     let unsavedWounds = wounds

@@ -45,7 +45,6 @@ initialize({
       )
     },
     getSimulate: function (req, res) {
-      console.log(req.query)
       res.send(
         withCaseConversion(
           { ...req.body, ...req.query },
