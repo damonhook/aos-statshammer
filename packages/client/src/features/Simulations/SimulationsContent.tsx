@@ -2,7 +2,9 @@ import { Grid, makeStyles, Theme } from '@material-ui/core'
 import CollapsibleCard from 'components/CollapsibleCard'
 import GraphSkeleton from 'components/Skeletons/GraphSkeleton'
 import TableSkeleton from 'components/Skeletons/TableSkeleton'
+import ComparisonGraphs from 'features/Stats/ComparisonGraphs'
 import React, { useCallback, useMemo, useState } from 'react'
+import { ComparisonResult } from 'types/store/comparison'
 import { Metric, ProbabilityData, SimulationResult } from 'types/store/simulations'
 import { NameMapping } from 'types/store/units'
 
@@ -34,21 +36,27 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-interface SimulationsContent {
-  results: SimulationResult[]
+interface SimulationsContentProps {
+  simResults: SimulationResult[]
+  comparisonResults: ComparisonResult[]
   nameMapping: NameMapping
   loading?: boolean
 }
 
-const SimulationsContent = ({ results, nameMapping, loading }: SimulationsContent) => {
+const SimulationsContent = ({
+  simResults,
+  comparisonResults,
+  nameMapping,
+  loading,
+}: SimulationsContentProps) => {
   const classes = useStyles()
   const [save, setSave] = useState(2)
   const [referenceLine, setReferenceLine] = useState<keyof Metric | undefined>(undefined)
   const [inverted, setInverted] = useState(false)
 
   const savesLookup = useMemo(() => {
-    return results.map(r => ({ save: r.save, displaySave: r.displaySave }))
-  }, [results])
+    return simResults.map(r => ({ save: r.save, displaySave: r.displaySave }))
+  }, [simResults])
 
   const handleSaveChange = useCallback((val: number) => setSave(val), [])
   const handleReferenceLineChange = useCallback((val?: keyof Metric) => setReferenceLine(val), [])
@@ -65,17 +73,17 @@ const SimulationsContent = ({ results, nameMapping, loading }: SimulationsConten
     onInvertedChange: handleInvertedChange,
   }
 
-  const data = useMemo(() => {
-    const dataForSave = results.find(r => r.save === save)
+  const simData = useMemo(() => {
+    const dataForSave = simResults.find(r => r.save === save)
     if (dataForSave) return inverted ? invertCumulative(nameMapping, dataForSave) : dataForSave
     return undefined
-  }, [nameMapping, save, results, inverted])
+  }, [nameMapping, save, simResults, inverted])
 
   const referenceLineData = useMemo(() => {
-    if (data?.metrics && referenceLine)
-      return Object.values(data.metrics).map(values => values[referenceLine])
+    if (simData?.metrics && referenceLine)
+      return Object.values(simData.metrics).map(values => values[referenceLine])
     return undefined
-  }, [data?.metrics, referenceLine])
+  }, [simData?.metrics, referenceLine])
 
   return (
     <div className={classes.content}>
@@ -88,11 +96,12 @@ const SimulationsContent = ({ results, nameMapping, loading }: SimulationsConten
                 <GraphSkeleton series={6} groups={2} height={320} includeTitle />
               ) : (
                 <ProbabilityLineGraph
-                  probabilities={data?.cumulative}
+                  probabilities={simData?.cumulative}
                   nameMapping={nameMapping}
-                  displaySave={data?.displaySave}
+                  displaySave={simData?.displaySave}
                   type="cumulative"
                   referenceLines={referenceLineData}
+                  inverted={inverted}
                 />
               )}
             </CollapsibleCard>
@@ -104,9 +113,9 @@ const SimulationsContent = ({ results, nameMapping, loading }: SimulationsConten
                 <GraphSkeleton series={6} groups={2} height={320} includeTitle />
               ) : (
                 <ProbabilityLineGraph
-                  probabilities={data?.discrete}
+                  probabilities={simData?.discrete}
                   nameMapping={nameMapping}
-                  displaySave={data?.displaySave}
+                  displaySave={simData?.displaySave}
                   type="discrete"
                   referenceLines={referenceLineData}
                 />
@@ -119,7 +128,7 @@ const SimulationsContent = ({ results, nameMapping, loading }: SimulationsConten
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <CollapsibleCard title="Average Damage">
-              <GraphSkeleton series={6} groups={2} includeTitle />
+              <ComparisonGraphs nameMapping={nameMapping} results={comparisonResults} loading={loading} />
             </CollapsibleCard>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -129,10 +138,10 @@ const SimulationsContent = ({ results, nameMapping, loading }: SimulationsConten
                 <TableSkeleton rows={3} columns={3} dense includeTitle />
               ) : (
                 <MetricsTable
-                  metrics={data?.metrics}
+                  metrics={simData?.metrics}
                   nameMapping={nameMapping}
                   loading={loading}
-                  displaySave={data?.displaySave}
+                  displaySave={simData?.displaySave}
                 />
               )}
             </CollapsibleCard>

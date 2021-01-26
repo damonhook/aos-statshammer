@@ -65,6 +65,12 @@ class DiceValue {
     return rolledAdditions - rolledSubtractions
   }
 
+  toString(): string {
+    const additions = this.additions.join(' + ')
+    const subtractions = this.subtractions.join(' - ')
+    return (subtractions ? `${additions} - ${subtractions}` : additions).trim()
+  }
+
   /**
    * Build a `DiceValue` class by parsing a value
    */

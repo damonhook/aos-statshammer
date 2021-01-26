@@ -1,4 +1,4 @@
-import { getRandomInt } from 'utils/mathUtils'
+import { random } from 'lodash'
 
 /**
  * A class used to represent a single dice (e.g: D3, D6)
@@ -17,7 +17,7 @@ export class Dice {
 
   /** Roll the dice */
   roll(): number {
-    return getRandomInt(1, this.sides)
+    return random(1, this.sides)
   }
 
   /**

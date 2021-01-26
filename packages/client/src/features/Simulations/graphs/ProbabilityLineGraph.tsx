@@ -1,12 +1,11 @@
 import { Typography, useTheme } from '@material-ui/core'
-import { useZoomArea } from 'hooks'
-import React, { useCallback, useMemo, useState } from 'react'
+import { ProbabilityTooltip } from 'components/GraphTooltips'
+import React, { useMemo } from 'react'
 import {
   CartesianGrid,
   Legend,
   Line,
   LineChart,
-  ReferenceArea,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
@@ -25,6 +24,7 @@ interface ProbabilityLineGraphProps {
   type: 'cumulative' | 'discrete'
   displaySave?: string
   referenceLines?: number[]
+  inverted?: boolean
 }
 
 const ProbabilityLineGraph = ({
@@ -33,6 +33,7 @@ const ProbabilityLineGraph = ({
   type,
   displaySave,
   referenceLines,
+  inverted,
 }: ProbabilityLineGraphProps) => {
   const theme = useTheme()
   const data = useMemo(() => {
@@ -44,19 +45,13 @@ const ProbabilityLineGraph = ({
     [theme.palette.graphs.series, nameMapping]
   )
 
-  const zoomCallback = useCallback((area: { x1: number; x2: number }) => {
-    console.log(area)
-  }, [])
-
-  const [zoomArea, zoomProps] = useZoomArea(zoomCallback)
-
   return (
     <div>
       <Typography align="center" variant="h6" style={{ fontWeight: 'normal' }}>
         {`${startWithUppercase(type)} Probability (${displaySave})`}
       </Typography>
       <ResponsiveContainer height={300} width="99%">
-        <LineChart data={data} {...zoomProps}>
+        <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
           <XAxis
             dataKey="damage"
@@ -66,7 +61,7 @@ const ProbabilityLineGraph = ({
             domain={[0, 'dataMax']}
           />
           <YAxis stroke={theme.palette.graphs.axis} />
-          <Tooltip />
+          <Tooltip content={<ProbabilityTooltip cumulative={type === 'cumulative'} inverted={inverted} />} />
           <Legend />
           {(referenceLines ?? []).map((x, index) => (
             <ReferenceLine x={x} stroke={colors[index] ?? theme.palette.graphs.axis} strokeDasharray="3 3" />
@@ -76,13 +71,10 @@ const ProbabilityLineGraph = ({
               type="monotone"
               dataKey={name}
               stroke={colors[index]}
-              dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: 2 }}
+              dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: 1 }}
               activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 4 }}
             />
           ))}
-          {zoomArea.x1 != null && zoomArea.x2 != null && (
-            <ReferenceArea x1={zoomArea.x1} x2={zoomArea.x2} fill={theme.palette.action.focus} />
-          )}
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -1,9 +1,9 @@
 import { WeaponProfile, WeaponProfileParams } from './weaponProfile'
 
 export interface UnitParams {
-  id: string
+  id?: string
   name: string
-  weaponProfiles: WeaponProfileParams[]
+  weaponProfiles: (WeaponProfileParams | WeaponProfile)[]
 }
 
 export class Unit {
@@ -12,9 +12,8 @@ export class Unit {
   weaponProfiles: WeaponProfile[]
 
   constructor({ id, name, weaponProfiles }: UnitParams) {
-    this.id = id
+    this.id = id ?? name
     this.name = name
-    // this.weaponProfiles = weaponProfiles.map(w => (w instanceof WeaponProfile ? w : new WeaponProfile(w)))
-    this.weaponProfiles = weaponProfiles.map(w => new WeaponProfile(w))
+    this.weaponProfiles = weaponProfiles.map(w => (w instanceof WeaponProfile ? w : new WeaponProfile(w)))
   }
 }

@@ -25,3 +25,4 @@ jobs:
     - name: Lint and Test
       run: |
         yarn lint
+        yarn test

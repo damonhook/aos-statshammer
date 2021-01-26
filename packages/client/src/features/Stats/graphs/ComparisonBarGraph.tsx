@@ -1,4 +1,5 @@
 import { Typography, useTheme } from '@material-ui/core'
+import { ComparisonTooltip } from 'components/GraphTooltips'
 import React, { useMemo } from 'react'
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { ComparisonResult } from 'types/store/comparison'
@@ -30,7 +31,10 @@ const ComparisonBarGraph = ({ nameMapping, results }: ComparisonBarGraphProps) =
           <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
           <XAxis dataKey="save" stroke={theme.palette.graphs.axis} />
           <YAxis stroke={theme.palette.graphs.axis} />
-          <Tooltip cursor={{ fill: theme.palette.action.focus, strokeWidth: 2 }} />
+          <Tooltip
+            content={<ComparisonTooltip />}
+            cursor={{ fill: theme.palette.action.focus, strokeWidth: 2 }}
+          />
           <Legend />
           {Object.values(nameMapping).map((name, index) => (
             <Bar dataKey={name} fill={colors[index]} />

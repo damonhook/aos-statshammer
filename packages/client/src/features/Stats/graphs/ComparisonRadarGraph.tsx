@@ -1,4 +1,5 @@
 import { Typography, useTheme } from '@material-ui/core'
+import { ComparisonTooltip } from 'components/GraphTooltips'
 import React, { useMemo } from 'react'
 import {
   Legend,
@@ -39,7 +40,7 @@ const ComparisonRadarGraph = ({ nameMapping, results }: ComparisonRadarGraphProp
           <PolarGrid stroke={theme.palette.graphs.grid} />
           <PolarAngleAxis dataKey="save" stroke={theme.palette.graphs.axis} />
           <PolarRadiusAxis stroke={theme.palette.graphs.axis} />
-          <Tooltip cursor={{ stroke: theme.palette.graphs.axis }} />
+          <Tooltip content={<ComparisonTooltip />} cursor={{ stroke: theme.palette.graphs.axis }} />
           <Legend />
           {Object.values(nameMapping).map((name, index) => (
             <Radar dataKey={name} fill={colors[index]} fillOpacity={0.1} stroke={colors[index]} />

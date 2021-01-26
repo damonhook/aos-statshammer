@@ -12,7 +12,7 @@ import type {
 } from 'models/schema'
 import { Target } from 'models/target'
 import { TargetModifierLookup } from 'models/targetModifiers'
-import AverageDamageProcessor from 'processors/averageDamageProcessor'
+import UnitAverageProcessor from 'processors/averageDamageProcessor'
 import MaxDamageProcessor from 'processors/maxDamageProcessor'
 import SimulationProcessor from 'processors/simulationProcessor'
 import {
@@ -86,11 +86,8 @@ export default class AosController {
   }
 
   private getAverageDamage(unit: Unit, target: Target) {
-    const value = unit.weaponProfiles.reduce((sum, profile) => {
-      const processor = new AverageDamageProcessor(profile, target)
-      return sum + processor.calculateAverageDamage()
-    }, 0)
-    return Math.round(value * 1000) / 1000
+    const processor = new UnitAverageProcessor(unit, target)
+    return _.round(processor.calculateAverageDamage(), 3)
   }
 
   private runSimulations(unit: Unit, target: Target, limit: number) {

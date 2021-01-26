@@ -30,7 +30,6 @@ export const lightTheme: Theme = createMuiTheme({
     graphs: {
       grid: grey[300],
       axis: grey[700],
-      tooltip: grey[50],
       series: ['#8884d8', '#82ca9d', '#ff7300', teal[400], '#f50057'],
     },
   },
@@ -45,7 +44,6 @@ export const darkTheme: Theme = createMuiTheme({
     graphs: {
       grid: grey[700],
       axis: grey[400],
-      tooltip: grey[900],
       series: ['#8884d8', '#82ca9d', '#ff7300', teal[400], '#ff5252'],
     },
   },

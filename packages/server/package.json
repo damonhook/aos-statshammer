@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register src/server.ts",
-    "start": "ts-node -r tsconfig-paths/register src/server.ts"
+    "start": "ts-node -r tsconfig-paths/register src/server.ts",
+    "test": "jest"
   },
   "devDependencies": {
     "@types/express": "^4.17.9",

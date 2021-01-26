@@ -1,4 +1,5 @@
 import { Typography, useTheme } from '@material-ui/core'
+import { ComparisonTooltip } from 'components/GraphTooltips'
 import React, { useMemo } from 'react'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { ComparisonResult } from 'types/store/comparison'
@@ -30,7 +31,7 @@ const ComparisonLineGraph = ({ nameMapping, results }: ComparisonLineGraphProps)
           <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
           <XAxis dataKey="save" stroke={theme.palette.graphs.axis} />
           <YAxis stroke={theme.palette.graphs.axis} />
-          <Tooltip />
+          <Tooltip content={<ComparisonTooltip />} />
           <Legend />
           {Object.values(nameMapping).map((name, index) => (
             <Line

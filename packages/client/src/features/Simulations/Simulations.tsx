@@ -1,4 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core'
+import { getComparison } from 'api/comparison'
 import { getSimulations } from 'api/simulations'
 import isEqual from 'lodash/isEqual'
 import React, { useEffect, useMemo } from 'react'
@@ -29,20 +30,32 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Simulations = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const units = useSelector(activeUnitsSelector, isEqual)
   const targetModifiers = useSelector((state: Store) => state.target.modifiers, isEqual)
-  const { results, pending } = useSelector((state: Store) => state.simulations)
-  const dispatch = useDispatch()
+  const simulations = useSelector((state: Store) => state.simulations)
+  const comparison = useSelector((state: Store) => state.comparison)
   const nameMapping = useMemo(() => getNameMapping(units), [units])
 
   useEffect(() => {
     dispatch(getSimulations({ units: units }))
   }, [dispatch, units, targetModifiers])
 
+  useEffect(() => {
+    dispatch(getComparison({ units: units }))
+  }, [dispatch, units, targetModifiers])
+
+  const loading = simulations.pending || comparison.pending
+
   return (
     <div className={classes.simulations}>
-      <SimulationsToolbar units={units} targetModifiers={targetModifiers} loading={pending} />
-      <SimulationsContent results={results} nameMapping={nameMapping} loading={pending} />
+      <SimulationsToolbar units={units} targetModifiers={targetModifiers} loading={loading} />
+      <SimulationsContent
+        simResults={simulations.results}
+        comparisonResults={comparison.results}
+        nameMapping={nameMapping}
+        loading={loading}
+      />
     </div>
   )
 }

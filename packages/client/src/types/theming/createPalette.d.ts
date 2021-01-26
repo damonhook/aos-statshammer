@@ -10,7 +10,6 @@ declare module '@material-ui/core/styles/createPalette' {
     graphs: {
       grid: string
       axis: string
-      tooltip: string
       series: string[]
     }
   }
