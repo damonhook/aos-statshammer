@@ -1,4 +1,4 @@
-import { SAVES } from 'common'
+import { ProcessorSaveResults, Saves } from 'common'
 import _ from 'lodash'
 import { ModifierLookup } from 'models/modifiers'
 import type {
@@ -10,7 +10,6 @@ import type {
   SimulationsRequest,
   SimulationsResponse,
 } from 'models/schema'
-import { Target } from 'models/target'
 import { TargetModifierLookup } from 'models/targetModifiers'
 import UnitAverageProcessor from 'processors/averageDamageProcessor'
 import UnitMaxProcessor from 'processors/maxDamageProcessor'
@@ -20,7 +19,7 @@ import {
   transformToDiscrete,
   transformToSimulationResult,
 } from 'transformers/probabilities'
-import { Metric, SimulationResult, UnitResultsLookup, UnitSimulationData } from 'types/simulations'
+import { Metric, SimResultsData, SimulationResult, UnitResultsLookup } from 'types/simulations'
 
 import { Unit } from './models/unit'
 
@@ -34,14 +33,22 @@ export default class AosController {
 
   public compareUnits(request: CompareRequest): CompareResponse {
     const units = request.units.map(d => new Unit(d))
-    const targets = SAVES.map(save => new Target({ save }))
-    const results: AverageDamageResult[] = []
-    targets.forEach(target => {
-      const values = units.reduce<{ [x: string]: number }>((acc, unit) => {
-        return { ...acc, [unit.id]: this.getAverageDamage(unit, target) }
-      }, {})
-      results.push({ save: target.save, displaySave: this.getDisplaySave(target.save), values })
+
+    // Generate the average damage for each unit (put into a lookup object)
+    const lookup: { [id: string]: ProcessorSaveResults } = {}
+    units.forEach(unit => {
+      lookup[unit.id] = new UnitAverageProcessor(unit).calculateAverageDamage()
     })
+
+    // Convert the lookup object into the list of results (by save)
+    const results = Saves.map<AverageDamageResult>(save => {
+      const saveResults: { [id: string]: number } = {}
+      Object.entries(lookup).forEach(([id, values]) => {
+        saveResults[id] = values[save]
+      })
+      return { save: save, displaySave: this.getDisplaySave(save), values: saveResults }
+    })
+
     return {
       units: units.reduce((acc, { id, name }) => ({ ...acc, [id]: name }), {}),
       results: results,
@@ -50,28 +57,29 @@ export default class AosController {
 
   public simulateUnits(request: SimulationsRequest): SimulationsResponse {
     const units = request.units.map(d => new Unit(d))
-    const targets = SAVES.map(save => new Target({ save }))
     const limit = request.limit ?? 5
 
-    const maxLookup = units.reduce<{ [id: string]: number }>(
-      (acc, unit) => ({
-        ...acc,
-        [unit.id]: new UnitMaxProcessor(unit).calculateMaxDamage(),
-      }),
-      {}
-    )
+    // Generate the lookups for each unit
+    const maxLookup: { [id: string]: number } = {}
+    const averageLookup: { [id: string]: ProcessorSaveResults } = {}
+    const simLookup: { [id: string]: SimResultsData } = {}
+    units.forEach(unit => {
+      maxLookup[unit.id] = new UnitMaxProcessor(unit).calculateMaxDamage()
+      averageLookup[unit.id] = new UnitAverageProcessor(unit).calculateAverageDamage()
+      simLookup[unit.id] = this.runSimulations(unit, limit)
+    })
 
-    const results: SimulationResult[] = []
-    targets.forEach(target => {
+    // Convert the lookup objects into the final result format
+    const results = Saves.map<SimulationResult>(save => {
       const unitResults: UnitResultsLookup = {}
       units.forEach(unit => {
-        const metrics: Metric = { max: maxLookup[unit.id], average: this.getAverageDamage(unit, target) }
-        const simResults = this.runSimulations(unit, target, limit)
+        const metrics: Metric = { max: maxLookup[unit.id], average: averageLookup[unit.id][save] }
+        const simResults = simLookup[unit.id][save]
         const discrete = transformToDiscrete(simResults)
         const cumulative = transformToCumulative(simResults)
         unitResults[unit.id] = { discrete, cumulative, metrics }
       })
-      results.push(transformToSimulationResult(unitResults, target.save, this.getDisplaySave(target.save)))
+      return transformToSimulationResult(unitResults, save, this.getDisplaySave(save))
     })
 
     return {
@@ -84,18 +92,16 @@ export default class AosController {
     return save && save <= 6 ? `${save}+` : `-`
   }
 
-  private getAverageDamage(unit: Unit, target: Target) {
-    const processor = new UnitAverageProcessor(unit, target)
-    return _.round(processor.calculateAverageDamage(), 3)
-  }
-
-  private runSimulations(unit: Unit, target: Target, limit: number) {
-    const results: UnitSimulationData = {}
+  private runSimulations(unit: Unit, limit: number) {
+    const results: SimResultsData = { 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} }
+    const processor = new UnitSimulationProcessor(unit)
     _.times(limit, () => {
-      const processor = new UnitSimulationProcessor(unit, target)
-      const value = processor.simulateDamage()
-      if (results[value]) results[value] += 1
-      else results[value] = 1
+      const values = processor.simulateDamage()
+      Saves.map(save => {
+        const value = values[save]
+        if (results[save][value]) results[save][value] += 1
+        else results[save][value] = 1
+      })
     })
     return results
   }

@@ -1,3 +1,4 @@
+import { Save } from 'common'
 import { Unit } from 'models/unit'
 
 import * as Chaos from '../units/chaos'
@@ -6,7 +7,7 @@ import * as Order from '../units/order'
 
 export interface AverageDamageTheory {
   unit: Unit
-  results: { save: number; expected: number }[]
+  results: { save: Save; expected: number }[]
 }
 
 export const getAverageDamageTheories = (): AverageDamageTheory[] => {

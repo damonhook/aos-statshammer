@@ -7,4 +7,7 @@ export enum Characteristic {
   SAVE = 'save',
 }
 
-export const SAVES = [2, 3, 4, 5, 6, 0]
+export const Saves = [2, 3, 4, 5, 6, 7] as const
+export type Save = typeof Saves[number]
+
+export type ProcessorSaveResults = { [s in Save]: number }

@@ -9,7 +9,9 @@ const config: Config.InitialOptions = {
   moduleFileExtensions: [...defaults.moduleFileExtensions, 'ts', 'tsx'],
   moduleDirectories: ['node_modules', 'src'],
   collectCoverage: true,
+  coverageDirectory: '.coverage',
   coveragePathIgnorePatterns: ['/node_modules/', '/tests/'],
+  slowTestThreshold: 10,
 }
 
 export default config

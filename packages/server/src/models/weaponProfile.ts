@@ -1,5 +1,5 @@
 import DiceValue from './diceValue'
-import { ModifierData, ModifierList,ModifierLookup } from './modifiers'
+import { ModifierData, ModifierList, ModifierLookup } from './modifiers'
 import Bonus from './modifiers/Bonus'
 import ConditionalBonus from './modifiers/ConditionalBonus'
 
