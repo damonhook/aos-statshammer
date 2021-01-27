@@ -3,6 +3,8 @@ import Bonus from 'models/modifiers/Bonus'
 import Exploding from 'models/modifiers/Exploding'
 import LeaderBonus from 'models/modifiers/LeaderBonus'
 import MortalWounds from 'models/modifiers/MortalWounds'
+import RerollFailed from 'models/modifiers/RerollFailed'
+import RerollOnes from 'models/modifiers/RerollOnes'
 import { Unit } from 'models/unit'
 import { WeaponProfile } from 'models/weaponProfile'
 
@@ -17,6 +19,40 @@ export const ChainraspHorde = new Unit({
       rend: 0,
       damage: 1,
       modifiers: [new LeaderBonus({ characteristic: C.ATTACKS, numLeaders: 1, bonus: 1 })],
+    }),
+  ],
+})
+
+export const DreadbladeHarrow = new Unit({
+  name: 'Dreadblade Harrow',
+  weaponProfiles: [
+    new WeaponProfile({
+      numModels: 1,
+      attacks: 3,
+      toHit: 3,
+      toWound: 3,
+      rend: 1,
+      damage: 1,
+      modifiers: [new RerollOnes({ characteristic: C.TO_WOUND })],
+    }),
+    new WeaponProfile({ numModels: 1, attacks: 2, toHit: 4, toWound: 5, rend: 0, damage: 1 }),
+  ],
+})
+
+export const CairnWraith = new Unit({
+  name: 'Cairn Wraith',
+  weaponProfiles: [
+    new WeaponProfile({
+      numModels: 1,
+      attacks: 3,
+      toHit: 4,
+      toWound: 3,
+      rend: 1,
+      damage: 2,
+      modifiers: [
+        new RerollFailed({ characteristic: C.TO_HIT }),
+        new MortalWounds({ characteristic: C.TO_HIT, on: 6, mortalWounds: 2, inAddition: false }),
+      ],
     }),
   ],
 })

@@ -97,9 +97,9 @@ export class ProfileAverageProcessor {
     const { toHit, toWound } = this.profile
     const target = Math.max(key === C.TO_HIT ? toHit : toWound, 2)
     const bonuses = this.resolveBonusModifier(key)
-    let newBase = base + this.getNumRerolls(base, key, target, bonuses)
+    const newBase = base + this.getNumRerolls(base, key, target, bonuses)
 
-    let result: number = 0
+    let result = newBase * D6.getProbability(Math.max(target - bonuses, 2)) // number of hits / wounds
     let extraDamage: number = 0
 
     // Exploding Modifier
@@ -114,9 +114,9 @@ export class ProfileAverageProcessor {
     const mortalMod = this.profile.modifiers.mortalWounds.get(key)
     if (mortalMod) {
       const modTarget = mortalMod.unmodified ? mortalMod.on : Math.max(mortalMod.on - bonuses, 2)
-      const numMortals = base * D6.getProbability(modTarget)
+      const numMortals = newBase * D6.getProbability(modTarget)
       const mortalDamage = this.resolveFNP(numMortals * mortalMod.mortalWounds.average, true)
-      if (!mortalMod.inAddition) newBase = Math.max(newBase - numMortals, 0)
+      if (!mortalMod.inAddition) result -= numMortals
       extraDamage += mortalDamage
     }
 
@@ -126,16 +126,15 @@ export class ProfileAverageProcessor {
       const bonusProfile = this.profile.getConditionalBonusProfile(cbMod)
       const bonusProcessor = new ProfileAverageProcessor(bonusProfile, this.target)
       const modTarget = cbMod.unmodified ? cbMod.on : Math.max(cbMod.on - bonuses, 2)
-      const numBonuses = base * D6.getProbability(modTarget)
-      newBase = Math.max(newBase - numBonuses, 0)
+      const numBonuses = newBase * D6.getProbability(modTarget)
+      result -= numBonuses
       extraDamage +=
         key === C.TO_HIT
           ? bonusProcessor.calculateWoundsStep(numBonuses)
           : bonusProcessor.calculateSavesStep(numBonuses)
     }
 
-    result += newBase * D6.getProbability(Math.max(target - bonuses, 2)) // number of hits / wounds
-    return next(result) + extraDamage
+    return next(Math.max(result, 0)) + extraDamage
   }
 
   private resolveBonusModifier(key: C): number {
@@ -152,47 +151,6 @@ export class ProfileAverageProcessor {
     if (getModifier('rerollFailed', key)) return base * D6.getInverseProbability(target)
     if (getModifier('rerollOnes', key)) return (base * 1) / D6.sides
     return 0
-  }
-
-  private resolveExplodingModifier(base: number, key: C, bonuses: number = 0): number {
-    const mod = this.profile.modifiers.exploding.get(key)
-    if (mod) {
-      const target = mod.unmodified ? mod.on : Math.max(mod.on - bonuses, 2)
-      return base * D6.getProbability(target) * mod.extraHits.average
-    }
-    return 0
-  }
-
-  private resolveMortalWoundsModifier(base: number, key: C, bonuses: number = 0): [number, number] {
-    const mod = this.profile.modifiers.mortalWounds.get(key)
-    if (mod) {
-      const target = mod.unmodified ? mod.on : Math.max(mod.on - bonuses, 2)
-      const numMortals = base * D6.getProbability(target)
-      let mortalDamage = numMortals * mod.mortalWounds.average
-      mortalDamage = this.resolveFNP(mortalDamage, true)
-      return [mortalDamage, mod.inAddition ? 0 : numMortals]
-    }
-    return [0, 0]
-  }
-
-  private resolveConditionalBonusModifier(
-    base: number,
-    key: C.TO_HIT | C.TO_WOUND,
-    bonuses: number = 0
-  ): [number, number] {
-    const mod = this.profile.modifiers.conditionalBonus.get(key)
-    if (mod) {
-      const bonusProfile = this.profile.getConditionalBonusProfile(mod)
-      const bonusProcessor = new ProfileAverageProcessor(bonusProfile, this.target)
-      const target = mod.unmodified ? mod.on : Math.max(mod.on - bonuses, 2)
-      const numBonuses = base * D6.getProbability(target)
-      const bonusDamage =
-        key === C.TO_HIT
-          ? bonusProcessor.calculateWoundsStep(numBonuses)
-          : bonusProcessor.calculateSavesStep(numBonuses)
-      return [bonusDamage, numBonuses]
-    }
-    return [0, 0]
   }
 }
 

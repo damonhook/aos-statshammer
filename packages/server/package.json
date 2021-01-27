@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register src/server.ts",
     "start": "ts-node -r tsconfig-paths/register src/server.ts",
-    "test": "jest"
+    "test": "jest",
+    "cov-report": "open coverage/lcov-report/index.html"
   },
   "devDependencies": {
     "@types/express": "^4.17.9",
