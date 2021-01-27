@@ -13,8 +13,8 @@ import type {
 import { Target } from 'models/target'
 import { TargetModifierLookup } from 'models/targetModifiers'
 import UnitAverageProcessor from 'processors/averageDamageProcessor'
-import MaxDamageProcessor from 'processors/maxDamageProcessor'
-import SimulationProcessor from 'processors/simulationProcessor'
+import UnitMaxProcessor from 'processors/maxDamageProcessor'
+import UnitSimulationProcessor from 'processors/simulationProcessor'
 import {
   transformToCumulative,
   transformToDiscrete,
@@ -53,14 +53,13 @@ export default class AosController {
     const targets = SAVES.map(save => new Target({ save }))
     const limit = request.limit ?? 5
 
-    const maxLookup = units.reduce<{ [id: string]: number }>((acc, unit) => {
-      const max = unit.weaponProfiles.reduce((sum, profile) => {
-        const processor = new MaxDamageProcessor(profile)
-        return sum + processor.calculateMaxDamage()
-      }, 0)
-      acc[unit.id] = max
-      return acc
-    }, {})
+    const maxLookup = units.reduce<{ [id: string]: number }>(
+      (acc, unit) => ({
+        ...acc,
+        [unit.id]: new UnitMaxProcessor(unit).calculateMaxDamage(),
+      }),
+      {}
+    )
 
     const results: SimulationResult[] = []
     targets.forEach(target => {
@@ -93,10 +92,8 @@ export default class AosController {
   private runSimulations(unit: Unit, target: Target, limit: number) {
     const results: UnitSimulationData = {}
     _.times(limit, () => {
-      const value = unit.weaponProfiles.reduce((acc, profile) => {
-        const processor = new SimulationProcessor(profile, target)
-        return acc + processor.simulateDamage()
-      }, 0)
+      const processor = new UnitSimulationProcessor(unit, target)
+      const value = processor.simulateDamage()
       if (results[value]) results[value] += 1
       else results[value] = 1
     })

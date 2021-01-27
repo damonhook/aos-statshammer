@@ -1,9 +1,27 @@
 import { Characteristic as C } from 'common'
 import { D6 } from 'models/dice'
 import { Target } from 'models/target'
+import { Unit } from 'models/unit'
 import { WeaponProfile } from 'models/weaponProfile'
 
-export default class SimulationProcessor {
+export class UnitSimulationProcessor {
+  unit: Unit
+  target: Target
+
+  constructor(unit: Unit, target: Target) {
+    this.unit = unit
+    this.target = target
+  }
+
+  public simulateDamage(): number {
+    return this.unit.weaponProfiles.reduce((sum, profile) => {
+      const processor = new ProfileSimulationProcessor(profile, this.target)
+      return sum + processor.simulateDamage()
+    }, 0)
+  }
+}
+
+export class ProfileSimulationProcessor {
   profile: WeaponProfile
   target: Target
 
@@ -23,7 +41,7 @@ export default class SimulationProcessor {
         attacks += leaderMods[0].numLeaders * leaderMods[0].bonus.roll()
       } else {
         const leaderProfile = this.profile.getLeaderProfile()
-        const leaderProcessor = new SimulationProcessor(leaderProfile, this.target)
+        const leaderProcessor = new ProfileSimulationProcessor(leaderProfile, this.target)
         extraDamage += leaderProcessor.simulateDamage()
         numModels = Math.max(numModels - leaderProfile.numModels, 0)
       }
@@ -81,7 +99,7 @@ export default class SimulationProcessor {
     const cbMod = this.profile.modifiers.conditionalBonus.get(key)
     if (cbMod && (cbMod.unmodified ? unmodifiedRoll : roll) >= cbMod.on) {
       const bonusProfile = this.profile.getConditionalBonusProfile(cbMod)
-      const bonusProcessor = new SimulationProcessor(bonusProfile, this.target)
+      const bonusProcessor = new ProfileSimulationProcessor(bonusProfile, this.target)
       const bonusDamage =
         key === C.TO_HIT ? bonusProcessor.simulateWoundRoll() : bonusProcessor.simulateSaveRoll()
       return bonusDamage + damage
@@ -121,3 +139,5 @@ export default class SimulationProcessor {
     return damage
   }
 }
+
+export default UnitSimulationProcessor

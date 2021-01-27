@@ -1,7 +1,23 @@
 import { Characteristic as C } from 'common'
+import { Unit } from 'models/unit'
 import { WeaponProfile } from 'models/weaponProfile'
 
-export default class MaxDamageProcessor {
+export class UnitMaxProcessor {
+  unit: Unit
+
+  constructor(unit: Unit) {
+    this.unit = unit
+  }
+
+  public calculateMaxDamage(): number {
+    return this.unit.weaponProfiles.reduce((sum, profile) => {
+      const processor = new ProfileMaxProcessor(profile)
+      return sum + processor.calculateMaxDamage()
+    }, 0)
+  }
+}
+
+export class ProfileMaxProcessor {
   profile: WeaponProfile
 
   constructor(profile: WeaponProfile) {
@@ -15,7 +31,7 @@ export default class MaxDamageProcessor {
     const leaderMods = this.profile.modifiers.leaderBonus
     if (leaderMods && leaderMods.length) {
       const leaderProfile = this.profile.getLeaderProfile()
-      const leaderProcessor = new MaxDamageProcessor(leaderProfile)
+      const leaderProcessor = new ProfileMaxProcessor(leaderProfile)
       extra += leaderProcessor.calculateMaxDamage()
       numModels = Math.max(numModels - leaderProfile.numModels, 0)
     }
@@ -59,3 +75,5 @@ export default class MaxDamageProcessor {
     return 0
   }
 }
+
+export default UnitMaxProcessor
