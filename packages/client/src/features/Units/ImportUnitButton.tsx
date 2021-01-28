@@ -2,7 +2,7 @@ import { ImportExport } from '@material-ui/icons'
 import ImportButton from 'components/ImportButton'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { unitsStore } from 'store/slices'
+import { notificationsStore, unitsStore } from 'store/slices'
 import Store from 'types/store'
 import { convertUnitJson } from 'utils/exported'
 
@@ -15,7 +15,13 @@ const ImportUnitButton = () => {
       try {
         const imported = convertUnitJson(data, definitions)
         dispatch(unitsStore.actions.addUnit({ unit: imported.unit }))
-      } catch {}
+        dispatch(notificationsStore.actions.addNotification({ message: 'Successfully imported unit' }))
+      } catch (err) {
+        console.error(err)
+        dispatch(
+          notificationsStore.actions.addNotification({ message: 'Invalid data for import', variant: 'error' })
+        )
+      }
     },
     [dispatch, definitions]
   )

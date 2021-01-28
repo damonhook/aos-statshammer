@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { notificationsStore } from 'store/slices'
 import { unitFormStore } from 'store/slices/forms'
 import Store from 'types/store'
 import { convertUnitJson } from 'utils/exported'
@@ -63,6 +64,9 @@ const UnitToolBar = () => {
         dispatch(unitFormStore.actions.initForm({ unit }))
       } catch (err) {
         console.error(err)
+        dispatch(
+          notificationsStore.actions.addNotification({ message: 'Invalid data for import', variant: 'error' })
+        )
       }
     },
     [dispatch, definitions]

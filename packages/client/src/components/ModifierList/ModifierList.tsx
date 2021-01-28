@@ -1,4 +1,4 @@
-import { makeStyles, Theme } from '@material-ui/core'
+import { makeStyles, PaperProps, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useMemo } from 'react'
 import { ModifierDefinition } from 'types/modifierDefinition'
@@ -19,6 +19,7 @@ interface ModifierListProps {
   deleteModifier: (id: string) => void
   onEnabledChanged: (id: string, value: boolean) => void
   errors?: ModifierListErrors
+  variant?: PaperProps['variant']
 }
 
 const ModifierList = ({
@@ -29,6 +30,7 @@ const ModifierList = ({
   deleteModifier,
   onEnabledChanged,
   errors,
+  variant,
 }: ModifierListProps) => {
   const classes = useStyles()
 
@@ -53,6 +55,7 @@ const ModifierList = ({
           deleteModifier={deleteModifier}
           onEnabledChanged={onEnabledChanged}
           errors={errors?.[modifier.id]}
+          variant={variant}
         />
       ))}
     </div>

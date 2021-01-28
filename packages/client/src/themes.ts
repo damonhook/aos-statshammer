@@ -32,6 +32,7 @@ export const lightTheme: Theme = createMuiTheme({
       axis: grey[700],
       series: ['#8884d8', '#82ca9d', '#ff7300', teal[400], '#f50057'],
     },
+    info: teal,
   },
   ...commonOtions,
 })
@@ -46,6 +47,7 @@ export const darkTheme: Theme = createMuiTheme({
       axis: grey[400],
       series: ['#8884d8', '#82ca9d', '#ff7300', teal[400], '#ff5252'],
     },
+    info: teal,
   },
   ...commonOtions,
 })

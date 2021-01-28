@@ -52,7 +52,7 @@ const WeaponProfileDialog = () => {
       aria-labelledby="profile-dialog-title"
       onClose={handleBack}
       keepMounted
-      maxWidth={900}
+      maxWidth={1024}
     >
       <form style={{ display: 'contents' }}>
         <DialogAppBar id="profile-dialog-title" title="Edit Weapon Profile" onClose={handleBack} />

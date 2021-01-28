@@ -13,7 +13,9 @@ interface StyleProps {
 const useStyles = makeStyles((theme: Theme) => ({
   notification: {
     minWidth: 400,
+    top: `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(2)}px)`,
     [theme.breakpoints.down('sm')]: {
+      top: 'unset',
       bottom: 64,
     },
   },
@@ -80,7 +82,7 @@ const Notification = ({ notification, timeout = 4000 }: NotificationProps) => {
       open={open}
       onClose={handleClose}
       anchorOrigin={anchorOrigin}
-      // autoHideDuration={timeout}
+      autoHideDuration={timeout}
       TransitionComponent={!isMobile ? Transition : undefined}
     >
       <Alert
@@ -89,8 +91,14 @@ const Notification = ({ notification, timeout = 4000 }: NotificationProps) => {
         className={classes.content}
         classes={{ message: classes.message }}
       >
-        {notification.title && <AlertTitle>{notification.title}</AlertTitle>}
-        {notification.message}
+        {notification.details ? (
+          <>
+            <AlertTitle>{notification.message}</AlertTitle>
+            {notification.details}
+          </>
+        ) : (
+          notification.message
+        )}
       </Alert>
     </Snackbar>
   )

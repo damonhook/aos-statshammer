@@ -1,4 +1,5 @@
 import { IconButton, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
+import { Alert, AlertTitle } from '@material-ui/lab'
 import { LogoIcon } from 'components/Icons'
 import React from 'react'
 import { EXTERNAL_LINKS, PAGE_ROUTES } from 'utils/routes'
@@ -9,8 +10,7 @@ import Section from './Section'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     maxWidth: 900,
-    margin: '10px auto',
-    marginTop: 10,
+    margin: `${theme.spacing(2)}px auto`,
   },
   about: { margin: theme.spacing(0, 1) },
   header: {
@@ -120,8 +120,13 @@ const About = () => {
             <AboutLink href={EXTERNAL_LINKS.REDDIT}>Reddit page</AboutLink> to get notified of new additions.
             <br />
             <br />
-            <strong>Remember:</strong> There is more to a unit than just its damage output. This is a tool,
-            not a definitive answer of which unit is better <br />
+            <Alert severity="info">
+              <AlertTitle>Remember</AlertTitle>
+              <Typography>
+                There is more to a unit than just its damage output. This is a tool, not a definitive answer
+                of which unit is bette
+              </Typography>
+            </Alert>
           </Section>
         </div>
       </Paper>

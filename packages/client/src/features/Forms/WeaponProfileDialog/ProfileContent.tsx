@@ -112,6 +112,7 @@ const ProfileContent = ({ unitId, data, errors }: ProfileContentProps) => {
               deleteModifier={handleDeleteModifier}
               onEnabledChanged={handleModifierEnabledChanged}
               errors={errors?.modifiers}
+              variant="outlined"
             />
             <Box paddingTop={2}>
               <ModifierSelector

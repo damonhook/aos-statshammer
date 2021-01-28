@@ -2,8 +2,8 @@ export type NotificationVariant = 'info' | 'success' | 'warning' | 'error'
 
 export interface Notification {
   id: string
-  title?: string
   message: string
+  details?: string
   variant?: NotificationVariant
 }
 

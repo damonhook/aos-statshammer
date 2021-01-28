@@ -3,6 +3,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   makeStyles,
+  PaperProps,
   Theme,
   Typography,
 } from '@material-ui/core'
@@ -48,9 +49,17 @@ interface CollapsibleCardProps {
   hover?: boolean
   controls?: React.ReactNode
   children?: React.ReactNode
+  variant?: PaperProps['variant']
 }
 
-const CollapsibleCard = ({ title, children, startCollapsed, hover, controls }: CollapsibleCardProps) => {
+const CollapsibleCard = ({
+  title,
+  children,
+  startCollapsed,
+  hover,
+  controls,
+  variant,
+}: CollapsibleCardProps) => {
   const [open, setOpen] = useState(!startCollapsed)
   const classes = useStyles()
 
@@ -59,7 +68,12 @@ const CollapsibleCard = ({ title, children, startCollapsed, hover, controls }: C
   }
 
   return (
-    <Accordion expanded={open} onChange={handleChange} className={clsx({ [classes.hover]: !!hover })}>
+    <Accordion
+      expanded={open}
+      onChange={handleChange}
+      className={clsx({ [classes.hover]: !!hover })}
+      variant={variant}
+    >
       <AccordionSummary
         aria-controls={`${title}-content`}
         id={`${title}-header`}

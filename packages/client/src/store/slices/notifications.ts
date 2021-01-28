@@ -12,10 +12,10 @@ export default createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     addNotification(state: NotificationsStore, action: PayloadAction<Omit<Notification, 'id'>>) {
-      const { title, message, variant } = action.payload
+      const { details, message, variant } = action.payload
       state.items.push({
-        title,
         message,
+        details,
         variant: variant ?? 'info',
         id: nanoid(),
       })

@@ -1,4 +1,4 @@
-import { Box, Checkbox, makeStyles, Theme } from '@material-ui/core'
+import { Box, Checkbox, makeStyles, PaperProps, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import CollapsibleCard from 'components/CollapsibleCard'
 import ModifierDescription from 'components/ModifierDescription'
@@ -23,6 +23,7 @@ interface ModifierItemProps {
   deleteModifier: (id: string) => void
   onEnabledChanged: (id: string, value: boolean) => void
   errors?: ModifierError
+  variant?: PaperProps['variant']
 }
 
 const ModifierItem = ({
@@ -33,6 +34,7 @@ const ModifierItem = ({
   deleteModifier,
   onEnabledChanged,
   errors,
+  variant,
 }: ModifierItemProps) => {
   const classes = useStyles()
 
@@ -51,6 +53,7 @@ const ModifierItem = ({
       controls={
         <ItemControls modifier={modifier} addModifiers={addModifiers} deleteModifier={deleteModifier} />
       }
+      variant={variant}
     >
       <div className={clsx({ [classes.disabled]: !!modifier.disabled })}>
         <Box display="flex" alignItems="center">

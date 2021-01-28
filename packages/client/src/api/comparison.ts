@@ -1,5 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit'
-import { comparisonStore } from 'store/slices'
+import { comparisonStore, notificationsStore } from 'store/slices'
 import { ComparisonRequest, ComparisonResponse } from 'types/store/comparison'
 import { Unit } from 'types/store/units'
 
@@ -7,6 +7,7 @@ import { post, unitIdResponseProcessor } from './helpers'
 
 export const getComparison = ({ units }: { units: Unit[] }) => async (dispatch: Dispatch) => {
   const { comparisonPending, comparisonSucess, comparisonError } = comparisonStore.actions
+  const { addNotification } = notificationsStore.actions
   dispatch(comparisonPending())
   try {
     if (!units || !units.length) dispatch(comparisonSucess({ results: [] }))
@@ -19,5 +20,6 @@ export const getComparison = ({ units }: { units: Unit[] }) => async (dispatch: 
   } catch (error) {
     console.error(error)
     dispatch(comparisonError())
+    dispatch(addNotification({ message: 'Failed to fetch comparison data', variant: 'error' }))
   }
 }

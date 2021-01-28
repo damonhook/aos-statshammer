@@ -1,6 +1,5 @@
 import { Box, makeStyles, Theme } from '@material-ui/core'
 import CollapsibleCard from 'components/CollapsibleCard'
-import Menu from 'components/Menu'
 import WeaponProfileInfo from 'components/WeaponProfileInfo'
 import { openUnitDialog } from 'features/Forms/UnitDialog/UnitDialog'
 import React, { useCallback } from 'react'
@@ -8,6 +7,8 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { unitsStore } from 'store/slices'
 import { Unit } from 'types/store/units'
+
+import UnitListControls from './UnitListControls'
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -18,36 +19,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: theme.spacing(2),
   },
 }))
-
-interface UnitListControlsProps {
-  unit: Unit
-}
-
-const UnitListControls = ({ unit }: UnitListControlsProps) => {
-  const dispatch = useDispatch()
-
-  const handleCopy = useCallback(() => {
-    dispatch(unitsStore.actions.addUnit({ unit: { ...unit, name: `${unit.name} copy` } }))
-  }, [unit, dispatch])
-
-  const handleDelete = useCallback(() => {
-    dispatch(unitsStore.actions.deleteUnit({ id: unit.id }))
-  }, [unit.id, dispatch])
-
-  const handleExport = useCallback(() => {
-    console.log('export')
-  }, [])
-
-  return (
-    <Menu
-      items={[
-        { name: 'Copy', onClick: handleCopy },
-        { name: 'Delete', onClick: handleDelete },
-        { name: 'Export', onClick: handleExport },
-      ]}
-    />
-  )
-}
 
 interface UnitCardProps {
   unit: Unit

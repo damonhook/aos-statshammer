@@ -8,6 +8,7 @@ import {
   useTheme,
 } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
+import NoItemsCard from 'components/NoItemsCard'
 import WeaponProfileInfo from 'components/WeaponProfileInfo'
 import WeaponProfileDialog, { openProfileDialog } from 'features/Forms/WeaponProfileDialog'
 import React, { useCallback } from 'react'
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   nameField: {
     paddingBottom: theme.spacing(3),
+  },
+  noItems: {
+    marginBottom: theme.spacing(2),
   },
 }))
 
@@ -94,24 +98,34 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
         />
         <Typography>Weapon Profiles:</Typography>
         <div style={{ paddingBottom: theme.spacing(1) }} />
-        {data.weaponProfiles.map(profile => (
-          <WeaponProfileInfo
-            className={helpClasses.weaponProfile}
-            profile={profile}
-            key={profile.id}
-            onClick={handleProfileClicked(profile.id)}
-            onEnabledChanged={handleProfileEnabledChanged(profile.id)}
-            controls={
-              <ProfileControls
-                unitId={unitId}
-                profile={profile}
-                className={helpClasses.weaponProfileControls}
-              />
-            }
-            toggleProps={{ className: helpClasses.toggleActiveProfile }}
-            hover
+        {!data.weaponProfiles.length && (
+          <NoItemsCard
+            title="This unit is rather weak"
+            description="There are no weapon profiles here, try adding some"
+            className={classes.noItems}
+            variant={!errors?.weaponProfiles ? 'info' : 'error'}
           />
-        ))}
+        )}
+        <div>
+          {data.weaponProfiles.map(profile => (
+            <WeaponProfileInfo
+              className={helpClasses.weaponProfile}
+              profile={profile}
+              key={profile.id}
+              onClick={handleProfileClicked(profile.id)}
+              onEnabledChanged={handleProfileEnabledChanged(profile.id)}
+              controls={
+                <ProfileControls
+                  unitId={unitId}
+                  profile={profile}
+                  className={helpClasses.weaponProfileControls}
+                />
+              }
+              toggleProps={{ className: helpClasses.toggleActiveProfile }}
+              hover
+            />
+          ))}
+        </div>
         <Button
           variant="contained"
           fullWidth
