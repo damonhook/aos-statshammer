@@ -47,8 +47,7 @@ export class ProfileMaxProcessor {
     let maxDamagePerRoll = this.profile.damage.max + this.resolveBonusModifier(C.DAMAGE)
     maxDamagePerRoll += this.resolveConditionalBonusModifiers()
 
-    const max = maxRolls * maxDamagePerRoll
-    return this.resolveMortalWoundsModifier(max)
+    return maxRolls * this.resolveMortalWoundsModifier(maxDamagePerRoll)
   }
 
   private resolveBonusModifier(key: C): number {

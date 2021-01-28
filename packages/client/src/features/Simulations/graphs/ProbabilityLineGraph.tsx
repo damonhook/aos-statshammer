@@ -71,8 +71,9 @@ const ProbabilityLineGraph = ({
               type="monotone"
               dataKey={name}
               stroke={colors[index]}
-              dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: 1 }}
+              dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: type == 'discrete' ? 1 : 0 }}
               activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 4 }}
+              connectNulls
             />
           ))}
         </LineChart>

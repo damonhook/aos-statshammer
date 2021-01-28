@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { round } from 'lodash'
 import {
   Metric,
   ProbabilityData,
@@ -7,30 +7,37 @@ import {
   UnitSimulationData,
 } from 'types/simulations'
 
-export const transformToDiscrete = (data: UnitSimulationData): UnitSimulationData => {
+export const transformToDiscrete = (data: UnitSimulationData, max: number): UnitSimulationData => {
   const total = Object.values(data).reduce((acc, r) => acc + r, 0)
-  return Object.keys(data)
+  const results = Object.keys(data)
     .map(damage => Number(damage)) // `Object.keys()` turns it into a `string`. Turn it back to a number
     .reduce<UnitSimulationData>((acc, damage) => {
-      const probability = _.round((data[damage] / total) * 100, 3)
+      const probability = round((data[damage] / total) * 100, 3)
       acc[damage] = probability
       return acc
     }, {})
+  results[max] = 0
+  return results
 }
 
-export const transformToCumulative = (data: UnitSimulationData): UnitSimulationData => {
-  const total = Object.values(data).reduce((acc, r) => acc + r, 0)
+export const transformToCumulative = (
+  data: UnitSimulationData,
+  maxLookup: { [id: string]: number }
+): UnitSimulationData => {
+  const maxDamage = Math.max(...Object.values(maxLookup))
+  const numSimulations = Object.values(data).reduce((acc, r) => acc + r, 0)
+
   let current = 0
   const results: UnitSimulationData = {}
-  Object.keys(data)
-    .map(damage => Number(damage)) // `Object.keys()` turns it into a `string`. Turn it back to a number
-    .forEach(damage => {
-      const probability = (data[damage] / total) * 100
-      current = _.round(current + probability, 3)
-      results[damage] = current
-    })
-  const maxDamage = Math.max(...Object.keys(data).map(d => Number(d)))
-  results[maxDamage] = 100 // Ensure the last result is always 100% (handles slight rounding issues)
+  Array.from({ length: maxDamage }).forEach((_, damage) => {
+    if (data[damage] != null) {
+      const probability = (data[damage] / numSimulations) * 100
+      current = round(current + probability, 3)
+    }
+    results[damage] = current
+  })
+  // Ensure the last result is always 100% (handles slight rounding issues)
+  results[maxDamage] = 100
   return results
 }
 

@@ -75,8 +75,8 @@ export default class AosController {
       units.forEach(unit => {
         const metrics: Metric = { max: maxLookup[unit.id], average: averageLookup[unit.id][save] }
         const simResults = simLookup[unit.id][save]
-        const discrete = transformToDiscrete(simResults)
-        const cumulative = transformToCumulative(simResults)
+        const discrete = transformToDiscrete(simResults, maxLookup[unit.id])
+        const cumulative = transformToCumulative(simResults, maxLookup)
         unitResults[unit.id] = { discrete, cumulative, metrics }
       })
       return transformToSimulationResult(unitResults, save, this.getDisplaySave(save))
