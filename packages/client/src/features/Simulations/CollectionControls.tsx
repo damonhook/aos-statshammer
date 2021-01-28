@@ -101,7 +101,7 @@ const CollectionControls = ({
       {variant === 'cumulative' && (
         <FormControlLabel
           value="start"
-          control={<Switch color="primary" value={inverted} onChange={handleInvertedChange} />}
+          control={<Switch color="primary" checked={inverted} onChange={handleInvertedChange} />}
           label="Inverted"
           labelPlacement="start"
           className={classes.inverted}

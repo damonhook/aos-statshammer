@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@material-ui/core'
+import { Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import { ProbabilityTooltip } from 'components/GraphTooltips'
 import React, { useMemo } from 'react'
 import {
@@ -36,6 +36,7 @@ const ProbabilityLineGraph = ({
   inverted,
 }: ProbabilityLineGraphProps) => {
   const theme = useTheme()
+
   const data = useMemo(() => {
     return transformData(probabilities ?? [], nameMapping)
   }, [nameMapping, probabilities])
@@ -50,7 +51,7 @@ const ProbabilityLineGraph = ({
       <Typography align="center" variant="h6" style={{ fontWeight: 'normal' }}>
         {`${startWithUppercase(type)} Probability (${displaySave})`}
       </Typography>
-      <ResponsiveContainer height={300} width="99%">
+      <ResponsiveContainer height={300} width="100%">
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
           <XAxis

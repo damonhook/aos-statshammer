@@ -50,7 +50,7 @@ const SimulationsContent = ({
   loading,
 }: SimulationsContentProps) => {
   const classes = useStyles()
-  const [save, setSave] = useState(2)
+  const [save, setSave] = useState(4)
   const [referenceLine, setReferenceLine] = useState<keyof Metric | undefined>(undefined)
   const [inverted, setInverted] = useState(false)
 

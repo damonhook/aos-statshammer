@@ -18,6 +18,7 @@ import { configStore } from 'store/slices'
 import Store from 'types/store'
 import { PAGE_ROUTES } from 'utils/routes'
 
+import ClearTargetItem from './ClearTargetItem'
 import ClearUnitsItem from './ClearUnitsItem'
 import ListItem from './components/ListItem'
 import NavItems from './NavItems'
@@ -138,6 +139,7 @@ const LeftNavigation = ({ open, onOpen, onClose, width = 240 }: LeftNavigationPr
             tooltip={!open}
           />
           {route === PAGE_ROUTES.HOME && <ClearUnitsItem open={open} onClose={handleItemClick} />}
+          {route === PAGE_ROUTES.HOME && <ClearTargetItem open={open} onClose={handleItemClick} />}
         </List>
       </SwipeableDrawer>
     </>

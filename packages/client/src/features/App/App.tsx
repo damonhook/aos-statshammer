@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
+    maxWidth: '100vw',
   },
 }))
 

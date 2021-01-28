@@ -40,5 +40,9 @@ export default createSlice({
       const { id } = action.payload
       state.modifiers = state.modifiers.filter(m => m.id !== id)
     },
+
+    clearTarget(state: TargetStore) {
+      state.modifiers = []
+    },
   },
 })
