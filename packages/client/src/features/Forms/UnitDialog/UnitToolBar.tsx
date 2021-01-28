@@ -10,6 +10,8 @@ import Store from 'types/store'
 import { convertUnitJson } from 'utils/exported'
 import { PAGE_ROUTES } from 'utils/routes'
 
+import { helpIds } from './Help'
+
 const useStyles = makeStyles((theme: Theme) => ({
   toolbar: {
     marginBottom: theme.spacing(3),
@@ -19,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: theme.spacing(1),
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  controls: {
+    display: 'flex',
 
     '& > *': {
       marginRight: theme.spacing(1),
@@ -74,17 +79,19 @@ const UnitToolBar = () => {
             <Typography color="textPrimary">Edit Unit</Typography>
           </Breadcrumbs>
         </div>
-        <ImportButton
-          id="import-unit-dialog"
-          startIcon={<ImportExport />}
-          onImport={handleUpload}
-          size="small"
-        >
-          Import
-        </ImportButton>
-        <Button startIcon={<Save />} size="small">
-          Export
-        </Button>
+        <div id={helpIds.importExport} className={classes.controls}>
+          <ImportButton
+            id="import-unit-dialog"
+            startIcon={<ImportExport />}
+            onImport={handleUpload}
+            size="small"
+          >
+            Import
+          </ImportButton>
+          <Button startIcon={<Save />} size="small">
+            Export
+          </Button>
+        </div>
       </div>
       <Divider />
     </div>

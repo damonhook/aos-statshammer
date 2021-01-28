@@ -10,9 +10,10 @@ import { openProfileDialog } from '../WeaponProfileDialog'
 interface ProfileControlsProps {
   unitId: string
   profile: WeaponProfile
+  className?: string
 }
 
-const ProfileControls = ({ unitId, profile }: ProfileControlsProps) => {
+const ProfileControls = ({ unitId, profile, className }: ProfileControlsProps) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -29,7 +30,7 @@ const ProfileControls = ({ unitId, profile }: ProfileControlsProps) => {
   }, [profile.id, dispatch])
 
   return (
-    <span style={{ marginRight: 5 }}>
+    <span className={className} style={{ marginRight: 5 }}>
       <Menu
         items={[
           { name: 'Edit', onClick: handleEdit },

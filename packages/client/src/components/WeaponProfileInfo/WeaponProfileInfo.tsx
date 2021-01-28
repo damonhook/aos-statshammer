@@ -1,6 +1,7 @@
 import {
   Box,
   Checkbox,
+  CheckboxProps,
   makeStyles,
   Paper,
   Table,
@@ -36,6 +37,8 @@ interface WeaponProfileInfoProps {
   onClick?: () => void
   onEnabledChanged?: (val: boolean) => void
   controls?: React.ReactNode
+  className?: string
+  toggleProps?: Omit<CheckboxProps, 'checked' | 'onClick' | 'onChange'>
 }
 
 const WeaponProfileInfo = ({
@@ -44,6 +47,8 @@ const WeaponProfileInfo = ({
   onClick,
   onEnabledChanged,
   controls,
+  className,
+  toggleProps,
 }: WeaponProfileInfoProps) => {
   const classes = useStyles()
 
@@ -58,7 +63,7 @@ const WeaponProfileInfo = ({
   }, [onClick])
 
   return (
-    <div className={classes.root} onClick={handleProfileClicked}>
+    <div className={clsx(classes.root, className)} onClick={handleProfileClicked}>
       <div className={classes.weaponProfile}>
         <Box flex={1} maxWidth="100%">
           <Paper variant="outlined" className={clsx({ [classes.hover]: !!hover })}>
@@ -73,8 +78,8 @@ const WeaponProfileInfo = ({
                 checked={!profile.disabled}
                 onClick={event => event.stopPropagation()}
                 onChange={handleEnabledChange}
-                inputProps={{ 'aria-label': 'primary checkbox' }}
                 disabled={!onEnabledChanged}
+                {...toggleProps}
               />
               <Typography
                 variant="body1"

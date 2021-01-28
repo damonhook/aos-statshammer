@@ -18,6 +18,7 @@ import { UnitFormData } from 'types/store/forms/unitForm'
 import { WeaponProfileParams } from 'types/store/units'
 import { UnitErrors } from 'types/validation'
 
+import { helpClasses, helpIds } from './Help'
 import ProfileControls from './ProfileControls'
 import UnitToolBar from './UnitToolBar'
 
@@ -84,6 +85,7 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
           label="Unit Name"
           fullWidth
           variant="outlined"
+          id={helpIds.unitName}
           className={classes.nameField}
           value={data.name}
           onChange={handleNameChange}
@@ -94,15 +96,30 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
         <div style={{ paddingBottom: theme.spacing(1) }} />
         {data.weaponProfiles.map(profile => (
           <WeaponProfileInfo
+            className={helpClasses.weaponProfile}
             profile={profile}
             key={profile.id}
             onClick={handleProfileClicked(profile.id)}
             onEnabledChanged={handleProfileEnabledChanged(profile.id)}
-            controls={<ProfileControls unitId={unitId} profile={profile} />}
+            controls={
+              <ProfileControls
+                unitId={unitId}
+                profile={profile}
+                className={helpClasses.weaponProfileControls}
+              />
+            }
+            toggleProps={{ className: helpClasses.toggleActiveProfile }}
             hover
           />
         ))}
-        <Button variant="contained" fullWidth startIcon={<Add />} onClick={handleAddProfile} color="primary">
+        <Button
+          variant="contained"
+          fullWidth
+          startIcon={<Add />}
+          onClick={handleAddProfile}
+          color="primary"
+          id={helpIds.addWeaponProfile}
+        >
           Add Profile
         </Button>
       </MuiDialogContent>

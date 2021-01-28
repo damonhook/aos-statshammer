@@ -1,5 +1,5 @@
-import { AppBar, IconButton, makeStyles, Theme, Toolbar, Typography } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
+import { AppBar, IconButton, makeStyles, Theme, Toolbar, Tooltip, Typography } from '@material-ui/core'
+import { Close, HelpOutline } from '@material-ui/icons'
 import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -18,9 +18,10 @@ interface DialogAppBarProps {
   id?: string
   title: string
   onClose: () => void
+  startHelp?: () => void
 }
 
-const DialogAppBar = ({ id, title, onClose }: DialogAppBarProps) => {
+const DialogAppBar = ({ id, title, onClose, startHelp }: DialogAppBarProps) => {
   const classes = useStyles()
 
   return (
@@ -29,9 +30,16 @@ const DialogAppBar = ({ id, title, onClose }: DialogAppBarProps) => {
         <IconButton onClick={onClose} className={classes.closeButton}>
           <Close className={classes.icon} />
         </IconButton>
-        <Typography variant="h6" id={id}>
+        <Typography variant="h6" id={id} style={{ flex: 1 }}>
           {title}
         </Typography>
+        {startHelp && (
+          <Tooltip title="Help">
+            <IconButton onClick={startHelp}>
+              <HelpOutline className={classes.icon} />
+            </IconButton>
+          </Tooltip>
+        )}
       </Toolbar>
     </AppBar>
   )
