@@ -19,7 +19,7 @@ import { UnitFormData } from 'types/store/forms/unitForm'
 import { WeaponProfileParams } from 'types/store/units'
 import { UnitErrors } from 'types/validation'
 
-import { helpClasses, helpIds } from './Help'
+import { helpTargets } from './Help'
 import ProfileControls from './ProfileControls'
 import UnitToolBar from './UnitToolBar'
 
@@ -89,7 +89,7 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
           label="Unit Name"
           fullWidth
           variant="outlined"
-          id={helpIds.unitName}
+          id={helpTargets.ids.unitName}
           className={classes.nameField}
           value={data.name}
           onChange={handleNameChange}
@@ -109,7 +109,7 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
         <div>
           {data.weaponProfiles.map(profile => (
             <WeaponProfileInfo
-              className={helpClasses.weaponProfile}
+              className={helpTargets.classes.weaponProfile}
               profile={profile}
               key={profile.id}
               onClick={handleProfileClicked(profile.id)}
@@ -118,10 +118,10 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
                 <ProfileControls
                   unitId={unitId}
                   profile={profile}
-                  className={helpClasses.weaponProfileControls}
+                  className={helpTargets.classes.weaponProfileControls}
                 />
               }
-              toggleProps={{ className: helpClasses.toggleActiveProfile }}
+              toggleProps={{ className: helpTargets.classes.toggleActiveProfile }}
               hover
             />
           ))}
@@ -132,7 +132,7 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
           startIcon={<Add />}
           onClick={handleAddProfile}
           color="primary"
-          id={helpIds.addWeaponProfile}
+          id={helpTargets.ids.addWeaponProfile}
         >
           Add Profile
         </Button>

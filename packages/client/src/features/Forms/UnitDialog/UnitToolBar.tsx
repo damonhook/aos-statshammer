@@ -11,7 +11,7 @@ import Store from 'types/store'
 import { convertUnitJson } from 'utils/exported'
 import { PAGE_ROUTES } from 'utils/routes'
 
-import { helpIds } from './Help'
+import { helpTargets } from './Help'
 
 const useStyles = makeStyles((theme: Theme) => ({
   toolbar: {
@@ -83,7 +83,7 @@ const UnitToolBar = () => {
             <Typography color="textPrimary">Edit Unit</Typography>
           </Breadcrumbs>
         </div>
-        <div id={helpIds.importExport} className={classes.controls}>
+        <div id={helpTargets.ids.importExport} className={classes.controls}>
           <ImportButton
             id="import-unit-dialog"
             startIcon={<ImportExport />}

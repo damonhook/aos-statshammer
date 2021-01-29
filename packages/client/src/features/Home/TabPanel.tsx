@@ -6,9 +6,10 @@ interface TabPanelProps {
   value: any
   dir?: string
   children?: React.ReactNode
+  className?: string
 }
 
-const TabPanel = ({ index, value, children, ...other }: TabPanelProps) => {
+const TabPanel = ({ index, value, children, className, ...other }: TabPanelProps) => {
   return (
     <Typography
       component="div"
@@ -17,6 +18,7 @@ const TabPanel = ({ index, value, children, ...other }: TabPanelProps) => {
       id={`home-tabpanel-${index}`}
       aria-labelledby={`home-tab-${index}`}
       style={{ flexGrow: 1, maxWidth: '100vw' }}
+      className={className}
       {...other}
     >
       <Box p={1} marginTop={1}>

@@ -1,10 +1,10 @@
 import { Button, DialogActions } from '@material-ui/core'
 import DialogAppBar from 'components/DialogAppBar'
 import SideSheet from 'components/SideSheet'
-import React, { useCallback, useEffect, useState } from 'react'
+import TourGuide from 'components/TourGuide'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom'
-import Tour from 'reactour'
 import { findUnitSelector } from 'store/selectors/unitsSelectors'
 import { unitsStore } from 'store/slices'
 import { unitFormStore } from 'store/slices/forms'
@@ -12,7 +12,7 @@ import Store from 'types/store'
 import { DIALOG_ROUTES, getDialogRoute } from 'utils/routes'
 
 import DialogContent from './DialogContent'
-import helpSteps, { helpIds } from './Help'
+import getSteps, { helpTargets } from './Help'
 
 export function openUnitDialog(
   history: { push: (path: string, state?: Record<string, unknown>) => void },
@@ -33,6 +33,14 @@ const WeaponProfileDialog = () => {
   const { unitId = '' } = match?.params ?? {}
   const unit = useSelector((state: Store) => findUnitSelector(state, { unitId }))
   const { data, errors } = useSelector((state: Store) => state.forms.unit)
+
+  const helpSteps = useMemo(
+    () =>
+      getSteps({
+        numWeaponProfiles: data?.weaponProfiles.length ?? 0,
+      }),
+    [data?.weaponProfiles.length]
+  )
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -77,14 +85,14 @@ const WeaponProfileDialog = () => {
           startHelp={() => setHelpRunning(true)}
         />
         {data && <DialogContent unitId={unitId} data={data} errors={errors} />}
-        <DialogActions id={helpIds.unitDialogActions}>
+        <DialogActions id={helpTargets.ids.unitDialogActions}>
           <Button onClick={handleBack}>Cancel</Button>
           <Button onClick={saveForm} disabled={!!errors} type="submit">
             Confirm
           </Button>
         </DialogActions>
       </form>
-      <Tour isOpen={helpRunning} steps={helpSteps} onRequestClose={() => setHelpRunning(false)} rounded={4} />
+      <TourGuide isOpen={helpRunning} steps={helpSteps} onRequestClose={() => setHelpRunning(false)} />
     </SideSheet>
   )
 }

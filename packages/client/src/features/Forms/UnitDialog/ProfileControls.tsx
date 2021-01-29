@@ -30,7 +30,7 @@ const ProfileControls = ({ unitId, profile, className }: ProfileControlsProps) =
   }, [profile.id, dispatch])
 
   return (
-    <span className={className} style={{ marginRight: 5 }}>
+    <div className={className} style={{ marginRight: 5 }}>
       <Menu
         items={[
           { name: 'Edit', onClick: handleEdit },
@@ -38,7 +38,7 @@ const ProfileControls = ({ unitId, profile, className }: ProfileControlsProps) =
           { name: 'Delete', onClick: handleDelete },
         ]}
       />
-    </span>
+    </div>
   )
 }
 

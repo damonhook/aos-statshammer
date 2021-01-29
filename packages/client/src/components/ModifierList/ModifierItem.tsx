@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   disabled: { color: theme.palette.action.disabled },
 }))
 
-interface ModifierItemProps {
+export interface ModifierItemProps {
   definition: ModifierDefinition
   modifier: Modifier
   addModifiers: (modifiers: Omit<Modifier, 'id'>[]) => void
@@ -24,6 +24,7 @@ interface ModifierItemProps {
   onEnabledChanged: (id: string, value: boolean) => void
   errors?: ModifierError
   variant?: PaperProps['variant']
+  className?: string
 }
 
 const ModifierItem = ({
@@ -35,6 +36,7 @@ const ModifierItem = ({
   onEnabledChanged,
   errors,
   variant,
+  className,
 }: ModifierItemProps) => {
   const classes = useStyles()
 
@@ -54,6 +56,7 @@ const ModifierItem = ({
         <ItemControls modifier={modifier} addModifiers={addModifiers} deleteModifier={deleteModifier} />
       }
       variant={variant}
+      className={className}
     >
       <div className={clsx({ [classes.disabled]: !!modifier.disabled })}>
         <Box display="flex" alignItems="center">

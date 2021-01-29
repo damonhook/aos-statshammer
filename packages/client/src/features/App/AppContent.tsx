@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     maxWidth: 1600,
     margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100%',
   },
   appBarShift: {
     display: 'flex',

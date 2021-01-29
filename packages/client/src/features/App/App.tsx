@@ -1,6 +1,7 @@
 import { CssBaseline } from '@material-ui/core'
 import { makeStyles, Theme, ThemeProvider } from '@material-ui/core/styles'
 import BottomNavigation from 'components/BottomNavigation'
+import Footer from 'components/Footer'
 import Header from 'components/Header'
 import Notifier from 'components/Notifier'
 import React from 'react'
@@ -20,6 +21,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
+  },
+  contentWrapper: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
     maxWidth: '100vw',
   },
 }))
@@ -36,8 +42,11 @@ const App = () => {
         <Router>
           <Header />
           <div className={classes.inner}>
-            <AppContent />
-            <Notifier />
+            <div className={classes.contentWrapper}>
+              <AppContent />
+              <Notifier />
+            </div>
+            <Footer />
             <BottomNavigation />
           </div>
         </Router>

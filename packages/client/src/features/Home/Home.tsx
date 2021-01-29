@@ -83,7 +83,7 @@ const Home = () => {
     <div className={classes.root} style={{ padding: 4 }}>
       <Redirect from={PAGE_ROUTES.STATS} to={PAGE_ROUTES.HOME} />
       <Grid container spacing={1} style={{ flex: 1 }}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} style={{ display: 'flex', flexDirection: 'column' }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -95,7 +95,7 @@ const Home = () => {
             <Tab label={tabConfig.units.title} {...a11yProps(0)} />
             <Tab label={tabConfig.target.title} {...a11yProps(1)} />
           </Tabs>
-          <div>
+          <div style={{ height: '100%' }}>
             <SwipeableViews
               axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
               index={value}

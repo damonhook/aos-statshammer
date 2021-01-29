@@ -50,6 +50,7 @@ interface CollapsibleCardProps {
   controls?: React.ReactNode
   children?: React.ReactNode
   variant?: PaperProps['variant']
+  className?: string
 }
 
 const CollapsibleCard = ({
@@ -59,6 +60,7 @@ const CollapsibleCard = ({
   hover,
   controls,
   variant,
+  className,
 }: CollapsibleCardProps) => {
   const [open, setOpen] = useState(!startCollapsed)
   const classes = useStyles()
@@ -71,7 +73,7 @@ const CollapsibleCard = ({
     <Accordion
       expanded={open}
       onChange={handleChange}
-      className={clsx({ [classes.hover]: !!hover })}
+      className={clsx({ [classes.hover]: !!hover }, className)}
       variant={variant}
     >
       <AccordionSummary

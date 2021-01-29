@@ -5,7 +5,7 @@ import { ModifierDefinition } from 'types/modifierDefinition'
 import { Modifier } from 'types/modifierInstance'
 import { ModifierListErrors } from 'types/validation'
 
-import ModifierItem from './ModifierItem'
+import ModifierItem, { ModifierItemProps } from './ModifierItem'
 
 const useStyles = makeStyles((theme: Theme) => ({
   items: {},
@@ -20,6 +20,8 @@ interface ModifierListProps {
   onEnabledChanged: (id: string, value: boolean) => void
   errors?: ModifierListErrors
   variant?: PaperProps['variant']
+  className?: string
+  ModifierItemProps?: Partial<ModifierItemProps>
 }
 
 const ModifierList = ({
@@ -31,6 +33,8 @@ const ModifierList = ({
   onEnabledChanged,
   errors,
   variant,
+  className,
+  ModifierItemProps,
 }: ModifierListProps) => {
   const classes = useStyles()
 
@@ -44,7 +48,7 @@ const ModifierList = ({
   )
 
   return (
-    <div className={clsx({ [classes.items]: data && data.length })}>
+    <div className={clsx({ [classes.items]: data && data.length }, className)}>
       {data.map(({ definition, modifier }) => (
         <ModifierItem
           definition={definition}
@@ -56,6 +60,7 @@ const ModifierList = ({
           onEnabledChanged={onEnabledChanged}
           errors={errors?.[modifier.id]}
           variant={variant}
+          {...ModifierItemProps}
         />
       ))}
     </div>

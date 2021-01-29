@@ -20,6 +20,7 @@ import { ProfileErrors } from 'types/validation'
 import { HASH_ROUTES } from 'utils/routes'
 
 import CharacteristicField from './CharacteristicField'
+import { helpTargets } from './Help'
 import ProfileToolBar from './ProfileToolBar'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -88,10 +89,11 @@ const ProfileContent = ({ unitId, data, errors }: ProfileContentProps) => {
         className={classes.nameField}
         value={data.name ?? ''}
         onChange={handleChangeName}
+        id={helpTargets.ids.profileName}
       />
       <div style={{ paddingBottom: theme.spacing(2) }}>
         <Grid container spacing={2} style={{ paddingBottom: theme.spacing(2) }} alignItems="flex-start">
-          <Grid container item xs={12} md={3} spacing={2}>
+          <Grid container item xs={12} md={3} spacing={2} id={helpTargets.ids.profileCharacteristic}>
             <Grid item xs={12} spacing={0}>
               <Typography>Characteristics:</Typography>
             </Grid>
@@ -113,13 +115,16 @@ const ProfileContent = ({ unitId, data, errors }: ProfileContentProps) => {
               onEnabledChanged={handleModifierEnabledChanged}
               errors={errors?.modifiers}
               variant="outlined"
+              ModifierItemProps={{ className: helpTargets.classes.modifiers }}
             />
             <Box paddingTop={2}>
-              <ModifierSelector
-                modifiers={modifiers}
-                onConfirm={handleAddModifiers}
-                hash={HASH_ROUTES.MODIFIERS}
-              />
+              <div id={helpTargets.ids.addModifiers}>
+                <ModifierSelector
+                  modifiers={modifiers}
+                  onConfirm={handleAddModifiers}
+                  hash={HASH_ROUTES.MODIFIERS}
+                />
+              </div>
             </Box>
           </Grid>
         </Grid>

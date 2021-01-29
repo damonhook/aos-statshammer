@@ -28,7 +28,7 @@ const Menu = ({ id, items }: MenuProps) => {
   }
 
   return (
-    <>
+    <div>
       <IconButton size="small" onClick={handleOpen} aria-controls={`menu-${id}`} aria-haspopup="true">
         <MoreVert />
       </IconButton>
@@ -45,7 +45,7 @@ const Menu = ({ id, items }: MenuProps) => {
           </MenuItem>
         ))}
       </MuiMenu>
-    </>
+    </div>
   )
 }
 
