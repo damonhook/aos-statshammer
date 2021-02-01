@@ -13,6 +13,7 @@ import {
   notificationsStore,
   simulationsStore,
   targetStore,
+  uiStore,
   unitsStore,
 } from './slices'
 import { profileFormStore, unitFormStore } from './slices/forms'
@@ -31,6 +32,7 @@ export const appReducer = combineReducers<Store>({
   config: configStore.reducer,
   notifications: notificationsStore.reducer,
   forms: formsReducer,
+  ui: uiStore.reducer,
 })
 
 const middleware: Middleware[] = [thunk, ...customMiddleware]

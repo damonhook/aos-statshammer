@@ -2,6 +2,7 @@ import { makeStyles, Theme } from '@material-ui/core'
 import { getComparison } from 'api/comparison'
 import CollapsibleCard from 'components/CollapsibleCard'
 import TableSkeleton from 'components/Skeletons/TableSkeleton'
+import { helpSelectors } from 'help/statsHelp'
 import isEqual from 'lodash/isEqual'
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -40,14 +41,14 @@ const Stats = () => {
   return (
     <div className={classes.root}>
       <TargetSummary />
-      <CollapsibleCard title="Average Damage Table">
+      <CollapsibleCard title="Average Damage Table" id={helpSelectors.ids.table}>
         {loading ? (
           <TableSkeleton rows={units.length + 1} columns={3} dense />
         ) : (
           <ComparisonTable nameMapping={nameMapping} results={results} />
         )}
       </CollapsibleCard>
-      <CollapsibleCard title="Graphs">
+      <CollapsibleCard title="Graphs" id={helpSelectors.ids.graphs}>
         <ComparisonGraphs nameMapping={nameMapping} results={results} loading={loading} />
       </CollapsibleCard>
     </div>

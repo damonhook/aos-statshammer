@@ -5,6 +5,7 @@ import ModifiersStore from './modifiers'
 import NotificationsStore from './notifications'
 import SimulationsStore from './simulations'
 import TargetStore from './target'
+import UIStore from './ui'
 import UnitsStore from './units'
 
 interface Store {
@@ -16,6 +17,7 @@ interface Store {
   config: ConfigStore
   notifications: NotificationsStore
   forms: FormsStore
+  ui: UIStore
 }
 
 export default Store

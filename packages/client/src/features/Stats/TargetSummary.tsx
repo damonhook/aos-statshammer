@@ -1,6 +1,7 @@
 import { Collapse, Typography } from '@material-ui/core'
 import CollapsibleCard from 'components/CollapsibleCard'
 import ModifierDescription from 'components/ModifierDescription'
+import { helpSelectors } from 'help/statsHelp'
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { ModifierDefinition } from 'types/modifierDefinition'
@@ -22,7 +23,7 @@ const TargetSummary = () => {
 
   return (
     <Collapse in={!!modifiers && !!modifiers.length}>
-      <CollapsibleCard title="Target Summary">
+      <CollapsibleCard title="Target Summary" id={helpSelectors.ids.targetSummary}>
         <div>
           {data.map(({ modifier, definition }) => (
             <Typography style={{ paddingBottom: '10px' }}>

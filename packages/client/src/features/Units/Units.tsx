@@ -2,6 +2,7 @@ import { Box, Button, makeStyles, Theme } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import NoItemsCard from 'components/NoItemsCard'
 import UnitDialog from 'features/Forms/UnitDialog'
+import { helpSelectors } from 'help/unitsHelp'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { unitsSelector } from 'store/selectors/unitsSelectors'
@@ -40,6 +41,7 @@ const Units = () => {
           color="primary"
           onClick={handleAddUnit}
           className={classes.addButton}
+          id={helpSelectors.ids.addUnit}
         >
           Add Unit
         </Button>

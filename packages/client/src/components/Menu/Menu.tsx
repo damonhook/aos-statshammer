@@ -7,12 +7,14 @@ type MenuItemProps = { name: string; onClick: () => void; disabled?: boolean }
 interface MenuProps {
   id?: string
   items: MenuItemProps[]
+  onOpen?: () => void
 }
 
-const Menu = ({ id, items }: MenuProps) => {
+const Menu = ({ id, items, onOpen }: MenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (onOpen) onOpen()
     setAnchorEl(event.currentTarget)
     event.stopPropagation()
   }

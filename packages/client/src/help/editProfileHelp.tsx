@@ -1,9 +1,9 @@
 import { Typography } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import React from 'react'
-import { buildSteps, selectorsWithPrefix } from 'utils/help'
+import { buildHelpSteps, selectorsWithPrefix } from 'utils/help'
 
-export const helpTargets = selectorsWithPrefix('help-profile', {
+export const helpSelectors = selectorsWithPrefix('help-profile', {
   ids: {
     profileName: 'name',
     profileCharacteristic: 'characteristics',
@@ -18,11 +18,10 @@ export const helpTargets = selectorsWithPrefix('help-profile', {
 interface GetStepsProps {
   numModifiers: number
 }
-
-const getSteps = ({ numModifiers }: GetStepsProps) =>
-  buildSteps([
+const getHelpSteps = ({ numModifiers }: GetStepsProps) =>
+  buildHelpSteps([
     {
-      id: helpTargets.ids.profileCharacteristic,
+      id: helpSelectors.ids.profileCharacteristic,
       content: (
         <>
           <Typography>
@@ -36,22 +35,22 @@ const getSteps = ({ numModifiers }: GetStepsProps) =>
       ),
     },
     {
-      id: helpTargets.ids.addModifiers,
+      id: helpSelectors.ids.addModifiers,
       content: 'Add modifiers (abilities) to the weapon profile.',
     },
     {
-      className: helpTargets.classes.modifiers,
+      className: helpSelectors.classes.modifiers,
       content: 'Edit your applied modifiers to best match what is on the warscroll.',
       hidden: numModifiers <= 0,
     },
     {
-      id: helpTargets.ids.profileName,
+      id: helpSelectors.ids.profileName,
       content: 'You can optionally add a name to the weapon profile.',
     },
     {
-      id: helpTargets.ids.profileDialogActions,
+      id: helpSelectors.ids.profileDialogActions,
       content: 'Save or discard the changes you have made to the weapon profile.',
     },
   ])
 
-export default getSteps
+export default getHelpSteps

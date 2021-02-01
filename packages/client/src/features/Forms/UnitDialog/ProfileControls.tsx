@@ -11,11 +11,16 @@ interface ProfileControlsProps {
   unitId: string
   profile: WeaponProfile
   className?: string
+  closeTour?: () => void
 }
 
-const ProfileControls = ({ unitId, profile, className }: ProfileControlsProps) => {
+const ProfileControls = ({ unitId, profile, className, closeTour }: ProfileControlsProps) => {
   const dispatch = useDispatch()
   const history = useHistory()
+
+  const handleOpen = useCallback(() => {
+    if (closeTour) closeTour()
+  }, [closeTour])
 
   const handleEdit = useCallback(() => {
     openProfileDialog(history, unitId, profile.id)
@@ -23,15 +28,16 @@ const ProfileControls = ({ unitId, profile, className }: ProfileControlsProps) =
 
   const handleCopy = useCallback(() => {
     dispatch(unitFormStore.actions.addWeaponProfile({ weaponProfile: profile }))
-  }, [profile, dispatch])
+  }, [dispatch, profile])
 
   const handleDelete = useCallback(() => {
     dispatch(unitFormStore.actions.deleteWeaponProfile({ id: profile.id }))
-  }, [profile.id, dispatch])
+  }, [dispatch, profile.id])
 
   return (
     <div className={className} style={{ marginRight: 5 }}>
       <Menu
+        onOpen={handleOpen}
         items={[
           { name: 'Edit', onClick: handleEdit },
           { name: 'Copy', onClick: handleCopy },

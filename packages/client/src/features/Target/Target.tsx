@@ -2,6 +2,7 @@ import { Box } from '@material-ui/core'
 import ModifierList from 'components/ModifierList'
 import ModifierSelector from 'components/ModifierSelector'
 import NoItemsCard from 'components/NoItemsCard'
+import { helpSelectors } from 'help/unitsHelp'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { targetStore } from 'store/slices'
@@ -57,11 +58,13 @@ const Target = () => {
         <NoItemsCard title="No modifiers" description="No target modifiers are present (Basic target)" />
       )}
       <Box paddingTop={2}>
-        <ModifierSelector
-          modifiers={modifiers}
-          onConfirm={handleAddModifiers}
-          hash={HASH_ROUTES.TARGET_MODIFIERS}
-        />
+        <div id={helpSelectors.ids.addTargetModifiers}>
+          <ModifierSelector
+            modifiers={modifiers}
+            onConfirm={handleAddModifiers}
+            hash={HASH_ROUTES.TARGET_MODIFIERS}
+          />
+        </div>
       </Box>
     </div>
   )

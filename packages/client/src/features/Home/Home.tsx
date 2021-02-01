@@ -4,11 +4,13 @@ import StatsSkeleton from 'components/Skeletons/pages/StatsSkeleton'
 import TargetSkeleton from 'components/Skeletons/pages/TargetSkeleton'
 import UnitsSkeleton from 'components/Skeletons/pages/UnitsSkeleton'
 import { useIsMobile } from 'hooks'
-import React, { lazy, Suspense, useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
+import { uiStore } from 'store/slices'
 import Store from 'types/store'
+import { HomeTab } from 'types/store/ui'
 import { PAGE_ROUTES } from 'utils/routes'
 
 import TabPanel from './TabPanel'
@@ -20,10 +22,11 @@ function a11yProps(index: any) {
   }
 }
 
-const tabConfig = {
-  units: { title: 'Units', route: '/' },
-  target: { title: 'Target', route: '/target' },
-}
+type TabConfig = { id: HomeTab; title: string; route: string }
+const tabConfig: TabConfig[] = [
+  { id: 'units', title: 'Units', route: '/' },
+  { id: 'target', title: 'Target', route: '/target' },
+]
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -57,13 +60,19 @@ const Stats = lazy(() => import('features/Stats'))
 // })
 
 const Home = () => {
-  const [value, setValue] = useState(0)
   const classes = useStyles()
   const theme = useTheme()
   const isMobile = useIsMobile()
   const dispatch = useDispatch()
+  const [animate, setAnimate] = useState(false)
 
+  const homeTab = useSelector((state: Store) => state.ui.homeTab)
   const { modifiers, targetModifiers } = useSelector((state: Store) => state.modifiers)
+
+  const value = useMemo(() => {
+    const idx = tabConfig.findIndex(t => t.id === homeTab)
+    return idx >= 0 ? idx : 0
+  }, [homeTab])
 
   useEffect(() => {
     if (!modifiers || !modifiers.length || !targetModifiers || !targetModifiers.length) {
@@ -71,12 +80,19 @@ const Home = () => {
     }
   }, [dispatch, modifiers, targetModifiers])
 
-  const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
-    setValue(newValue)
+  const handleChange = (event: React.ChangeEvent<any>, index: number) => {
+    const { id } = tabConfig[index]
+    dispatch(uiStore.actions.setHomeTab({ tab: id }))
   }
 
   const handleChangeIndex = (index: number) => {
-    setValue(index)
+    const { id } = tabConfig[index]
+    dispatch(uiStore.actions.setHomeTab({ tab: id }))
+  }
+
+  const onSwitching = (index: number, type: 'move' | 'end') => {
+    if (type === 'move') setAnimate(true)
+    else setTimeout(() => setAnimate(false), 250)
   }
 
   return (
@@ -92,8 +108,9 @@ const Home = () => {
             variant="fullWidth"
             aria-label="home tabs"
           >
-            <Tab label={tabConfig.units.title} {...a11yProps(0)} />
-            <Tab label={tabConfig.target.title} {...a11yProps(1)} />
+            {tabConfig.map(({ id, title }, index) => (
+              <Tab label={title} key={id} {...a11yProps(index)} />
+            ))}
           </Tabs>
           <div style={{ height: '100%' }}>
             <SwipeableViews
@@ -102,6 +119,8 @@ const Home = () => {
               onChangeIndex={handleChangeIndex}
               style={{ height: '100%' }}
               containerStyle={{ height: '100%' }}
+              onSwitching={onSwitching}
+              animateTransitions={animate}
               disableLazyLoading
             >
               <TabPanel value={value} index={0} dir={theme.direction}>

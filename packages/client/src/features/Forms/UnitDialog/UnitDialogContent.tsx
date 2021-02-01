@@ -1,16 +1,9 @@
-import {
-  Button,
-  DialogContent as MuiDialogContent,
-  makeStyles,
-  TextField,
-  Theme,
-  Typography,
-  useTheme,
-} from '@material-ui/core'
+import { Button, DialogContent, makeStyles, TextField, Theme, Typography, useTheme } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import NoItemsCard from 'components/NoItemsCard'
 import WeaponProfileInfo from 'components/WeaponProfileInfo'
 import WeaponProfileDialog, { openProfileDialog } from 'features/Forms/WeaponProfileDialog'
+import { helpSelectors } from 'help/editUnitHelp'
 import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -19,7 +12,6 @@ import { UnitFormData } from 'types/store/forms/unitForm'
 import { WeaponProfileParams } from 'types/store/units'
 import { UnitErrors } from 'types/validation'
 
-import { helpTargets } from './Help'
 import ProfileControls from './ProfileControls'
 import UnitToolBar from './UnitToolBar'
 
@@ -47,13 +39,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-interface DialogContentProps {
+interface UnitDialogContentProps {
   unitId: string
   data: UnitFormData
   errors?: UnitErrors
+  closeTour?: () => void
 }
 
-const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
+const UnitDialogContent = ({ unitId, data, errors, closeTour }: UnitDialogContentProps) => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const theme = useTheme()
@@ -67,6 +60,7 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
   )
 
   const handleProfileClicked = (id: string) => () => {
+    if (closeTour) closeTour()
     openProfileDialog(history, unitId, id)
   }
 
@@ -83,13 +77,13 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
 
   return (
     <>
-      <MuiDialogContent classes={{ root: classes.content }}>
+      <DialogContent classes={{ root: classes.content }}>
         <UnitToolBar />
         <TextField
           label="Unit Name"
           fullWidth
           variant="outlined"
-          id={helpTargets.ids.unitName}
+          id={helpSelectors.ids.unitName}
           className={classes.nameField}
           value={data.name}
           onChange={handleNameChange}
@@ -109,7 +103,7 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
         <div>
           {data.weaponProfiles.map(profile => (
             <WeaponProfileInfo
-              className={helpTargets.classes.weaponProfile}
+              className={helpSelectors.classes.weaponProfile}
               profile={profile}
               key={profile.id}
               onClick={handleProfileClicked(profile.id)}
@@ -118,10 +112,11 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
                 <ProfileControls
                   unitId={unitId}
                   profile={profile}
-                  className={helpTargets.classes.weaponProfileControls}
+                  className={helpSelectors.classes.weaponProfileControls}
+                  closeTour={closeTour}
                 />
               }
-              toggleProps={{ className: helpTargets.classes.toggleActiveProfile }}
+              toggleProps={{ className: helpSelectors.classes.toggleActiveProfile }}
               hover
             />
           ))}
@@ -132,14 +127,14 @@ const DialogContent = ({ unitId, data, errors }: DialogContentProps) => {
           startIcon={<Add />}
           onClick={handleAddProfile}
           color="primary"
-          id={helpTargets.ids.addWeaponProfile}
+          id={helpSelectors.ids.addWeaponProfile}
         >
           Add Profile
         </Button>
-      </MuiDialogContent>
+      </DialogContent>
       <WeaponProfileDialog />
     </>
   )
 }
 
-export default React.memo(DialogContent)
+export default React.memo(UnitDialogContent)

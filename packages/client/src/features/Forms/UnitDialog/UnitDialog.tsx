@@ -2,6 +2,7 @@ import { Button, DialogActions } from '@material-ui/core'
 import DialogAppBar from 'components/DialogAppBar'
 import SideSheet from 'components/SideSheet'
 import TourGuide from 'components/TourGuide'
+import getHelpSteps, { helpSelectors } from 'help/editUnitHelp'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom'
@@ -11,8 +12,7 @@ import { unitFormStore } from 'store/slices/forms'
 import Store from 'types/store'
 import { DIALOG_ROUTES, getDialogRoute } from 'utils/routes'
 
-import DialogContent from './DialogContent'
-import getSteps, { helpTargets } from './Help'
+import UnitDialogContent from './UnitDialogContent'
 
 export function openUnitDialog(
   history: { push: (path: string, state?: Record<string, unknown>) => void },
@@ -34,13 +34,8 @@ const WeaponProfileDialog = () => {
   const unit = useSelector((state: Store) => findUnitSelector(state, { unitId }))
   const { data, errors } = useSelector((state: Store) => state.forms.unit)
 
-  const helpSteps = useMemo(
-    () =>
-      getSteps({
-        numWeaponProfiles: data?.weaponProfiles.length ?? 0,
-      }),
-    [data?.weaponProfiles.length]
-  )
+  const openTour = useCallback(() => setHelpRunning(true), [])
+  const closeTour = useCallback(() => setHelpRunning(false), [])
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -49,22 +44,17 @@ const WeaponProfileDialog = () => {
   useEffect(() => {
     if (open) {
       if (!location.state?.modal) history.replace('/')
-      else if (!unit) handleBack()
+      else if (unit) dispatch(unitFormStore.actions.initForm({ unit }))
+      else handleBack()
+    } else {
+      if (helpRunning) closeTour()
     }
-  }, [open, location.state, history, unit, handleBack])
-
-  useEffect(() => {
-    if (open && unit) dispatch(unitFormStore.actions.initForm({ unit }))
-  }, [open, unit, dispatch])
-
-  useEffect(() => {
-    if (!open && helpRunning) setHelpRunning(false)
-  }, [open, helpRunning])
+  }, [closeTour, dispatch, handleBack, helpRunning, history, location.state?.modal, open, unit])
 
   const handleSideSheetClose = useCallback(() => {
-    if (helpRunning) setHelpRunning(false)
+    if (helpRunning) closeTour()
     else handleBack()
-  }, [handleBack, helpRunning])
+  }, [handleBack, helpRunning, closeTour])
 
   const saveForm = useCallback(
     (event: React.MouseEvent<any>) => {
@@ -75,24 +65,27 @@ const WeaponProfileDialog = () => {
     [dispatch, unitId, data, handleBack]
   )
 
+  const helpSteps = useMemo(
+    () =>
+      getHelpSteps({
+        numWeaponProfiles: data?.weaponProfiles.length ?? 0,
+      }),
+    [data?.weaponProfiles.length]
+  )
+
   return (
     <SideSheet open={open} aria-labelledby="unit-dialog-title" onClose={handleSideSheetClose} keepMounted>
       <form style={{ display: 'contents' }}>
-        <DialogAppBar
-          id="unit-dialog-title"
-          title="Edit Unit"
-          onClose={handleBack}
-          startHelp={() => setHelpRunning(true)}
-        />
-        {data && <DialogContent unitId={unitId} data={data} errors={errors} />}
-        <DialogActions id={helpTargets.ids.unitDialogActions}>
+        <DialogAppBar id="unit-dialog-title" title="Edit Unit" onClose={handleBack} startHelp={openTour} />
+        {data && <UnitDialogContent unitId={unitId} data={data} errors={errors} closeTour={closeTour} />}
+        <DialogActions id={helpSelectors.ids.unitDialogActions}>
           <Button onClick={handleBack}>Cancel</Button>
           <Button onClick={saveForm} disabled={!!errors} type="submit">
             Confirm
           </Button>
         </DialogActions>
       </form>
-      <TourGuide isOpen={helpRunning} steps={helpSteps} onRequestClose={() => setHelpRunning(false)} />
+      <TourGuide isOpen={helpRunning} steps={helpSteps} onRequestClose={closeTour} />
     </SideSheet>
   )
 }

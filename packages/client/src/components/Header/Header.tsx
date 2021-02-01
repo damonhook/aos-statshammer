@@ -15,6 +15,8 @@ import LeftNavigation from 'components/LeftNavigation'
 import React, { useState } from 'react'
 import { PAGE_ROUTES } from 'utils/routes'
 
+import PageHelp from './PageHelp'
+
 const drawerWidth = 220
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -72,11 +74,12 @@ const Header = () => {
           >
             <Menu />
           </IconButton>
-          <Typography variant="h6">
+          <Typography variant="h6" style={{ flex: 1 }}>
             <Link href={PAGE_ROUTES.HOME} color="inherit" underline="none">
               AoS Statshammer
             </Link>
           </Typography>
+          <PageHelp />
         </Toolbar>
       </AppBar>
       <LeftNavigation open={open} onOpen={handleDrawerOpen} onClose={handleDrawerClose} width={drawerWidth} />

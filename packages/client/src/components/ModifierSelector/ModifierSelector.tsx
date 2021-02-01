@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface ModifierSelectorProps {
   hash: HashRoute
   modifiers: ModifierDefinition[]
+  onOpen?: () => void
   onConfirm: (m: Omit<Modifier, 'id'>[]) => void
 }
 
@@ -33,7 +34,7 @@ function buildNewModifier(definition: ModifierDefinition) {
   }
 }
 
-const ModifierSelector = ({ hash, modifiers, onConfirm }: ModifierSelectorProps) => {
+const ModifierSelector = ({ hash, modifiers, onOpen, onConfirm }: ModifierSelectorProps) => {
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
   const location = useLocation()
   const history = useHistory()
@@ -43,7 +44,8 @@ const ModifierSelector = ({ hash, modifiers, onConfirm }: ModifierSelectorProps)
 
   const handleOpen = useCallback(() => {
     history.push(hash, { modal: true })
-  }, [history, hash])
+    if (onOpen) onOpen()
+  }, [history, hash, onOpen])
 
   const handleClose = useCallback(() => {
     setSelected({})

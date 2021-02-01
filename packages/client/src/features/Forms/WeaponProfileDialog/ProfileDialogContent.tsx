@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core'
 import ModifierList from 'components/ModifierList'
 import ModifierSelector from 'components/ModifierSelector'
+import { helpSelectors } from 'help/editProfileHelp'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { profileFormStore } from 'store/slices/forms'
@@ -20,7 +21,6 @@ import { ProfileErrors } from 'types/validation'
 import { HASH_ROUTES } from 'utils/routes'
 
 import CharacteristicField from './CharacteristicField'
-import { helpTargets } from './Help'
 import ProfileToolBar from './ProfileToolBar'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -34,13 +34,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-interface ProfileContentProps {
+interface ProfileDialogContentProps {
   unitId: string
   data: ProfileFormData
   errors?: ProfileErrors
+  closeTour?: () => void
 }
 
-const ProfileContent = ({ unitId, data, errors }: ProfileContentProps) => {
+const ProfileDialogContent = ({ unitId, data, errors, closeTour }: ProfileDialogContentProps) => {
   const modifiers = useSelector((state: Store) => state.modifiers.modifiers)
 
   const dispatch = useDispatch()
@@ -89,11 +90,11 @@ const ProfileContent = ({ unitId, data, errors }: ProfileContentProps) => {
         className={classes.nameField}
         value={data.name ?? ''}
         onChange={handleChangeName}
-        id={helpTargets.ids.profileName}
+        id={helpSelectors.ids.profileName}
       />
       <div style={{ paddingBottom: theme.spacing(2) }}>
         <Grid container spacing={2} style={{ paddingBottom: theme.spacing(2) }} alignItems="flex-start">
-          <Grid container item xs={12} md={3} spacing={2} id={helpTargets.ids.profileCharacteristic}>
+          <Grid container item xs={12} md={3} spacing={2} id={helpSelectors.ids.profileCharacteristic}>
             <Grid item xs={12} spacing={0}>
               <Typography>Characteristics:</Typography>
             </Grid>
@@ -115,12 +116,13 @@ const ProfileContent = ({ unitId, data, errors }: ProfileContentProps) => {
               onEnabledChanged={handleModifierEnabledChanged}
               errors={errors?.modifiers}
               variant="outlined"
-              ModifierItemProps={{ className: helpTargets.classes.modifiers }}
+              ModifierItemProps={{ className: helpSelectors.classes.modifiers }}
             />
             <Box paddingTop={2}>
-              <div id={helpTargets.ids.addModifiers}>
+              <div id={helpSelectors.ids.addModifiers}>
                 <ModifierSelector
                   modifiers={modifiers}
+                  onOpen={closeTour}
                   onConfirm={handleAddModifiers}
                   hash={HASH_ROUTES.MODIFIERS}
                 />
@@ -133,4 +135,4 @@ const ProfileContent = ({ unitId, data, errors }: ProfileContentProps) => {
   )
 }
 
-export default React.memo(ProfileContent)
+export default React.memo(ProfileDialogContent)

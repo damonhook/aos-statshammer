@@ -1,6 +1,7 @@
 import { Breadcrumbs, Button, Divider, Link, makeStyles, Theme, Typography } from '@material-ui/core'
 import { ImportExport, Save } from '@material-ui/icons'
 import ImportButton from 'components/ImportButton'
+import { helpSelectors } from 'help/editUnitHelp'
 import { nanoid } from 'nanoid'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,8 +11,6 @@ import { unitFormStore } from 'store/slices/forms'
 import Store from 'types/store'
 import { convertUnitJson } from 'utils/exported'
 import { PAGE_ROUTES } from 'utils/routes'
-
-import { helpTargets } from './Help'
 
 const useStyles = makeStyles((theme: Theme) => ({
   toolbar: {
@@ -83,7 +82,7 @@ const UnitToolBar = () => {
             <Typography color="textPrimary">Edit Unit</Typography>
           </Breadcrumbs>
         </div>
-        <div id={helpTargets.ids.importExport} className={classes.controls}>
+        <div id={helpSelectors.ids.importExport} className={classes.controls}>
           <ImportButton
             id="import-unit-dialog"
             startIcon={<ImportExport />}
