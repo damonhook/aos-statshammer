@@ -1,5 +1,5 @@
 // eslint-disable react/no-array-index-key
-import { Box, Table, TableCell, TableRow } from '@material-ui/core'
+import { Box, Table, TableBody, TableCell, TableRow } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 import React from 'react'
 
@@ -22,15 +22,17 @@ const TableSkeleton = ({ rows = 5, columns = 3, dense, hover, includeTitle }: Ta
         />
       )}
       <Table size={dense ? 'small' : 'medium'}>
-        {[...Array(rows)].map((_a, rowIndex) => (
-          <TableRow hover={hover} key={rowIndex}>
-            {[...Array(columns)].map((_b, colIndex) => (
-              <TableCell key={colIndex} style={{ border: 'none' }}>
-                <Skeleton height={24} />
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
+        <TableBody>
+          {[...Array(rows)].map((_a, rowIndex) => (
+            <TableRow hover={hover} key={rowIndex}>
+              {[...Array(columns)].map((_b, colIndex) => (
+                <TableCell key={colIndex} style={{ border: 'none' }}>
+                  <Skeleton height={24} />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
       </Table>
     </Box>
   )

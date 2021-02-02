@@ -48,10 +48,10 @@ interface CollapsibleCardProps {
   startCollapsed?: boolean
   hover?: boolean
   controls?: React.ReactNode
-  children?: React.ReactNode
   variant?: PaperProps['variant']
   id?: string
   className?: string
+  children?: React.ReactNode
 }
 
 const CollapsibleCard = ({

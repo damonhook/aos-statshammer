@@ -1,3 +1,4 @@
+import { Target } from './target'
 import { Unit } from './units'
 
 export type ProbabilityData = { damage: number; [id: string]: number }
@@ -17,6 +18,7 @@ export interface SimulationResult {
 
 export interface SimulationsRequest {
   units: Unit[]
+  target?: Target
 }
 
 export interface SimulationsResponse {

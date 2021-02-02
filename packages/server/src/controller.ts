@@ -33,11 +33,14 @@ export default class AosController {
 
   public compareUnits(request: CompareRequest): CompareResponse {
     const units = request.units.map(d => new Unit(d))
+    const targetModifiers = request.target?.modifiers
+      ? new TargetModifierLookup(request.target.modifiers)
+      : undefined
 
     // Generate the average damage for each unit (put into a lookup object)
     const lookup: { [id: string]: ProcessorSaveResults } = {}
     units.forEach(unit => {
-      lookup[unit.id] = new UnitAverageProcessor(unit).calculateAverageDamage()
+      lookup[unit.id] = new UnitAverageProcessor(unit, targetModifiers).calculateAverageDamage()
     })
 
     // Convert the lookup object into the list of results (by save)
@@ -57,6 +60,9 @@ export default class AosController {
 
   public simulateUnits(request: SimulationsRequest): SimulationsResponse {
     const units = request.units.map(d => new Unit(d))
+    const targetModifiers = request.target?.modifiers
+      ? new TargetModifierLookup(request.target.modifiers)
+      : undefined
     const limit = request.limit ?? 5
 
     // Generate the lookups for each unit
@@ -65,8 +71,8 @@ export default class AosController {
     const simLookup: { [id: string]: SimResultsData } = {}
     units.forEach(unit => {
       maxLookup[unit.id] = new UnitMaxProcessor(unit).calculateMaxDamage()
-      averageLookup[unit.id] = new UnitAverageProcessor(unit).calculateAverageDamage()
-      simLookup[unit.id] = this.runSimulations(unit, limit)
+      averageLookup[unit.id] = new UnitAverageProcessor(unit, targetModifiers).calculateAverageDamage()
+      simLookup[unit.id] = this.runSimulations(unit, limit, targetModifiers)
     })
 
     // Convert the lookup objects into the final result format
@@ -92,9 +98,9 @@ export default class AosController {
     return save && save <= 6 ? `${save}+` : `-`
   }
 
-  private runSimulations(unit: Unit, limit: number) {
+  private runSimulations(unit: Unit, limit: number, targetModifiers?: TargetModifierLookup) {
     const results: SimResultsData = { 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} }
-    const processor = new UnitSimulationProcessor(unit)
+    const processor = new UnitSimulationProcessor(unit, targetModifiers)
     _.times(limit, () => {
       const values = processor.simulateDamage()
       Saves.map(save => {

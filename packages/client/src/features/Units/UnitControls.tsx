@@ -1,14 +1,17 @@
 import Menu from 'components/Menu'
 import React, { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { notificationsStore, unitsStore } from 'store/slices'
+import Store from 'types/store'
 import { Unit } from 'types/store/units'
 
-interface UnitListControlsProps {
+interface UnitControlsProps {
   unit: Unit
+  index: number
 }
 
-const UnitListControls = ({ unit }: UnitListControlsProps) => {
+const UnitControls = ({ unit, index }: UnitControlsProps) => {
+  const numUnits = useSelector((state: Store) => state.units.items.length)
   const dispatch = useDispatch()
 
   const handleCopy = useCallback(() => {
@@ -24,6 +27,14 @@ const UnitListControls = ({ unit }: UnitListControlsProps) => {
     console.log('export')
   }, [])
 
+  const handleMoveUp = useCallback(() => {
+    dispatch(unitsStore.actions.moveUnit({ index, newIndex: index - 1 }))
+  }, [dispatch, index])
+
+  const handleMoveDown = useCallback(() => {
+    dispatch(unitsStore.actions.moveUnit({ index, newIndex: index + 1 }))
+  }, [dispatch, index])
+
   return (
     <Menu
       items={[
@@ -31,8 +42,12 @@ const UnitListControls = ({ unit }: UnitListControlsProps) => {
         { name: 'Delete', onClick: handleDelete },
         { name: 'Export', onClick: handleExport },
       ]}
+      secondaryItems={[
+        { name: 'Move Up', onClick: handleMoveUp, disabled: index === 0 },
+        { name: 'MoveDown', onClick: handleMoveDown, disabled: index >= numUnits - 1 },
+      ]}
     />
   )
 }
 
-export default React.memo(UnitListControls)
+export default React.memo(UnitControls)

@@ -33,10 +33,11 @@ const ComparisonLineGraph = ({ nameMapping, results }: ComparisonLineGraphProps)
           <YAxis stroke={theme.palette.graphs.axis} />
           <Tooltip content={<ComparisonTooltip />} />
           <Legend />
-          {Object.values(nameMapping).map((name, index) => (
+          {Object.entries(nameMapping).map(([id, name], index) => (
             <Line
               type="monotone"
               dataKey={name}
+              key={id}
               stroke={colors[index]}
               dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: 2 }}
               activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 4 }}

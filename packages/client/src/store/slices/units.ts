@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from 'nanoid'
 import UnitsStore, { Unit, UnitParams, WeaponProfileParams } from 'types/store/units'
+import { moveItemInArray } from 'utils/helpers'
 
 const INITIAL_STATE: UnitsStore = {
   items: [],
@@ -54,6 +55,11 @@ export default createSlice({
       const { id, name } = action.payload
       const unit = state.items.find(u => u.id === id)
       if (unit) unit.name = name
+    },
+
+    moveUnit(state: UnitsStore, action: PayloadAction<{ index: number; newIndex: number }>) {
+      const { index, newIndex } = action.payload
+      state.items = moveItemInArray(state.items, index, newIndex)
     },
 
     deleteUnit(state: UnitsStore, action: PayloadAction<{ id: string }>) {

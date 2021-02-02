@@ -31,6 +31,7 @@ export const HASH_ROUTES = {
   MODIFIERS: '#modifiers',
   TARGET_MODIFIERS: '#target-modifiers',
   CLEAR_UNITS: '#clear-units',
+  SIM_INFO: '#sim-info',
 } as const
 
 type HashRouteKeys = keyof typeof HASH_ROUTES

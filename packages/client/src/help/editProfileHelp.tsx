@@ -27,8 +27,8 @@ const getHelpSteps = ({ numModifiers }: GetStepsProps) =>
           <Typography>
             You can modifiy the characteristics of the weapon.
             <Alert severity="info" style={{ marginTop: 8 }}>
-              Certain fields (attacks and damage) also accept dice values (e.g: <code>'D6'</code>,{' '}
-              <code>'D3 + 2'</code>, <code>'2D6'</code>, etc).
+              Certain fields (attacks and damage) also accept dice values (e.g: <code>{"'D6'"}</code>,{' '}
+              <code>{"'D3 + 2'"}</code>, <code>{"'2D6'"}</code>, etc).
             </Alert>
           </Typography>
         </>

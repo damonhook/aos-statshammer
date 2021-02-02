@@ -4,6 +4,7 @@ import { getSimulations } from 'api/simulations'
 import isEqual from 'lodash/isEqual'
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { activeTargetSelector } from 'store/selectors/targetSelectors'
 import { activeUnitsSelector } from 'store/selectors/unitsSelectors'
 import Store from 'types/store'
 import { NameMapping, Unit } from 'types/store/units'
@@ -32,24 +33,25 @@ const Simulations = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const units = useSelector(activeUnitsSelector, isEqual)
-  const targetModifiers = useSelector((state: Store) => state.target.modifiers, isEqual)
+  const target = useSelector(activeTargetSelector, isEqual)
   const simulations = useSelector((state: Store) => state.simulations)
   const comparison = useSelector((state: Store) => state.comparison)
+  const numSimulations = useSelector((state: Store) => state.config.numSimulations)
   const nameMapping = useMemo(() => getNameMapping(units), [units])
 
   useEffect(() => {
-    dispatch(getSimulations({ units: units }))
-  }, [dispatch, units, targetModifiers])
+    dispatch(getSimulations({ units: units, limit: numSimulations, target }))
+  }, [dispatch, numSimulations, target, units])
 
   useEffect(() => {
-    dispatch(getComparison({ units: units }))
-  }, [dispatch, units, targetModifiers])
+    dispatch(getComparison({ units: units, target }))
+  }, [dispatch, target, units])
 
   const loading = simulations.pending || comparison.pending
 
   return (
     <div className={classes.simulations}>
-      <SimulationsToolbar units={units} targetModifiers={targetModifiers} loading={loading} />
+      <SimulationsToolbar units={units} target={target} loading={loading} />
       <SimulationsContent
         simResults={simulations.results}
         comparisonResults={comparison.results}
@@ -60,4 +62,4 @@ const Simulations = () => {
   )
 }
 
-export default Simulations
+export default React.memo(Simulations)

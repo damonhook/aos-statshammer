@@ -146,4 +146,4 @@ const LeftNavigation = ({ open, onOpen, onClose, width = 240 }: LeftNavigationPr
   )
 }
 
-export default LeftNavigation
+export default React.memo(LeftNavigation)

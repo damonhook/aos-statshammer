@@ -17,14 +17,14 @@ interface PageTourGuideProps {
 }
 
 const HomeTourGuide = ({ open, onClose }: PageTourGuideProps) => {
-  const homeTab = useSelector((state: Store) => state.ui.homeTab)
+  const tab = useSelector((state: Store) => state.ui.home.tab)
   const numTargetModifiers = useSelector((state: Store) => state.target.modifiers.length)
   const dispatch = useDispatch()
   const isMobile = useIsMobile()
 
   const handleHomeTabChange = useCallback(
-    (tab: HomeTab) => {
-      dispatch(uiStore.actions.setHomeTab({ tab }))
+    (newTab: HomeTab) => {
+      dispatch(uiStore.actions.setHomeUI({ tab: newTab }))
     },
     [dispatch]
   )
@@ -48,7 +48,7 @@ const HomeTourGuide = ({ open, onClose }: PageTourGuideProps) => {
       steps={[...unitsSteps, ...statsSteps]}
       isOpen={open}
       onRequestClose={handleClose}
-      update={homeTab}
+      update={tab}
       updateDelay={100}
     />
   )

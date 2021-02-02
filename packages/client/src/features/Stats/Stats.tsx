@@ -6,6 +6,7 @@ import { helpSelectors } from 'help/statsHelp'
 import isEqual from 'lodash/isEqual'
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { activeTargetSelector } from 'store/selectors/targetSelectors'
 import { activeUnitsSelector } from 'store/selectors/unitsSelectors'
 import Store from 'types/store'
 import { NameMapping, Unit } from 'types/store/units'
@@ -27,13 +28,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Stats = () => {
   const classes = useStyles()
   const units = useSelector(activeUnitsSelector, isEqual)
-  const target = useSelector((state: Store) => state.target, isEqual)
+  const target = useSelector(activeTargetSelector, isEqual)
   const { results, pending } = useSelector((state: Store) => state.comparison)
   const dispatch = useDispatch()
   const nameMapping = useMemo(() => getNameMapping(units), [units])
 
   useEffect(() => {
-    dispatch(getComparison({ units: units }))
+    dispatch(getComparison({ units, target }))
   }, [dispatch, units, target])
 
   const loading = useMemo(() => pending && (!results || !results.length), [pending, results])

@@ -1,6 +1,7 @@
 import { ModifierDefinition } from 'types/modifiers'
 import { SimulationResult } from 'types/simulations'
 
+import { TargetParams } from './target'
 import type { UnitParams } from './unit'
 
 // === Modifiers ===
@@ -16,6 +17,7 @@ export interface ModifiersResponse {
 
 export interface CompareRequest {
   units: UnitParams[]
+  target?: TargetParams
 }
 
 export interface CompareResponse {
@@ -33,6 +35,7 @@ export interface AverageDamageResult {
 
 export interface SimulationsRequest {
   units: UnitParams[]
+  target?: TargetParams
   limit?: number
 }
 

@@ -18,6 +18,7 @@ interface ModifierListProps {
   editModifier: (id: string, key: string, value: string | number | boolean) => void
   deleteModifier: (id: string) => void
   onEnabledChanged: (id: string, value: boolean) => void
+  moveModifier: (index: number, newIndex: number) => void
   errors?: ModifierListErrors
   variant?: PaperProps['variant']
   className?: string
@@ -31,6 +32,7 @@ const ModifierList = ({
   editModifier,
   deleteModifier,
   onEnabledChanged,
+  moveModifier,
   errors,
   variant,
   className,
@@ -49,15 +51,18 @@ const ModifierList = ({
 
   return (
     <div className={clsx({ [classes.items]: data && data.length }, className)}>
-      {data.map(({ definition, modifier }) => (
+      {data.map(({ definition, modifier }, index) => (
         <ModifierItem
           definition={definition}
           modifier={modifier}
+          index={index}
+          numModifiers={data.length}
           key={modifier.id}
           addModifiers={addModifiers}
           editModifier={editModifier}
           deleteModifier={deleteModifier}
           onEnabledChanged={onEnabledChanged}
+          moveModifier={moveModifier}
           errors={errors?.[modifier.id]}
           variant={variant}
           {...ModifierItemProps}

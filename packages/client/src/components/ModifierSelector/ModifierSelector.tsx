@@ -91,6 +91,7 @@ const ModifierSelector = ({ hash, modifiers, onOpen, onConfirm }: ModifierSelect
             {modifiers.map(({ id, name, description }) => (
               <ModifierItem
                 id={id}
+                key={id}
                 name={name}
                 description={description}
                 selected={selected[id]}

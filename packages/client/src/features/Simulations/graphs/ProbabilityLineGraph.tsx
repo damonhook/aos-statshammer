@@ -65,12 +65,18 @@ const ProbabilityLineGraph = ({
           <Tooltip content={<ProbabilityTooltip cumulative={type === 'cumulative'} inverted={inverted} />} />
           <Legend />
           {(referenceLines ?? []).map((x, index) => (
-            <ReferenceLine x={x} stroke={colors[index] ?? theme.palette.graphs.axis} strokeDasharray="3 3" />
+            <ReferenceLine
+              x={x}
+              key={x}
+              stroke={colors[index] ?? theme.palette.graphs.axis}
+              strokeDasharray="3 3"
+            />
           ))}
-          {Object.values(nameMapping).map((name, index) => (
+          {Object.entries(nameMapping).map(([id, name], index) => (
             <Line
               type="monotone"
               dataKey={name}
+              key={id}
               stroke={colors[index]}
               dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: type == 'discrete' ? 1 : 0 }}
               activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 4 }}
@@ -83,4 +89,4 @@ const ProbabilityLineGraph = ({
   )
 }
 
-export default ProbabilityLineGraph
+export default React.memo(ProbabilityLineGraph)

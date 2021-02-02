@@ -66,13 +66,13 @@ const Home = () => {
   const dispatch = useDispatch()
   const [animate, setAnimate] = useState(false)
 
-  const homeTab = useSelector((state: Store) => state.ui.homeTab)
+  const { tab } = useSelector((state: Store) => state.ui.home)
   const { modifiers, targetModifiers } = useSelector((state: Store) => state.modifiers)
 
   const value = useMemo(() => {
-    const idx = tabConfig.findIndex(t => t.id === homeTab)
+    const idx = tabConfig.findIndex(t => t.id === tab)
     return idx >= 0 ? idx : 0
-  }, [homeTab])
+  }, [tab])
 
   useEffect(() => {
     if (!modifiers || !modifiers.length || !targetModifiers || !targetModifiers.length) {
@@ -82,12 +82,12 @@ const Home = () => {
 
   const handleChange = (event: React.ChangeEvent<any>, index: number) => {
     const { id } = tabConfig[index]
-    dispatch(uiStore.actions.setHomeTab({ tab: id }))
+    dispatch(uiStore.actions.setHomeUI({ tab: id }))
   }
 
-  const handleChangeIndex = (index: number) => {
+  const handleSwipe = (index: number) => {
     const { id } = tabConfig[index]
-    dispatch(uiStore.actions.setHomeTab({ tab: id }))
+    dispatch(uiStore.actions.setHomeUI({ tab: id }))
   }
 
   const onSwitching = (index: number, type: 'move' | 'end') => {
@@ -116,7 +116,7 @@ const Home = () => {
             <SwipeableViews
               axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
               index={value}
-              onChangeIndex={handleChangeIndex}
+              onChangeIndex={handleSwipe}
               style={{ height: '100%' }}
               containerStyle={{ height: '100%' }}
               onSwitching={onSwitching}

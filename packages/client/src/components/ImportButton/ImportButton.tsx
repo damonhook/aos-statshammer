@@ -54,4 +54,4 @@ const ImportWrapper = ({ id, children, onImport, multiple, ...props }: ImportWra
   )
 }
 
-export default ImportWrapper
+export default React.memo(ImportWrapper)

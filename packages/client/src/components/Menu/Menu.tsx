@@ -1,16 +1,19 @@
-import { IconButton, Menu as MuiMenu, MenuItem } from '@material-ui/core'
+import { IconButton, Menu as MuiMenu, MenuProps as MuiMenuProps } from '@material-ui/core'
 import { MoreVert } from '@material-ui/icons'
 import React from 'react'
 
-type MenuItemProps = { name: string; onClick: () => void; disabled?: boolean }
+import MenuItems from './MenuItems'
 
-interface MenuProps {
+export type MenuItemProps = { name: string; onClick: () => void; disabled?: boolean }
+
+export interface MenuProps {
   id?: string
   items: MenuItemProps[]
+  secondaryItems?: MenuItemProps[]
   onOpen?: () => void
 }
 
-const Menu = ({ id, items, onOpen }: MenuProps) => {
+const Menu = ({ id, items, secondaryItems, onOpen }: MenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,11 +25,6 @@ const Menu = ({ id, items, onOpen }: MenuProps) => {
   const handleClose = (event: React.MouseEvent<any>) => {
     setAnchorEl(null)
     event.stopPropagation()
-  }
-
-  const handleItemClick = (index: number) => (event: React.MouseEvent<any>) => {
-    items[index].onClick()
-    handleClose(event)
   }
 
   return (
@@ -41,14 +39,10 @@ const Menu = ({ id, items, onOpen }: MenuProps) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {items.map(({ name, disabled }, index) => (
-          <MenuItem onClick={handleItemClick(index)} key={name} style={{ minWidth: 120 }}>
-            {name}
-          </MenuItem>
-        ))}
+        <MenuItems items={items} secondaryItems={secondaryItems} onClose={handleClose} />
       </MuiMenu>
     </div>
   )
 }
 
-export default Menu
+export default React.memo(Menu)

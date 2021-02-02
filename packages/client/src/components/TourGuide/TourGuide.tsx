@@ -1,4 +1,5 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import React, { useMemo } from 'react'
 import Tour, { ReactourProps, ReactourStep } from 'reactour'
 
 import TourGuideHelper from './TourGuideHelper'
@@ -9,24 +10,28 @@ interface TourGuideProps
 }
 
 const TourGuide = ({ steps, ...props }: TourGuideProps) => {
-  const getSteps = () => {
+  const stepConfig = useMemo(() => {
     if (typeof steps === 'function') return steps()
     return steps
-  }
+  }, [steps])
 
   const disableBody = (target: HTMLElement | Element) => disableBodyScroll(target)
   const enableBody = (target: HTMLElement | Element) => enableBodyScroll(target)
 
   return (
-    <Tour
-      steps={getSteps()}
-      rounded={4}
-      {...props}
-      CustomHelper={TourGuideHelper}
-      onAfterOpen={disableBody}
-      onBeforeClose={enableBody}
-      disableFocusLock
-    />
+    <>
+      {stepConfig && stepConfig.length ? (
+        <Tour
+          steps={stepConfig}
+          rounded={4}
+          {...props}
+          CustomHelper={TourGuideHelper}
+          onAfterOpen={disableBody}
+          onBeforeClose={enableBody}
+          disableFocusLock
+        />
+      ) : null}
+    </>
   )
 }
 

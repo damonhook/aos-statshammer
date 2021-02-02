@@ -1,11 +1,13 @@
 import { Dispatch } from '@reduxjs/toolkit'
 import { comparisonStore, notificationsStore } from 'store/slices'
 import { ComparisonRequest, ComparisonResponse } from 'types/store/comparison'
+import { Target } from 'types/store/target'
 import { Unit } from 'types/store/units'
 
 import { post, unitIdResponseProcessor } from './helpers'
 
-export const getComparison = ({ units }: { units: Unit[] }) => async (dispatch: Dispatch) => {
+type GetComparisonProps = { units: Unit[]; target?: Target }
+export const getComparison = ({ units, target }: GetComparisonProps) => async (dispatch: Dispatch) => {
   const { comparisonPending, comparisonSucess, comparisonError } = comparisonStore.actions
   const { addNotification } = notificationsStore.actions
   dispatch(comparisonPending())
@@ -13,7 +15,7 @@ export const getComparison = ({ units }: { units: Unit[] }) => async (dispatch: 
     if (!units || !units.length) dispatch(comparisonSucess({ results: [] }))
     const res = await post<ComparisonRequest, ComparisonResponse>({
       path: '/compare',
-      body: { units },
+      body: { units, target },
       responseProcessor: unitIdResponseProcessor,
     })
     dispatch(comparisonSucess(res))

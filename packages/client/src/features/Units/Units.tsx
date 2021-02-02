@@ -28,7 +28,7 @@ const Units = () => {
     <div>
       <div>
         {units && units.length ? (
-          units.map(unit => <UnitCard key={unit.id} unit={unit} />)
+          units.map((unit, index) => <UnitCard key={unit.id} unit={unit} index={index} />)
         ) : (
           <NoItemsCard title="It's lonely here" description="There are no units here, try adding some" />
         )}

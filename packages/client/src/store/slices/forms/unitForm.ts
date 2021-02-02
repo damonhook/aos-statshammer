@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import UnitFormStore, { UnitFormData } from 'types/store/forms/unitForm'
 import { WeaponProfileParams } from 'types/store/units'
 import { UnitErrors } from 'types/validation'
-import { removeEmpty } from 'utils/helpers'
+import { moveItemInArray, removeEmpty } from 'utils/helpers'
 
 const INITIAL_STATE: UnitFormStore = {
   data: undefined,
@@ -52,6 +52,13 @@ export default createSlice({
           const weaponProfile = state.data.weaponProfiles[index]
           state.data.weaponProfiles[index] = { ...weaponProfile, ...newProfile, id: weaponProfile.id }
         }
+      }
+    },
+
+    moveWeaponProfile(state: UnitFormStore, action: PayloadAction<{ index: number; newIndex: number }>) {
+      const { index, newIndex } = action.payload
+      if (state.data) {
+        state.data.weaponProfiles = moveItemInArray(state.data.weaponProfiles, index, newIndex)
       }
     },
 

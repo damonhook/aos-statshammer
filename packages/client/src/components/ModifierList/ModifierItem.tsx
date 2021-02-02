@@ -18,10 +18,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 export interface ModifierItemProps {
   definition: ModifierDefinition
   modifier: Modifier
+  index: number
+  numModifiers: number
   addModifiers: (modifiers: Omit<Modifier, 'id'>[]) => void
   editModifier: (id: string, key: string, value: string | number | boolean) => void
   deleteModifier: (id: string) => void
   onEnabledChanged: (id: string, value: boolean) => void
+  moveModifier: (index: number, newIndex: number) => void
   errors?: ModifierError
   variant?: PaperProps['variant']
   className?: string
@@ -30,10 +33,13 @@ export interface ModifierItemProps {
 const ModifierItem = ({
   definition,
   modifier,
+  index,
+  numModifiers,
   addModifiers,
   editModifier,
   deleteModifier,
   onEnabledChanged,
+  moveModifier,
   errors,
   variant,
   className,
@@ -53,7 +59,14 @@ const ModifierItem = ({
     <CollapsibleCard
       title={definition.name}
       controls={
-        <ItemControls modifier={modifier} addModifiers={addModifiers} deleteModifier={deleteModifier} />
+        <ItemControls
+          modifier={modifier}
+          index={index}
+          numModifiers={numModifiers}
+          addModifiers={addModifiers}
+          deleteModifier={deleteModifier}
+          moveModifier={moveModifier}
+        />
       }
       variant={variant}
       className={className}

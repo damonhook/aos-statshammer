@@ -1,7 +1,10 @@
 import { FormControlLabel, makeStyles, MenuItem, Switch, TextField, Theme } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 import React from 'react'
-import { Metric } from 'types/store/simulations'
+import { useDispatch, useSelector } from 'react-redux'
+import { uiStore } from 'store/slices'
+import Store from 'types/store'
+import { ReferenceLines } from 'types/store/ui'
 
 const useStyles = makeStyles((theme: Theme) => ({
   options: {
@@ -30,38 +33,24 @@ export interface CollectionControlsProps {
   savesLookup: { save: number; displaySave: string }[]
   loading?: boolean
   variant: 'cumulative' | 'discrete' | 'metrics'
-  save: number
-  referenceLine?: string
-  inverted: boolean
-  onSaveChange: (val: number) => void
-  onReferenceLineChange: (val?: keyof Metric) => void
-  onInvertedChange: (val: boolean) => void
 }
 
-const CollectionControls = ({
-  savesLookup,
-  loading,
-  variant,
-  save,
-  referenceLine,
-  inverted,
-  onSaveChange,
-  onReferenceLineChange,
-  onInvertedChange,
-}: CollectionControlsProps) => {
+const CollectionControls = ({ savesLookup, loading, variant }: CollectionControlsProps) => {
   const classes = useStyles()
+  const { save, referenceLines, inverted } = useSelector((state: Store) => state.ui.simulations)
+  const dispatch = useDispatch()
 
   const handleSaveChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onSaveChange(Number(event.target.value))
+    dispatch(uiStore.actions.setSimulationsUI({ save: Number(event.target.value) }))
   }
 
   const handleReferenceLineChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value as keyof Metric | 'none' | undefined
-    onReferenceLineChange(value !== 'none' ? value : undefined)
+    const value = event.target.value as keyof ReferenceLines | 'none'
+    dispatch(uiStore.actions.setSimulationsUI({ referenceLines: value !== 'none' ? value : undefined }))
   }
 
   const handleInvertedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onInvertedChange(event.target.checked)
+    dispatch(uiStore.actions.setSimulationsUI({ inverted: event.target.checked }))
   }
 
   if (loading) return <Skeleton height={64} className={classes.loading} />
@@ -86,7 +75,7 @@ const CollectionControls = ({
       {(variant === 'cumulative' || variant === 'discrete') && (
         <TextField
           select
-          value={referenceLine ?? 'none'}
+          value={referenceLines ?? 'none'}
           onChange={handleReferenceLineChange}
           variant="filled"
           label="Reference Lines"

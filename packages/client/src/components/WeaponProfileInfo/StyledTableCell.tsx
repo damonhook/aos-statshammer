@@ -22,4 +22,4 @@ const StyledTableCell = ({ disabled = false, children }: StyledTableCellProps) =
   )
 }
 
-export default StyledTableCell
+export default React.memo(StyledTableCell)

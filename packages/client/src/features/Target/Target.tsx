@@ -11,8 +11,8 @@ import Store from 'types/store'
 import { HASH_ROUTES } from 'utils/routes'
 
 const Target = () => {
-  const modifiers = useSelector((state: Store) => state.modifiers.targetModifiers)
-  const data: Modifier[] = useSelector((state: Store) => state.target.modifiers)
+  const definitions = useSelector((state: Store) => state.modifiers.targetModifiers)
+  const { modifiers, errors } = useSelector((state: Store) => state.target)
   const dispatch = useDispatch()
 
   const handleAddModifiers = useCallback(
@@ -43,16 +43,25 @@ const Target = () => {
     [dispatch]
   )
 
+  const handleMoveModifier = useCallback(
+    (index: number, newIndex: number) => {
+      dispatch(targetStore.actions.moveModifier({ index, newIndex }))
+    },
+    [dispatch]
+  )
+
   return (
     <div>
-      {data && data.length ? (
+      {modifiers && modifiers.length ? (
         <ModifierList
-          definitions={modifiers}
-          modifiers={data}
+          definitions={definitions}
+          modifiers={modifiers}
           addModifiers={handleAddModifiers}
           editModifier={handleEditModifier}
           deleteModifier={handleDeleteModifier}
           onEnabledChanged={handleModifierEnabledChanged}
+          moveModifier={handleMoveModifier}
+          errors={errors?.modifiers}
         />
       ) : (
         <NoItemsCard title="No modifiers" description="No target modifiers are present (Basic target)" />
@@ -60,7 +69,7 @@ const Target = () => {
       <Box paddingTop={2}>
         <div id={helpSelectors.ids.addTargetModifiers}>
           <ModifierSelector
-            modifiers={modifiers}
+            modifiers={definitions}
             onConfirm={handleAddModifiers}
             hash={HASH_ROUTES.TARGET_MODIFIERS}
           />

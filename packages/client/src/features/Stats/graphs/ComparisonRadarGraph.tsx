@@ -42,8 +42,8 @@ const ComparisonRadarGraph = ({ nameMapping, results }: ComparisonRadarGraphProp
           <PolarRadiusAxis stroke={theme.palette.graphs.axis} />
           <Tooltip content={<ComparisonTooltip />} cursor={{ stroke: theme.palette.graphs.axis }} />
           <Legend />
-          {Object.values(nameMapping).map((name, index) => (
-            <Radar dataKey={name} fill={colors[index]} fillOpacity={0.1} stroke={colors[index]} />
+          {Object.entries(nameMapping).map(([id, name], index) => (
+            <Radar key={id} dataKey={name} fill={colors[index]} fillOpacity={0.1} stroke={colors[index]} />
           ))}
         </RadarChart>
       </ResponsiveContainer>

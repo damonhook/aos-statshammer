@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import { Modifier } from 'types/modifierInstance'
 import ProfileFormStore, { ProfileFormData } from 'types/store/forms/profileForm'
 import { ProfileErrors } from 'types/validation'
-import { removeEmpty } from 'utils/helpers'
+import { moveItemInArray, removeEmpty } from 'utils/helpers'
 
 const INITIAL_STATE: ProfileFormStore = {
   data: undefined,
@@ -54,6 +54,13 @@ export default createSlice({
       if (state.data) {
         const mod = state.data.modifiers.find(m => m.id === id)
         if (mod) mod.options[key] = value
+      }
+    },
+
+    moveModifier(state: ProfileFormStore, action: PayloadAction<{ index: number; newIndex: number }>) {
+      const { index, newIndex } = action.payload
+      if (state.data) {
+        state.data.modifiers = moveItemInArray(state.data.modifiers, index, newIndex)
       }
     },
 

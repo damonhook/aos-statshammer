@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 import { unitsStore } from 'store/slices'
 import { Unit } from 'types/store/units'
 
-import UnitListControls from './UnitListControls'
+import UnitControls from './UnitControls'
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -22,9 +22,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface UnitCardProps {
   unit: Unit
+  index: number
 }
 
-const UnitCard = ({ unit }: UnitCardProps) => {
+const UnitCard = ({ unit, index }: UnitCardProps) => {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
@@ -43,7 +44,7 @@ const UnitCard = ({ unit }: UnitCardProps) => {
   )
 
   return (
-    <CollapsibleCard title={unit.name} controls={<UnitListControls unit={unit} />} hover>
+    <CollapsibleCard title={unit.name} controls={<UnitControls unit={unit} index={index} />} hover>
       <Box flex={1} style={{ maxWidth: '100%' }}>
         <div className={classes.content} onClick={handleUnitClicked}>
           {unit.weaponProfiles.map(profile => (

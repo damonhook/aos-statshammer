@@ -101,4 +101,4 @@ const UnitToolBar = () => {
   )
 }
 
-export default UnitToolBar
+export default React.memo(UnitToolBar)

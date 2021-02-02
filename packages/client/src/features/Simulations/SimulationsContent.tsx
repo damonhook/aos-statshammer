@@ -3,7 +3,10 @@ import CollapsibleCard from 'components/CollapsibleCard'
 import GraphSkeleton from 'components/Skeletons/GraphSkeleton'
 import TableSkeleton from 'components/Skeletons/TableSkeleton'
 import ComparisonGraphs from 'features/Stats/ComparisonGraphs'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { uiStore } from 'store/slices'
+import Store from 'types/store'
 import { ComparisonResult } from 'types/store/comparison'
 import { Metric, ProbabilityData, SimulationResult } from 'types/store/simulations'
 import { NameMapping } from 'types/store/units'
@@ -50,28 +53,27 @@ const SimulationsContent = ({
   loading,
 }: SimulationsContentProps) => {
   const classes = useStyles()
-  const [save, setSave] = useState(4)
-  const [referenceLine, setReferenceLine] = useState<keyof Metric | undefined>(undefined)
-  const [inverted, setInverted] = useState(false)
+  const { save, referenceLines, inverted } = useSelector((state: Store) => state.ui.simulations)
+  const dispatch = useDispatch()
 
   const savesLookup = useMemo(() => {
     return simResults.map(r => ({ save: r.save, displaySave: r.displaySave }))
   }, [simResults])
 
-  const handleSaveChange = useCallback((val: number) => setSave(val), [])
-  const handleReferenceLineChange = useCallback((val?: keyof Metric) => setReferenceLine(val), [])
-  const handleInvertedChange = useCallback((val: boolean) => setInverted(val), [])
+  const handleSaveChange = useCallback(
+    (val: number) => dispatch(uiStore.actions.setSimulationsUI({ save: val })),
+    [dispatch]
+  )
+  const handleReferenceLineChange = useCallback(
+    (val?: keyof Metric) => dispatch(uiStore.actions.setSimulationsUI({ referenceLines: val })),
+    [dispatch]
+  )
+  const handleInvertedChange = useCallback(
+    (val: boolean) => dispatch(uiStore.actions.setSimulationsUI({ inverted: val })),
+    [dispatch]
+  )
 
-  const controlProps: Omit<CollectionControlsProps, 'variant'> = {
-    savesLookup,
-    loading,
-    save,
-    referenceLine,
-    inverted,
-    onSaveChange: handleSaveChange,
-    onReferenceLineChange: handleReferenceLineChange,
-    onInvertedChange: handleInvertedChange,
-  }
+  const controlProps: Omit<CollectionControlsProps, 'variant'> = { savesLookup, loading }
 
   const simData = useMemo(() => {
     const dataForSave = simResults.find(r => r.save === save)
@@ -80,10 +82,10 @@ const SimulationsContent = ({
   }, [nameMapping, save, simResults, inverted])
 
   const referenceLineData = useMemo(() => {
-    if (simData?.metrics && referenceLine)
-      return Object.values(simData.metrics).map(values => values[referenceLine])
+    if (simData?.metrics && referenceLines)
+      return Object.values(simData.metrics).map(values => values[referenceLines])
     return undefined
-  }, [simData?.metrics, referenceLine])
+  }, [simData?.metrics, referenceLines])
 
   return (
     <div className={classes.content}>
@@ -126,12 +128,12 @@ const SimulationsContent = ({
       </div>
       <div className={classes.collection}>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} lg={6}>
             <CollapsibleCard title="Average Damage">
               <ComparisonGraphs nameMapping={nameMapping} results={comparisonResults} loading={loading} />
             </CollapsibleCard>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} lg={6}>
             <CollapsibleCard title="Metrics">
               <CollectionControls {...controlProps} variant="metrics" />
               {loading ? (

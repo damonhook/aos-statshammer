@@ -8,6 +8,7 @@ const actions = unitFormStore.actions
 export default createMiddleware((store, action) => {
   switch (action.type) {
     case actions.initForm.type: {
+      store.dispatch(actions.setErrors({ errors: undefined }))
       const state = store.getState()
       const data = state.forms.weaponProfile.data
       const definitions = state.modifiers.modifiers

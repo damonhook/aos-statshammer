@@ -54,6 +54,10 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/Unit"
+              target:
+                $ref: "#/components/schemas/Target"
+            required:
+              - units
 
   parameters:
     limit:
@@ -193,6 +197,17 @@ components:
         - to_wound
         - rend
         - damage
+
+    Target:
+      type: object
+      properties:
+        modifiers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Modifier"
+      example:
+        modifiers:
+          - type: TARGET_REROLL
 
     Modifier:
       type: object

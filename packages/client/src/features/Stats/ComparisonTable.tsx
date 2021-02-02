@@ -50,8 +50,8 @@ const ComparisonTable = ({ nameMapping, results }: ComparisonTableProps) => {
         <TableHead>
           <TableRow>
             <TableCell className={clsx(classes.cell, classes.nameCell)}>Unit</TableCell>
-            {results.map(({ displaySave }) => (
-              <TableCell align="right" className={clsx(classes.cell, classes.valueCell)}>
+            {results.map(({ save, displaySave }) => (
+              <TableCell align="right" className={clsx(classes.cell, classes.valueCell)} key={save}>
                 {displaySave}
               </TableCell>
             ))}
@@ -59,12 +59,16 @@ const ComparisonTable = ({ nameMapping, results }: ComparisonTableProps) => {
         </TableHead>
         <TableBody>
           {data.map(({ id, values }) => (
-            <TableRow hover>
+            <TableRow hover key={id}>
               <TableCell className={clsx(classes.cell, classes.nameCell)} component="th" scope="row">
                 {nameMapping[id] ?? 'Unknown'}
               </TableCell>
               {values.map(value => (
-                <TableCell align="right" className={clsx(classes.cell, classes.valueCell)}>
+                <TableCell
+                  align="right"
+                  className={clsx(classes.cell, classes.valueCell)}
+                  key={`${id}-${value}`}
+                >
                   {value.toFixed(2)}
                 </TableCell>
               ))}

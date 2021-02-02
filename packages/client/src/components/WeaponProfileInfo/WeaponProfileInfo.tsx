@@ -124,4 +124,4 @@ const WeaponProfileInfo = ({
   )
 }
 
-export default WeaponProfileInfo
+export default React.memo(WeaponProfileInfo)

@@ -3,11 +3,16 @@ import { ArrowBack, InfoOutlined, Refresh } from '@material-ui/icons'
 import { getSimulations } from 'api/simulations'
 import ResponsiveIconButton from 'components/ResponsiveIconButton'
 import React, { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Modifier } from 'types/modifierInstance'
+import Store from 'types/store'
+import { Target } from 'types/store/target'
 import { Unit } from 'types/store/units'
-import { PAGE_ROUTES } from 'utils/routes'
+import { HASH_ROUTES, PAGE_ROUTES } from 'utils/routes'
+
+import SimulationControls from './SimulationControls'
+import SimulationsInfo from './SimulationsInfo'
 
 const useStyles = makeStyles((theme: Theme) => ({
   toolbar: {
@@ -28,12 +33,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface SimulationsToolbarProps {
   units: Unit[]
-  targetModifiers: Modifier[]
+  target: Target
   loading?: boolean
 }
 
-const SimulationsToolbar = ({ units, targetModifiers, loading }: SimulationsToolbarProps) => {
+const SimulationsToolbar = ({ units, target, loading }: SimulationsToolbarProps) => {
   const classes = useStyles()
+  const numSimulations = useSelector((state: Store) => state.config.numSimulations)
   const history = useHistory()
   const dispatch = useDispatch()
 
@@ -42,8 +48,8 @@ const SimulationsToolbar = ({ units, targetModifiers, loading }: SimulationsTool
   }, [history])
 
   const handleRerun = useCallback(() => {
-    dispatch(getSimulations({ units: units }))
-  }, [dispatch, units])
+    dispatch(getSimulations({ units: units, limit: numSimulations, target }))
+  }, [dispatch, numSimulations, target, units])
 
   return (
     <div className={classes.toolbar}>
@@ -57,9 +63,10 @@ const SimulationsToolbar = ({ units, targetModifiers, loading }: SimulationsTool
         />
       </div>
       <div className={classes.section}>
-        <Button disabled={!!loading}># Simulations: 5000</Button>
-        <ResponsiveIconButton icon={<InfoOutlined />} text="Info" />
+        <SimulationControls loading={loading} />
+        <ResponsiveIconButton icon={<InfoOutlined />} text="Info" href={HASH_ROUTES.SIM_INFO} />
       </div>
+      <SimulationsInfo />
     </div>
   )
 }

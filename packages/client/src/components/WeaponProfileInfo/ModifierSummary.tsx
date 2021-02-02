@@ -39,7 +39,10 @@ const ModifierSummary = ({ modifiers }: ModifierSummaryProps) => {
   return (
     <div>
       {data.map(({ modifier, definition }) => (
-        <Typography className={clsx(classes.modifier, { [classes.disabled]: !!modifier.disabled })}>
+        <Typography
+          className={clsx(classes.modifier, { [classes.disabled]: !!modifier.disabled })}
+          key={modifier.id}
+        >
           <strong>{definition.name}</strong>
           <ModifierDescription modifier={modifier} definition={definition} variant="body2" simple />
         </Typography>

@@ -1,5 +1,6 @@
 import { combineReducers, configureStore as createStore, Middleware } from '@reduxjs/toolkit'
-import { persistReducer, persistStore } from 'redux-persist'
+import { PersistConfig, persistReducer, persistStore } from 'redux-persist'
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import thunk from 'redux-thunk'
 import Store from 'types/store'
@@ -37,9 +38,10 @@ export const appReducer = combineReducers<Store>({
 
 const middleware: Middleware[] = [thunk, ...customMiddleware]
 
-const persistConfig = {
+const persistConfig: PersistConfig<Store> = {
   key: 'aos-statshammer-3.0.0',
   storage,
+  stateReconciler: autoMergeLevel2,
   whitelist: ['units', 'config', 'target'],
 }
 

@@ -101,7 +101,7 @@ const UnitDialogContent = ({ unitId, data, errors, closeTour }: UnitDialogConten
           />
         )}
         <div>
-          {data.weaponProfiles.map(profile => (
+          {data.weaponProfiles.map((profile, index) => (
             <WeaponProfileInfo
               className={helpSelectors.classes.weaponProfile}
               profile={profile}
@@ -111,6 +111,7 @@ const UnitDialogContent = ({ unitId, data, errors, closeTour }: UnitDialogConten
               controls={
                 <ProfileControls
                   unitId={unitId}
+                  index={index}
                   profile={profile}
                   className={helpSelectors.classes.weaponProfileControls}
                   closeTour={closeTour}

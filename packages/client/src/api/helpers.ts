@@ -1,11 +1,12 @@
 import humps, { HumpsProcessor, HumpsProcessorParameter } from 'humps'
+import { pickBy } from 'lodash'
 import { Unit } from 'types/store/units'
 
 const API_URL = '/api'
 
 interface GetParams {
   path: string
-  query?: { [name: string]: any }
+  query?: Record<string, any>
   extra?: Omit<RequestInit, 'method'>
 }
 
@@ -33,7 +34,7 @@ export const post = async <R extends Record<any, any>, T extends Record<any, any
 }: PostParams<R>): Promise<T> => {
   const request = await fetch(buildRequestUrl(path, query), {
     method: 'POST',
-    body: JSON.stringify(humps.decamelizeKeys(body)),
+    body: JSON.stringify(humps.decamelizeKeys(pickBy(body))),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -57,7 +58,7 @@ export const unitIdResponseProcessor = <T extends { units: Unit[] }>(request: T)
 const buildRequestUrl = (path: string, query?: { [name: string]: any }): string => {
   const cleanPath = path.replace(/^\//, '')
   const url = `${API_URL}/${cleanPath}`
-  const params = new URLSearchParams(query).toString()
+  const params = new URLSearchParams(pickBy(query)).toString()
   return params ? `${url}?${params}` : url
 }
 

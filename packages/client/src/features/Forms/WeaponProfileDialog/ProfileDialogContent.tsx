@@ -80,6 +80,13 @@ const ProfileDialogContent = ({ unitId, data, errors, closeTour }: ProfileDialog
     [dispatch]
   )
 
+  const handleMoveModifier = useCallback(
+    (index: number, newIndex: number) => {
+      dispatch(profileFormStore.actions.moveModifier({ index, newIndex }))
+    },
+    [dispatch]
+  )
+
   return (
     <DialogContent classes={{ root: classes.content }}>
       <ProfileToolBar unitId={unitId} />
@@ -114,6 +121,7 @@ const ProfileDialogContent = ({ unitId, data, errors, closeTour }: ProfileDialog
               editModifier={handleEditModifier}
               deleteModifier={handleDeleteModifier}
               onEnabledChanged={handleModifierEnabledChanged}
+              moveModifier={handleMoveModifier}
               errors={errors?.modifiers}
               variant="outlined"
               ModifierItemProps={{ className: helpSelectors.classes.modifiers }}

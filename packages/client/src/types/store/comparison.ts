@@ -1,7 +1,9 @@
+import { Target } from './target'
 import { Unit } from './units'
 
 export interface ComparisonRequest {
   units: Unit[]
+  target?: Target
 }
 
 export interface ComparisonResult {

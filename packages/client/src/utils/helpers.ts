@@ -28,3 +28,19 @@ export const getLoopingArray = (orig: any[], length: number) => {
   newList.push(...orig.slice(0, length % orig.length))
   return newList
 }
+
+export const updateItemInArray = <T>(array: T[], index: number, callback: (data: T) => void) =>
+  array.map((item, i) => (i === index ? callback(item) : item))
+
+export const moveItemInArray = <T>(
+  array: T[],
+  index: number,
+  newIndex: number,
+  callback?: (arr: T[]) => void
+) => {
+  const newArray = array.slice()
+  const sanitizedNewIndex = Math.min(Math.max(newIndex, 0), array.length - 1)
+  newArray.splice(sanitizedNewIndex, 0, ...newArray.splice(index, 1))
+  if (callback) callback(newArray)
+  return newArray
+}

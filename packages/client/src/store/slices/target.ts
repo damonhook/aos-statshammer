@@ -2,9 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from 'nanoid'
 import { Modifier } from 'types/modifierInstance'
 import TargetStore from 'types/store/target'
+import { TargetErrors } from 'types/validation/targetErrors'
+import { moveItemInArray, removeEmpty } from 'utils/helpers'
 
 const INITIAL_STATE: TargetStore = {
   modifiers: [],
+  errors: undefined,
 }
 
 export default createSlice({
@@ -36,6 +39,11 @@ export default createSlice({
       if (mod) mod.options[key] = value
     },
 
+    moveModifier(state: TargetStore, action: PayloadAction<{ index: number; newIndex: number }>) {
+      const { index, newIndex } = action.payload
+      state.modifiers = moveItemInArray(state.modifiers, index, newIndex)
+    },
+
     deleteModifier(state: TargetStore, action: PayloadAction<{ id: string }>) {
       const { id } = action.payload
       state.modifiers = state.modifiers.filter(m => m.id !== id)
@@ -43,6 +51,19 @@ export default createSlice({
 
     clearTarget(state: TargetStore) {
       state.modifiers = []
+      state.errors = undefined
+    },
+
+    setErrors(state: TargetStore, action: PayloadAction<{ errors?: Partial<TargetErrors> }>) {
+      const { errors } = action.payload
+      if (errors) {
+        const cleaned = removeEmpty({ ...state.errors, ...errors })
+        if (cleaned && Object.keys(cleaned).length) {
+          state.errors = cleaned
+          return
+        }
+      }
+      state.errors = undefined
     },
   },
 })

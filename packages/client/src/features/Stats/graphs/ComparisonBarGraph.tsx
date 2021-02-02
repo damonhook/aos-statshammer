@@ -36,8 +36,8 @@ const ComparisonBarGraph = ({ nameMapping, results }: ComparisonBarGraphProps) =
             cursor={{ fill: theme.palette.action.focus, strokeWidth: 2 }}
           />
           <Legend />
-          {Object.values(nameMapping).map((name, index) => (
-            <Bar dataKey={name} fill={colors[index]} />
+          {Object.entries(nameMapping).map(([id, name], index) => (
+            <Bar dataKey={name} fill={colors[index]} key={id} />
           ))}
         </BarChart>
       </ResponsiveContainer>
