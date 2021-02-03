@@ -8,6 +8,7 @@ settings:
     version: detect
 rules:
   "@typescript-eslint/no-unused-vars": "off"
+  "@typescript-eslint/ban-ts-comment": ["error", {ts-ignore: "allow-with-description"}]
   react-hooks/exhaustive-deps: "error"
   react/display-name: "off"
   react/void-dom-elements-no-children: "warn"

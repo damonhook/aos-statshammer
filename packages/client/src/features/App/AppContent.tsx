@@ -9,6 +9,7 @@ import { PAGE_ROUTES } from 'utils/routes'
 const Home = lazy(() => import('features/Home'))
 const Stats = lazy(() => import('features/Stats'))
 const Simulations = lazy(() => import('features/Simulations'))
+const PDF = lazy(() => import('features/PDF'))
 const About = lazy(() => import('features/About'))
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -43,6 +44,7 @@ const App = () => {
           <Route exact path={PAGE_ROUTES.ABOUT} component={About} />
           {isMobile && <Route exact path={PAGE_ROUTES.STATS} component={Stats} />}
           <Route path={PAGE_ROUTES.SIMULATIONS} component={Simulations} />
+          <Route path={PAGE_ROUTES.EXPORT} component={PDF} />
           <Route path={PAGE_ROUTES.HOME} component={Home} />
         </Switch>
       </Suspense>
