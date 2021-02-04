@@ -28,3 +28,9 @@ export const LAYOUT = {
   marginY: 20,
   marginX: 10,
 } as const
+
+export const graphIds = {
+  comparisonGraphs: 'pdf-comparison-graphs',
+  cumulativeGraphs: 'pdf-cumulative-graphs',
+  discreteGraphs: 'pdf-discrete-graphs',
+} as const

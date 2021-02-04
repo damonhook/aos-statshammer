@@ -1,11 +1,14 @@
 import { Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import { ProbabilityTooltip } from 'components/GraphTooltips'
+import { isEqual } from 'lodash'
 import React, { useMemo } from 'react'
 import {
   CartesianGrid,
   Legend,
   Line,
   LineChart,
+  LineChartProps,
+  LineProps,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
@@ -18,13 +21,14 @@ import { getLoopingArray, startWithUppercase } from 'utils/helpers'
 
 import { transformData } from './transform'
 
-interface ProbabilityLineGraphProps {
+interface ProbabilityLineGraphProps extends Omit<LineChartProps, 'data'> {
   probabilities?: ProbabilityData[]
   nameMapping: NameMapping
   type: 'cumulative' | 'discrete'
   displaySave?: string
   referenceLines?: number[]
   inverted?: boolean
+  LineProps?: Partial<Omit<LineProps, 'dataKey'>>
 }
 
 const ProbabilityLineGraph = ({
@@ -34,6 +38,8 @@ const ProbabilityLineGraph = ({
   displaySave,
   referenceLines,
   inverted,
+  LineProps,
+  ...props
 }: ProbabilityLineGraphProps) => {
   const theme = useTheme()
 
@@ -52,7 +58,7 @@ const ProbabilityLineGraph = ({
         {`${startWithUppercase(type)} Probability (${displaySave})`}
       </Typography>
       <ResponsiveContainer height={300} width="100%">
-        <LineChart data={data}>
+        <LineChart data={data} {...props}>
           <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.graphs.grid} />
           <XAxis
             dataKey="damage"
@@ -81,6 +87,7 @@ const ProbabilityLineGraph = ({
               dot={{ fill: theme.palette.background.paper, strokeWidth: 1, r: type == 'discrete' ? 1 : 0 }}
               activeDot={{ stroke: theme.palette.background.paper, strokeWidth: 2, r: 4 }}
               connectNulls
+              {...LineProps}
             />
           ))}
         </LineChart>
@@ -89,4 +96,4 @@ const ProbabilityLineGraph = ({
   )
 }
 
-export default React.memo(ProbabilityLineGraph)
+export default React.memo(ProbabilityLineGraph, isEqual)

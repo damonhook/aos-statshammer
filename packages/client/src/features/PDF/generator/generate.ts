@@ -1,49 +1,60 @@
-import jsPDF from 'jspdf'
-import autoTable, { RowInput } from 'jspdf-autotable'
+import { RowInput } from 'jspdf-autotable'
 import { ModifierDefinition } from 'types/modifierDefinition'
 import { Modifier } from 'types/modifierInstance'
-import type { Unit } from 'types/store/units'
+import { ComparisonResult } from 'types/store/comparison'
+import { SimulationResult } from 'types/store/simulations'
+import { Target } from 'types/store/target'
+import type { NameMapping, Unit } from 'types/store/units'
 import { getModifierData, getModifierDescription } from 'utils/modifiers'
 
-import { LAYOUT, TABLE_HEAD_COLOR } from './config'
-import Cursor from './cursor'
-import DocUtils from './utils'
+import { graphIds, LAYOUT } from './config'
+import PdfDoc from './pdfDoc'
 
 export interface GenerateProps {
   units: Unit[]
+  target: Target
   modifierDefinitions: ModifierDefinition[]
+  targetModifierDefinitions: ModifierDefinition[]
+  nameMapping: NameMapping
+  comparisonResults: ComparisonResult[]
+  simulationResults: SimulationResult[]
 }
 
-const getModifierItems = (modifiers: Modifier[], definitions: ModifierDefinition[]): RowInput[] => {
-  const modifierData = getModifierData(modifiers, definitions)
-  const items: RowInput[] = []
-  if (modifierData.length) {
-    items.push([
-      {
-        content: 'Modifiers',
-        colSpan: 6,
-        styles: { halign: 'center', fontStyle: 'bold', fillColor: [240, 240, 240] },
-      },
-    ])
-    items.push(
-      ...modifierData.map(({ modifier, definition }) => [
-        {
-          content: `${definition.name}:\n\t${getModifierDescription(modifier, definition, true)}`,
-          colSpan: 6,
-        },
-      ])
-    )
+const generate = async ({
+  units,
+  target,
+  modifierDefinitions,
+  targetModifierDefinitions,
+  nameMapping,
+  comparisonResults,
+  simulationResults,
+}: GenerateProps) => {
+  const pdf = new PdfDoc()
+  pdf.doc.setProperties({ title: 'Aos Statshammer Report' }).setLineHeightFactor(LAYOUT.lineHeight)
+  pdf.writeHeader('Aos Statshammer Report')
+  await addUnits(pdf, units, modifierDefinitions)
+  if (target && target.modifiers.length) await addTarget(pdf, target, targetModifierDefinitions)
+  pdf.writeText('Results on next page', pdf.doc.internal.pageSize.getWidth() - LAYOUT.marginX, pdf.cursor, {
+    style: { fontStyle: 'italic' },
+    align: 'right',
+  })
+  pdf.addPage()
+  await addComparisonResults(pdf, comparisonResults, nameMapping)
+  pdf.addPage()
+  await addSimulationResults(pdf, simulationResults, nameMapping)
+  return pdf.doc
+}
+
+const addUnits = async (pdf: PdfDoc, units: Unit[], modifierDefinitions: ModifierDefinition[]) => {
+  pdf.writeSubHeader('Units')
+  for (const unit of units) {
+    await addUnit(pdf, unit, modifierDefinitions)
+    pdf.cursor += pdf.getLineHeight(5)
   }
-  return items
+  pdf.drawHR()
 }
 
-const generateUnit = (
-  doc: jsPDF,
-  cursor: Cursor,
-  docUtils: DocUtils,
-  unit: Unit,
-  modifierDefinitions: ModifierDefinition[]
-) => {
+const addUnit = async (pdf: PdfDoc, unit: Unit, modifierDefinitions: ModifierDefinition[]) => {
   const unitHeader: RowInput = [
     {
       content: unit.name,
@@ -70,15 +81,13 @@ const generateUnit = (
 
     body.push(
       [numModels, attacks, `${toHit}+`, `${toWound}+`, rend ? `-${rend}` : '-', damage],
-      ...getModifierItems(modifiers, modifierDefinitions)
+      ...getModifierRows(modifiers, modifierDefinitions, 6)
     )
 
-    const cellWidth = Math.floor((doc.internal.pageSize.getWidth() - LAYOUT.marginX * 2) / 6)
-    autoTable(doc, {
-      startY: cursor.pos,
-      head: head,
-      body: body,
-      headStyles: { fillColor: TABLE_HEAD_COLOR },
+    const cellWidth = Math.floor((pdf.doc.internal.pageSize.getWidth() - LAYOUT.marginX * 2) / 6)
+    pdf.addTable({
+      head,
+      body,
       columnStyles: {
         0: { cellWidth: cellWidth },
         1: { cellWidth: cellWidth },
@@ -87,33 +96,68 @@ const generateUnit = (
         4: { cellWidth: cellWidth },
         5: { cellWidth: cellWidth },
       },
-      pageBreak: 'avoid',
-      theme: 'grid',
     })
-    cursor.pos = (doc as any).lastAutoTable.finalY
-    cursor.incr(2 * doc.getLineHeightFactor())
+    pdf.cursor += pdf.getLineHeight(2)
   })
 }
 
-const generate = async (props: GenerateProps) => {
-  const { units, modifierDefinitions } = props
-  const doc = new jsPDF()
-  const cursor = new Cursor(LAYOUT.marginY)
-  const docUtils = new DocUtils(doc, cursor)
-  doc.setProperties({ title: 'Aos Statshammer Report' }).setLineHeightFactor(LAYOUT.lineHeight)
-  docUtils.addHeader('Aos Statshammer Report')
-  docUtils.addSubHeader('Units')
-  units.forEach(unit => {
-    generateUnit(doc, cursor, docUtils, unit, modifierDefinitions)
-    cursor.incr(5 * doc.getLineHeightFactor())
-  })
-  docUtils.addText('Results on next page', doc.internal.pageSize.getWidth() - LAYOUT.marginX, cursor.pos, {
-    style: { fontStyle: 'italic' },
-    align: 'right',
-  })
-  docUtils.addPage()
-  docUtils.addSubHeader('Comparison')
-  return doc
+const addTarget = async (pdf: PdfDoc, target: Target, targetModifierDefinitions: ModifierDefinition[]) => {
+  pdf.writeSubHeader('Target')
+  const head: RowInput[] = [[{ content: 'Target', styles: { halign: 'center' } }]]
+  const body = getModifierRows(target.modifiers, targetModifierDefinitions, 1)
+  pdf.addTable({ head, body })
+  pdf.cursor += pdf.getLineHeight(5)
+  pdf.drawHR()
+}
+
+const addComparisonResults = async (pdf: PdfDoc, results: ComparisonResult[], nameMapping: NameMapping) => {
+  pdf.writeSubHeader('Comparison')
+  const head: RowInput[] = [
+    [{ content: 'Average Damage', colSpan: 7, styles: { halign: 'center' } }],
+    ['Unit Name', ...results.map(({ displaySave }) => displaySave)],
+  ]
+  const body: RowInput[] = Object.entries(nameMapping).map(([id, name]) => [
+    name,
+    ...results.map(({ values }) => (values[id] ?? 0).toFixed(2)),
+  ])
+  pdf.addTable({ head, body })
+  pdf.cursor += pdf.getLineHeight(5)
+  await pdf.addImageFromId(graphIds.comparisonGraphs)
+}
+
+const addSimulationResults = async (pdf: PdfDoc, results: SimulationResult[], nameMapping: NameMapping) => {
+  pdf.writeSubHeader('Cumulative Probability')
+  await pdf.addImageFromId(graphIds.cumulativeGraphs)
+  pdf.addPage()
+  pdf.writeSubHeader('Discrete Probability')
+  await pdf.addImageFromId(graphIds.discreteGraphs)
+}
+
+const getModifierRows = (
+  modifiers: Modifier[],
+  definitions: ModifierDefinition[],
+  colSpan: number
+): RowInput[] => {
+  const modifierData = getModifierData(modifiers, definitions)
+  const items: RowInput[] = []
+  if (modifierData.length) {
+    items.push([
+      {
+        content: 'Modifiers',
+        colSpan: colSpan,
+        styles: { halign: 'center', fontStyle: 'bold', fillColor: [240, 240, 240] },
+      },
+    ])
+    items.push(
+      ...modifierData.map(({ modifier, definition }) => [
+        {
+          content: `${definition.name}:\n\t${getModifierDescription(modifier, definition, true)}`,
+          colSpan: colSpan,
+        },
+      ])
+    )
+  }
+  return items
 }
 
 export default generate

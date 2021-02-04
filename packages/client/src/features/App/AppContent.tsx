@@ -1,7 +1,8 @@
 import { Box } from '@material-ui/core'
 import { makeStyles, Theme } from '@material-ui/core/styles'
+import clsx from 'clsx'
 import HomeSkeleton from 'components/Skeletons/pages/HomeSkeleton'
-import { useIsMobile } from 'hooks'
+import { useCurrentRoute, useIsMobile } from 'hooks'
 import React, { lazy, Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { PAGE_ROUTES } from 'utils/routes'
@@ -17,11 +18,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexGrow: 1,
     padding: theme.spacing(0),
     width: '100%',
-    maxWidth: 1600,
     margin: '0 auto',
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100%',
+  },
+  maxWidth: {
+    maxWidth: 1600,
   },
   appBarShift: {
     display: 'flex',
@@ -35,9 +38,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 const App = () => {
   const classes = useStyles()
   const isMobile = useIsMobile()
+  const route = useCurrentRoute()
 
   return (
-    <main className={classes.content}>
+    <main className={clsx(classes.content, { [classes.maxWidth]: route !== PAGE_ROUTES.EXPORT })}>
       <div className={classes.appBarShift} />
       <Suspense fallback={<HomeSkeleton />}>
         <Switch>

@@ -2007,6 +2007,11 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
+"@types/pdfobject@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@types/pdfobject/-/pdfobject-2.0.6.tgz#67da3ce9663f93e15bcfa0d4ecea2169091ece1a"
+  integrity sha512-KtwKbfAX4FOmB9aWbwP/tURPr4oU7Sc9mc3HZJtzQV8hsPwoMyVwx9duEvAAhVjr9/WQJKBkuaAf4pfmBIiX0g==
+
 "@types/prettier@^2.0.0":
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.1.6.tgz#f4b1efa784e8db479cdb8b14403e2144b1e9ff03"
@@ -6259,7 +6264,7 @@ html-webpack-plugin@4.5.0:
     tapable "^1.1.3"
     util.promisify "1.0.0"
 
-html2canvas@^1.0.0-rc.5:
+html2canvas@^1.0.0-rc.5, html2canvas@^1.0.0-rc.7:
   version "1.0.0-rc.7"
   resolved "https://registry.yarnpkg.com/html2canvas/-/html2canvas-1.0.0-rc.7.tgz#70c159ce0e63954a91169531894d08ad5627ac98"
   integrity sha512-yvPNZGejB2KOyKleZspjK/NruXVQuowu8NnV2HYG7gW7ytzl+umffbtUI62v2dCHQLDdsK6HIDtyJZ0W3neerA==
@@ -9090,6 +9095,11 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+pdfobject@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/pdfobject/-/pdfobject-2.2.4.tgz#ccb3c191129298a471e9ccb59c88a3ee0b7c7530"
+  integrity sha512-r6Rw9CQWsrY6uqmKvlgFNoupmuRbSt9EsG0sZhSAy3cIk4WgOXyAVmebFSlLhqj6gA5NIEXL3lSEbwOOYfdUvw==
 
 performance-now@^2.1.0:
   version "2.1.0"
