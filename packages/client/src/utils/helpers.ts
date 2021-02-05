@@ -8,6 +8,17 @@ export const titleCase = (str: string) => {
   return words.join(' ')
 }
 
+export const splitString = (value: string, maxLineLength: number = 15, maxLines: number = 2) => {
+  const lengthOfEllipsis = 3
+  let trimLength = maxLineLength * maxLines - lengthOfEllipsis
+  if (value.length - trimLength > 0 && value.length - trimLength <= lengthOfEllipsis)
+    trimLength += lengthOfEllipsis
+  const trimWordsOverLength = new RegExp(`^(.{${trimLength}}[^\\w]*).*`)
+  const groupWordsByLength = new RegExp(`([^\\s].{0,${maxLineLength}}(?=[\\s\\W]|$))`, 'gm')
+  const splitValues = value.replace(trimWordsOverLength, '$1...').match(groupWordsByLength)
+  return splitValues ?? ['']
+}
+
 export const removeEmpty = (obj: Record<string, any>) => {
   const finalObj: Record<string, any> = {}
   Object.keys(obj).forEach(key => {

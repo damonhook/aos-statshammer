@@ -1,8 +1,13 @@
 import html2canvas from 'html2canvas'
 import jsPDF, { jsPDFOptions, TextOptionsLight } from 'jspdf'
 import autoTable, { UserOptions } from 'jspdf-autotable'
+import _ from 'lodash'
 import { nanoid } from 'nanoid'
+import { lightTheme } from 'themes'
+import { PdfGraphConfig } from 'types/pdf'
+import { NameMapping } from 'types/store/units'
 
+import { addGraphElements } from './canvasUtils'
 import { LAYOUT, PdfStyle, STYLES, TABLE_HEAD_COLOR } from './config'
 
 interface TextOptions extends TextOptionsLight {
@@ -76,20 +81,32 @@ class PdfDoc {
     this.cursor = (this.doc as any).lastAutoTable.finalY
   }
 
-  addImageFromId = async (id: string) => {
-    const element = document.getElementById(id)
-    if (element) await this.addImageFromHTML(element)
-  }
-
-  addImageFromHTML = async (element: HTMLElement) => {
-    const pageWidth = this.doc.internal.pageSize.getWidth()
-    const canvas = await html2canvas(element)
-    const imgData = canvas.toDataURL('image/jpeg', 0.5)
-    const imgProps = this.doc.getImageProperties(imgData)
-    const imgWidth = pageWidth - LAYOUT.marginX * 2
-    const imgHeight = (imgProps.height * imgWidth) / imgProps.width
-    this.doc.addImage(imgData, 'JPEG', LAYOUT.marginX, this.cursor, imgWidth, imgHeight, nanoid())
-    this.cursor += imgHeight
+  addCanvasGraph = (config: PdfGraphConfig, nameMapping: NameMapping) => {
+    console.log(config)
+    const colors = lightTheme.palette.graphs.series
+    const canvasList = Array.from(document.getElementById(config.id)?.getElementsByTagName('canvas') ?? [])
+    const canvasGroups = _.chunk(canvasList, config.groupSize)
+    console.log(canvasGroups)
+    canvasGroups.forEach(cGroup => {
+      let groupHeight = 0
+      let imgX = LAYOUT.marginX
+      cGroup.forEach(canvas => {
+        const pageWidth = this.doc.internal.pageSize.getWidth() - LAYOUT.marginX * 2
+        try {
+          addGraphElements(canvas, Object.values(nameMapping), colors, config)
+          const imgData = canvas.toDataURL('image/jpeg', 0.5)
+          const imgProps = this.doc.getImageProperties(imgData)
+          const imgWidth = pageWidth / config.groupSize
+          const imgHeight = (imgProps.height * imgWidth) / imgProps.width
+          this.doc.addImage(imgData, 'JPEG', imgX, this.cursor, imgWidth, imgHeight, nanoid())
+          imgX += imgWidth
+          groupHeight = Math.max(groupHeight, imgHeight)
+        } catch (err) {
+          console.error(err)
+        }
+      })
+      this.cursor += groupHeight
+    })
   }
 
   addPage(format?: string | number[], orientation?: 'p' | 'portrait' | 'l' | 'landscape') {

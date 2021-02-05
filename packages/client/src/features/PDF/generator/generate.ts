@@ -7,6 +7,7 @@ import { Target } from 'types/store/target'
 import type { NameMapping, Unit } from 'types/store/units'
 import { getModifierData, getModifierDescription } from 'utils/modifiers'
 
+import { PDF_GRAPHS } from '../pdfConfig'
 import { graphIds, LAYOUT } from './config'
 import PdfDoc from './pdfDoc'
 
@@ -122,15 +123,15 @@ const addComparisonResults = async (pdf: PdfDoc, results: ComparisonResult[], na
   ])
   pdf.addTable({ head, body })
   pdf.cursor += pdf.getLineHeight(5)
-  await pdf.addImageFromId(graphIds.comparisonGraphs)
+  pdf.addCanvasGraph(PDF_GRAPHS.comparison, nameMapping)
 }
 
 const addSimulationResults = async (pdf: PdfDoc, results: SimulationResult[], nameMapping: NameMapping) => {
   pdf.writeSubHeader('Cumulative Probability')
-  await pdf.addImageFromId(graphIds.cumulativeGraphs)
+  pdf.addCanvasGraph(PDF_GRAPHS.cumulative, nameMapping)
   pdf.addPage()
   pdf.writeSubHeader('Discrete Probability')
-  await pdf.addImageFromId(graphIds.discreteGraphs)
+  pdf.addCanvasGraph(PDF_GRAPHS.discrete, nameMapping)
 }
 
 const getModifierRows = (

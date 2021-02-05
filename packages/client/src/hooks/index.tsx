@@ -1,3 +1,4 @@
+export { default as useCanvasRendered } from './useCanvasRendered'
 export { default as useCurrentRoute } from './useCurrentRoute'
 export { default as useIsMobile } from './useIsMobile'
 export { default as usePrevious } from './usePrevious'

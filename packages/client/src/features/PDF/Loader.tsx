@@ -1,4 +1,13 @@
-import { makeStyles, Paper, Step, StepLabel, Stepper, Theme, Typography } from '@material-ui/core'
+import {
+  LinearProgress,
+  makeStyles,
+  Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  Theme,
+  Typography,
+} from '@material-ui/core'
 import { LogoIcon } from 'components/Icons'
 import React, { useMemo } from 'react'
 
@@ -12,6 +21,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   step: {
     display: 'flex',
     alignItems: 'center',
+  },
+  progress: {
+    flex: 1,
+    marginLeft: theme.spacing(1),
   },
 }))
 
@@ -47,6 +60,7 @@ const Loader = ({ dataLoading, hasData, graphsReady }: LoaderProps) => {
             <StepLabel>
               <div className={classes.step}>
                 <Typography>{step}</Typography>
+                {index === currentStep && <LinearProgress className={classes.progress} />}
               </div>
             </StepLabel>
           </Step>

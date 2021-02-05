@@ -13,7 +13,7 @@ import Store from 'types/store'
 import { NameMapping, Unit } from 'types/store/units'
 
 import generatePdf from './generator'
-import PdfGraphs from './graphs'
+import GraphLoader from './GraphLoader'
 import Loader from './Loader'
 
 function getNameMapping(units: Unit[]): NameMapping {
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
   hidden: {
     width: 800,
     position: 'absolute',
-    left: -2000,
+    // left: -2000,
   },
   docView: {
     display: 'flex',
@@ -50,6 +50,7 @@ const DocView = React.memo(({ doc }: DocViewProps) => {
     if (ref.current) {
       pdfobject.embed(doc.output('datauristring', { filename: 'aos-statshammer.pdf' }), ref.current, {
         height: 'unset',
+        forceIframe: true,
       })
     }
   }, [doc, ref])
@@ -143,7 +144,7 @@ const PDF = () => {
           <div className={classes.pdfGenerator}>
             <div className={classes.hidden}>
               {hasData && !doc && (
-                <PdfGraphs
+                <GraphLoader
                   nameMapping={nameMapping}
                   comparisonResults={comparison.results}
                   simulationResults={simulations.results}

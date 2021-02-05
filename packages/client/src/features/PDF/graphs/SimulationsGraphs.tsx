@@ -1,53 +1,54 @@
-import { Grid } from '@material-ui/core'
-import ProbabilityLineGraph from 'features/Simulations/graphs/ProbabilityLineGraph'
 import { usePrevious } from 'hooks'
 import { isEqual } from 'lodash'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { ProbabilityData, SimulationResult } from 'types/store/simulations'
+import { SimulationResult } from 'types/store/simulations'
 import { NameMapping } from 'types/store/units'
 
-import { graphIds } from '../generator/config'
+import { PDF_GRAPHS } from '../pdfConfig'
+import CumulativeLineCanvas from './canvas/CumulativeLineCanvas'
+import DiscreteLineCanvas from './canvas/DiscreteLineCanvas'
 
 type SaveGraphRendered = { [s: number]: boolean }
 
 interface SimGraphProps {
   nameMapping: NameMapping
-  save: number
-  displaySave: string
-  results: ProbabilityData[]
-  type: 'cumulative' | 'discrete'
+  results: SimulationResult
   onRenderedCallback: (s: number) => void
 }
 
-const SimGraph = React.memo(
-  ({ nameMapping, save, displaySave, results, type, onRenderedCallback }: SimGraphProps) => {
-    const [rendered, setRendered] = useState(false)
-    const previous = usePrevious(rendered)
+const CumulativeSimGraph = React.memo(({ nameMapping, results, onRenderedCallback }: SimGraphProps) => {
+  const [rendered, setRendered] = useState(false)
+  const previous = usePrevious(rendered)
 
-    const handleRendered = useCallback(() => {
-      setRendered(true)
-    }, [])
+  const handleRendered = useCallback(() => {
+    setRendered(true)
+  }, [])
 
-    useEffect(() => {
-      if (!previous && rendered) onRenderedCallback(save)
-    }, [onRenderedCallback, previous, rendered, save])
+  useEffect(() => {
+    if (!previous && rendered) onRenderedCallback(results.save)
+  }, [onRenderedCallback, previous, rendered, results.save])
 
-    return (
-      <Grid item xs={6} key={save}>
-        <ProbabilityLineGraph
-          probabilities={results}
-          nameMapping={nameMapping}
-          type={type}
-          displaySave={displaySave}
-          LineProps={{
-            animationDuration: 0,
-            onAnimationEnd: handleRendered,
-          }}
-        />
-      </Grid>
-    )
-  }
-)
+  return (
+    <CumulativeLineCanvas nameMapping={nameMapping} results={results} onRenderedCallback={handleRendered} />
+  )
+})
+
+const DiscreteSimGraph = React.memo(({ nameMapping, results, onRenderedCallback }: SimGraphProps) => {
+  const [rendered, setRendered] = useState(false)
+  const previous = usePrevious(rendered)
+
+  const handleRendered = useCallback(() => {
+    setRendered(true)
+  }, [])
+
+  useEffect(() => {
+    if (!previous && rendered) onRenderedCallback(results.save)
+  }, [onRenderedCallback, previous, rendered, results.save])
+
+  return (
+    <DiscreteLineCanvas nameMapping={nameMapping} results={results} onRenderedCallback={handleRendered} />
+  )
+})
 
 interface SimulationsGraphsProps {
   nameMapping: NameMapping
@@ -89,32 +90,26 @@ const SimulationsGraphs = ({ nameMapping, results, onRenderedCallback }: Simulat
 
   return (
     <>
-      <Grid container spacing={1} id={graphIds.cumulativeGraphs}>
+      <div id={PDF_GRAPHS.cumulative.id}>
         {results.map(result => (
-          <SimGraph
+          <CumulativeSimGraph
             key={`cumulative-${result.save}`}
             nameMapping={nameMapping}
-            save={result.save}
-            displaySave={result.displaySave}
-            results={result.cumulative}
-            type="cumulative"
+            results={result}
             onRenderedCallback={handleSetCumulativeRendered}
           />
         ))}
-      </Grid>
-      <Grid container spacing={1} id={graphIds.discreteGraphs}>
+      </div>
+      <div id={PDF_GRAPHS.discrete.id}>
         {results.map(result => (
-          <SimGraph
+          <DiscreteSimGraph
             key={`discrete-${result.save}`}
             nameMapping={nameMapping}
-            save={result.save}
-            displaySave={result.displaySave}
-            results={result.discrete}
-            type="discrete"
+            results={result}
             onRenderedCallback={handleSetDiscreteRendered}
           />
         ))}
-      </Grid>
+      </div>
     </>
   )
 }

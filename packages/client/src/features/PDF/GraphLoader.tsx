@@ -6,28 +6,28 @@ import { ComparisonResult } from 'types/store/comparison'
 import { SimulationResult } from 'types/store/simulations'
 import { NameMapping } from 'types/store/units'
 
-import ComparisonGraphs from './ComparisonGraphs'
-import SimulationsGraphs from './SimulationsGraphs'
+import ComparisonGraphs from './graphs/ComparisonGraphs'
+import SimulationsGraphs from './graphs/SimulationsGraphs'
 
-interface PdfGraphsProps {
+interface GraphLoaderProps {
   nameMapping: NameMapping
   comparisonResults: ComparisonResult[]
   simulationResults: SimulationResult[]
   onRenderedCallback: () => void
 }
 
-const PdfGraphs = ({
+const GraphLoader = ({
   nameMapping,
   comparisonResults,
   simulationResults,
   onRenderedCallback,
-}: PdfGraphsProps) => {
+}: GraphLoaderProps) => {
   const [comparisonRendered, setComparisonRendered] = useState(false)
   const [simulationRendered, setSimulationRendered] = useState(false)
 
   useEffect(() => {
     if (comparisonRendered && simulationRendered) {
-      onRenderedCallback()
+      setTimeout(() => onRenderedCallback(), 300)
     }
   }, [comparisonRendered, simulationRendered, onRenderedCallback])
 
@@ -52,4 +52,4 @@ const PdfGraphs = ({
   )
 }
 
-export default PdfGraphs
+export default GraphLoader
