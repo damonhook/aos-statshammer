@@ -1,6 +1,6 @@
 {
     "name": "statshammer",
-    "version": "2.1.4",
+    "version": "2.1.5",
     "private": true,
     "proxy": "http://localhost:5000/",
     "dependencies": {

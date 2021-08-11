@@ -49,8 +49,10 @@ export default class AverageDamageProcessor {
     if (mwModifier) {
       const mortalHits = attacks * mwModifier.resolve(this.profile);
       mortalDamage += mortalHits * mwModifier.getMortalWounds();
-      mortalDamage -= mortalDamage * this.target.resolveMortalSave(this.profile);
-      hits -= !mwModifier.inAddition ? mortalHits : 0;
+      mortalDamage = Math.max(mortalDamage - mortalDamage * this.target.resolveMortalSave(this.profile), 0);
+      if (!mwModifier.inAddition) {
+        hits = Math.max(hits - mortalHits, 0);
+      }
     }
 
     const cbModifier = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_HIT);
@@ -60,7 +62,7 @@ export default class AverageDamageProcessor {
       const cbModHits = attacks * cbModifier.resolve(this.profile);
       const splitProcessor = new AverageDamageProcessor(newProfile, this.target);
       splitDamage = splitProcessor.resolveWounds(cbModHits);
-      hits -= cbModHits;
+      hits = Math.max(hits - cbModHits, 0);
     }
 
     return this.resolveWounds(hits) + mortalDamage + splitDamage;
@@ -76,8 +78,10 @@ export default class AverageDamageProcessor {
     if (mwModifier) {
       const mortalToWounds = hits * mwModifier.resolve(this.profile);
       mortalDamage += mortalToWounds * mwModifier.getMortalWounds();
-      mortalDamage -= mortalDamage * this.target.resolveMortalSave(this.profile);
-      wounds -= !mwModifier.inAddition ? mortalToWounds : 0;
+      mortalDamage = Math.max(mortalDamage - mortalDamage * this.target.resolveMortalSave(this.profile), 0);
+      if (!mwModifier.inAddition) {
+        wounds = Math.max(wounds - mortalToWounds, 0);
+      }
     }
 
     const cbModifier = this.profile.modifiers.getModifier(m.CONDITIONAL_BONUS, C.TO_WOUND);
@@ -87,7 +91,7 @@ export default class AverageDamageProcessor {
       const cbModWounds = hits * cbModifier.resolve(this.profile);
       const splitProcessor = new AverageDamageProcessor(newProfile, this.target);
       splitDamage = splitProcessor.resolveSaves(cbModWounds);
-      wounds -= cbModWounds;
+      wounds = Math.max(wounds - cbModWounds, 0);
     }
 
     return this.resolveSaves(wounds) + mortalDamage + splitDamage;
@@ -102,6 +106,6 @@ export default class AverageDamageProcessor {
   resolveDamage(successful: number) {
     const damage = successful * this.profile.getDamage();
     const saves = damage * this.target.resolveFNP(this.profile);
-    return damage - saves;
+    return Math.max(damage - saves, 0);
   }
 }
