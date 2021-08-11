@@ -80,7 +80,7 @@ export default class AverageDamageProcessor {
       mortalDamage += mortalToWounds * mwModifier.getMortalWounds();
       mortalDamage = Math.max(mortalDamage - mortalDamage * this.target.resolveMortalSave(this.profile), 0);
       if (!mwModifier.inAddition) {
-        hits = Math.max(hits - mortalToWounds, 0);
+        wounds = Math.max(wounds - mortalToWounds, 0);
       }
     }
 
