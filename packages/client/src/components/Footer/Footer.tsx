@@ -49,7 +49,7 @@ const Footer = () => {
       <Paper className={clsx(classes.paper)} square>
         <Typography variant="body1" component="p">
           Built by: Damon Hook&nbsp;
-          <i>(NoMaDhOoK)</i>
+          <i>(NomadHook)</i>
         </Typography>
         <Typography variant="body2" component="p">
           Disclaimer: This tool is in no way endorsed or sanctioned by Games Workshop - it is unofficial and

@@ -82,11 +82,9 @@ class PdfDoc {
   }
 
   addCanvasGraph = (config: PdfGraphConfig, nameMapping: NameMapping) => {
-    console.log(config)
     const colors = lightTheme.palette.graphs.series
     const canvasList = Array.from(document.getElementById(config.id)?.getElementsByTagName('canvas') ?? [])
     const canvasGroups = _.chunk(canvasList, config.groupSize)
-    console.log(canvasGroups)
     canvasGroups.forEach(cGroup => {
       let groupHeight = 0
       let imgX = LAYOUT.marginX

@@ -1,10 +1,10 @@
 import BaseTargetModifier from './BaseTargetModifier'
 import TargetEthereal from './TargetEthereal'
-import TargetFeelNoPain from './TargetFeelNoPain'
 import TargetMortalNegate from './TargetMortalNegate'
 import TargetReroll from './TargetReroll'
 import TargetRerollFailed from './TargetRerollFailed'
 import TargetRerollOnes from './TargetRerollOnes'
+import TargetWard from './TargetWard'
 
 export type TargetModifierData = (BaseTargetModifier | { type: string; options: any })[]
 
@@ -21,7 +21,7 @@ export class TargetModifierLookup {
   reroll: TargetModifierList<TargetReroll>
   rerollFailed: TargetModifierList<TargetRerollFailed>
   rerollOnes: TargetModifierList<TargetRerollOnes>
-  fnp: TargetModifierList<TargetFeelNoPain>
+  fnp: TargetModifierList<TargetWard>
   mortalNegate: TargetModifierList<TargetMortalNegate>
   ethereal: TargetModifierList<TargetEthereal>
 
@@ -29,7 +29,7 @@ export class TargetModifierLookup {
     this.reroll = this.findModifiersOfType(data, TargetReroll)
     this.rerollFailed = this.findModifiersOfType(data, TargetRerollFailed)
     this.rerollOnes = this.findModifiersOfType(data, TargetRerollOnes)
-    this.fnp = this.findModifiersOfType(data, TargetFeelNoPain)
+    this.fnp = this.findModifiersOfType(data, TargetWard)
     this.mortalNegate = this.findModifiersOfType(data, TargetMortalNegate)
     this.ethereal = this.findModifiersOfType(data, TargetEthereal)
   }
@@ -62,7 +62,7 @@ export class TargetModifierLookup {
       TargetReroll,
       TargetRerollFailed,
       TargetRerollOnes,
-      TargetFeelNoPain,
+      TargetWard,
       TargetMortalNegate,
       TargetEthereal,
     ]

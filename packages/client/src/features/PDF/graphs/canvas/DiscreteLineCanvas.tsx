@@ -5,7 +5,7 @@ import { isEqual } from 'lodash'
 import React, { createRef, useMemo } from 'react'
 import { SimulationResult } from 'types/store/simulations'
 import { NameMapping } from 'types/store/units'
-import { getLoopingArray } from 'utils/helpers'
+import { getLoopingArray, getTicks } from 'utils/helpers'
 
 import { PDF_GRAPHS } from '../../pdfConfig'
 
@@ -39,7 +39,9 @@ const DiscreteLineCanvas = ({ nameMapping, results, onRenderedCallback }: Discre
     () => getLoopingArray(theme.palette.graphs.series, Object.keys(nameMapping).length),
     [theme.palette.graphs.series, nameMapping]
   )
-  const ticks = useMemo(() => [0, 5, 10, 15, 20], []) // TODO: Calculate
+
+  const maxDamage = useMemo(() => Math.max(...Object.values(results.metrics).map(r => r.max)), [results])
+  const ticks = useMemo(() => getTicks(maxDamage, 10), [maxDamage])
 
   useCanvasRendered({ ref, callback: onRenderedCallback })
 
@@ -56,6 +58,11 @@ const DiscreteLineCanvas = ({ nameMapping, results, onRenderedCallback }: Discre
           legendOffset: -20,
           tickValues: [],
         }}
+        xScale={{
+          type: 'linear',
+          min: 0,
+          max: maxDamage,
+        }}
         axisBottom={{
           tickValues: ticks,
         }}
@@ -63,8 +70,7 @@ const DiscreteLineCanvas = ({ nameMapping, results, onRenderedCallback }: Discre
         enableGridX
         pixelRatio={2}
         isInteractive={false}
-        // enablePoints={false}
-        pointSize={2}
+        enablePoints={false}
         lineWidth={1}
       />
     </div>

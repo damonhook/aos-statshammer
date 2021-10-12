@@ -114,7 +114,7 @@ const About = () => {
             </ul>
           </Section>
           <Section title="Notes">
-            This is a free community tool built by Damon Hook (<i>NoMaDhOoK</i>).
+            This is a free community tool built by Damon Hook (<i>NomadHook</i>).
             <br />
             Keep an eye on the <AboutLink href={EXTERNAL_LINKS.RELEASES}>Github Releases</AboutLink>, or{' '}
             <AboutLink href={EXTERNAL_LINKS.REDDIT}>Reddit page</AboutLink> to get notified of new additions.
@@ -124,7 +124,7 @@ const About = () => {
               <AlertTitle>Remember</AlertTitle>
               <Typography>
                 There is more to a unit than just its damage output. This is a tool, not a definitive answer
-                of which unit is bette
+                of which unit is better
               </Typography>
             </Alert>
           </Section>

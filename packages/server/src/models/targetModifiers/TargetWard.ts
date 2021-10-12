@@ -2,9 +2,9 @@ import { rollOption } from 'utils/modifierUtils'
 
 import BaseTargetModifier from './BaseTargetModifier'
 
-export default class TargetFeelNoPain extends BaseTargetModifier {
-  static displayName = 'Target Feel No Pain'
-  static description = 'Ignore wounds and mortal wounds on a roll of {on}+'
+export default class TargetWard extends BaseTargetModifier {
+  static displayName = 'Target Ward Save'
+  static description = 'Ignore wounds and mortal wounds on a roll of {on}+ (ward save)'
 
   on: number
 

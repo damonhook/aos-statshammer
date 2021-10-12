@@ -18,21 +18,17 @@ const TourGuide = ({ steps, ...props }: TourGuideProps) => {
   const disableBody = (target: HTMLElement | Element) => disableBodyScroll(target)
   const enableBody = (target: HTMLElement | Element) => enableBodyScroll(target)
 
-  return (
-    <>
-      {stepConfig && stepConfig.length ? (
-        <Tour
-          steps={stepConfig}
-          rounded={4}
-          {...props}
-          CustomHelper={TourGuideHelper}
-          onAfterOpen={disableBody}
-          onBeforeClose={enableBody}
-          disableFocusLock
-        />
-      ) : null}
-    </>
-  )
+  return stepConfig && stepConfig.length ? (
+    <Tour
+      steps={stepConfig}
+      rounded={4}
+      {...props}
+      CustomHelper={TourGuideHelper}
+      onAfterOpen={disableBody}
+      onBeforeClose={enableBody}
+      disableFocusLock
+    />
+  ) : null
 }
 
 export default TourGuide

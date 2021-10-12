@@ -1,6 +1,6 @@
 extends:
   - plugin:react/recommended
-  - prettier/react
+  - prettier
 plugins:
   - eslint-plugin-react-hooks
 settings:

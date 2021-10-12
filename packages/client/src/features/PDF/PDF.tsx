@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
   hidden: {
     width: 800,
     position: 'absolute',
-    // left: -2000,
+    left: -2000,
   },
   docView: {
     display: 'flex',

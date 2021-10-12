@@ -74,7 +74,7 @@ const WeaponProfileDialog = () => {
           id="profile-dialog-title"
           title="Edit Weapon Profile"
           onClose={handleBack}
-          startHelp={openTour}
+          startHelp={helpSteps && helpSteps.length ? openTour : undefined}
         />
         <div style={{ marginBottom: 10 }}></div>
         {data && <ProfileDialogContent unitId={unitId} data={data} errors={errors} closeTour={closeTour} />}

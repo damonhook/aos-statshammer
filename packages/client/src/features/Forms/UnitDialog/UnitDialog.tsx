@@ -22,7 +22,7 @@ export function openUnitDialog(
   history.push(path, { modal: true })
 }
 
-const WeaponProfileDialog = () => {
+const UnitDialog = () => {
   const dispatch = useDispatch()
   const match = useRouteMatch<{ unitId: string }>(DIALOG_ROUTES.EDIT_UNIT)
   const location = useLocation<{ modal: boolean }>()
@@ -76,7 +76,12 @@ const WeaponProfileDialog = () => {
   return (
     <SideSheet open={open} aria-labelledby="unit-dialog-title" onClose={handleSideSheetClose} keepMounted>
       <form style={{ display: 'contents' }}>
-        <DialogAppBar id="unit-dialog-title" title="Edit Unit" onClose={handleBack} startHelp={openTour} />
+        <DialogAppBar
+          id="unit-dialog-title"
+          title="Edit Unit"
+          onClose={handleBack}
+          startHelp={helpSteps && helpSteps.length ? openTour : undefined}
+        />
         {data && <UnitDialogContent unitId={unitId} data={data} errors={errors} closeTour={closeTour} />}
         <DialogActions id={helpSelectors.ids.unitDialogActions}>
           <Button onClick={handleBack}>Cancel</Button>
@@ -90,4 +95,4 @@ const WeaponProfileDialog = () => {
   )
 }
 
-export default React.memo(WeaponProfileDialog)
+export default React.memo(UnitDialog)

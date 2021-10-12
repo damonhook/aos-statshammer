@@ -12,17 +12,17 @@
     "server": "yarn workspace server",
     "client": "yarn workspace client",
     "start": "FORCE_COLOR=1 npm-run-all -l -p \"server dev\" \"client start\"",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
+    "lint": "yarn server lint && yarn client lint",
     "test": "yarn server test"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.20",
-    "@types/node": "^14.14.22",
+    "@types/jest": "~26.0.24",
+    "@types/node": "^16.6.1",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
-    "eslint-config-prettier": "^7.2.0",
+    "eslint-config-prettier": "^8.3.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
-    "ts-jest": "^26.4.4"
+    "ts-jest": "~26.5.6"
   }
 }

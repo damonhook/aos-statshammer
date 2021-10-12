@@ -1,6 +1,8 @@
 import { ReactourStep } from 'reactour'
 import { PrefixedSelectors } from 'types/help'
 
+const HELP_ENABLED = false
+
 export const selectorsWithPrefix = <I extends string, C extends string>(
   prefix: string,
   base: PrefixedSelectors<I, C>
@@ -31,6 +33,7 @@ interface ClassStepConfig extends StepConfig {
 }
 
 export const buildHelpSteps = (stepsConfig: (IdStepConfig | ClassStepConfig)[]) => {
+  if (!HELP_ENABLED) return []
   return stepsConfig
     .filter(({ hidden }) => !hidden)
     .map<ReactourStep>(({ id, className, ...rest }) => {

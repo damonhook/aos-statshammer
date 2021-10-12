@@ -4,7 +4,7 @@ import ConfigStore from 'types/store/config'
 
 const commonOtions: Partial<ThemeOptions> = {
   typography: {
-    htmlFontSize: 19,
+    htmlFontSize: 18,
     h6: {
       fontSize: '1rem',
     },

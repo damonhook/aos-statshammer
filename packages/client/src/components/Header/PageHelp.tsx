@@ -14,9 +14,10 @@ import { PAGE_ROUTES, PageRoute } from 'utils/routes'
 interface PageTourGuideProps {
   open: boolean
   onClose: () => void
+  hasStepsCallback: (value: boolean) => void
 }
 
-const HomeTourGuide = ({ open, onClose }: PageTourGuideProps) => {
+const HomeTourGuide = ({ open, onClose, hasStepsCallback }: PageTourGuideProps) => {
   const tab = useSelector((state: Store) => state.ui.home.tab)
   const numTargetModifiers = useSelector((state: Store) => state.target.modifiers.length)
   const dispatch = useDispatch()
@@ -34,29 +35,29 @@ const HomeTourGuide = ({ open, onClose }: PageTourGuideProps) => {
     onClose()
   }
 
-  const unitsSteps = useMemo(() => {
-    return getUnitsHelpSteps({ setHomeTab: handleHomeTabChange })
-  }, [handleHomeTabChange])
+  const helpSteps = useMemo(() => {
+    const unitsSteps = getUnitsHelpSteps({ setHomeTab: handleHomeTabChange })
+    const statsSteps = !isMobile ? getStatsHelpSteps({ numTargetModifiers }) : []
+    return [...unitsSteps, ...statsSteps]
+  }, [handleHomeTabChange, isMobile, numTargetModifiers])
 
-  const statsSteps = useMemo(() => {
-    if (isMobile) return []
-    return getStatsHelpSteps({ numTargetModifiers })
-  }, [isMobile, numTargetModifiers])
+  useEffect(() => {
+    console.log(helpSteps)
+    hasStepsCallback(!!(helpSteps && helpSteps.length))
+  }, [hasStepsCallback, helpSteps])
 
   return (
-    <TourGuide
-      steps={[...unitsSteps, ...statsSteps]}
-      isOpen={open}
-      onRequestClose={handleClose}
-      update={tab}
-      updateDelay={100}
-    />
+    <TourGuide steps={helpSteps} isOpen={open} onRequestClose={handleClose} update={tab} updateDelay={100} />
   )
 }
 
-const StatsTourGuide = ({ open, onClose }: PageTourGuideProps) => {
+const StatsTourGuide = ({ open, onClose, hasStepsCallback }: PageTourGuideProps) => {
   const numTargetModifiers = useSelector((state: Store) => state.target.modifiers.length)
   const helpSteps = getStatsHelpSteps({ numTargetModifiers })
+
+  useEffect(() => {
+    hasStepsCallback(!!(helpSteps && helpSteps.length))
+  }, [hasStepsCallback, helpSteps])
 
   return <TourGuide steps={helpSteps} isOpen={open} onRequestClose={onClose} />
 }
@@ -69,16 +70,27 @@ const helpConfig: HelpConfig = {
 
 const PageHelp = () => {
   const [open, setOpen] = useState(false)
+  const [hasSteps, setHasSteps] = useState(false)
+
   const route = useCurrentRoute()
   const HelpElement = useMemo(() => helpConfig[route], [route])
+
   useEffect(() => setOpen(false), [route])
+
+  const handleHasSteps = useCallback((value: boolean) => {
+    setHasSteps(value)
+  }, [])
+
+  console.log(hasSteps)
 
   return HelpElement ? (
     <>
-      <IconButton onClick={() => setOpen(true)} color="inherit">
-        <HelpOutline />
-      </IconButton>
-      <HelpElement open={open} onClose={() => setOpen(false)} />
+      {hasSteps && (
+        <IconButton onClick={() => setOpen(true)} color="inherit">
+          <HelpOutline />
+        </IconButton>
+      )}
+      <HelpElement open={open} onClose={() => setOpen(false)} hasStepsCallback={handleHasSteps} />
     </>
   ) : null
 }

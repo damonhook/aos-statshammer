@@ -96,7 +96,7 @@ export class ProfileAverageProcessor {
       const modTarget = mortalMod.unmodified ? mortalMod.on : Math.max(mortalMod.on - bonuses, 2)
       const numMortals = newBase * D6.getProbability(modTarget)
       mortalDamage = createResults(this.resolveFNP(numMortals * mortalMod.mortalWounds.average, true))
-      if (!mortalMod.inAddition) result -= numMortals
+      if (!mortalMod.inAddition) result = Math.max(result - numMortals, 0)
     }
 
     // Conditional Bonus Modifier
@@ -107,7 +107,7 @@ export class ProfileAverageProcessor {
       const bonusProcessor = new ProfileAverageProcessor(bonusProfile, this.targetModifiers)
       const modTarget = cbMod.unmodified ? cbMod.on : Math.max(cbMod.on - bonuses, 2)
       const numBonuses = newBase * D6.getProbability(modTarget)
-      result -= numBonuses
+      result = Math.max(result - numBonuses, 0)
       cbDamage =
         key === C.TO_HIT
           ? bonusProcessor.calculateWoundsStep(numBonuses)
@@ -128,7 +128,7 @@ export class ProfileAverageProcessor {
       const saveWithBonuses = Math.max(save - bonuses, 2)
       if (saveWithBonuses && saveWithBonuses < 7) {
         const numRerolls = this.getNumRerolls(wounds, C.SAVE, save, bonuses)
-        unsavedWounds = (wounds - numRerolls) * D6.getInverseProbability(saveWithBonuses)
+        unsavedWounds = Math.max(wounds - numRerolls, 0) * D6.getInverseProbability(saveWithBonuses)
       }
       const damagePerWound = Math.max(this.profile.damage.average, 0) + this.resolveBonusModifier(C.DAMAGE)
       results[save] = this.resolveFNP(unsavedWounds * damagePerWound)

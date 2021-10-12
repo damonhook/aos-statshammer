@@ -2,10 +2,11 @@ import { useTheme } from '@material-ui/core'
 import { ResponsiveLineCanvas } from '@nivo/line'
 import { useCanvasRendered } from 'hooks'
 import { isEqual } from 'lodash'
+import _ from 'lodash'
 import React, { createRef, useMemo } from 'react'
 import { SimulationResult } from 'types/store/simulations'
 import { NameMapping } from 'types/store/units'
-import { getLoopingArray } from 'utils/helpers'
+import { getLoopingArray, getTicks } from 'utils/helpers'
 
 import { PDF_GRAPHS } from '../../pdfConfig'
 
@@ -39,7 +40,9 @@ const CumulativeLineCanvas = ({ nameMapping, results, onRenderedCallback }: Cumu
     () => getLoopingArray(theme.palette.graphs.series, Object.keys(nameMapping).length),
     [theme.palette.graphs.series, nameMapping]
   )
-  const ticks = useMemo(() => [0, 5, 10, 15, 20], []) // TODO: Calculate
+
+  const maxDamage = useMemo(() => Math.max(...Object.values(results.metrics).map(r => r.max)), [results])
+  const ticks = useMemo(() => getTicks(maxDamage, 10), [maxDamage])
 
   useCanvasRendered({ ref, callback: onRenderedCallback })
 
@@ -55,6 +58,11 @@ const CumulativeLineCanvas = ({ nameMapping, results, onRenderedCallback }: Cumu
           legendPosition: 'middle',
           legendOffset: -20,
           tickValues: [],
+        }}
+        xScale={{
+          type: 'linear',
+          min: 0,
+          max: maxDamage,
         }}
         axisBottom={{
           tickValues: ticks,

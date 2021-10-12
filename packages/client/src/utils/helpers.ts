@@ -40,6 +40,13 @@ export const getLoopingArray = (orig: any[], length: number) => {
   return newList
 }
 
+export const getTicks = (max: number, numTicks: number): number[] => {
+  const step = Math.max(max / numTicks, 1)
+  const ticks = [...Array(numTicks)].map((_, i) => Math.ceil(i * step))
+  ticks.push(max)
+  return ticks
+}
+
 export const updateItemInArray = <T>(array: T[], index: number, callback: (data: T) => void) =>
   array.map((item, i) => (i === index ? callback(item) : item))
 
