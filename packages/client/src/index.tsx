@@ -1,28 +1,17 @@
-import App from 'features/App'
+import App from 'app'
+import store from 'app/store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
 
 import reportWebVitals from './reportWebVitals'
-import store, { persistor } from './store'
-
-// Material-UI v4 has issues with StrictMode
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <Provider store={store}>
-//       <App />
-//     </Provider>
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// )
 
 ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
+  <React.StrictMode>
+    <Provider store={store}>
       <App />
-    </PersistGate>
-  </Provider>,
+    </Provider>
+  </React.StrictMode>,
   document.getElementById('root')
 )
 

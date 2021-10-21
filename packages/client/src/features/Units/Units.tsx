@@ -1,54 +1,48 @@
-import { Box, Button, makeStyles, Theme } from '@material-ui/core'
-import { Add } from '@material-ui/icons'
-import NoItemsCard from 'components/NoItemsCard'
-import UnitDialog from 'features/Forms/UnitDialog'
-import { helpSelectors } from 'help/unitsHelp'
-import React, { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { unitsSelector } from 'store/selectors/unitsSelectors'
-import { unitsStore } from 'store/slices'
+import AddIcon from '@mui/icons-material/Add'
+import { Box, Fab, Typography } from '@mui/material'
+import { useAppSelector } from 'app/hooks'
+import routes from 'app/routes'
+import NoItemsCard from 'common/components/NoItemsCard'
+import React from 'react'
+import { Route, Switch, useHistory } from 'react-router'
 
-import ImportUnitButton from './ImportUnitButton'
 import UnitCard from './UnitCard'
+import { CreateUnit, EditUnit } from './UnitDetails'
 
-const useStyles = makeStyles((theme: Theme) => ({
-  addButton: { marginRight: theme.spacing(1) },
-}))
+const UnitsIndex = () => {
+  const units = useAppSelector(state => state.units.items)
+  const history = useHistory()
 
-const Units = () => {
-  const classes = useStyles()
-  const units = useSelector(unitsSelector)
-  const dispatch = useDispatch()
-
-  const handleAddUnit = useCallback(() => {
-    dispatch(unitsStore.actions.addUnit({}))
-  }, [dispatch])
+  const handleAddUnit = () => {
+    history.push(routes.CREATE_UNIT.make())
+  }
 
   return (
-    <div>
-      <div>
+    <Box>
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        Units
+      </Typography>
+      <Box>
         {units && units.length ? (
           units.map((unit, index) => <UnitCard key={unit.id} unit={unit} index={index} />)
         ) : (
           <NoItemsCard title="It's lonely here" description="There are no units here, try adding some" />
         )}
-      </div>
-      <Box display="flex" paddingTop={2}>
-        <Button
-          variant="contained"
-          fullWidth
-          startIcon={<Add />}
-          color="primary"
-          onClick={handleAddUnit}
-          className={classes.addButton}
-          id={helpSelectors.ids.addUnit}
-        >
-          Add Unit
-        </Button>
-        <ImportUnitButton />
       </Box>
-      <UnitDialog />
-    </div>
+      <Fab color="primary" aria-label="add" onClick={handleAddUnit}>
+        <AddIcon />
+      </Fab>
+    </Box>
+  )
+}
+
+const Units = () => {
+  return (
+    <Switch>
+      <Route path={routes.CREATE_UNIT.rule} component={CreateUnit} />
+      <Route path={routes.EDIT_UNIT.rule} component={EditUnit} />
+      <Route component={UnitsIndex} />
+    </Switch>
   )
 }
 

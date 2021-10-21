@@ -12,13 +12,13 @@ paths:
         200:
           $ref: "#/components/responses/StatusResponse"
 
-  /api/modifiers:
+  /api/abilities:
     get:
-      operationId: getModifiers
-      summary: Fetch the list of modifiers for the weapon profiles and target
+      operationId: getAbilities
+      summary: Fetch the list of abilities for the weapon profiles and target
       responses:
         200:
-          $ref: "#/components/responses/ModifiersResponse"
+          $ref: "#/components/responses/AbilitiesResponse"
 
   /api/compare:
     post:
@@ -85,24 +85,24 @@ components:
               - status
               - version
 
-    ModifiersResponse:
-      description: The Returned list of available modifiers
+    AbilitiesResponse:
+      description: The Returned list of available abilities
       content:
         application/json:
           schema:
             type: object
             properties:
-              modifiers:
+              weapon:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ModifierDefinition"
-              target_modifiers:
+                  $ref: "#/components/schemas/AbilityDefinition"
+              target:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ModifierDefinition"
+                  $ref: "#/components/schemas/AbilityDefinition"
             required:
-              - modifiers
-              - target_modifiers
+              - weapon
+              - target
 
     CompareResponse:
       description: Compare the average damage outputs of the given units
@@ -152,16 +152,16 @@ components:
         name:
           type: string
           example: Unit 1
-        weapon_profiles:
+        weapons:
           type: array
           items:
-            $ref: "#/components/schemas/WeaponProfile"
+            $ref: "#/components/schemas/Weapon"
       required:
         - id
         - name
-        - weapon_profiles
+        - weapons
 
-    WeaponProfile:
+    Weapon:
       type: object
       properties:
         num_models:
@@ -186,10 +186,10 @@ components:
             - type: integer
             - type: string
           example: 1
-        modifiers:
+        abilities:
           type: array
           items:
-            $ref: "#/components/schemas/Modifier"
+            $ref: "#/components/schemas/Ability"
       required:
         - num_models
         - attacks
@@ -201,15 +201,15 @@ components:
     Target:
       type: object
       properties:
-        modifiers:
+        abilities:
           type: array
           items:
-            $ref: "#/components/schemas/Modifier"
+            $ref: "#/components/schemas/Ability"
       example:
-        modifiers:
+        abilities:
           - type: TARGET_REROLL
 
-    Modifier:
+    Ability:
       type: object
       properties:
         type:
@@ -225,7 +225,7 @@ components:
         - type
         - options
 
-    ModifierDefinition:
+    AbilityDefinition:
       type: object
       properties:
         id:
@@ -237,14 +237,14 @@ components:
         options:
           type: object
           additionalProperties:
-            $ref: "#/components/schemas/ModifierDefinitionOption"
+            $ref: "#/components/schemas/AbilityDefinitionOption"
       required:
         - id
         - name
         - description
         - options
 
-    ModifierDefinitionOption:
+    AbilityDefinitionOption:
       oneOf:
         - $ref: "#/components/schemas/ChoiceOption"
         - $ref: "#/components/schemas/NumberOption"

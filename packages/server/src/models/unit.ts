@@ -1,19 +1,19 @@
-import { WeaponProfile, WeaponProfileParams } from './weaponProfile'
+import { Weapon, WeaponParams } from './weapon'
 
 export interface UnitParams {
   id?: string
   name: string
-  weaponProfiles: (WeaponProfileParams | WeaponProfile)[]
+  weapons: (WeaponParams | Weapon)[]
 }
 
 export class Unit {
   id: string
   name: string
-  weaponProfiles: WeaponProfile[]
+  weapons: Weapon[]
 
-  constructor({ id, name, weaponProfiles }: UnitParams) {
+  constructor({ id, name, weapons }: UnitParams) {
     this.id = id ?? name
     this.name = name
-    this.weaponProfiles = weaponProfiles.map(w => (w instanceof WeaponProfile ? w : new WeaponProfile(w)))
+    this.weapons = weapons.map(w => (w instanceof Weapon ? w : new Weapon(w)))
   }
 }

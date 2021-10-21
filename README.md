@@ -14,7 +14,7 @@ A tool for calculating and comparing damage outputs for Warhammer Age of Sigmar 
 The production deploy of the tool is located at: https://aos-statshammer.herokuapp.com/
 
 The tool works by adding a number of weapon profiles to various units, which can contain
-a number of modifiers (abilities)
+a number of abilities
 
 <div align="center">
     <a href="https://aos-statshammer.herokuapp.com/" target="_blank">
@@ -32,14 +32,14 @@ a number of modifiers (abilities)
     - Bar Graph
     - Line Graph
     - Radar Graph
-- **Profile Modifiers**
-  - Add various modifiers, or abilities, to your weapon profiles in order to replicate the vast array of unit rules/abilities.
+- **Profile Abilities**
+  - Add various abilities, or abilities, to your weapon profiles in order to replicate the vast array of unit rules/abilities.
   - Some examples are:
     - 'Deal `x` Mortal Wounds on a roll of `y`'
     - 'Rerolls'
     - 'Leader Bonuses'
-- **Target Modifiers**
-  - Add various modifiers, or abilities, to the target to which stats are generated against (the opponents unit).
+- **Target Abilities**
+  - Add various abilities, or abilities, to the target to which stats are generated against (the opponents unit).
   - Some examples are: 
     - 'Ethereal' 
     - 'Rerolls'
@@ -62,7 +62,7 @@ a number of modifiers (abilities)
 
 ## Roadmap Features
 
-- Ability to add modifiers to the unit as a whole, and not just to each profile
+- Ability to add abilities to the unit as a whole, and not just to each profile
 - Ability to provide points costs to provide stats for average damage / 100 points
 
 ## Related Projects
@@ -94,4 +94,4 @@ Runs the api tests. Please make sure you run this whenever you make any changes 
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-If you make any changes to the API. Please ensure that you have run the unit tests. In addition, if you have added extra functionality to the API (e.g: a new modifier), please add a unit test to the `api/tests/test.units.ts` file that contains this new functionality
+If you make any changes to the API. Please ensure that you have run the unit tests. In addition, if you have added extra functionality to the API (e.g: a new ability), please add a unit test to the `api/tests/test.units.ts` file that contains this new functionality

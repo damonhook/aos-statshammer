@@ -1,16 +1,16 @@
-import { ModifierDefinition } from 'types/modifiers'
+import { AbilityDefinition } from 'types/ability'
 import { SimulationResult } from 'types/simulations'
 
 import { TargetParams } from './target'
 import type { UnitParams } from './unit'
 
-// === Modifiers ===
+// === Abilities ===
 
-export interface ModifiersRequest {}
+export interface AbilitiesRequest {}
 
-export interface ModifiersResponse {
-  modifiers: ModifierDefinition[]
-  targetModifiers: ModifierDefinition[]
+export interface AbilitiesResponse {
+  weapon: AbilityDefinition[]
+  target: AbilityDefinition[]
 }
 
 // === Comparison ===

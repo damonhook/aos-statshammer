@@ -1,21 +1,21 @@
+import LeaderBonus from 'abilities/weapon/LeaderBonus'
+import MortalWounds from 'abilities/weapon/MortalWounds'
+import Reroll from 'abilities/weapon/Reroll'
 import { Characteristic as C } from 'common'
-import LeaderBonus from 'models/modifiers/LeaderBonus'
-import MortalWounds from 'models/modifiers/MortalWounds'
-import Reroll from 'models/modifiers/Reroll'
 import { Unit } from 'models/unit'
-import { WeaponProfile } from 'models/weaponProfile'
+import { Weapon } from 'models/weapon'
 
 export const KurnothHunters = new Unit({
   name: 'Kurnoth Hunters',
-  weaponProfiles: [
-    new WeaponProfile({
+  weapons: [
+    new Weapon({
       numModels: 3,
       attacks: 4,
       toHit: 3,
       toWound: 3,
       rend: 1,
       damage: 2,
-      modifiers: [
+      abilities: [
         new LeaderBonus({ characteristic: C.TO_HIT, numLeaders: 1, bonus: 1 }),
         new MortalWounds({
           characteristic: C.TO_WOUND,
@@ -31,15 +31,15 @@ export const KurnothHunters = new Unit({
 
 export const Gotrek = new Unit({
   name: 'Gotrek Gurnisson',
-  weaponProfiles: [
-    new WeaponProfile({
+  weapons: [
+    new Weapon({
       numModels: 1,
       attacks: 6,
       toHit: 3,
       toWound: 3,
       rend: 2,
       damage: 3,
-      modifiers: [
+      abilities: [
         new Reroll({ characteristic: C.TO_HIT }),
         new Reroll({ characteristic: C.TO_WOUND }),
         new MortalWounds({

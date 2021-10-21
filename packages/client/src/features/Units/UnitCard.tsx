@@ -1,24 +1,12 @@
-import { Box, makeStyles, Theme } from '@material-ui/core'
-import CollapsibleCard from 'components/CollapsibleCard'
-import WeaponProfileInfo from 'components/WeaponProfileInfo'
-import { openUnitDialog } from 'features/Forms/UnitDialog/UnitDialog'
-import React, { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { Box } from '@mui/system'
+import routes from 'app/routes'
+import CollapsibleCard from 'common/components/CollapsibleCard'
+import NoItemsCard from 'common/components/NoItemsCard'
+import type { Unit } from 'common/types/unit'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { unitsStore } from 'store/slices'
-import { Unit } from 'types/store/units'
 
-import UnitControls from './UnitControls'
-
-const useStyles = makeStyles((theme: Theme) => ({
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  nameField: {
-    marginBottom: theme.spacing(2),
-  },
-}))
+import WeaponCard from './WeaponCard'
 
 interface UnitCardProps {
   unit: Unit
@@ -26,38 +14,34 @@ interface UnitCardProps {
 }
 
 const UnitCard = ({ unit, index }: UnitCardProps) => {
-  const classes = useStyles()
   const history = useHistory()
-  const dispatch = useDispatch()
 
-  const handleUnitClicked = () => {
-    openUnitDialog(history, unit.id)
+  const handleEditUnit = () => {
+    history.push(routes.EDIT_UNIT.make({ unitId: unit.id }))
   }
 
-  const handleProfileEnabledChanged = useCallback(
-    (id: string) => (newValue: boolean) => {
-      dispatch(
-        unitsStore.actions.editWeaponProfile({ unitId: unit.id, id, newProfile: { disabled: !newValue } })
-      )
-    },
-    [unit.id, dispatch]
-  )
-
   return (
-    <CollapsibleCard title={unit.name} controls={<UnitControls unit={unit} index={index} />} hover>
-      <Box flex={1} style={{ maxWidth: '100%' }}>
-        <div className={classes.content} onClick={handleUnitClicked}>
-          {unit.weaponProfiles.map(profile => (
-            <WeaponProfileInfo
-              profile={profile}
-              key={profile.id}
-              onEnabledChanged={handleProfileEnabledChanged(profile.id)}
-            />
-          ))}
-        </div>
-      </Box>
-    </CollapsibleCard>
+    <Box sx={{ display: 'flex', maxWidth: '100%', flexDirection: 'column' }}>
+      <CollapsibleCard title={unit.name}>
+        <Box onClick={handleEditUnit}>
+          {unit.weapons && unit.weapons.length ? (
+            unit.weapons.map(weapon => (
+              <WeaponCard
+                key={weapon.id}
+                weapon={weapon}
+                paperProps={{ variant: 'outlined' }}
+                sx={{
+                  p: { xs: 1, md: 2 },
+                }}
+              />
+            ))
+          ) : (
+            <NoItemsCard title="This unit has no weapons" />
+          )}
+        </Box>
+      </CollapsibleCard>
+    </Box>
   )
 }
 
-export default React.memo(UnitCard)
+export default UnitCard

@@ -1,6 +1,6 @@
 import { Characteristic as C } from 'common'
 import { Unit } from 'models/unit'
-import { WeaponProfile } from 'models/weaponProfile'
+import { Weapon } from 'models/weapon'
 
 export class UnitMaxProcessor {
   unit: Unit
@@ -10,30 +10,30 @@ export class UnitMaxProcessor {
   }
 
   public calculateMaxDamage(): number {
-    return this.unit.weaponProfiles.reduce((sum, profile) => {
-      const processor = new ProfileMaxProcessor(profile)
+    return this.unit.weapons.reduce((sum, weapon) => {
+      const processor = new WeaponMaxProcessor(weapon)
       return sum + processor.calculateMaxDamage()
     }, 0)
   }
 }
 
-export class ProfileMaxProcessor {
-  profile: WeaponProfile
+export class WeaponMaxProcessor {
+  weapon: Weapon
 
-  constructor(profile: WeaponProfile) {
-    this.profile = profile
+  constructor(weapon: Weapon) {
+    this.weapon = weapon
   }
 
   public calculateMaxDamage(): number {
-    let numModels = this.profile.numModels
+    let numModels = this.weapon.numModels
 
     let extra = 0
-    const leaderMods = this.profile.modifiers.leaderBonus
-    if (leaderMods && leaderMods.length) {
-      const leaderProfile = this.profile.getLeaderProfile()
-      const leaderProcessor = new ProfileMaxProcessor(leaderProfile)
+    const leaderAbilities = this.weapon.abilities.leaderBonus
+    if (leaderAbilities && leaderAbilities.length) {
+      const leaderWeapon = this.weapon.getLeaderWeapon()
+      const leaderProcessor = new WeaponMaxProcessor(leaderWeapon)
       extra += leaderProcessor.calculateMaxDamage()
-      numModels = Math.max(numModels - leaderProfile.numModels, 0)
+      numModels = Math.max(numModels - leaderWeapon.numModels, 0)
     }
 
     const max = numModels * this.getMaxDamageForModel()
@@ -41,36 +41,36 @@ export class ProfileMaxProcessor {
   }
 
   private getMaxDamageForModel(): number {
-    let maxRolls = this.profile.attacks.max + this.resolveBonusModifier(C.ATTACKS)
-    maxRolls += this.resolveExplodingModifiers(maxRolls)
+    let maxRolls = this.weapon.attacks.max + this.resolveBonusAbility(C.ATTACKS)
+    maxRolls += this.resolveExplodingAbilities(maxRolls)
 
-    let maxDamagePerRoll = this.profile.damage.max + this.resolveBonusModifier(C.DAMAGE)
-    maxDamagePerRoll += this.resolveConditionalBonusModifiers()
+    let maxDamagePerRoll = this.weapon.damage.max + this.resolveBonusAbility(C.DAMAGE)
+    maxDamagePerRoll += this.resolveConditionalBonusAbilities()
 
-    return maxRolls * this.resolveMortalWoundsModifier(maxDamagePerRoll)
+    return maxRolls * this.resolveMortalWoundsAbility(maxDamagePerRoll)
   }
 
-  private resolveBonusModifier(key: C): number {
-    const mods = this.profile.modifiers.bonus.getAll(key)
-    return mods.reduce((acc, m) => acc + m.bonus.max, 0)
+  private resolveBonusAbility(key: C): number {
+    const abilities = this.weapon.abilities.bonus.getAll(key)
+    return abilities.reduce((acc, a) => acc + a.bonus.max, 0)
   }
 
-  private resolveExplodingModifiers(base: number): number {
-    const total = this.profile.modifiers.exploding.reduce((acc, m) => acc + acc * m.extraHits.max, base)
+  private resolveExplodingAbilities(base: number): number {
+    const total = this.weapon.abilities.exploding.reduce((acc, a) => acc + acc * a.extraHits.max, base)
     return Math.max(total - base, 0)
   }
 
-  private resolveMortalWoundsModifier(currentMax: number): number {
-    return this.profile.modifiers.mortalWounds.reduce((acc, m) => {
-      const modMax = m.mortalWounds.max
-      if (m.inAddition) return acc + modMax
-      return Math.max(acc, modMax)
+  private resolveMortalWoundsAbility(currentMax: number): number {
+    return this.weapon.abilities.mortalWounds.reduce((acc, a) => {
+      const abilityMax = a.mortalWounds.max
+      if (a.inAddition) return acc + abilityMax
+      return Math.max(acc, abilityMax)
     }, currentMax)
   }
 
-  private resolveConditionalBonusModifiers(): number {
-    const mods = this.profile.modifiers.conditionalBonus.filter(m => m.bonusToCharacteristic === C.DAMAGE)
-    if (mods) return mods.reduce((acc, m) => acc + m.bonus.max, 0)
+  private resolveConditionalBonusAbilities(): number {
+    const abilities = this.weapon.abilities.conditionalBonus.filter(a => a.bonusToCharacteristic === C.DAMAGE)
+    if (abilities) return abilities.reduce((acc, a) => acc + a.bonus.max, 0)
     return 0
   }
 }

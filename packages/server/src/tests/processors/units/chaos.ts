@@ -1,20 +1,20 @@
+import ConditionalBonus from 'abilities/weapon/ConditionalBonus'
+import Reroll from 'abilities/weapon/Reroll'
 import { Characteristic as C } from 'common'
-import ConditionalBonus from 'models/modifiers/ConditionalBonus'
-import Reroll from 'models/modifiers/Reroll'
 import { Unit } from 'models/unit'
-import { WeaponProfile } from 'models/weaponProfile'
+import { Weapon } from 'models/weapon'
 
 export const PlagueMonksPre2019 = new Unit({
   name: 'Plague Monks (Pre 2019 FAQ)',
-  weaponProfiles: [
-    new WeaponProfile({
+  weapons: [
+    new Weapon({
       numModels: 20,
       attacks: 2,
       toHit: 4,
       toWound: 4,
       rend: 0,
       damage: 1,
-      modifiers: [
+      abilities: [
         new Reroll({ characteristic: C.TO_HIT }),
         new ConditionalBonus({
           characteristic: C.TO_HIT,

@@ -6,7 +6,7 @@ import express from 'express'
 import { initialize } from 'express-openapi'
 import { readFileSync } from 'fs'
 import { HumpsProcessorParameter } from 'humps'
-import type { CompareRequest, ModifiersRequest, SimulationsRequest } from 'models/schema'
+import type { AbilitiesRequest, CompareRequest, SimulationsRequest } from 'models/schema'
 import { UnitParams } from 'models/unit'
 import path from 'path'
 import { withCaseConversion } from 'utils/requestUtils'
@@ -34,8 +34,8 @@ initialize({
     getStatus: function (req, res) {
       res.send({ status: 'ok', version: '1.0.0' })
     },
-    getModifiers: function (req, res) {
-      res.send(withCaseConversion(req.body, (data: ModifiersRequest) => controller.getModifiers(data)))
+    getAbilities: function (req, res) {
+      res.send(withCaseConversion(req.body, (data: AbilitiesRequest) => controller.getAbilities(data)))
     },
     getCompare: function (req, res) {
       res.send(

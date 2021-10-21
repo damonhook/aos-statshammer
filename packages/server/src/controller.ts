@@ -1,16 +1,16 @@
+import { TargetAbilityLookup } from 'abilities/target'
+import { WeaponAbilityLookup } from 'abilities/weapon'
 import { ProcessorSaveResults, Saves } from 'common'
 import _ from 'lodash'
-import { ModifierLookup } from 'models/modifiers'
 import type {
+  AbilitiesRequest,
+  AbilitiesResponse,
   AverageDamageResult,
   CompareRequest,
   CompareResponse,
-  ModifiersRequest,
-  ModifiersResponse,
   SimulationsRequest,
   SimulationsResponse,
 } from 'models/schema'
-import { TargetModifierLookup } from 'models/targetModifiers'
 import UnitAverageProcessor from 'processors/averageDamageProcessor'
 import UnitMaxProcessor from 'processors/maxDamageProcessor'
 import UnitSimulationProcessor from 'processors/simulationProcessor'
@@ -24,23 +24,23 @@ import { Metric, SimResultsData, SimulationResult, UnitResultsLookup } from 'typ
 import { Unit } from './models/unit'
 
 export default class AosController {
-  public getModifiers({}: ModifiersRequest): ModifiersResponse {
+  public getAbilities({}: AbilitiesRequest): AbilitiesResponse {
     return {
-      modifiers: ModifierLookup.availableModifiers.map(mod => mod.metadata),
-      targetModifiers: TargetModifierLookup.availableModifiers.map(mod => mod.metadata),
+      weapon: WeaponAbilityLookup.availableAbilities.map(mod => mod.metadata),
+      target: TargetAbilityLookup.availableAbilities.map(mod => mod.metadata),
     }
   }
 
   public compareUnits(request: CompareRequest): CompareResponse {
     const units = request.units.map(d => new Unit(d))
-    const targetModifiers = request.target?.modifiers
-      ? new TargetModifierLookup(request.target.modifiers)
+    const targetAbilities = request.target?.abilities
+      ? new TargetAbilityLookup(request.target.abilities)
       : undefined
 
     // Generate the average damage for each unit (put into a lookup object)
     const lookup: { [id: string]: ProcessorSaveResults } = {}
     units.forEach(unit => {
-      lookup[unit.id] = new UnitAverageProcessor(unit, targetModifiers).calculateAverageDamage()
+      lookup[unit.id] = new UnitAverageProcessor(unit, targetAbilities).calculateAverageDamage()
     })
 
     // Convert the lookup object into the list of results (by save)
@@ -60,8 +60,8 @@ export default class AosController {
 
   public simulateUnits(request: SimulationsRequest): SimulationsResponse {
     const units = request.units.map(d => new Unit(d))
-    const targetModifiers = request.target?.modifiers
-      ? new TargetModifierLookup(request.target.modifiers)
+    const targetAbilities = request.target?.abilities
+      ? new TargetAbilityLookup(request.target.abilities)
       : undefined
     const limit = request.limit ?? 5
 
@@ -71,8 +71,8 @@ export default class AosController {
     const simLookup: { [id: string]: SimResultsData } = {}
     units.forEach(unit => {
       maxLookup[unit.id] = new UnitMaxProcessor(unit).calculateMaxDamage()
-      averageLookup[unit.id] = new UnitAverageProcessor(unit, targetModifiers).calculateAverageDamage()
-      simLookup[unit.id] = this.runSimulations(unit, limit, targetModifiers)
+      averageLookup[unit.id] = new UnitAverageProcessor(unit, targetAbilities).calculateAverageDamage()
+      simLookup[unit.id] = this.runSimulations(unit, limit, targetAbilities)
     })
 
     // Convert the lookup objects into the final result format
@@ -98,9 +98,9 @@ export default class AosController {
     return save && save <= 6 ? `${save}+` : `-`
   }
 
-  private runSimulations(unit: Unit, limit: number, targetModifiers?: TargetModifierLookup) {
+  private runSimulations(unit: Unit, limit: number, targetAbilities?: TargetAbilityLookup) {
     const results: SimResultsData = { 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} }
-    const processor = new UnitSimulationProcessor(unit, targetModifiers)
+    const processor = new UnitSimulationProcessor(unit, targetAbilities)
     _.times(limit, () => {
       const values = processor.simulateDamage()
       Saves.map(save => {

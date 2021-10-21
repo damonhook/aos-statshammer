@@ -1,5 +1,5 @@
-import { TargetModifierData } from './targetModifiers'
+import { TargetAbilityData } from 'abilities/target'
 
 export interface TargetParams {
-  modifiers?: TargetModifierData
+  abilities?: TargetAbilityData
 }
