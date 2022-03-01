@@ -1,12 +1,14 @@
-import { ThemeProvider } from '@emotion/react'
 import { Box, Container, CssBaseline, Toolbar } from '@mui/material'
+import { ThemeProvider } from '@mui/material/styles'
 import Header from 'common/components/Header'
 import React, { lazy, Suspense } from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
+import routes from './routes'
 import theme from './theme'
 
 const Units = lazy(() => import('features/Units'))
+const Comparison = lazy(() => import('features/Comparison'))
 
 const App = () => {
   return (
@@ -26,7 +28,10 @@ const App = () => {
           <Toolbar />
           <Container component="main" sx={{ flexGrow: 1, p: { xs: 1.5, md: 2 } }}>
             <Suspense fallback={null}>
-              <Units />
+              <Switch>
+                <Route path={routes.COMPARISON.rule} component={Comparison} />
+                <Route component={Units} />
+              </Switch>
             </Suspense>
           </Container>
         </Box>

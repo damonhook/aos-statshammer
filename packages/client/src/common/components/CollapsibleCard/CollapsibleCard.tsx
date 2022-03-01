@@ -50,9 +50,13 @@ const CollapsibleCard = ({
         aria-controls={`${title}-content`}
         id={`${title}-header`}
         expandIcon={<ExpandMoreIcon />}
-        sx={{ flexDirection: 'row-reverse', pl: 1 }}
+        sx={{
+          flexDirection: 'row-reverse',
+          pl: 1,
+          '.MuiAccordionSummary-content': { alignItems: 'center' },
+        }}
       >
-        <Typography>{title}</Typography>
+        <Typography sx={{ flex: 1, ml: 1 }}>{title}</Typography>
         {controls && <span>{controls}</span>}
       </AccordionSummary>
       <AccordionDetails sx={{ flexDirection: 'column', p: { xs: 1, md: 2 } }}>{children}</AccordionDetails>

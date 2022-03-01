@@ -111,16 +111,13 @@ components:
           schema:
             type: object
             properties:
-              units:
-                type: object
-                additionalProperties:
-                  type: string
               results:
                 type: array
                 items:
                   $ref: "#/components/schemas/AverageDamageResult"
+              units:
+                type: object
             required:
-              - units
               - results
 
     SimulationResponse:
@@ -130,16 +127,13 @@ components:
           schema:
             type: object
             properties:
-              units:
-                type: object
-                additionalProperties:
-                  type: string
               results:
                 type: array
                 items:
                   $ref: "#/components/schemas/SimulationResult"
+              units:
+                type: object
             required:
-              - units
               - results
 
   schemas:
@@ -319,8 +313,11 @@ components:
           type: string
         values:
           type: object
-          additionalProperties:
-            type: number
+          properties:
+            id:
+              type: string
+            value:
+              type: number
       required:
         - save
         - displaySave
@@ -342,8 +339,8 @@ components:
           items:
             $ref: "#/components/schemas/ProbabilityData"
         metrics:
-          type: object
-          additionalProperties:
+          type: array
+          items:
             $ref: "#/components/schemas/Metric"
       required:
         - save
@@ -357,16 +354,24 @@ components:
       properties:
         damage:
           type: number
-      additionalProperties:
-        type: number
+        values:
+          type: object
+          properties:
+            id:
+              type: string
+            value:
+              type: number
 
     Metric:
       type: object
       properties:
+        id:
+          type: string
         max:
           type: number
         average:
           type: number
       required:
+        - id
         - max
         - average

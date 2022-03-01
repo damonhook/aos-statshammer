@@ -1,18 +1,17 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Button, Grid, Typography } from '@mui/material'
+import { Box, Grid, Stack, Typography } from '@mui/material'
 import routes, { useRouteParams } from 'app/routes'
 import { useGetAbilitiesQuery } from 'app/services/statshammer'
 import AbilityList from 'common/components/AbilityList'
 import AbilitySelector from 'common/components/AbilitySelector'
-import AbilitySummary from 'common/components/AbilitySummary'
 import Breadcrumbs, { BreadcrumbsProps } from 'common/components/Breadcrumbs'
-import { FormActions, TextInput, TextInputProps } from 'common/components/Form'
+import { FormActions, SwitchInput, TextInput, TextInputProps } from 'common/components/Form'
 import NoItemsCard from 'common/components/NoItemsCard'
 import { getWeaponSchema } from 'common/schema/unit'
 import type { Ability, WeaponData } from 'common/types/unit'
 import React from 'react'
 import { isAndroid } from 'react-device-detect'
-import { Controller, FieldPath, FieldValues, FormProvider } from 'react-hook-form'
+import { FieldPath, FieldValues, FormProvider } from 'react-hook-form'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
@@ -31,6 +30,7 @@ const WeaponCharacteristic = <
     <Grid item xs={6} sm={4} md={12}>
       <TextInput
         required
+        variant="filled"
         fullWidth
         {...props}
         inputProps={isAndroid ? { inputMode: 'numeric' } : undefined}
@@ -47,8 +47,11 @@ interface WeaponDetailsProps {
 }
 
 const WeaponDetails = ({ title, onSubmit, initialValues, breadcrumbs }: WeaponDetailsProps) => {
-  const { data } = useGetAbilitiesQuery()
-  const schema = React.useMemo(() => getWeaponSchema(data?.weapon ?? []), [data?.weapon])
+  const { data: abilityDefinitions } = useGetAbilitiesQuery()
+  const schema = React.useMemo(
+    () => getWeaponSchema(abilityDefinitions?.weapon ?? []),
+    [abilityDefinitions?.weapon]
+  )
 
   const history = useHistory()
   const formMethods = useForm<WeaponData>({
@@ -61,7 +64,11 @@ const WeaponDetails = ({ title, onSubmit, initialValues, breadcrumbs }: WeaponDe
     handleSubmit,
     formState: { errors },
   } = formMethods
-  const { fields: abilities, append: appendAbility } = useFieldArray({ control, name: 'abilities' })
+  const { fields: abilities, append: appendAbility } = useFieldArray({
+    control,
+    name: 'abilities',
+    keyName: 'key',
+  })
 
   const handleCancel = () => {
     history.goBack()
@@ -81,14 +88,17 @@ const WeaponDetails = ({ title, onSubmit, initialValues, breadcrumbs }: WeaponDe
       )}
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Controller
+          {/* <Controller
             control={control}
             name="id"
             render={({ field }) => <input {...field} type="hidden" />}
-          />
+          /> */}
           <Grid container spacing={2} alignItems="flex-start">
             <Grid item xs={12}>
-              <TextInput name="name" label="Weapon Name" control={control} fullWidth />
+              <Stack direction="row" spacing={2}>
+                <SwitchInput name="disabled" control={control} />
+                <TextInput name="name" label="Weapon Name" control={control} variant="filled" fullWidth />
+              </Stack>
             </Grid>
             <Grid item container spacing={2} xs={12} md={3}>
               <Grid item xs={12}>
@@ -117,7 +127,6 @@ const WeaponDetails = ({ title, onSubmit, initialValues, breadcrumbs }: WeaponDe
               </Box>
             </Grid>
           </Grid>
-          <p>{JSON.stringify(errors)}</p>
           <FormActions onCancel={handleCancel} onSubmit={handleSubmit(onSubmit)} />
         </form>
       </FormProvider>

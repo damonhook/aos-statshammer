@@ -1,4 +1,6 @@
 export type { FormActionsProps } from './FormActions'
 export { default as FormActions } from './FormActions'
+export type { SwitchInputProps } from './SwitchInput'
+export { default as SwitchInput } from './SwitchInput'
 export type { TextInputProps } from './TextInput'
 export { default as TextInput } from './TextInput'

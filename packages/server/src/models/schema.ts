@@ -21,18 +21,17 @@ export interface CompareRequest {
 }
 
 export interface CompareResponse {
-  units: { [id: string]: string }
   results: AverageDamageResult[]
+  units: UnitParams[]
 }
 
 export interface AverageDamageResult {
   save: number
   displaySave: string
-  values: { [name: string]: number }
+  values: { id: string; value: number }[]
 }
 
 // === Simulations ===
-
 export interface SimulationsRequest {
   units: UnitParams[]
   target?: TargetParams
@@ -40,6 +39,6 @@ export interface SimulationsRequest {
 }
 
 export interface SimulationsResponse {
-  units: { [id: string]: string }
   results: SimulationResult[]
+  units: UnitParams[]
 }

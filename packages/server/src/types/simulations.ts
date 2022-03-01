@@ -1,14 +1,16 @@
 import { Save } from 'common'
 
+export type ProbabilityData = { damage: number; values: { id: string; value: number }[] }
+export type MetricData = Metric & { id: string }
+
 export interface SimulationResult {
   save: number
   displaySave: string
   discrete: ProbabilityData[]
   cumulative: ProbabilityData[]
-  metrics: { [id: string]: Metric }
+  metrics: MetricData[]
 }
 
-export type ProbabilityData = { damage: number; [id: string]: number }
 export type UnitSimulationData = { [damage: number]: number }
 export type UnitResultsLookup = { [id: string]: UnitResults }
 export type SimResultsData = { [s in Save]: UnitSimulationData }

@@ -14,6 +14,7 @@ import {
   NumberOption,
   RollOption,
 } from 'common/types/abilityDefinition'
+import { humanize } from 'common/utils/stringUtils'
 import React from 'react'
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
 
@@ -47,12 +48,13 @@ const ChoiceOptionInput = <
           onBlur={onBlur}
           error={invalid}
           helperText={error && error.message}
+          variant="filled"
           select
           fullWidth
         >
           {option.items.map(item => (
             <MenuItem key={item} value={item}>
-              {item}
+              {humanize(item)}
             </MenuItem>
           ))}
         </TextField>
@@ -80,6 +82,7 @@ const RollOptionInput = <
           onBlur={onBlur}
           error={invalid}
           helperText={error && error.message}
+          variant="filled"
           InputProps={{
             endAdornment: <InputAdornment position="end">+</InputAdornment>,
           }}
@@ -109,6 +112,7 @@ const NumberOptionInput = <
           onChange={onChange}
           onBlur={onBlur}
           error={invalid}
+          variant="filled"
           helperText={error && error.message}
           fullWidth
           required
@@ -159,6 +163,7 @@ const DefaultOptionInput = <
           onChange={onChange}
           onBlur={onBlur}
           error={invalid}
+          variant="filled"
           helperText={error && error.message}
           required
         />

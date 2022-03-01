@@ -45,17 +45,14 @@ export default class AosController {
 
     // Convert the lookup object into the list of results (by save)
     const results = Saves.map<AverageDamageResult>(save => {
-      const saveResults: { [id: string]: number } = {}
-      Object.entries(lookup).forEach(([id, values]) => {
-        saveResults[id] = values[save]
+      const values: { id: string; value: number }[] = []
+      Object.entries(lookup).forEach(([id, saveValues]) => {
+        values.push({ id, value: saveValues[save] })
       })
-      return { save: save, displaySave: this.getDisplaySave(save), values: saveResults }
+      return { save: save, displaySave: this.getDisplaySave(save), values }
     })
 
-    return {
-      units: units.reduce((acc, { id, name }) => ({ ...acc, [id]: name }), {}),
-      results: results,
-    }
+    return { results, units }
   }
 
   public simulateUnits(request: SimulationsRequest): SimulationsResponse {
@@ -88,10 +85,7 @@ export default class AosController {
       return transformToSimulationResult(unitResults, save, this.getDisplaySave(save))
     })
 
-    return {
-      units: units.reduce((acc, { id, name }) => ({ ...acc, [id]: name }), {}),
-      results: results,
-    }
+    return { results, units }
   }
 
   private getDisplaySave(save: number) {

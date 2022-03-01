@@ -1,4 +1,4 @@
-import { AbilityDefinition } from './abilityDefinition'
+import { AbilityDefinition } from '../abilityDefinition'
 
 export interface AbilitiesResponse {
   weapon: AbilityDefinition[]

@@ -46,9 +46,7 @@ interface AbilityDescriptionProps extends TypographyProps {
 }
 
 const AbilityDescription = ({ definition, ability, simple, ...props }: AbilityDescriptionProps) => {
-  const description = React.useMemo(() => {
-    return getModifierDescription(ability, definition, !!simple)
-  }, [definition, ability, simple])
+  const description = getModifierDescription(ability, definition, !!simple)
 
   return (
     <Typography {...props}>

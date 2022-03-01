@@ -16,22 +16,17 @@ import { useGetAbilitiesQuery } from 'app/services/statshammer'
 import { AbilityDefinition } from 'common/types/abilityDefinition'
 import { AbilitiesResponse } from 'common/types/api'
 import { Ability } from 'common/types/unit'
-import { capitalizeFirstLetter } from 'common/utils/stringUtils'
-import humps from 'humps'
+import { humanize } from 'common/utils/stringUtils'
 import { nanoid } from 'nanoid'
 import React from 'react'
 
-function buildNewModifier(definition: AbilityDefinition): Ability {
+function buildNewAbility(definition: AbilityDefinition): Ability {
   const { id, options } = definition
   return {
     id: nanoid(),
     type: id,
     options: Object.keys(options).reduce((acc, key) => ({ ...acc, [key]: options[key].default }), {}),
   }
-}
-
-function formatDescription(description: string) {
-  return capitalizeFirstLetter(humps.decamelize(description, { separator: ' ' }))
 }
 
 interface AbilitySelectorProps {
@@ -61,7 +56,7 @@ const AbilitySelector = ({ variant, onConfirm }: AbilitySelectorProps) => {
       .filter(key => selected[key])
       .reduce<Ability[]>((acc, type) => {
         const definition = abilities.find(ability => ability.id === type)
-        if (definition) acc.push(buildNewModifier(definition))
+        if (definition) acc.push(buildNewAbility(definition))
         return acc
       }, [])
     onConfirm(newAbilities)
@@ -98,7 +93,7 @@ const AbilitySelector = ({ variant, onConfirm }: AbilitySelectorProps) => {
                 disablePadding
               >
                 <ListItemButton role={undefined} onClick={handleSelection(ability.id)} dense>
-                  <ListItemText primary={ability.name} secondary={formatDescription(ability.description)} />
+                  <ListItemText primary={ability.name} secondary={humanize(ability.description, true)} />
                 </ListItemButton>
               </ListItem>
             ))}

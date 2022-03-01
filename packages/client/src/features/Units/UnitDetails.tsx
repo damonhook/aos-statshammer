@@ -1,12 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Delete } from '@mui/icons-material'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Button, Fab, Typography } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'app/hooks'
 import routes, { useRouteParams } from 'app/routes'
+import { useGetAbilitiesQuery } from 'app/services/statshammer'
 import Breadcrumbs, { BreadcrumbsProps } from 'common/components/Breadcrumbs'
+import ContextMenu from 'common/components/ContextMenu'
 import { FormActions, TextInput } from 'common/components/Form'
 import NoItemsCard from 'common/components/NoItemsCard'
-import { unitSchema } from 'common/schema/unit'
+import { getUnitSchema } from 'common/schema/unit'
 import type { UnitData, WeaponData } from 'common/types/unit'
 import { nanoid } from 'nanoid'
 import React from 'react'
@@ -21,17 +24,30 @@ import { CreateWeapon, EditWeapon } from './WeaponDetails'
 interface EditableWeaponCard {
   weapon: WeaponData
   index: number
+  onDelete: (index: number) => void
 }
 
-const EditableWeaponCard = ({ weapon, index }: EditableWeaponCard) => {
+const EditableWeaponCard = ({ weapon, index, onDelete }: EditableWeaponCard) => {
   const history = useHistory()
   const { url } = useRouteMatch()
 
   const handleEdit = () => {
-    history.push(`${url}/${routes.EDIT_WEAPON.make({ weaponId: index })}`)
+    history.push(routes.EDIT_WEAPON.make(url, { weaponId: index }))
   }
 
-  return <WeaponCard weapon={weapon} onClick={handleEdit} />
+  const handleDelete = () => {
+    onDelete(index)
+  }
+
+  return (
+    <WeaponCard
+      weapon={weapon}
+      onClick={handleEdit}
+      controls={
+        <ContextMenu items={[{ name: 'Delete', onClick: handleDelete, icon: <Delete fontSize="small" /> }]} />
+      }
+    />
+  )
 }
 
 interface UnitDetailsProps {
@@ -44,9 +60,14 @@ interface UnitDetailsProps {
 const UnitDetails = ({ title, onSubmit, initialValues, breadcrumbs }: UnitDetailsProps) => {
   const history = useHistory()
   const { url } = useRouteMatch()
+  const { data: abilityDefinitions } = useGetAbilitiesQuery()
+  const schema = React.useMemo(
+    () => getUnitSchema(abilityDefinitions?.weapon ?? []),
+    [abilityDefinitions?.weapon]
+  )
 
   const { control, handleSubmit } = useForm<UnitData>({
-    resolver: yupResolver(unitSchema),
+    resolver: yupResolver(schema),
     defaultValues: initialValues,
     mode: 'all',
   })
@@ -54,22 +75,19 @@ const UnitDetails = ({ title, onSubmit, initialValues, breadcrumbs }: UnitDetail
     fields: weapons,
     append: appendWeapon,
     update: updateWeapon,
-  } = useFieldArray({ control, name: 'weapons' })
+    remove: removeWeapon,
+  } = useFieldArray({ control, name: 'weapons', keyName: 'key' })
 
   const handleCancel = () => {
     history.replace(routes.UNITS.make())
   }
 
-  const handleAddWeapon = (data: WeaponData) => {
-    appendWeapon({ id: nanoid(), ...data })
-  }
+  const handleAddWeapon = (data: WeaponData) => appendWeapon({ id: nanoid(), ...data })
+  const handleEditWeapon = (index: number, data: WeaponData) => updateWeapon(index, data)
+  const handleDeleteWeapon = (index: number) => removeWeapon(index)
 
-  const handleEditWeapon = (index: number, data: WeaponData) => {
-    updateWeapon(index, data)
-  }
-
-  const createWeaponPath = `${url}/${routes.CREATE_WEAPON.rule}`
-  const editWeaponPath = `${url}/${routes.EDIT_WEAPON.rule}`
+  const createWeaponPath = routes.CREATE_WEAPON.buildRule(url)
+  const editWeaponPath = routes.EDIT_WEAPON.buildRule(url)
 
   return (
     <React.Fragment>
@@ -90,12 +108,17 @@ const UnitDetails = ({ title, onSubmit, initialValues, breadcrumbs }: UnitDetail
             )}
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <TextInput name="name" label="Unit Name" control={control} required />
+                <TextInput name="name" label="Unit Name" control={control} variant="filled" required />
                 <Box component="span" sx={{ mt: 2 }}>
                   <Typography sx={{ mb: 2 }}>Weapons</Typography>
                   {weapons && weapons.length ? (
                     weapons.map((weapon, index) => (
-                      <EditableWeaponCard key={weapon.id} weapon={weapon} index={index} />
+                      <EditableWeaponCard
+                        key={weapon.id}
+                        weapon={weapon}
+                        index={index}
+                        onDelete={handleDeleteWeapon}
+                      />
                     ))
                   ) : (
                     <NoItemsCard

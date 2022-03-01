@@ -45,9 +45,13 @@ export const unitsSlice = createSlice({
         }
       }
     },
+    deleteUnit(state, action: PayloadAction<{ index: number }>) {
+      const { index } = action.payload
+      state.items.splice(index, 1)
+    },
   },
 })
 
-export const { createUnit, editUnit } = unitsSlice.actions
+export const { createUnit, editUnit, deleteUnit } = unitsSlice.actions
 
 export default unitsSlice.reducer

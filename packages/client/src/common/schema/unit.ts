@@ -76,5 +76,3 @@ export const getWeaponSchema = (definitions?: AbilityDefinition[]): Yup.SchemaOf
     disabled: Yup.bool(),
   })
 }
-
-export const unitSchema = getUnitSchema()

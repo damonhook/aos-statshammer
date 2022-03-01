@@ -1,10 +1,10 @@
 import AddIcon from '@mui/icons-material/Add'
-import { Box, Fab, Typography } from '@mui/material'
+import { Box, Button, Fab, Typography } from '@mui/material'
 import { useAppSelector } from 'app/hooks'
 import routes from 'app/routes'
 import NoItemsCard from 'common/components/NoItemsCard'
 import React from 'react'
-import { Route, Switch, useHistory } from 'react-router'
+import { Link as RouterLink, Route, Switch, useHistory } from 'react-router-dom'
 
 import UnitCard from './UnitCard'
 import { CreateUnit, EditUnit } from './UnitDetails'
@@ -29,6 +29,9 @@ const UnitsIndex = () => {
           <NoItemsCard title="It's lonely here" description="There are no units here, try adding some" />
         )}
       </Box>
+      <Button component={RouterLink} to={routes.COMPARISON.make()}>
+        Compare
+      </Button>
       <Fab color="primary" aria-label="add" onClick={handleAddUnit}>
         <AddIcon />
       </Fab>

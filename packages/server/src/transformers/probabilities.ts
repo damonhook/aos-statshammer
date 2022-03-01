@@ -1,6 +1,6 @@
 import { round } from 'lodash'
 import {
-  Metric,
+  MetricData,
   ProbabilityData,
   SimulationResult,
   UnitResultsLookup,
@@ -50,10 +50,10 @@ export const transformToSimulationResult = (
 ): SimulationResult => {
   const discreteLookup: ProbabilityLookup = {}
   const cumulativeLookup: ProbabilityLookup = {}
-  const metrics: { [id: string]: Metric } = {}
+  const metrics: MetricData[] = []
 
   for (const [id, results] of Object.entries(data)) {
-    metrics[id] = results.metrics
+    metrics.push({ id, ...results.metrics })
     for (const [key, probability] of Object.entries(results.discrete)) {
       const damage = Number(key)
       if (!discreteLookup[damage]) discreteLookup[damage] = {}
@@ -72,8 +72,8 @@ export const transformToSimulationResult = (
 }
 
 const convertLookupToProbabilityData = (lookup: ProbabilityLookup): ProbabilityData[] => {
-  return Object.entries(lookup).map<ProbabilityData>(([key, value]) => ({
+  return Object.entries(lookup).map<ProbabilityData>(([key, values]) => ({
     damage: Number(key),
-    ...value,
+    values: Object.entries(values).map(([id, value]) => ({ id, value })),
   }))
 }
