@@ -1,0 +1,247 @@
+{
+  "weapon": [
+    {
+      "id": "Reroll",
+      "name": "Reroll",
+      "description": "Reroll {reroll_type} for {characteristic}",
+      "fields": [
+        {
+          "type": "Choice",
+          "field_id": "characteristic",
+          "display_name": "Characteristic",
+          "choices": [
+            {
+              "value": "Hit",
+              "display_value": "To Hit"
+            },
+            {
+              "value": "Wound",
+              "display_value": "To Wound"
+            }
+          ]
+        },
+        {
+          "type": "Choice",
+          "field_id": "reroll_type",
+          "display_name": "Reroll Type",
+          "choices": [
+            {
+              "value": "Any",
+              "display_value": "Any Roll"
+            },
+            {
+              "value": "Failed",
+              "display_value": "Failed Rolls"
+            },
+            {
+              "value": "Ones",
+              "display_value": "Rolls of 1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Bonus",
+      "name": "Bonus",
+      "description": "Add {value} to {characteristic}",
+      "fields": [
+        {
+          "type": "Choice",
+          "field_id": "characteristic",
+          "display_name": "Characteristic",
+          "choices": [
+            {
+              "value": "Attacks",
+              "display_value": "Attacks"
+            },
+            {
+              "value": "Hit",
+              "display_value": "To Hit"
+            },
+            {
+              "value": "Wound",
+              "display_value": "To Wound"
+            },
+            {
+              "value": "Rend",
+              "display_value": "Rend"
+            },
+            {
+              "value": "Damage",
+              "display_value": "Damage"
+            }
+          ]
+        },
+        {
+          "type": "DiceNotation",
+          "field_id": "value",
+          "display_name": "Value"
+        }
+      ]
+    },
+    {
+      "id": "LeaderExtraAttacks",
+      "name": "Leader Extra Attacks",
+      "description": "Add {value} to the leader of this unit ({models} leaders)",
+      "fields": [
+        {
+          "type": "DiceNotation",
+          "field_id": "value",
+          "display_name": "Value"
+        },
+        {
+          "type": "Number",
+          "field_id": "models",
+          "display_name": "Models",
+          "min_value": 1,
+          "max_value": null,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "Exploding",
+      "name": "Exploding",
+      "description": "{unmodified} rolls of {on}+ {characteristic} result in {extra} additional",
+      "fields": [
+        {
+          "type": "Choice",
+          "field_id": "characteristic",
+          "display_name": "Characteristic",
+          "choices": [
+            {
+              "value": "Hit",
+              "display_value": "To Hit"
+            },
+            {
+              "value": "Wound",
+              "display_value": "To Wound"
+            }
+          ]
+        },
+        {
+          "type": "Roll",
+          "field_id": "on",
+          "display_name": "On",
+          "min_value": 2
+        },
+        {
+          "type": "Boolean",
+          "field_id": "unmodified",
+          "display_name": "Unmodified",
+          "default": true
+        },
+        {
+          "type": "DiceNotation",
+          "field_id": "extra",
+          "display_name": "Extra"
+        }
+      ]
+    },
+    {
+      "id": "MortalWounds",
+      "name": "Mortal Wounds",
+      "description": "{unmodified} rolls of {on}+ {characteritic} result in {mortals} mortal wounds {in_addition}",
+      "fields": [
+        {
+          "type": "Choice",
+          "field_id": "characteristic",
+          "display_name": "Characteristic",
+          "choices": [
+            {
+              "value": "Hit",
+              "display_value": "To Hit"
+            },
+            {
+              "value": "Wound",
+              "display_value": "To Wound"
+            }
+          ]
+        },
+        {
+          "type": "Roll",
+          "field_id": "on",
+          "display_name": "On",
+          "min_value": 2
+        },
+        {
+          "type": "Boolean",
+          "field_id": "unmodified",
+          "display_name": "Unmodified",
+          "default": true
+        },
+        {
+          "type": "DiceNotation",
+          "field_id": "mortals",
+          "display_name": "Mortal Wounds"
+        },
+        {
+          "type": "Boolean",
+          "field_id": "in_addition",
+          "display_name": "In Addition",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "opponent": [
+    {
+      "id": "SaveReroll",
+      "name": "Reroll",
+      "description": "Reroll {reroll_type} for {characteristic}",
+      "fields": [
+        {
+          "type": "Choice",
+          "field_id": "reroll_type",
+          "display_name": "Reroll Type",
+          "choices": [
+            {
+              "value": "Any",
+              "display_value": "Any Roll"
+            },
+            {
+              "value": "Failed",
+              "display_value": "Failed Rolls"
+            },
+            {
+              "value": "Ones",
+              "display_value": "Rolls of 1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SaveBonus",
+      "name": "Bonus",
+      "description": "Add {value} to save",
+      "fields": [
+        {
+          "type": "DiceNotation",
+          "field_id": "value",
+          "display_name": "Value"
+        }
+      ]
+    },
+    {
+      "id": "Ward",
+      "name": "Ward Save",
+      "description": "Ignore wounds and mortal wounds on a roll of {on}+",
+      "fields": [
+        {
+          "type": "Roll",
+          "field_id": "on",
+          "display_name": "On",
+          "min_value": 2
+        }
+      ]
+    },
+    {
+      "id": "Ethereal",
+      "name": "Ethereal",
+      "description": "Ignore modifiers to save (positive or negative) when making save rolls'",
+      "fields": []
+    }
+  ]
+}

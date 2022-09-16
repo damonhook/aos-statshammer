@@ -1,0 +1,76 @@
+{
+  "results": [
+    {
+      "name": "Gotrek",
+      "averages": {
+        "save_results": [
+          {
+            "save": 1,
+            "value": 9.407408
+          },
+          {
+            "save": 2,
+            "value": 11.777779
+          },
+          {
+            "save": 3,
+            "value": 14.148149
+          },
+          {
+            "save": 4,
+            "value": 16.51852
+          },
+          {
+            "save": 5,
+            "value": 18.88889
+          },
+          {
+            "save": 6,
+            "value": 18.88889
+          },
+          {
+            "save": 7,
+            "value": 18.88889
+          }
+        ]
+      },
+      "max": 54
+    },
+    {
+      "name": "Chainrasp Horde",
+      "averages": {
+        "save_results": [
+          {
+            "save": 1,
+            "value": 1.708334
+          },
+          {
+            "save": 2,
+            "value": 1.708334
+          },
+          {
+            "save": 3,
+            "value": 3.4166665
+          },
+          {
+            "save": 4,
+            "value": 5.125
+          },
+          {
+            "save": 5,
+            "value": 6.833333
+          },
+          {
+            "save": 6,
+            "value": 8.541667
+          },
+          {
+            "save": 7,
+            "value": 10.25
+          }
+        ]
+      },
+      "max": 41
+    }
+  ]
+}
