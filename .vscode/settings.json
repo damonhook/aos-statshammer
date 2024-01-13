@@ -1,0 +1,16 @@
+{
+    "cssVariables.lookupFiles": [
+        "**/*.css",
+        "**/*.scss",
+        "**/*.sass",
+        "**/*.less",
+        "frontend/node_modules/@mantine/core/styles.css"
+    ],
+    "cSpell.words": [
+        "rapidoc",
+        "statshammer",
+        "utoipa",
+        "Warhammer",
+        "warscroll"
+    ]
+}

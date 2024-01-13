@@ -1,0 +1,14 @@
+.root {
+    padding: var(--mantine-spacing-lg);
+}
+
+.icon {
+    border-radius: 50%;
+    background-color: var(--mantine-primary-color-filled);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 6px;
+}

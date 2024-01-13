@@ -1,0 +1,26 @@
+[package]
+name = "aos-statshammer-api"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "aos-statshammer-api"
+path = "src/main.rs"
+doc = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+aos-statshammer = { path = "../aos-statshammer" }
+axum = "*"
+tokio = { version = "*", features = ["full"] }
+tower = "*"
+tower-http = {version = "*", features = ["fs", "trace"]}
+serde = { version = "*", features = ["derive"] }
+serde_json = "*"
+anyhow = "*"
+tracing = "*"
+tracing-subscriber = {version = "*", features = ["env-filter"]}
+utoipa = "*"
+utoipa-rapidoc = { version = "*", features = ["axum"] }
