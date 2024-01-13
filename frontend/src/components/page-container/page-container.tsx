@@ -3,7 +3,7 @@ import { Container, Flex, Title } from "@mantine/core"
 interface PageContainerProps {
   title: string
   rightSection?: React.ReactNode
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 export default function PageContainer(props: PageContainerProps) {

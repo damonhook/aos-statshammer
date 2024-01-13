@@ -1,4 +1,4 @@
-use axum::{routing::post, Router};
+use axum::{routing::{get, post}, Router};
 use std::env;
 use tower::ServiceBuilder;
 use tower_http::services::ServeDir;
@@ -13,6 +13,7 @@ mod serde_utils;
 
 fn api_router() -> Router {
     Router::new()
+        .route("/status", get(handlers::status))
         .route("/average", post(handlers::average_damage))
         .fallback(handlers::not_found)
 }

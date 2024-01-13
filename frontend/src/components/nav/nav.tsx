@@ -2,21 +2,19 @@ import { UnstyledButton } from "@mantine/core"
 import classes from "./nav.module.css"
 import { Link } from "@tanstack/react-router"
 
-export default function Nav() {
+interface NavProps {
+  items: { name: string; path: string }[]
+}
+
+export default function Nav(props: NavProps) {
+  const { items } = props
   return (
     <>
-      <UnstyledButton component={Link} to="/units" className={classes.control}>
-        Units
-      </UnstyledButton>
-      <UnstyledButton component={Link} to="/units" className={classes.control}>
-        Target
-      </UnstyledButton>
-      <UnstyledButton component={Link} to="/units" className={classes.control}>
-        Average
-      </UnstyledButton>
-      <UnstyledButton component={Link} to="/units" className={classes.control}>
-        Simulate
-      </UnstyledButton>
+      {items.map(({ name, path }) => (
+        <UnstyledButton component={Link} to={path} className={classes.control}>
+          {name}
+        </UnstyledButton>
+      ))}
     </>
   )
 }

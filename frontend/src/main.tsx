@@ -1,4 +1,5 @@
 import "@mantine/core/styles.css"
+import "@mantine/charts/styles.css"
 
 import React from "react"
 import ReactDOM from "react-dom/client"
@@ -14,8 +15,8 @@ declare module "@tanstack/react-router" {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-      <MantineProvider theme={{primaryColor: 'teal'}} defaultColorScheme="dark">
-        <RouterProvider router={router} />
-      </MantineProvider>
+    <MantineProvider theme={{ primaryColor: "teal" }} defaultColorScheme="dark">
+      <RouterProvider router={router} />
+    </MantineProvider>
   </React.StrictMode>,
 )

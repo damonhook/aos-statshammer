@@ -7,7 +7,7 @@ export default function BackToTop() {
   const { height } = useViewportSize()
 
   return (
-    <Affix position={{ bottom: 166, right: 20 }}>
+    <Affix position={{ bottom: 130, right: 20 }}>
       <Transition transition="slide-up" mounted={scroll.y > height / 2}>
         {(transitionStyles) => (
           <>

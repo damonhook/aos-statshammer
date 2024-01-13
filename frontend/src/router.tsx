@@ -4,6 +4,8 @@ import Home from "@/pages/home"
 import Units from "@/pages/units"
 import NotFound from "@/pages/404"
 import ModelGroup from "@/pages/model-group"
+import Average from "@/pages/average"
+import { getAverageDamage } from "./api"
 
 export const rootRoute = new RootRoute({
   component: () => <Root />,
@@ -37,9 +39,17 @@ export const modelGroupRoute = new Route({
   component: () => <ModelGroup />,
 })
 
+export const averageRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: "/average",
+  loader: () => getAverageDamage(),
+  component: Average,
+})
+
 export const routeTree = rootRoute.addChildren([
   indexRoute,
   unitsRoute.addChildren([unitsIndexRoute, modelGroupRoute]),
+  averageRoute,
 ])
 
 export default new Router({ routeTree, notFoundRoute })

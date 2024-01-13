@@ -20,9 +20,9 @@ import BackToTop from "@/components/back-to-top"
 const links = [
   { name: "Home", path: "/" },
   { name: "Units", path: "/units" },
-  { name: "Target", path: "/units" },
-  { name: "Average", path: "/units" },
-  { name: "Simulate", path: "/units" },
+  { name: "Target", path: "/target" },
+  { name: "Average", path: "/average" },
+  { name: "Simulate", path: "/simulate" },
 ]
 
 export default function Root() {
@@ -43,12 +43,12 @@ export default function Root() {
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <Group justify="space-between" flex={1}>
-            <Text component={Link} to="/">
+            <Anchor component={Link} to="/">
               AoS Statshammer
-            </Text>
+            </Anchor>
             <Group>
               <Group gap={0} visibleFrom="sm">
-                <Nav />
+                <Nav items={links} />
               </Group>
               <ColorSchemeButton variant="default" size="xl" />
             </Group>
@@ -57,14 +57,14 @@ export default function Root() {
       </AppShell.Header>
 
       <AppShell.Navbar py="md" px={4}>
-        <Nav />
+        <Nav items={links} />
       </AppShell.Navbar>
 
       <AppShell.Main
         style={{
           "background-color":
             "light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-9))",
-          "minHeight": "calc(100dvh - 150px)"
+          minHeight: "calc(100dvh - 150px)",
         }}
       >
         <Outlet />
@@ -72,7 +72,7 @@ export default function Root() {
 
       <BackToTop />
       {/* <AppShell.Footer> */}
-      <Container size="lg" p="lg" component="footer">
+      <Container size="lg" p="lg" component="footer" h={150}>
         <Flex justify="space-between">
           <Container size="md" p={0} m={0}>
             <Text>
