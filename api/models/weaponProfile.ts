@@ -83,7 +83,7 @@ class WeaponProfile {
   getDamage(unmodified = false, roll = false): number {
     let damage = roll ? this.damage.roll() : this.damage.average;
     if (!unmodified) damage += this.resolveStackableModifier(m.BONUS, C.DAMAGE, roll);
-    return Math.max(damage, 1);
+    return Math.max(damage, 0);
   }
 
   /**
