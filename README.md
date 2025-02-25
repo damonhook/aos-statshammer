@@ -1,7 +1,7 @@
 ![https://img.shields.io/github/v/release/damonhook/aos-statshammer.svg](https://img.shields.io/github/v/release/damonhook/aos-statshammer.svg)
 
 <div align="center">
-    <a href="https://aos-statshammer.herokuapp.com/" target="_blank">
+    <a href="https://aos-statshammer.damonhook.com/" target="_blank">
         <img width="128" src="docs/logo256.png">
     </a>
 </div>
@@ -11,13 +11,13 @@
 A tool for calculating and comparing damage outputs for Warhammer Age of Sigmar units
 (also referred to as Mathhammer).
 
-The production deploy of the tool is located at: https://aos-statshammer.herokuapp.com/
+The production deploy of the tool is located at: https://aos-statshammer.damonhook.com/
 
 The tool works by adding a number of weapon profiles to various units, which can contain
 a number of modifiers (abilities)
 
 <div align="center">
-    <a href="https://aos-statshammer.herokuapp.com/" target="_blank">
+    <a href="https://aos-statshammer.damonhook.com/" target="_blank">
         <img width="100%" src="docs/compare.png">
     </a>
 </div>
@@ -66,7 +66,7 @@ a number of modifiers (abilities)
 - Ability to provide points costs to provide stats for average damage / 100 points
 
 ## Related Projects
-- [Warcry Statshammer](https://warcry-statshammer.herokuapp.com/)
+- [Warcry Statshammer](https://warcry-statshammer.damonhook.com/)
 
 ## Installation
 

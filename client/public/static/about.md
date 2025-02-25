@@ -2,7 +2,7 @@
 
 A tool for calculating and comparing damage outputs for
 **Warhammer Age of Sigmar** units (also referred to as Mathhammer).
-If you are interested in Warcry calculations, see the sister-project [Warcry-Statshammer](https://warcry-statshammer.herokuapp.com)
+If you are interested in Warcry calculations, see the sister-project [Warcry-Statshammer](https://warcry-statshammer.damonhook.com)
 
 ## Average Damage Stats
 

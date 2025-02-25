@@ -53,4 +53,8 @@ describe('Units', () => {
   describe('Rattling Gunners', () => {
     testUnit(u.rattlingGunners, [1.75, 1.75, 1.458, 1.167, 0.875, 0.583]);
   });
+
+  describe('No Damage Weapon', () => {
+    testUnit(u.noDamageWeapons, [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+  });
 });

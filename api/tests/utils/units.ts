@@ -168,4 +168,6 @@ export const explodingAndConditionalDifferent = new Unit(
     ]),
   ],
 );
+
+export const noDamageWeapons = new Unit('NoDamageWeapons', [new WeaponProfile(10, 2, 4, 4, 0, 0, [])]);
 // #endregion

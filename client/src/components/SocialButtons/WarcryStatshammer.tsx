@@ -8,7 +8,7 @@ const Github = ({ className, forceVariant }: ISocialButtonProps) => {
   return (
     <SocialItem
       className={className}
-      href="https://warcry-statshammer.herokuapp.com/"
+      href="https://warcry-statshammer.damonhook.com/"
       text="Warcry Stats"
       icon={<WarcryStatshammerIcon />}
       forceVariant={forceVariant}
